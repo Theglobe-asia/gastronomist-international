@@ -1,4 +1,5 @@
 ﻿"use client"
+import type {} from "@react-three/fiber"  // <-- add this line
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Float } from "@react-three/drei"
 import Button from "@/components/ui/Button"
