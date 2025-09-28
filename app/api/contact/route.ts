@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
+export const runtime = "nodejs";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const required = ["name","address","email","currentPosition","currentCompany","experience","reason"];
-  for (const k of required) if (!body?.[k]) {
-    return NextResponse.json({ error: `Missing ${k}` }, { status: 400 });
+  const body = await req.json().catch(() => null);
+  const required = ["name","address","email","currentPosition","currentCompany","experience","reason"] as const;
+  for (const k of required) {
+    if (!body?.[k]) return NextResponse.json({ error: `Missing ${k}` }, { status: 400 });
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  const to = process.env.CONTACT_TO || "gastronomist.intl@gmail.com";
-  const from = process.env.EMAIL_FROM || "Gastronomist International <onboarding@resend.dev>";
+  const to = (process.env.CONTACT_TO || "gastronomist.intl@gmail.com").split(",");
+  const from = process.env.EMAIL_FROM || "onboarding@resend.dev";
 
   const html = `
     <h2>New Membership Request</h2>
@@ -24,10 +27,15 @@ export async function POST(req: NextRequest) {
   `;
 
   try {
-    const { data, error } = await resend.emails.send({ from, to, subject: "Gastronomist International — Membership Request", html });
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json({ ok: true, id: data?.id });
-  } catch (e: any) {
-    return NextResponse.json({ error: e?.message || "Email send failed" }, { status: 500 });
+    await resend.emails.send({
+      from,
+      to,
+      subject: "Gastronomist International — Membership Request",
+      html,
+      replyTo: body.email
+    });
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    return NextResponse.json({ error: "Email send failed" }, { status: 500 });
   }
 }
