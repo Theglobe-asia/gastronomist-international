@@ -30,7 +30,7 @@ export default function ContactWidget() {
   return (
     <>
       <div className="fixed bottom-6 right-6 z-50">
-        <Button onClick={() => setOpen(true)}>Contact Us</Button>
+        <Button type="button" onClick={() => setOpen(true)}>Contact Us</Button>
       </div>
 
       {open && (

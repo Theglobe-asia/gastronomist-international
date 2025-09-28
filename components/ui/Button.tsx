@@ -1,9 +1,10 @@
 "use client"
-import { motion } from "framer-motion"
-import type { ComponentProps } from "react"
+import { motion, type MotionProps } from "framer-motion"
+import type { ComponentPropsWithoutRef } from "react"
 import { cn } from "../utils"
 
-type Props = ComponentProps<typeof motion.button>
+type ButtonHTMLProps = ComponentPropsWithoutRef<"button">
+type Props = ButtonHTMLProps & MotionProps & { className?: string }
 
 export default function Button({ className, children, ...props }: Props) {
   return (
@@ -11,7 +12,7 @@ export default function Button({ className, children, ...props }: Props) {
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
       className={cn("rounded-2xl px-5 py-3 font-medium bg-white text-black shadow-lg shadow-white/10", className)}
-      {...props}
+      {...(props as any)}
     >
       {children}
     </motion.button>
