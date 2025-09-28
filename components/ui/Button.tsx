@@ -1,10 +1,9 @@
 "use client"
 import { motion } from "framer-motion"
-import type { MotionProps } from "framer-motion"
-import type { ButtonHTMLAttributes } from "react"
+import type { ComponentProps } from "react"
 import { cn } from "../utils"
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & MotionProps & { className?: string }
+type Props = ComponentProps<typeof motion.button>
 
 export default function Button({ className, children, ...props }: Props) {
   return (
