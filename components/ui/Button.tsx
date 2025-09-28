@@ -1,12 +1,10 @@
 "use client"
-import { motion } from "framer-motion"
+import { motion, type HTMLMotionProps } from "framer-motion"
 import { cn } from "../utils"
 
-export default function Button({
-  className,
-  children,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { className?: string }) {
+type Props = HTMLMotionProps<"button"> & { className?: string }
+
+export default function Button({ className, children, ...props }: Props) {
   return (
     <motion.button
       whileHover={{ scale: 1.03 }}
