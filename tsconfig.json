@@ -15,8 +15,9 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": { "@/*": ["./*"] },
-    "plugins": [{ "name": "next" }]
+    "plugins": [{ "name": "next" }],
+    "types": ["@react-three/fiber", "node"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.d.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
