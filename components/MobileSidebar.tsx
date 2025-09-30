@@ -3,9 +3,9 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 
-// Explicitly typed motion components
-const MotionDiv: React.FC<React.HTMLAttributes<HTMLDivElement>> = motion.div as any
-const MotionAside: React.FC<React.HTMLAttributes<HTMLElement>> = motion.aside as any
+// Use motion.div directly — no casting to HTMLDivElement
+const MotionDiv = motion.div
+const MotionAside = motion.aside
 
 export default function MobileSidebar({
   open,
