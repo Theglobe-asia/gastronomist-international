@@ -3,10 +3,6 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 
-// Use motion.div directly — no casting to HTMLDivElement
-const MotionDiv = motion.div
-const MotionAside = motion.aside
-
 export default function MobileSidebar({
   open,
   onClose,
@@ -19,7 +15,7 @@ export default function MobileSidebar({
   return (
     <div className={`fixed inset-0 md:hidden ${open ? "" : "pointer-events-none"}`}>
       {/* overlay */}
-      <MotionDiv
+      <motion.div
         onClick={onClose}
         className="absolute inset-0 bg-black/60"
         initial={{ opacity: 0 }}
@@ -29,7 +25,7 @@ export default function MobileSidebar({
       />
 
       {/* sidebar */}
-      <MotionAside
+      <motion.aside
         className="absolute left-0 top-0 h-full w-72 bg-white border-r-4 border-yellow-500 p-6 shadow-xl"
         initial={{ x: "-100%" }}
         animate={{ x: open ? 0 : "-100%" }}
@@ -54,7 +50,7 @@ export default function MobileSidebar({
             </motion.div>
           ))}
         </nav>
-      </MotionAside>
+      </motion.aside>
     </div>
   )
 }
