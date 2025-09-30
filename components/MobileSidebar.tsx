@@ -17,8 +17,8 @@ export default function MobileSidebar({
       {open && (
         <div className="fixed inset-0 z-50 md:hidden">
           {/* overlay */}
-          <motion.div<HTMLDivElement>
-            onClick={onClose}
+          <motion.div
+            onClick={onClose as React.MouseEventHandler<HTMLDivElement>}
             className="absolute inset-0 bg-black/60"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
