@@ -10,7 +10,7 @@ import Button from "@/components/ui/Button"
 function SlideCube() {
   return (
     <Float speed={2} rotationIntensity={1.2} floatIntensity={1.2}>
-      <Image url="/images/logo.png" scale={[2.2, 1.4, 1]} transparent toneMapped={false} />
+      <Image url="/images/logo.png" scale={[6.6, 3.12, 3]} transparent toneMapped={false} />
     </Float>
   )
 }
