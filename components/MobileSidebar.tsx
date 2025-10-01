@@ -1,8 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { motion } from "framer-motion"
-import type { HTMLMotionProps } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
+
+// ✅ Properly typed motion components
+const MotionDiv = motion<HTMLDivElement>("div")
+const MotionAside = motion<HTMLElement>("aside")
 
 export default function MobileSidebar({
   open,
@@ -13,10 +16,6 @@ export default function MobileSidebar({
   onClose: () => void
   nav: { href: string; label: string }[]
 }) {
-  // ✅ Typed motion.div to accept onClick + className
-  const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>
-  const MotionAside = motion.aside as React.FC<HTMLMotionProps<"aside">>
-
   return (
     <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}>
       {/* Overlay */}
@@ -29,7 +28,7 @@ export default function MobileSidebar({
         transition={{ duration: 0.3 }}
       />
 
-      {/* Sidebar with gradient */}
+      {/* Sidebar with full gradient background */}
       <MotionAside
         className="absolute left-0 top-0 h-full w-72 bg-gradient-to-br from-white/90 via-yellow-200/80 to-yellow-500/70 border-r-4 border-yellow-500 p-6 shadow-xl"
         initial={{ x: "-100%" }}
