@@ -1,49 +1,47 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
-import MobileSidebar from "./MobileSidebar"
+import { useState } from "react"
+import MobileSidebar from "@/components/MobileSidebar"
+
+const NAV = [
+  { href: "/", label: "Home" },
+  { href: "/chefs", label: "Our Chefs" },
+  { href: "/press", label: "Press Release" },
+  { href: "/about", label: "About Us" },
+]
 
 export default function Header() {
   const [open, setOpen] = useState(false)
 
-  const nav = [
-    { href: "/", label: "Home" },
-    { href: "/our-chefs", label: "Our Chefs" },
-    { href: "/press-release", label: "Press Release" },
-    { href: "/about-us", label: "About Us" }
-  ]
-
   return (
-    <header className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/80 backdrop-blur-md">
-      {/* Logo */}
-      <Link href="/" className="text-xl font-bold tracking-wide">
-        Gastronomist International
-      </Link>
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-yellow-500/50">
+      <div className="container flex h-16 items-center justify-between">
+        <Link href="/" className="flex items-center gap-3 text-black font-semibold">
+          Gastronomist International
+        </Link>
 
-      {/* Desktop nav */}
-      <nav className="hidden md:flex gap-6">
-        {nav.map((i) => (
-          <Link
-            key={i.href}
-            href={i.href}
-            className="text-sm text-neutral-200 hover:text-[var(--gold)] transition"
-          >
-            {i.label}
-          </Link>
-        ))}
-      </nav>
+        {/* Desktop nav */}
+        <nav className="hidden md:flex gap-6">
+          {NAV.map(i => (
+            <Link
+              key={i.href}
+              href={i.href}
+              className="text-sm text-black hover:text-yellow-600"
+            >
+              {i.label}
+            </Link>
+          ))}
+        </nav>
 
-      {/* Mobile menu button */}
-      <button
-        className="md:hidden px-3 py-2 rounded-lg border border-white/20 text-sm text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition"
-        onClick={() => setOpen(true)}
-      >
-        Menu
-      </button>
+        {/* Mobile toggle */}
+        <button className="md:hidden text-sm text-black" onClick={() => setOpen(true)}>
+          Menu
+        </button>
+      </div>
 
-      {/* Mobile Sidebar */}
-      <MobileSidebar open={open} setOpen={setOpen} nav={nav} />
+      {/* Mobile sidebar */}
+      <MobileSidebar open={open} setOpen={setOpen} nav={NAV} />
     </header>
   )
 }
