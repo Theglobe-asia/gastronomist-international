@@ -13,7 +13,7 @@ export default function MobileSidebar({
   onClose: () => void
   nav: { href: string; label: string }[]
 }) {
-  // lock body scroll when open
+  // lock scroll when sidebar is open
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
@@ -28,11 +28,12 @@ export default function MobileSidebar({
         onClick={onClose}
         className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`}
       />
-      {/* sliding panel with full gradient */}
+
+      {/* FULL PANEL gradient background */}
       <aside
         role="dialog"
         aria-modal="true"
-        className={`absolute left-0 top-0 h-full w-72 border-r-4 border-yellow-500 p-6 shadow-xl
+        className={`absolute left-0 top-0 h-full w-72 p-6 shadow-xl border-r-4 border-yellow-500
         bg-gradient-to-b from-white/95 via-yellow-100/90 to-yellow-400/70
         text-black transition-transform duration-300 ease-out
         ${open ? "translate-x-0" : "-translate-x-full"}`}
@@ -44,7 +45,7 @@ export default function MobileSidebar({
               key={i.href}
               href={i.href}
               onClick={onClose}
-              className="text-black hover:text-yellow-600 active:text-yellow-700 transition-colors"
+              className="text-black hover:text-yellow-600 transition-colors"
             >
               {i.label}
             </Link>
