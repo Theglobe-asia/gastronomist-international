@@ -2,6 +2,21 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 import type { HTMLMotionProps } from "framer-motion"
+import { forwardRef } from "react"
+
+// ✅ Typed motion.div wrapper
+const MotionDiv = motion(
+  forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(function Div(props, ref) {
+    return <div ref={ref} {...props} />
+  })
+)
+
+// ✅ Typed motion.aside wrapper
+const MotionAside = motion(
+  forwardRef<HTMLElement, HTMLMotionProps<"aside">>(function Aside(props, ref) {
+    return <aside ref={ref} {...props} />
+  })
+)
 
 export default function MobileSidebar({
   open,
@@ -16,8 +31,7 @@ export default function MobileSidebar({
     <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}>
       {/* Overlay */}
       <div onClick={onClose} className="absolute inset-0">
-        <motion.div
-          {...({} as HTMLMotionProps<"div">)} // ✅ force TS to recognize div props
+        <MotionDiv
           className="w-full h-full bg-black/60"
           initial={{ opacity: 0 }}
           animate={{ opacity: open ? 1 : 0 }}
@@ -27,8 +41,7 @@ export default function MobileSidebar({
       </div>
 
       {/* Sidebar */}
-      <motion.aside
-        {...({} as HTMLMotionProps<"aside">)}
+      <MotionAside
         initial={{ x: "-100%" }}
         animate={{ x: open ? 0 : "-100%" }}
         transition={{ duration: 0.35, ease: "easeOut" }}
@@ -42,7 +55,6 @@ export default function MobileSidebar({
           {nav.map((i, idx) => (
             <motion.div
               key={i.href}
-              {...({} as HTMLMotionProps<"div">)}
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.1 * idx }}
@@ -57,7 +69,7 @@ export default function MobileSidebar({
             </motion.div>
           ))}
         </nav>
-      </motion.aside>
+      </MotionAside>
     </div>
   )
 }
