@@ -1,8 +1,6 @@
 "use client"
 import Link from "next/link"
-import { motion, HTMLMotionProps } from "framer-motion"
-
-type MotionDivProps = HTMLMotionProps<"div">
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function MobileSidebar({
   open,
@@ -14,55 +12,53 @@ export default function MobileSidebar({
   nav: { href: string; label: string }[]
 }) {
   return (
-    <div className={`fixed inset-0 md:hidden ${open ? "" : "pointer-events-none"}`}>
-      {/* Overlay */}
-      <motion.div
-        {...({
-          className: "absolute inset-0",
-          initial: { opacity: 0 },
-          animate: { opacity: open ? 1 : 0 },
-          exit: { opacity: 0 },
-          transition: { duration: 0.3 }
-        } as MotionDivProps)}
-      >
-        <div
-          className="absolute inset-0 bg-black/60"
-          onClick={onClose}
-        />
-      </motion.div>
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          {/* Overlay */}
+          <motion.div
+            onClick={onClose}
+            className="absolute inset-0 bg-black/60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          />
 
-      {/* Sidebar */}
-      <motion.aside
-        {...({
-          className:
-            "absolute left-0 top-0 h-full w-72 bg-white border-r-2 border-yellow-500 p-6 text-black shadow-xl",
-          initial: { x: "-100%" },
-          animate: { x: open ? "0%" : "-100%" },
-          transition: { type: "spring", stiffness: 300, damping: 30 }
-        } as HTMLMotionProps<"aside">)}
-      >
-        <h3 className="mb-6 font-semibold">Menu</h3>
-        <nav className="flex flex-col gap-4">
-          {nav.map((i, idx) => (
-            <motion.div
-              key={i.href}
-              {...({
-                initial: { x: -20, opacity: 0 },
-                animate: { x: 0, opacity: 1 },
-                transition: { delay: 0.1 * idx }
-              } as MotionDivProps)}
-            >
-              <Link
-                href={i.href}
-                onClick={onClose}
-                className="hover:text-yellow-600 transition-colors"
-              >
-                {i.label}
-              </Link>
-            </motion.div>
-          ))}
-        </nav>
-      </motion.aside>
-    </div>
+          {/* Sidebar */}
+          <motion.aside
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "tween", duration: 0.4 }}
+            className="absolute left-0 top-0 h-full w-72 
+                       bg-gradient-to-b from-white/80 to-yellow-400/80 
+                       backdrop-blur-md
+                       border-r-4 border-yellow-500 
+                       shadow-xl p-6"
+          >
+            <h3 className="mb-6 font-bold text-black text-lg">Menu</h3>
+            <nav className="flex flex-col gap-5">
+              {nav.map((i, idx) => (
+                <motion.div
+                  key={i.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.08 }}
+                >
+                  <Link
+                    href={i.href}
+                    onClick={onClose}
+                    className="text-black font-medium transition-colors duration-300 hover:text-yellow-500"
+                  >
+                    {i.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
+          </motion.aside>
+        </div>
+      )}
+    </AnimatePresence>
   )
 }
