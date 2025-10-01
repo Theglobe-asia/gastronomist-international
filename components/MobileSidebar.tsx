@@ -1,16 +1,11 @@
 "use client"
-
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-
-// Safe casting for motion components (avoids Vercel build type errors)
-const MDiv: any = motion.div
-const MAside: any = motion.aside
 
 export default function MobileSidebar({
   open,
   onClose,
-  nav,
+  nav
 }: {
   open: boolean
   onClose: () => void
@@ -20,50 +15,47 @@ export default function MobileSidebar({
     <AnimatePresence>
       {open && (
         <div className="fixed inset-0 z-50 md:hidden">
-          {/* Backdrop overlay */}
-          <MDiv
+          {/* Overlay */}
+          <motion.div
             onClick={onClose}
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-black/60"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.3 }}
           />
 
-          {/* Sidebar panel with gradient + inner shadow */}
-          <MAside
+          {/* Sidebar panel */}
+          <motion.aside
             className="absolute left-0 top-0 h-full w-72 
-                       bg-gradient-to-b from-white via-yellow-50 to-yellow-300
-                       border-r-2 border-[#D4AF37] 
-                       shadow-2xl shadow-black/20 
-                       text-black relative"
-            initial={{ x: "-100%" }}
+                       bg-gradient-to-b from-white/90 via-white/85 to-yellow-200/80 
+                       border-r-4 border-yellow-500 
+                       p-6 shadow-2xl flex flex-col"
+            initial={{ x: -300 }}
             animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+            exit={{ x: -300 }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
           >
-            {/* Inner shadow overlay for depth */}
-            <div className="absolute inset-0 pointer-events-none shadow-inner shadow-black/10 rounded-r-2xl" />
-
-            <div className="relative z-10 p-6">
-              <h3 className="mb-6 font-bold text-lg tracking-wide">Menu</h3>
-
-              {/* Navigation links */}
-              <nav className="flex flex-col gap-4">
-                {nav.map(({ href, label }) => (
+            <h3 className="mb-6 font-semibold text-black">Menu</h3>
+            <nav className="flex flex-col gap-4">
+              {nav.map((i, index) => (
+                <motion.div
+                  key={i.href}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                >
                   <Link
-                    key={href}
-                    href={href}
+                    href={i.href}
                     onClick={onClose}
-                    className="px-3 py-2 rounded-md text-base font-semibold transition-colors 
-                               hover:text-[#D4AF37] active:scale-95"
+                    className="text-black hover:text-yellow-600 transition-colors"
                   >
-                    {label}
+                    {i.label}
                   </Link>
-                ))}
-              </nav>
-            </div>
-          </MAside>
+                </motion.div>
+              ))}
+            </nav>
+          </motion.aside>
         </div>
       )}
     </AnimatePresence>
