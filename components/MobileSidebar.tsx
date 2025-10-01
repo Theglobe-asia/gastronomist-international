@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import type { HTMLMotionProps } from "framer-motion"
 
 export default function MobileSidebar({
   open,
@@ -13,14 +12,10 @@ export default function MobileSidebar({
   onClose: () => void
   nav: { href: string; label: string }[]
 }) {
-  // Overlay with correct typing
-  const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>
-  const MotionAside = motion.aside as React.FC<HTMLMotionProps<"aside">>
-
   return (
     <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}>
       {/* Overlay */}
-      <MotionDiv
+      <motion.div
         onClick={onClose}
         className="absolute inset-0 bg-black/60"
         initial={{ opacity: 0 }}
@@ -30,7 +25,7 @@ export default function MobileSidebar({
       />
 
       {/* Sidebar */}
-      <MotionAside
+      <motion.aside
         className="absolute left-0 top-0 h-full w-72 bg-white border-r-2 border-yellow-500 p-6 shadow-xl flex flex-col"
         initial={{ x: "-100%" }}
         animate={{ x: open ? "0%" : "-100%" }}
@@ -55,7 +50,7 @@ export default function MobileSidebar({
             </motion.div>
           ))}
         </nav>
-      </MotionAside>
+      </motion.aside>
     </div>
   )
 }
