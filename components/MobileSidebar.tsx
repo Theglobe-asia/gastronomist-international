@@ -3,7 +3,17 @@
 import { useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { AnimatePresence, motion, HTMLMotionProps } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
+
+// ✅ Typed wrapper for motion.div
+const MotionDiv = motion.div as React.FC<
+  React.HTMLAttributes<HTMLDivElement> & { initial?: any; animate?: any; exit?: any; transition?: any }
+>
+
+// ✅ Typed wrapper for motion.aside
+const MotionAside = motion.aside as React.FC<
+  React.HTMLAttributes<HTMLElement> & { initial?: any; animate?: any; exit?: any; transition?: any }
+>
 
 export default function MobileSidebar({
   open,
@@ -36,8 +46,8 @@ export default function MobileSidebar({
       {open && (
         <>
           {/* Overlay */}
-          <motion.div
-            {...({ onClick: () => setOpen(false) } as HTMLMotionProps<"div">)}
+          <MotionDiv
+            onClick={() => setOpen(false)}
             className="fixed inset-0 z-[98] bg-black/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -46,7 +56,7 @@ export default function MobileSidebar({
           />
 
           {/* Sidebar panel */}
-          <motion.aside
+          <MotionAside
             ref={panelRef}
             className="fixed right-0 top-0 z-[99] h-full w-72 max-w-sm 
                        bg-gradient-to-br from-white/90 via-white/80 to-yellow-500/40 
@@ -84,7 +94,7 @@ export default function MobileSidebar({
                 ))}
               </ul>
             </nav>
-          </motion.aside>
+          </MotionAside>
         </>
       )}
     </AnimatePresence>
