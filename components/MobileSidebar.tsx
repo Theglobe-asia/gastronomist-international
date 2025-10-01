@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import type { HTMLMotionProps } from "framer-motion"
 
 export default function MobileSidebar({
   open,
@@ -11,10 +12,13 @@ export default function MobileSidebar({
   onClose: () => void
   nav: { href: string; label: string }[]
 }) {
+  const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>
+  const MotionAside = motion.aside as React.FC<HTMLMotionProps<"aside">>
+
   return (
     <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}>
-      {/* Dark overlay */}
-      <motion.div
+      {/* Overlay */}
+      <MotionDiv
         onClick={onClose}
         className="absolute inset-0 bg-black/60"
         initial={{ opacity: 0 }}
@@ -23,38 +27,36 @@ export default function MobileSidebar({
         transition={{ duration: 0.3 }}
       />
 
-      {/* Sidebar panel */}
-      <motion.aside
+      {/* Sidebar */}
+      <MotionAside
         initial={{ x: "-100%" }}
         animate={{ x: open ? 0 : "-100%" }}
-        transition={{ duration: 0.3 }}
-        className="
-          absolute left-0 top-0 h-full w-72 
-          bg-gradient-to-b from-white/90 via-white/80 to-yellow-200/80
-          border-r-4 border-yellow-500 
-          p-6 flex flex-col
-        "
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="absolute left-0 top-0 h-full w-72 
+                   bg-gradient-to-b from-white/90 via-yellow-200/80 to-yellow-500/70
+                   border-r-4 border-yellow-500
+                   p-6 shadow-xl"
       >
-        <h3 className="mb-6 font-semibold text-black">Menu</h3>
+        <h3 className="mb-6 font-bold text-lg text-black">Menu</h3>
         <nav className="flex flex-col gap-4">
           {nav.map((i, idx) => (
             <motion.div
               key={i.href}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: open ? 1 : 0, x: open ? 0 : -20 }}
-              transition={{ delay: idx * 0.1 }}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.1 * idx }}
             >
               <Link
                 href={i.href}
                 onClick={onClose}
-                className="text-black hover:text-yellow-600 font-medium transition-colors"
+                className="block text-black font-medium hover:text-yellow-600 transition-colors"
               >
                 {i.label}
               </Link>
             </motion.div>
           ))}
         </nav>
-      </motion.aside>
+      </MotionAside>
     </div>
   )
 }
