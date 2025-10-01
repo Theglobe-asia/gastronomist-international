@@ -1,8 +1,6 @@
-// components/MobileSidebar.tsx
 "use client"
-
 import Link from "next/link"
-import { useEffect } from "react"
+import { motion } from "framer-motion"
 
 export default function MobileSidebar({
   open,
@@ -13,45 +11,50 @@ export default function MobileSidebar({
   onClose: () => void
   nav: { href: string; label: string }[]
 }) {
-  // lock scroll when sidebar is open
-  useEffect(() => {
-    if (!open) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => { document.body.style.overflow = prev }
-  }, [open])
-
   return (
-    <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
-      {/* overlay */}
-      <div
+    <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}>
+      {/* Dark overlay */}
+      <motion.div
         onClick={onClose}
-        className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`}
+        className="absolute inset-0 bg-black/60"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: open ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
       />
 
-      {/* FULL PANEL gradient background */}
-      <aside
-        role="dialog"
-        aria-modal="true"
-        className={`absolute left-0 top-0 h-full w-72 p-6 shadow-xl border-r-4 border-yellow-500
-        bg-gradient-to-b from-white/95 via-yellow-100/90 to-yellow-400/70
-        text-black transition-transform duration-300 ease-out
-        ${open ? "translate-x-0" : "-translate-x-full"}`}
+      {/* Sidebar panel */}
+      <motion.aside
+        initial={{ x: "-100%" }}
+        animate={{ x: open ? 0 : "-100%" }}
+        transition={{ duration: 0.3 }}
+        className="
+          absolute left-0 top-0 h-full w-72 
+          bg-gradient-to-b from-white/90 via-white/80 to-yellow-200/80
+          border-r-4 border-yellow-500 
+          p-6 flex flex-col
+        "
       >
-        <h3 className="mb-6 font-semibold">Menu</h3>
+        <h3 className="mb-6 font-semibold text-black">Menu</h3>
         <nav className="flex flex-col gap-4">
-          {nav.map(i => (
-            <Link
+          {nav.map((i, idx) => (
+            <motion.div
               key={i.href}
-              href={i.href}
-              onClick={onClose}
-              className="text-black hover:text-yellow-600 transition-colors"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: open ? 1 : 0, x: open ? 0 : -20 }}
+              transition={{ delay: idx * 0.1 }}
             >
-              {i.label}
-            </Link>
+              <Link
+                href={i.href}
+                onClick={onClose}
+                className="text-black hover:text-yellow-600 font-medium transition-colors"
+              >
+                {i.label}
+              </Link>
+            </motion.div>
           ))}
         </nav>
-      </aside>
+      </motion.aside>
     </div>
   )
 }
