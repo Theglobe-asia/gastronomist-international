@@ -1,6 +1,10 @@
 "use client"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import type { HTMLMotionProps } from "framer-motion"
+
+const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>
+const MotionAside = motion.aside as React.FC<HTMLMotionProps<"aside">>
 
 export default function MobileSidebar({
   open,
@@ -13,19 +17,18 @@ export default function MobileSidebar({
 }) {
   return (
     <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}>
-      {/* Overlay - wrapper div handles click */}
-      <div onClick={onClose} className="absolute inset-0">
-        <motion.div
-          className="w-full h-full bg-black/60"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: open ? 1 : 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        />
-      </div>
+      {/* Overlay */}
+      <MotionDiv
+        onClick={onClose}
+        className="absolute inset-0 bg-black/60"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: open ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      />
 
       {/* Sidebar */}
-      <motion.aside
+      <MotionAside
         initial={{ x: "-100%" }}
         animate={{ x: open ? 0 : "-100%" }}
         transition={{ duration: 0.35, ease: "easeOut" }}
@@ -53,7 +56,7 @@ export default function MobileSidebar({
             </motion.div>
           ))}
         </nav>
-      </motion.aside>
+      </MotionAside>
     </div>
   )
 }
