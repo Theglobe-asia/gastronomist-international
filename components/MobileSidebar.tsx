@@ -1,11 +1,8 @@
+// components/MobileSidebar.tsx
 "use client"
 
 import Link from "next/link"
-import { motion, HTMLMotionProps } from "framer-motion"
-
-// ✅ Properly typed motion components
-const MotionDiv = motion<HTMLDivElement>("div")
-const MotionAside = motion<HTMLElement>("aside")
+import { useEffect } from "react"
 
 export default function MobileSidebar({
   open,
@@ -16,39 +13,44 @@ export default function MobileSidebar({
   onClose: () => void
   nav: { href: string; label: string }[]
 }) {
-  return (
-    <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}>
-      {/* Overlay */}
-      <MotionDiv
-        onClick={onClose}
-        className="absolute inset-0 bg-black/60"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: open ? 1 : 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      />
+  // lock body scroll when open
+  useEffect(() => {
+    if (!open) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => { document.body.style.overflow = prev }
+  }, [open])
 
-      {/* Sidebar with full gradient background */}
-      <MotionAside
-        className="absolute left-0 top-0 h-full w-72 bg-gradient-to-br from-white/90 via-yellow-200/80 to-yellow-500/70 border-r-4 border-yellow-500 p-6 shadow-xl"
-        initial={{ x: "-100%" }}
-        animate={{ x: open ? 0 : "-100%" }}
-        transition={{ duration: 0.4 }}
+  return (
+    <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
+      {/* overlay */}
+      <div
+        onClick={onClose}
+        className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`}
+      />
+      {/* sliding panel with full gradient */}
+      <aside
+        role="dialog"
+        aria-modal="true"
+        className={`absolute left-0 top-0 h-full w-72 border-r-4 border-yellow-500 p-6 shadow-xl
+        bg-gradient-to-b from-white/95 via-yellow-100/90 to-yellow-400/70
+        text-black transition-transform duration-300 ease-out
+        ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <h3 className="mb-6 font-semibold text-black">Menu</h3>
+        <h3 className="mb-6 font-semibold">Menu</h3>
         <nav className="flex flex-col gap-4">
           {nav.map(i => (
             <Link
               key={i.href}
               href={i.href}
               onClick={onClose}
-              className="text-black hover:text-yellow-600 transition-colors"
+              className="text-black hover:text-yellow-600 active:text-yellow-700 transition-colors"
             >
               {i.label}
             </Link>
           ))}
         </nav>
-      </MotionAside>
+      </aside>
     </div>
   )
 }
