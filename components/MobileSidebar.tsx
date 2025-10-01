@@ -13,15 +13,15 @@ export default function MobileSidebar({
   onClose: () => void
   nav: { href: string; label: string }[]
 }) {
-  // safe alias so TS doesn't complain on deploy
-  const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div">>
-  const MotionAside = motion.aside as React.FC<HTMLMotionProps<"aside">>
+  // Explicit typing: div + aside with HTMLMotionProps
+  const MotionDiv = motion.div as React.ComponentType<HTMLMotionProps<"div">>
+  const MotionAside = motion.aside as React.ComponentType<HTMLMotionProps<"aside">>
 
   return (
     <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}>
       {/* Overlay */}
       <MotionDiv
-        onClick={onClose}
+        onClick={onClose} // ✅ now fully typed
         className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/70 to-yellow-500/40"
         initial={{ opacity: 0 }}
         animate={{ opacity: open ? 1 : 0 }}
