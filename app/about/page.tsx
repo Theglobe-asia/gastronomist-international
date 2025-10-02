@@ -1,8 +1,16 @@
 // app/about/page.tsx
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import type { MotionProps } from "framer-motion";
+
+// ✅ typed wrapper so className, onClick, etc. work properly
+type ArticleMotion = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<React.ComponentPropsWithoutRef<"article"> & MotionProps> &
+  React.RefAttributes<HTMLElement>
+>;
+const MotionArticle = motion.article as ArticleMotion;
 
 const leaders = [
   {
@@ -125,7 +133,7 @@ export default function AboutPage() {
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {leaders.map((p) => (
-            <motion.article
+            <MotionArticle
               key={p.name}
               className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1 cursor-pointer"
               initial={{ opacity: 0, y: 30 }}
@@ -148,7 +156,7 @@ export default function AboutPage() {
                 <div className="text-xs text-gray-500 mt-1">{p.role}</div>
                 <p className="text-sm text-gray-700 mt-3">{p.blurb}</p>
               </div>
-            </motion.article>
+            </MotionArticle>
           ))}
         </div>
       </section>
