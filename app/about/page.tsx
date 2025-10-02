@@ -1,22 +1,72 @@
 // app/about/page.tsx
-export const metadata = {
-  title: "About Us — Gastronomist International",
-  description:
-    "About Gastronomist International — community, mission, vision, and leadership.",
-};
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+
+const leaders = [
+  {
+    name: "Chef Alexander Hardinan",
+    role: "Founder — Gastronomist International",
+    blurb:
+      "Founder and visionary behind Gastronomist International, building a global platform for culinary innovation.",
+    img: "/images/chefalex.png?v=2",
+  },
+  {
+    name: "Chef Alan Coxon",
+    role: "Culinary Advisor",
+    blurb:
+      "Renowned culinary consultant and television presenter, supporting global food heritage and innovation.",
+    img: "/images/chefcox.png?v=2",
+  },
+  {
+    name: "Chef Hamid Aloyev",
+    role: "Azerbaijan Representatives",
+    blurb:
+      "Chefs and leaders worldwide who represent Gastronomist International in their regions.",
+    img: "/images/chefhamid.png?v=2",
+  },
+  {
+    name: "Chef Luzach H Hubert",
+    role: "France Representatives",
+    blurb:
+      "Chefs and leaders worldwide who represent Gastronomist International in their regions.",
+    img: "/images/chefluzac.png?v=2",
+  },
+  {
+    name: "Chef Thet Aung Zaw",
+    role: "Myanmar Representatives",
+    blurb:
+      "Chefs and leaders worldwide who represent Gastronomist International in their regions.",
+    img: "/images/chefthet.png?v=2",
+  },
+  {
+    name: "Chef Wael Alyzed",
+    role: "Saudi Representatives",
+    blurb:
+      "Chefs and leaders worldwide who represent Gastronomist International in their regions.",
+    img: "/images/chefwael.png?v=2",
+  },
+];
 
 export default function AboutPage() {
+  const [selectedLeader, setSelectedLeader] = useState<any | null>(null);
+
   return (
     <main className="container py-16 space-y-14">
       {/* Title + intro */}
       <section className="space-y-4">
         <h1 className="text-4xl sm:text-5xl font-bold text-white">
-          About <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">Gastronomist International</span>
+          About{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
+            Gastronomist International
+          </span>
         </h1>
         <p className="text-neutral-300 max-w-3xl">
-          We are a global culinary community focused on modern gastronomy, knowledge-sharing,
-          and professional recognition. Our platform connects chefs, educators, creators,
-          and industry partners to celebrate excellence and elevate standards worldwide.
+          We are a global culinary community focused on modern gastronomy,
+          knowledge-sharing, and professional recognition. Our platform connects
+          chefs, educators, creators, and industry partners to celebrate
+          excellence and elevate standards worldwide.
         </p>
         <div className="h-px w-28 bg-yellow-500/60 rounded" />
       </section>
@@ -68,42 +118,37 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Leadership & Ambassadors */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-white">Leadership & Ambassadors</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { name: "Alexander Hardinan", role: "Founder", initials: "AH" },
-            { name: "Alan Coxon", role: "Culinary Advisor", initials: "AC" },
-            { name: "Global Ambassadors", role: "Regional Representatives", initials: "GA" },
-          ].map((p) => (
-            <article
+      {/* Leadership & Ambassadors with image cards */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold text-white">
+          Leadership & Ambassadors
+        </h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {leaders.map((p) => (
+            <motion.article
               key={p.name}
-              className="rounded-2xl border border-yellow-500/40 bg-white/[0.02] p-6 flex items-center gap-4"
+              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1 cursor-pointer"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              onClick={() => setSelectedLeader(p)}
             >
-              <div className="h-12 w-12 rounded-full bg-yellow-500/20 border border-yellow-500/50 flex items-center justify-center text-yellow-300 font-semibold">
-                {p.initials}
+              {/* Portrait */}
+              <div className="w-full h-80 sm:h-96 md:h-[500px] overflow-hidden flex items-center justify-center bg-gray-100">
+                <img
+                  src={p.img}
+                  alt={p.name}
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <div>
-                <h4 className="text-white font-medium">{p.name}</h4>
-                <p className="text-sm text-neutral-300">{p.role}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
 
-      {/* Values */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-white">Our Values</h2>
-        <div className="flex flex-wrap gap-2">
-          {["Integrity", "Excellence", "Innovation", "Community", "Diversity"].map((v) => (
-            <span
-              key={v}
-              className="px-3 py-1 rounded-full border border-yellow-500/40 text-yellow-200/90 bg-white/[0.02] text-sm"
-            >
-              {v}
-            </span>
+              {/* Content */}
+              <div className="p-5 text-black">
+                <h3 className="font-semibold text-lg">{p.name}</h3>
+                <div className="text-xs text-gray-500 mt-1">{p.role}</div>
+                <p className="text-sm text-gray-700 mt-3">{p.blurb}</p>
+              </div>
+            </motion.article>
           ))}
         </div>
       </section>
@@ -118,6 +163,53 @@ export default function AboutPage() {
           Register Today
         </a>
       </section>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {selectedLeader && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedLeader(null)}
+            />
+            {/* Modal Content */}
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full overflow-hidden">
+                <div className="w-full h-96 flex items-center justify-center bg-gray-100">
+                  <img
+                    src={selectedLeader.img}
+                    alt={selectedLeader.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="p-6 text-black">
+                  <h2 className="text-2xl font-bold">{selectedLeader.name}</h2>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {selectedLeader.role}
+                  </p>
+                  <p className="mt-4 text-gray-700">{selectedLeader.blurb}</p>
+                  <button
+                    onClick={() => setSelectedLeader(null)}
+                    className="mt-6 px-4 py-2 rounded bg-yellow-500 text-black font-semibold hover:brightness-110 transition"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
