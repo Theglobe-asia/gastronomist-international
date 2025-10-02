@@ -5,11 +5,17 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { MotionProps } from "framer-motion";
 
-// ✅ typed wrapper so className, onClick, etc. work properly
+// ✅ typed wrappers for motion elements
+type DivMotion = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
+  React.RefAttributes<HTMLDivElement>
+>;
 type ArticleMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"article"> & MotionProps> &
   React.RefAttributes<HTMLElement>
 >;
+
+const MotionDiv = motion.div as DivMotion;
 const MotionArticle = motion.article as ArticleMotion;
 
 const leaders = [
@@ -177,7 +183,7 @@ export default function AboutPage() {
         {selectedLeader && (
           <>
             {/* Backdrop */}
-            <motion.div
+            <MotionDiv
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -185,7 +191,7 @@ export default function AboutPage() {
               onClick={() => setSelectedLeader(null)}
             />
             {/* Modal Content */}
-            <motion.div
+            <MotionDiv
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -214,7 +220,7 @@ export default function AboutPage() {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </>
         )}
       </AnimatePresence>
