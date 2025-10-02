@@ -51,7 +51,7 @@ export default function ContactWidget() {
           onClick={() => setOpen(true)}
           className="rounded-2xl px-5 py-3 font-medium bg-white text-black shadow-lg shadow-white/10"
         >
-          Contact Us
+          Register Today
         </button>
       </div>
 
