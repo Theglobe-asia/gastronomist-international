@@ -167,17 +167,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="pt-2">
-        <a
-          href="/#contact"
-          className="inline-flex items-center justify-center rounded-xl px-5 py-3 font-medium
-                     bg-yellow-500 text-black hover:bg-yellow-400 transition border border-yellow-500/60"
-        >
-          Register Today
-        </a>
-      </section>
-
       {/* Modal */}
       <AnimatePresence>
         {selectedLeader && (
