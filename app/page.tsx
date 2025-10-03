@@ -24,7 +24,7 @@ export default function Page() {
             Gastronomist International
           </h1>
           <p className="mt-4 text-neutral-300">
-            We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques. 
+            We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques.
             “Your Talent Deserves Global, that’s why We Are Here”
           </p>
 
@@ -55,16 +55,52 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ✅ Polished Cards Section */}
       <section className="container pb-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="group">
-            <div className="h-48 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10" />
-            <h3 className="mt-3 font-medium">Modern Cards {i}</h3>
-            <p className="text-sm text-neutral-400">
-              Media Writer theme section sample.
-            </p>
+        {/* Card 1 - Medal */}
+        <div className="group">
+          <div className="h-48 rounded-2xl overflow-hidden border border-white/10">
+            <img
+              src="/images/medal.png"
+              alt="Our Official Medal"
+              className="w-full h-full object-cover"
+            />
           </div>
-        ))}
+          <h3 className="mt-3 font-medium text-white">Our Official Medal</h3>
+          <p className="text-sm text-neutral-400">
+            A symbol of excellence, representing achievement and dedication within Gastronomist International.
+          </p>
+        </div>
+
+        {/* Card 2 - Recognition */}
+        <div className="group">
+          <div className="h-48 rounded-2xl overflow-hidden border border-white/10">
+            <img
+              src="/images/recognition.png"
+              alt="Our Membership Recognition"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <h3 className="mt-3 font-medium text-white">Our Membership Recognition</h3>
+          <p className="text-sm text-neutral-400">
+            Honoring members with a badge of recognition, highlighting their commitment to global gastronomy.
+          </p>
+        </div>
+
+        {/* Card 3 - Partnership */}
+        <div className="group">
+          <div className="h-48 rounded-2xl overflow-hidden border border-white/10">
+            <img
+              src="/images/partnership.png"
+              alt="Leader’s Collaboration"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <h3 className="mt-3 font-medium text-white">Leader’s Collaboration</h3>
+          <p className="text-sm text-neutral-400">
+            Building global bridges through collaboration with leaders, chefs, and innovators worldwide.
+          </p>
+        </div>
       </section>
     </div>
   )
