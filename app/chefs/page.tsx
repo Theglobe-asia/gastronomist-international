@@ -3,70 +3,68 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { MotionProps } from "framer-motion";
 
-// ✅ Chefs data
+// ✅ Typed motion wrapper for <article>
+type ArticleMotion = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<React.ComponentPropsWithoutRef<"article"> & MotionProps> &
+  React.RefAttributes<HTMLElement>
+>;
+const MotionArticle = motion.article as ArticleMotion;
+
 const chefs = [
   {
     name: "Chef Mar",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Specializes in modernizing traditional recipes with innovative techniques.",
     img: "/images/chefmar.png",
   },
   {
     name: "Chef Arman",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Passionate about sustainable cooking and seasonal ingredients.",
     img: "/images/chefarman.png",
   },
   {
     name: "Chef Sandar",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Renowned for artistic pastry creations blending flavor and design.",
     img: "/images/chefsandar.png",
   },
   {
     name: "Chef Deric",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Expert in precision cooking and creative plating aesthetics.",
     img: "/images/chefderic.png",
   },
   {
     name: "Chef Gaviola",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Celebrated for blending Asian flavors with contemporary gastronomy.",
     img: "/images/chefgaviola.png",
   },
   {
     name: "Chef Francis",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Known for curating immersive dining experiences worldwide.",
     img: "/images/cheffrancis.png",
   },
   {
     name: "Chef Rommel",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Dedicated to training and mentoring the next generation of chefs.",
     img: "/images/chefrommel.png",
   },
   {
     name: "Chef Marvin",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Transforms dining concepts into world-class restaurant operations.",
     img: "/images/chefmarvin.png",
   },
   {
     name: "Chef Kono",
     role: "International Member",
-    blurb:
-      "A visionary chef recognized worldwide for showcasing passion, talent, and skill.",
+    blurb: "Blends global culinary heritage with modern techniques.",
     img: "/images/chefkono.png",
   },
 ];
@@ -75,18 +73,17 @@ export default function ChefsPage() {
   const [selectedChef, setSelectedChef] = useState<any | null>(null);
 
   return (
-    <main className="container py-16 space-y-14">
-      {/* Title + intro */}
-      <section className="space-y-4">
+    <main className="container py-16 space-y-10">
+      {/* Title */}
+      <section className="space-y-3">
         <h1 className="text-4xl sm:text-5xl font-bold text-white">
-          Meet Our{" "}
+          Our{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
             Chefs
           </span>
         </h1>
-        <p className="text-neutral-300 max-w-3xl">
-          Our chefs bring diverse expertise and creativity, shaping the future
-          of modern gastronomy with their unique skills and vision.
+        <p className="text-neutral-300 max-w-2xl">
+          Meet our dedicated culinary professionals, representing the spirit of Gastronomist International.
         </p>
         <div className="h-px w-28 bg-yellow-500/60 rounded" />
       </section>
@@ -94,7 +91,7 @@ export default function ChefsPage() {
       {/* Grid of chefs */}
       <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {chefs.map((c) => (
-          <motion.article
+          <MotionArticle
             key={c.name}
             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1 cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
@@ -103,21 +100,19 @@ export default function ChefsPage() {
             onClick={() => setSelectedChef(c)}
           >
             {/* Portrait */}
-            <div className="w-full h-80 sm:h-96 md:h-[500px] overflow-hidden flex items-center justify-center bg-gray-100">
+            <div className="w-full h-80 sm:h-96 md:h-[500px] flex items-center justify-center bg-gray-100">
               <img
                 src={c.img}
                 alt={c.name}
                 className="w-full h-full object-contain"
               />
             </div>
-
-            {/* Content */}
             <div className="p-5 text-black">
               <h3 className="font-semibold text-lg">{c.name}</h3>
-              <div className="text-xs text-gray-500 mt-1">{c.role}</div>
-              <p className="text-sm text-gray-700 mt-3">{c.blurb}</p>
+              <p className="text-xs text-gray-500">{c.role}</p>
+              <p className="text-sm text-gray-700 mt-2">{c.blurb}</p>
             </div>
-          </motion.article>
+          </MotionArticle>
         ))}
       </section>
 
@@ -125,7 +120,6 @@ export default function ChefsPage() {
       <AnimatePresence>
         {selectedChef && (
           <>
-            {/* Backdrop */}
             <motion.div
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
               initial={{ opacity: 0 }}
@@ -133,7 +127,6 @@ export default function ChefsPage() {
               exit={{ opacity: 0 }}
               onClick={() => setSelectedChef(null)}
             />
-            {/* Modal Content */}
             <motion.div
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
               initial={{ scale: 0.9, opacity: 0 }}
@@ -151,9 +144,7 @@ export default function ChefsPage() {
                 </div>
                 <div className="p-6 text-black">
                   <h2 className="text-2xl font-bold">{selectedChef.name}</h2>
-                  <p className="text-sm text-gray-600 mt-1">
-                    {selectedChef.role}
-                  </p>
+                  <p className="text-sm text-gray-600 mt-1">{selectedChef.role}</p>
                   <p className="mt-4 text-gray-700">{selectedChef.blurb}</p>
                   <button
                     onClick={() => setSelectedChef(null)}
