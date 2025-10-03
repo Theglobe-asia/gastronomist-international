@@ -20,13 +20,28 @@ export default function Page() {
     <div className="relative">
       <section className="container py-20 grid lg:grid-cols-2 gap-10 items-center">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-bold leading-tight">Gastronomist International</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+            Gastronomist International
+          </h1>
           <p className="mt-4 text-neutral-300">
-            We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques. “Your Talent Deserves Global, that’s why We Are Here”
+            We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques. 
+            “Your Talent Deserves Global, that’s why We Are Here”
           </p>
+
+          {/* ✅ Updated CTA Buttons */}
           <div className="mt-8 flex gap-3">
-            <Button>Learn More</Button>
-            <Button className="bg-transparent border border-white/20 text-white">Our Chefs</Button>
+            <a
+              href="https://www.csfint.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button>CSF Intl</Button>
+            </a>
+            <a href="/about">
+              <Button className="bg-transparent border border-white/20 text-black">
+                About Us
+              </Button>
+            </a>
           </div>
         </div>
 
@@ -41,11 +56,13 @@ export default function Page() {
       </section>
 
       <section className="container pb-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3].map(i => (
+        {[1, 2, 3].map((i) => (
           <div key={i} className="group">
             <div className="h-48 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10" />
             <h3 className="mt-3 font-medium">Modern Cards {i}</h3>
-            <p className="text-sm text-neutral-400">Media Writer theme section sample.</p>
+            <p className="text-sm text-neutral-400">
+              Media Writer theme section sample.
+            </p>
           </div>
         ))}
       </section>
