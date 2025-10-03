@@ -18,6 +18,12 @@ type DivMotion = React.ForwardRefExoticComponent<
 >;
 const MotionDiv = motion.div as DivMotion;
 
+type SectionMotion = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<React.ComponentPropsWithoutRef<"section"> & MotionProps> &
+  React.RefAttributes<HTMLElement>
+>;
+const MotionSection = motion.section as SectionMotion;
+
 const chefs = [
   { name: "Chef Mar", role: "International Member", blurb: "Specializes in modernizing traditional recipes with innovative techniques.", img: "/images/chefmar.png" },
   { name: "Chef Arman", role: "International Member", blurb: "Passionate about sustainable cooking and seasonal ingredients.", img: "/images/chefarman.png" },
@@ -35,7 +41,7 @@ const containerVariants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.15 }, // delay between children
+    transition: { staggerChildren: 0.15 },
   },
 };
 
@@ -64,7 +70,7 @@ export default function ChefsPage() {
       </section>
 
       {/* Grid with staggered animation */}
-      <motion.section
+      <MotionSection
         className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
         variants={containerVariants}
         initial="hidden"
@@ -89,7 +95,7 @@ export default function ChefsPage() {
             </div>
           </MotionArticle>
         ))}
-      </motion.section>
+      </MotionSection>
 
       {/* Modal */}
       <AnimatePresence>
