@@ -29,10 +29,8 @@ const chefs = [
   { name: "Chef Arman", role: "International Member", blurb: "Passionate about sustainable cooking and seasonal ingredients.", img: "/images/chefarman.png" },
   { name: "Chef Sandar", role: "International Member", blurb: "Renowned for artistic pastry creations blending flavor and design.", img: "/images/chefsandar.png" },
   { name: "Chef Deric", role: "International Member", blurb: "Expert in precision cooking and creative plating aesthetics.", img: "/images/chefderic.png" },
-  { name: "Chef Gaviola", role: "International Member", blurb: "Celebrated for blending Asian flavors with contemporary gastronomy.", img: "/images/chefgaviola.png" },
   { name: "Chef Francis", role: "International Member", blurb: "Known for curating immersive dining experiences worldwide.", img: "/images/cheffrancis.png" },
   { name: "Chef Rommel", role: "International Member", blurb: "Dedicated to training and mentoring the next generation of chefs.", img: "/images/chefrommel.png" },
-  { name: "Chef Marvin", role: "International Member", blurb: "Transforms dining concepts into world-class restaurant operations.", img: "/images/chefmarvin.png" },
   { name: "Chef Kono", role: "International Member", blurb: "Blends global culinary heritage with modern techniques.", img: "/images/chefkono.png" },
 ];
 
