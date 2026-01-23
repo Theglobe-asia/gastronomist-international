@@ -19,7 +19,20 @@ export default function Page() {
   return (
     <div className="relative">
       {/* Editorial Glass Panel Hero */}
-      <section className="container py-14 sm:py-16 lg:py-20">
+      <section className="container py-14 sm:py-16 lg:py-20 relative">
+        {/* ✅ Hero-local light bloom (required to make glass visible) */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background: `
+              radial-gradient(900px 460px at 22% 28%, rgba(120,220,255,0.38), transparent 62%),
+              radial-gradient(780px 420px at 78% 34%, rgba(255,255,255,0.18), transparent 68%),
+              radial-gradient(900px 520px at 50% 110%, rgba(80,120,255,0.10), transparent 70%)
+            `,
+          }}
+        />
+
         <div className="glass-panel glass-panel-pad glass-shine glass-glow">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div>
