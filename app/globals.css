@@ -11,32 +11,27 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
    - glass-panel, glass-card, glass-frame
    - glass-btn, glass-btn-muted
    - glass-shine, glass-glow
-   Goal: visible thickness + edge refraction + inner bloom
    ========================================================= */
 
 @layer utilities {
   /* ----------------------------
-     Shared "thick glass" base
+     Shared base (panel/frame)
      ---------------------------- */
   .glass-panel,
-  .glass-card,
   .glass-frame {
     position: relative !important;
     overflow: hidden !important;
     border-radius: inherit;
     border: 1px solid rgba(255,255,255,0.16) !important;
 
-    /* Frost + depth */
     backdrop-filter: blur(28px) saturate(1.25) !important;
     -webkit-backdrop-filter: blur(28px) saturate(1.25) !important;
 
-    /* Front face (water-glass) */
     background:
       radial-gradient(1200px 520px at 12% 10%, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 55%, rgba(255,255,255,0) 78%),
       radial-gradient(900px 520px at 92% 18%, rgba(120,220,255,0.20), rgba(255,255,255,0) 62%),
       linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.04) 55%, rgba(255,255,255,0.02)) !important;
 
-    /* Deep shadow (panel floats) */
     box-shadow:
       0 0 0 1px rgba(255,255,255,0.10),
       0 1px 0 rgba(255,255,255,0.20) inset,
@@ -46,76 +41,114 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
     transform: translateZ(0) !important;
   }
 
-  /* Outer refraction glow (glass edge light) */
   .glass-panel::before,
-  .glass-card::before,
   .glass-frame::before {
     content: "" !important;
     position: absolute !important;
     inset: -10px !important;
     border-radius: inherit !important;
     pointer-events: none !important;
-
     background:
-      /* cyan edge band */
       radial-gradient(900px 220px at 20% 0%, rgba(120,220,255,0.55), rgba(255,255,255,0) 62%),
       radial-gradient(900px 220px at 80% 0%, rgba(255,255,255,0.30), rgba(255,255,255,0) 68%),
-      /* perimeter highlight */
       linear-gradient(90deg,
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0.28) 14%,
         rgba(120,220,255,0.35) 35%,
         rgba(255,255,255,0.24) 60%,
         rgba(255,255,255,0) 100%) !important;
-
     filter: blur(14px) !important;
     opacity: 0.75 !important;
     mix-blend-mode: screen !important;
   }
 
-  /* Thickness + inner rim (this is what makes it look "3D glass") */
   .glass-panel::after,
-  .glass-card::after,
   .glass-frame::after {
     content: "" !important;
     position: absolute !important;
     inset: 0 !important;
     border-radius: inherit !important;
     pointer-events: none !important;
-
     background:
-      /* top rim */
       linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.06) 36%, rgba(255,255,255,0) 60%),
-      /* side rim */
       linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0) 18%, rgba(255,255,255,0) 82%, rgba(255,255,255,0.14)),
-      /* bottom depth */
       linear-gradient(0deg, rgba(0,0,0,0.62), rgba(0,0,0,0) 58%) !important;
-
     opacity: 0.80 !important;
   }
 
-  /* ----------------------------
-     Specific: hero panel
-     ---------------------------- */
-  .glass-panel {
-    border-radius: 28px !important;
-  }
-
-  /* Stronger hero glow when glass-glow class is present */
-  .glass-glow::before {
-    opacity: 0.92 !important;
-    filter: blur(16px) !important;
-  }
+  .glass-panel { border-radius: 28px !important; }
+  .glass-glow::before { opacity: 0.92 !important; filter: blur(16px) !important; }
 
   /* ----------------------------
-     Cards: per-card internal light
+     CARDS (true thick glass blocks)
+     This is the main change.
      ---------------------------- */
   .glass-card {
+    position: relative !important;
+    overflow: hidden !important;
     border-radius: 18px !important;
+    border: 1px solid rgba(210,245,255,0.18) !important;
+
+    backdrop-filter: blur(30px) saturate(1.35) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(1.35) !important;
+
+    /* Card face is brighter than panel so it reads like glass */
+    background:
+      radial-gradient(720px 240px at 18% 18%, rgba(255,255,255,0.18), rgba(255,255,255,0.03) 55%, rgba(255,255,255,0) 78%),
+      radial-gradient(720px 240px at 86% 22%, rgba(120,220,255,0.22), rgba(255,255,255,0) 68%),
+      linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04) 56%, rgba(255,255,255,0.03)) !important;
+
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.10),
+      0 1px 0 rgba(255,255,255,0.22) inset,
+      0 -1px 0 rgba(0,0,0,0.55) inset,
+      0 34px 120px rgba(0,0,0,0.82) !important;
+
+    transform: translateZ(0) !important;
     transition:
       transform 240ms cubic-bezier(.2,.85,.2,1),
       box-shadow 240ms cubic-bezier(.2,.85,.2,1),
       border-color 240ms cubic-bezier(.2,.85,.2,1) !important;
+  }
+
+  /* Outer glow / refraction wall */
+  .glass-card::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: -12px !important;
+    border-radius: inherit !important;
+    pointer-events: none !important;
+    background:
+      radial-gradient(760px 220px at 18% 0%, rgba(120,220,255,0.75), rgba(255,255,255,0) 62%),
+      radial-gradient(760px 220px at 82% 0%, rgba(255,255,255,0.34), rgba(255,255,255,0) 70%),
+      linear-gradient(90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.30) 14%,
+        rgba(120,220,255,0.40) 36%,
+        rgba(255,255,255,0.26) 60%,
+        rgba(255,255,255,0) 100%) !important;
+    filter: blur(16px) !important;
+    opacity: 0.85 !important;
+    mix-blend-mode: screen !important;
+  }
+
+  /* Inner thickness + internal light pocket (makes it look like a “block”) */
+  .glass-card::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: inherit !important;
+    pointer-events: none !important;
+    background:
+      /* top glass lip */
+      linear-gradient(180deg, rgba(255,255,255,0.44), rgba(255,255,255,0.08) 34%, rgba(255,255,255,0) 60%),
+      /* left/right wall thickness */
+      linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 18%, rgba(255,255,255,0) 82%, rgba(255,255,255,0.18)),
+      /* internal pocket glow */
+      radial-gradient(520px 220px at 30% 35%, rgba(120,220,255,0.22), rgba(255,255,255,0) 70%),
+      /* bottom depth */
+      linear-gradient(0deg, rgba(0,0,0,0.72), rgba(0,0,0,0) 58%) !important;
+    opacity: 0.86 !important;
   }
 
   .glass-card > * {
@@ -123,29 +156,18 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
     z-index: 2;
   }
 
-  /* Internal light pocket (simulates each block being lit like the reference) */
-  .glass-card .glass-card-light,
-  .glass-card:not(:has(.glass-card-light))::marker { /* no-op for compatibility */ }
-
-  .glass-card::selection { /* no-op */ }
-
-  .glass-card::before {
-    /* keep base edge glow but add more "block" light */
-    opacity: 0.82 !important;
-  }
-
   .glass-card:hover {
-    transform: translateY(-8px) !important;
-    border-color: rgba(180,235,255,0.28) !important;
+    transform: translateY(-10px) !important;
+    border-color: rgba(200,245,255,0.32) !important;
     box-shadow:
       0 0 0 1px rgba(255,255,255,0.12),
-      0 1px 0 rgba(255,255,255,0.22) inset,
+      0 1px 0 rgba(255,255,255,0.26) inset,
       0 -1px 0 rgba(0,0,0,0.55) inset,
-      0 55px 180px rgba(0,0,0,0.86) !important;
+      0 60px 200px rgba(0,0,0,0.90) !important;
   }
 
   /* ----------------------------
-     3D frame: make it feel encased
+     3D frame: more encased
      ---------------------------- */
   .glass-frame {
     border-radius: 18px !important;
@@ -157,12 +179,9 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
   }
 
   /* ----------------------------
-     Shine sweep (used on panel/cards/buttons)
+     Shine sweep
      ---------------------------- */
-  .glass-shine {
-    position: relative !important;
-  }
-
+  .glass-shine { position: relative !important; }
   .glass-shine::before {
     content: "" !important;
     position: absolute !important;
@@ -179,15 +198,14 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
     z-index: 3 !important;
     filter: blur(1px) !important;
   }
-
   .glass-shine:hover::before {
     opacity: 1 !important;
     animation: glassShineSweep 1.05s cubic-bezier(.2,.85,.2,1) both !important;
   }
 
   /* ----------------------------
-     Buttons: luminous acrylic (match reference)
-     IMPORTANT: your Button.tsx must NOT force bg-white/text-black
+     Buttons (kept as-is here)
+     NOTE: If buttons still look wrong, the blocker is Button.tsx forcing bg-white/text-black.
      ---------------------------- */
   .glass-btn {
     position: relative !important;
@@ -224,11 +242,8 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
       0 0 70px rgba(80,200,255,0.52) !important;
   }
 
-  .glass-btn:active {
-    transform: translateY(1px) !important;
-  }
+  .glass-btn:active { transform: translateY(1px) !important; }
 
-  /* Muted acrylic button */
   .glass-btn-muted {
     border-color: rgba(255,255,255,0.30) !important;
     background:
@@ -249,7 +264,6 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
       0 0 56px rgba(255,255,255,0.24) !important;
   }
 
-  /* Panel padding helper (your page uses this) */
   .glass-panel-pad { padding: 24px !important; }
   @media (min-width: 640px) { .glass-panel-pad { padding: 32px !important; } }
   @media (min-width: 1024px) { .glass-panel-pad { padding: 40px !important; } }
