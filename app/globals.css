@@ -6,219 +6,256 @@ html, body { height: 100%; }
 body { margin: 0; background:#0a0a0a; color:#fff; }
 
 /* =========================================================
-   TRUE OPTICAL "WATER-GLASS" UI SYSTEM (GLOBAL)
-   IMPORTANT:
-   - Defined in @layer utilities so it loads AFTER Tailwind utilities.
-   - Uses !important on critical properties to prevent flattening.
+   GLOBAL WATER-GLASS SYSTEM (CINEMATIC / THICK GLASS)
+   Applies everywhere via your existing classes:
+   - glass-panel, glass-card, glass-frame
+   - glass-btn, glass-btn-muted
+   - glass-shine, glass-glow
+   Goal: visible thickness + edge refraction + inner bloom
    ========================================================= */
 
 @layer utilities {
-  /* ---------- Shared glass surface ---------- */
-  .glass-surface {
+  /* ----------------------------
+     Shared "thick glass" base
+     ---------------------------- */
+  .glass-panel,
+  .glass-card,
+  .glass-frame {
     position: relative !important;
     overflow: hidden !important;
-    border-radius: inherit !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
+    border-radius: inherit;
+    border: 1px solid rgba(255,255,255,0.16) !important;
 
+    /* Frost + depth */
+    backdrop-filter: blur(28px) saturate(1.25) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(1.25) !important;
+
+    /* Front face (water-glass) */
     background:
-      radial-gradient(1200px 380px at 18% 12%, rgba(255,255,255,0.11), rgba(255,255,255,0) 58%),
-      radial-gradient(900px 320px at 85% 18%, rgba(140,200,255,0.16), rgba(255,255,255,0) 55%),
-      linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04)) !important;
+      radial-gradient(1200px 520px at 12% 10%, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 55%, rgba(255,255,255,0) 78%),
+      radial-gradient(900px 520px at 92% 18%, rgba(120,220,255,0.20), rgba(255,255,255,0) 62%),
+      linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.04) 55%, rgba(255,255,255,0.02)) !important;
 
+    /* Deep shadow (panel floats) */
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 0 0 1px rgba(255,255,255,0.08),
-      0 34px 110px rgba(0,0,0,0.72) !important;
+      0 0 0 1px rgba(255,255,255,0.10),
+      0 1px 0 rgba(255,255,255,0.20) inset,
+      0 -1px 0 rgba(0,0,0,0.55) inset,
+      0 40px 140px rgba(0,0,0,0.78) !important;
 
     transform: translateZ(0) !important;
   }
 
-  /* Outer edge glow (thickness illusion) */
-  .glass-surface::before {
+  /* Outer refraction glow (glass edge light) */
+  .glass-panel::before,
+  .glass-card::before,
+  .glass-frame::before {
     content: "" !important;
     position: absolute !important;
-    inset: -2px !important;
+    inset: -10px !important;
     border-radius: inherit !important;
     pointer-events: none !important;
+
     background:
+      /* cyan edge band */
+      radial-gradient(900px 220px at 20% 0%, rgba(120,220,255,0.55), rgba(255,255,255,0) 62%),
+      radial-gradient(900px 220px at 80% 0%, rgba(255,255,255,0.30), rgba(255,255,255,0) 68%),
+      /* perimeter highlight */
       linear-gradient(90deg,
-        rgba(255,255,255,0.00) 0%,
-        rgba(255,255,255,0.22) 16%,
-        rgba(170,220,255,0.30) 40%,
-        rgba(255,255,255,0.22) 64%,
-        rgba(255,255,255,0.00) 100%) !important;
-    opacity: 0.70 !important;
-    filter: blur(12px) !important;
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.28) 14%,
+        rgba(120,220,255,0.35) 35%,
+        rgba(255,255,255,0.24) 60%,
+        rgba(255,255,255,0) 100%) !important;
+
+    filter: blur(14px) !important;
+    opacity: 0.75 !important;
+    mix-blend-mode: screen !important;
   }
 
-  /* Inner rim highlight */
-  .glass-surface::after {
+  /* Thickness + inner rim (this is what makes it look "3D glass") */
+  .glass-panel::after,
+  .glass-card::after,
+  .glass-frame::after {
     content: "" !important;
     position: absolute !important;
     inset: 0 !important;
     border-radius: inherit !important;
     pointer-events: none !important;
+
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.00) 44%),
-      linear-gradient(0deg, rgba(0,0,0,0.55), rgba(0,0,0,0.00) 60%) !important;
-    opacity: 0.60 !important;
+      /* top rim */
+      linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.06) 36%, rgba(255,255,255,0) 60%),
+      /* side rim */
+      linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0) 18%, rgba(255,255,255,0) 82%, rgba(255,255,255,0.14)),
+      /* bottom depth */
+      linear-gradient(0deg, rgba(0,0,0,0.62), rgba(0,0,0,0) 58%) !important;
+
+    opacity: 0.80 !important;
   }
 
-  /* ---------- Panel ---------- */
+  /* ----------------------------
+     Specific: hero panel
+     ---------------------------- */
   .glass-panel {
     border-radius: 28px !important;
   }
-  .glass-panel.glass-surface,
-  .glass-panel {
-    /* allow using glass-panel alone */
-  }
-  .glass-panel {
-    /* apply glass surface via inheritance approach */
-  }
-  .glass-panel {
-    /* apply shared surface */
-  }
-  .glass-panel {
-    /* final: attach shared class behavior */
-  }
-  .glass-panel {
-    /* Note: we still require glass-surface class in markup OR we can alias it below */
+
+  /* Stronger hero glow when glass-glow class is present */
+  .glass-glow::before {
+    opacity: 0.92 !important;
+    filter: blur(16px) !important;
   }
 
-  /* Alias: allow glass-panel to work without adding glass-surface in JSX */
-  .glass-panel {
-    position: relative !important;
-    overflow: hidden !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
-    background:
-      radial-gradient(1200px 380px at 18% 12%, rgba(255,255,255,0.11), rgba(255,255,255,0) 58%),
-      radial-gradient(900px 320px at 85% 18%, rgba(140,200,255,0.16), rgba(255,255,255,0) 55%),
-      linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04)) !important;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 0 0 1px rgba(255,255,255,0.08),
-      0 34px 110px rgba(0,0,0,0.72) !important;
-    transform: translateZ(0) !important;
-  }
-  .glass-panel::before { content:"" !important; position:absolute !important; inset:-2px !important; border-radius:inherit !important; pointer-events:none !important;
-    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 16%, rgba(170,220,255,0.30) 40%, rgba(255,255,255,0.22) 64%, rgba(255,255,255,0) 100%) !important;
-    opacity:0.70 !important; filter:blur(12px) !important; }
-  .glass-panel::after { content:"" !important; position:absolute !important; inset:0 !important; border-radius:inherit !important; pointer-events:none !important;
-    background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 44%), linear-gradient(0deg, rgba(0,0,0,0.55), rgba(0,0,0,0) 60%) !important;
-    opacity:0.60 !important; }
-
-  .glass-panel-pad { padding: 24px !important; }
-  @media (min-width: 640px) { .glass-panel-pad { padding: 32px !important; } }
-  @media (min-width: 1024px) { .glass-panel-pad { padding: 40px !important; } }
-
-  /* ---------- Cards ---------- */
+  /* ----------------------------
+     Cards: per-card internal light
+     ---------------------------- */
   .glass-card {
-    position: relative !important;
-    overflow: hidden !important;
-    border-radius: 16px !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
-    background:
-      radial-gradient(900px 260px at 18% 14%, rgba(255,255,255,0.10), rgba(255,255,255,0) 60%),
-      radial-gradient(740px 260px at 90% 18%, rgba(140,200,255,0.14), rgba(255,255,255,0) 58%),
-      linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)) !important;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 0 0 1px rgba(255,255,255,0.06),
-      0 28px 90px rgba(0,0,0,0.70) !important;
-    transition: transform 260ms cubic-bezier(.2,.85,.2,1), box-shadow 260ms cubic-bezier(.2,.85,.2,1) !important;
-    transform: translateZ(0) !important;
+    border-radius: 18px !important;
+    transition:
+      transform 240ms cubic-bezier(.2,.85,.2,1),
+      box-shadow 240ms cubic-bezier(.2,.85,.2,1),
+      border-color 240ms cubic-bezier(.2,.85,.2,1) !important;
   }
-  .glass-card::before { content:"" !important; position:absolute !important; inset:-2px !important; border-radius:inherit !important; pointer-events:none !important;
-    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.20) 18%, rgba(170,220,255,0.26) 45%, rgba(255,255,255,0.20) 70%, rgba(255,255,255,0) 100%) !important;
-    opacity:0.62 !important; filter:blur(12px) !important; }
+
+  .glass-card > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Internal light pocket (simulates each block being lit like the reference) */
+  .glass-card .glass-card-light,
+  .glass-card:not(:has(.glass-card-light))::marker { /* no-op for compatibility */ }
+
+  .glass-card::selection { /* no-op */ }
+
+  .glass-card::before {
+    /* keep base edge glow but add more "block" light */
+    opacity: 0.82 !important;
+  }
+
   .glass-card:hover {
-    transform: translateY(-6px) !important;
+    transform: translateY(-8px) !important;
+    border-color: rgba(180,235,255,0.28) !important;
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 0 0 1px rgba(255,255,255,0.08),
-      0 42px 140px rgba(0,0,0,0.78) !important;
-  }
-
-  /* ---------- 3D Frame ---------- */
-  .glass-frame {
-    position: relative !important;
-    overflow: hidden !important;
-    border-radius: 16px !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
-    background:
-      radial-gradient(1000px 320px at 20% 20%, rgba(255,255,255,0.09), rgba(255,255,255,0) 58%),
-      radial-gradient(900px 340px at 88% 20%, rgba(140,200,255,0.16), rgba(255,255,255,0) 56%),
-      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)) !important;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 0 0 1px rgba(255,255,255,0.08),
-      0 50px 160px rgba(0,0,0,0.80) !important;
-    transform: translateZ(0) !important;
-  }
-  .glass-frame::before { content:"" !important; position:absolute !important; inset:-2px !important; border-radius:inherit !important; pointer-events:none !important;
-    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 16%, rgba(170,220,255,0.30) 40%, rgba(255,255,255,0.22) 64%, rgba(255,255,255,0) 100%) !important;
-    opacity:0.70 !important; filter:blur(12px) !important; }
-
-  /* ---------- Buttons (force override of Button base styles) ---------- */
-  .glass-btn {
-    color: #ffffff !important;
-    border: 1px solid rgba(200,240,255,0.32) !important;
-    backdrop-filter: blur(22px) !important;
-    -webkit-backdrop-filter: blur(22px) !important;
-
-    background:
-      radial-gradient(520px 160px at 18% 30%, rgba(120,220,255,0.72), rgba(255,255,255,0) 62%),
-      linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06)) !important;
-
-    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.12),
       0 1px 0 rgba(255,255,255,0.22) inset,
-      0 18px 48px rgba(0,0,0,0.62),
-      0 0 44px rgba(120,220,255,0.34) !important;
+      0 -1px 0 rgba(0,0,0,0.55) inset,
+      0 55px 180px rgba(0,0,0,0.86) !important;
   }
 
-  .glass-btn-muted {
-    color: #ffffff !important;
-    border: 1px solid rgba(255,255,255,0.22) !important;
-    background:
-      radial-gradient(520px 160px at 18% 30%, rgba(255,255,255,0.22), rgba(255,255,255,0) 62%),
-      linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05)) !important;
+  /* ----------------------------
+     3D frame: make it feel encased
+     ---------------------------- */
+  .glass-frame {
+    border-radius: 18px !important;
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.18) inset,
-      0 18px 48px rgba(0,0,0,0.62),
-      0 0 28px rgba(255,255,255,0.14) !important;
+      0 0 0 1px rgba(255,255,255,0.12),
+      0 1px 0 rgba(255,255,255,0.22) inset,
+      0 -1px 0 rgba(0,0,0,0.55) inset,
+      0 65px 220px rgba(0,0,0,0.88) !important;
   }
 
-  /* Shine sweep */
-  .glass-shine { position: relative !important; }
+  /* ----------------------------
+     Shine sweep (used on panel/cards/buttons)
+     ---------------------------- */
+  .glass-shine {
+    position: relative !important;
+  }
+
   .glass-shine::before {
     content: "" !important;
     position: absolute !important;
-    inset: -30% !important;
+    inset: -35% !important;
     pointer-events: none !important;
     background: linear-gradient(
       120deg,
       rgba(255,255,255,0) 38%,
-      rgba(255,255,255,0.34) 48%,
+      rgba(255,255,255,0.45) 48%,
       rgba(255,255,255,0) 58%
     ) !important;
-    transform: translateX(-55%) rotate(8deg) !important;
+    transform: translateX(-65%) rotate(10deg) !important;
     opacity: 0 !important;
+    z-index: 3 !important;
+    filter: blur(1px) !important;
   }
+
   .glass-shine:hover::before {
     opacity: 1 !important;
-    animation: glassShineSweep 1.15s cubic-bezier(.2,.85,.2,1) both !important;
+    animation: glassShineSweep 1.05s cubic-bezier(.2,.85,.2,1) both !important;
   }
+
+  /* ----------------------------
+     Buttons: luminous acrylic (match reference)
+     IMPORTANT: your Button.tsx must NOT force bg-white/text-black
+     ---------------------------- */
+  .glass-btn {
+    position: relative !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(160,235,255,0.42) !important;
+    border-radius: 18px !important;
+
+    backdrop-filter: blur(22px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(1.3) !important;
+
+    background:
+      radial-gradient(540px 170px at 18% 40%, rgba(80,200,255,0.95), rgba(255,255,255,0) 62%),
+      radial-gradient(420px 140px at 80% 30%, rgba(255,255,255,0.22), rgba(255,255,255,0) 68%),
+      linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.07)) !important;
+
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.30) inset,
+      0 18px 52px rgba(0,0,0,0.62),
+      0 0 54px rgba(80,200,255,0.40) !important;
+
+    transition:
+      transform 200ms cubic-bezier(.2,.85,.2,1),
+      box-shadow 200ms cubic-bezier(.2,.85,.2,1),
+      filter 200ms cubic-bezier(.2,.85,.2,1),
+      border-color 200ms cubic-bezier(.2,.85,.2,1) !important;
+  }
+
+  .glass-btn:hover {
+    filter: brightness(1.10) !important;
+    border-color: rgba(200,245,255,0.60) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.34) inset,
+      0 24px 70px rgba(0,0,0,0.70),
+      0 0 70px rgba(80,200,255,0.52) !important;
+  }
+
+  .glass-btn:active {
+    transform: translateY(1px) !important;
+  }
+
+  /* Muted acrylic button */
+  .glass-btn-muted {
+    border-color: rgba(255,255,255,0.30) !important;
+    background:
+      radial-gradient(540px 170px at 18% 40%, rgba(255,255,255,0.28), rgba(255,255,255,0) 62%),
+      radial-gradient(420px 140px at 80% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0) 68%),
+      linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06)) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.26) inset,
+      0 18px 52px rgba(0,0,0,0.62),
+      0 0 46px rgba(255,255,255,0.18) !important;
+  }
+
+  .glass-btn-muted:hover {
+    border-color: rgba(255,255,255,0.46) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.30) inset,
+      0 24px 70px rgba(0,0,0,0.70),
+      0 0 56px rgba(255,255,255,0.24) !important;
+  }
+
+  /* Panel padding helper (your page uses this) */
+  .glass-panel-pad { padding: 24px !important; }
+  @media (min-width: 640px) { .glass-panel-pad { padding: 32px !important; } }
+  @media (min-width: 1024px) { .glass-panel-pad { padding: 40px !important; } }
 }
 
 @keyframes glassShineSweep {
-  0%   { transform: translateX(-65%) rotate(8deg); }
-  100% { transform: translateX(65%) rotate(8deg); }
+  0%   { transform: translateX(-70%) rotate(10deg); }
+  100% { transform: translateX(70%) rotate(10deg); }
 }
