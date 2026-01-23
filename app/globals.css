@@ -4,3 +4,129 @@
 
 html, body { height: 100%; }
 body { margin: 0; background:#0a0a0a; color:#fff; }
+
+/* =========================================================
+   Water-Glass UI System (Global Utilities)
+   - Non-breaking: only adds new classes, no layout changes.
+   - Apply these classes in app/page.tsx next step.
+   ========================================================= */
+
+@layer components {
+  /* ---------- Glass Panel (editorial / dashboard wrapper) ---------- */
+  .glass-panel {
+    @apply relative rounded-3xl border border-white/10 bg-white/[0.06] backdrop-blur-xl;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 20px 60px rgba(0,0,0,0.45),
+      0 0 0 1px rgba(255,255,255,0.05);
+  }
+
+  /* Optional inner padding + spacing preset */
+  .glass-panel-pad {
+    @apply p-6 sm:p-8 lg:p-10;
+  }
+
+  /* ---------- Glass Card (dashboard tiles) ---------- */
+  .glass-card {
+    @apply relative rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-xl overflow-hidden;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.05) inset,
+      0 18px 50px rgba(0,0,0,0.55);
+    transform: translateZ(0);
+    transition:
+      transform 240ms cubic-bezier(.2,.8,.2,1),
+      box-shadow 240ms cubic-bezier(.2,.8,.2,1),
+      border-color 240ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(255,255,255,0.16);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 26px 70px rgba(0,0,0,0.62);
+    transform: translateY(-4px);
+  }
+
+  /* ---------- Glass Frame (for 3D canvas container) ---------- */
+  .glass-frame {
+    @apply relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.05) inset,
+      0 24px 70px rgba(0,0,0,0.6);
+  }
+
+  /* ---------- Glass Button (water-glass CTA) ---------- */
+  .glass-btn {
+    @apply relative rounded-2xl px-5 py-3 font-medium text-white border border-white/15 bg-white/[0.08] backdrop-blur-xl overflow-hidden;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 18px 40px rgba(0,0,0,0.55);
+    transform: translateZ(0);
+    transition:
+      transform 220ms cubic-bezier(.2,.8,.2,1),
+      box-shadow 220ms cubic-bezier(.2,.8,.2,1),
+      border-color 220ms cubic-bezier(.2,.8,.2,1),
+      background-color 220ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  .glass-btn:hover {
+    border-color: rgba(255,255,255,0.22);
+    background-color: rgba(255,255,255,0.10);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.07) inset,
+      0 24px 55px rgba(0,0,0,0.62);
+    transform: translateY(-1px) scale(1.01);
+  }
+
+  /* Secondary glass button (neutral / soft) */
+  .glass-btn-muted {
+    @apply text-white border-white/12 bg-white/[0.05];
+  }
+
+  /* ---------- Shine overlay (use on panel/card/button) ---------- */
+  .glass-shine::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: linear-gradient(
+      120deg,
+      rgba(255,255,255,0) 35%,
+      rgba(255,255,255,0.18) 45%,
+      rgba(255,255,255,0) 55%
+    );
+    transform: translateX(-30%) rotate(8deg);
+    opacity: 0;
+    transition: opacity 260ms cubic-bezier(.2,.8,.2,1);
+    pointer-events: none;
+  }
+
+  .glass-shine:hover::before {
+    opacity: 1;
+    animation: glassShineSweep 1.2s cubic-bezier(.2,.8,.2,1) both;
+  }
+
+  /* ---------- Subtle edge glow (optional) ---------- */
+  .glass-glow {
+    position: relative;
+  }
+
+  .glass-glow::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      600px 220px at 20% 0%,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0) 55%
+    );
+    opacity: 0.7;
+    filter: blur(10px);
+  }
+}
+
+@keyframes glassShineSweep {
+  0%   { transform: translateX(-45%) rotate(8deg); }
+  100% { transform: translateX(45%) rotate(8deg); }
+}
