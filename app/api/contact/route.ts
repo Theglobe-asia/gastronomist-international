@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const clean = (v?: string) =>
   (v ?? "").trim().replace(/^"(.*)"$/, "$1").replace(/\r?\n/g, "");
 
@@ -12,9 +10,18 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    const RESEND_KEY = clean(process.env.RESEND_API_KEY);
+
     const FROM = clean(process.env.EMAIL_FROM); // e.g. Gastronomist International <onboarding@resend.dev>
     const TO_RAW = clean(process.env.CONTACT_TO); // e.g. gastronomist.intl@gmail.com
     const TO = isEmail(TO_RAW) ? TO_RAW : "";
+
+    if (!RESEND_KEY) {
+      return NextResponse.json(
+        { error: "Missing RESEND_API_KEY. Add it in Vercel Environment Variables." },
+        { status: 400 }
+      );
+    }
 
     if (!FROM || !TO) {
       return NextResponse.json(
@@ -22,6 +29,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const resend = new Resend(RESEND_KEY);
 
     const html = `
       <h2>New Contact</h2>
