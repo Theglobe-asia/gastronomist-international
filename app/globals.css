@@ -6,127 +6,187 @@ html, body { height: 100%; }
 body { margin: 0; background:#0a0a0a; color:#fff; }
 
 /* =========================================================
-   Water-Glass UI System (Global Utilities)
-   - Non-breaking: only adds new classes, no layout changes.
-   - Apply these classes in app/page.tsx.
+   TRUE OPTICAL "WATER-GLASS" UI SYSTEM (GLOBAL)
+   Target: match the approved cinematic glass visual:
+   - thickness illusion
+   - edge refraction glow
+   - inner highlights
+   - layered depth
    ========================================================= */
 
 @layer components {
-  /* ---------- Glass Panel (editorial / dashboard wrapper) ---------- */
-  .glass-panel {
-    @apply relative rounded-3xl border border-white/10 bg-white/[0.06] backdrop-blur-xl;
+  /* ---------------------------------------------
+     Core glass surface primitives (internal)
+     --------------------------------------------- */
+  .glass-surface {
+    @apply relative overflow-hidden border border-white/10 backdrop-blur-2xl;
+    background:
+      radial-gradient(1200px 380px at 18% 12%, rgba(255,255,255,0.10), rgba(255,255,255,0) 58%),
+      radial-gradient(900px 320px at 85% 18%, rgba(140,200,255,0.14), rgba(255,255,255,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 20px 60px rgba(0,0,0,0.45),
-      0 0 0 1px rgba(255,255,255,0.05);
+      0 1px 0 rgba(255,255,255,0.10) inset,
+      0 0 0 1px rgba(255,255,255,0.06),
+      0 30px 90px rgba(0,0,0,0.65);
+    transform: translateZ(0);
   }
 
-  /* Optional inner padding + spacing preset */
+  /* Outer edge glow + "thickness" illusion */
+  .glass-surface::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg,
+        rgba(255,255,255,0.00) 0%,
+        rgba(255,255,255,0.18) 16%,
+        rgba(170,220,255,0.22) 40%,
+        rgba(255,255,255,0.18) 64%,
+        rgba(255,255,255,0.00) 100%);
+    opacity: 0.55;
+    filter: blur(10px);
+  }
+
+  /* Inner rim (gives depth like glass thickness) */
+  .glass-surface::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.00) 40%),
+      linear-gradient(0deg, rgba(0,0,0,0.45), rgba(0,0,0,0.00) 55%);
+    mix-blend-mode: screen;
+    opacity: 0.55;
+  }
+
+  /* ---------------------------------------------
+     Editorial Hero Panel
+     --------------------------------------------- */
+  .glass-panel {
+    @apply glass-surface rounded-[28px];
+  }
+
   .glass-panel-pad {
     @apply p-6 sm:p-8 lg:p-10;
   }
 
-  /* ---------- Glass Card (dashboard tiles) ---------- */
+  /* stronger edge glow on hero */
+  .glass-panel.glass-glow-strong::before {
+    opacity: 0.75;
+    filter: blur(12px);
+  }
+
+  /* ---------------------------------------------
+     Dashboard Glass Cards (thick blocks)
+     --------------------------------------------- */
   .glass-card {
-    @apply relative rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-xl overflow-hidden;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.05) inset,
-      0 18px 50px rgba(0,0,0,0.55);
-    transform: translateZ(0);
+    @apply glass-surface rounded-2xl;
     transition:
-      transform 240ms cubic-bezier(.2,.8,.2,1),
-      box-shadow 240ms cubic-bezier(.2,.8,.2,1),
-      border-color 240ms cubic-bezier(.2,.8,.2,1);
+      transform 260ms cubic-bezier(.2,.85,.2,1),
+      box-shadow 260ms cubic-bezier(.2,.85,.2,1),
+      border-color 260ms cubic-bezier(.2,.85,.2,1);
   }
 
   .glass-card:hover {
-    border-color: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.18);
+    transform: translateY(-6px);
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 26px 70px rgba(0,0,0,0.62);
-    transform: translateY(-4px);
+      0 1px 0 rgba(255,255,255,0.10) inset,
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 38px 120px rgba(0,0,0,0.72);
   }
 
-  /* ---------- Glass Frame (for 3D canvas container) ---------- */
+  /* ---------------------------------------------
+     3D Frame (encased look)
+     --------------------------------------------- */
   .glass-frame {
-    @apply relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden;
+    @apply glass-surface rounded-2xl;
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.05) inset,
-      0 24px 70px rgba(0,0,0,0.6);
+      0 1px 0 rgba(255,255,255,0.10) inset,
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 40px 130px rgba(0,0,0,0.75);
   }
 
-  /* ---------- Glass Button (water-glass CTA) ---------- */
+  /* ---------------------------------------------
+     Glass Buttons (match visual)
+     --------------------------------------------- */
   .glass-btn {
-    @apply relative rounded-2xl px-5 py-3 font-medium text-white border border-white/15 bg-white/[0.08] backdrop-blur-xl overflow-hidden;
+    @apply relative rounded-2xl px-6 py-3 font-medium text-white border border-white/15 backdrop-blur-2xl overflow-hidden;
+    background:
+      radial-gradient(420px 140px at 18% 25%, rgba(180,235,255,0.60), rgba(255,255,255,0.00) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 18px 40px rgba(0,0,0,0.55);
-    transform: translateZ(0);
+      0 1px 0 rgba(255,255,255,0.18) inset,
+      0 14px 38px rgba(0,0,0,0.55),
+      0 0 30px rgba(120,220,255,0.22);
     transition:
-      transform 220ms cubic-bezier(.2,.8,.2,1),
-      box-shadow 220ms cubic-bezier(.2,.8,.2,1),
-      border-color 220ms cubic-bezier(.2,.8,.2,1),
-      background-color 220ms cubic-bezier(.2,.8,.2,1);
+      transform 220ms cubic-bezier(.2,.85,.2,1),
+      box-shadow 220ms cubic-bezier(.2,.85,.2,1),
+      border-color 220ms cubic-bezier(.2,.85,.2,1),
+      filter 220ms cubic-bezier(.2,.85,.2,1);
+  }
+
+  .glass-btn::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background: linear-gradient(
+      120deg,
+      rgba(255,255,255,0) 38%,
+      rgba(255,255,255,0.30) 48%,
+      rgba(255,255,255,0) 58%
+    );
+    transform: translateX(-40%) rotate(8deg);
+    opacity: 0.0;
+    pointer-events: none;
   }
 
   .glass-btn:hover {
-    border-color: rgba(255,255,255,0.22);
-    background-color: rgba(255,255,255,0.10);
+    border-color: rgba(200,240,255,0.35);
+    transform: translateY(-2px) scale(1.01);
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.07) inset,
-      0 24px 55px rgba(0,0,0,0.62);
-    transform: translateY(-1px) scale(1.01);
+      0 1px 0 rgba(255,255,255,0.20) inset,
+      0 20px 58px rgba(0,0,0,0.62),
+      0 0 46px rgba(120,220,255,0.34);
+    filter: brightness(1.08);
   }
 
-  /* Secondary glass button (neutral / soft) */
-  .glass-btn-muted {
-    @apply text-white border-white/10 bg-white/[0.05];
-  }
-
-  /* ---------- Shine overlay (use on panel/card/button) ---------- */
-  .glass-shine::before {
-    content: "";
-    position: absolute;
-    inset: -40%;
-    background: linear-gradient(
-      120deg,
-      rgba(255,255,255,0) 35%,
-      rgba(255,255,255,0.18) 45%,
-      rgba(255,255,255,0) 55%
-    );
-    transform: translateX(-30%) rotate(8deg);
-    opacity: 0;
-    transition: opacity 260ms cubic-bezier(.2,.8,.2,1);
-    pointer-events: none;
-  }
-
-  .glass-shine:hover::before {
+  .glass-btn:hover::before {
     opacity: 1;
-    animation: glassShineSweep 1.2s cubic-bezier(.2,.8,.2,1) both;
+    animation: glassShineSweep 1.15s cubic-bezier(.2,.85,.2,1) both;
   }
 
-  /* ---------- Subtle edge glow (optional) ---------- */
-  .glass-glow {
-    position: relative;
+  /* Muted glass button (like "About Us" in visual) */
+  .glass-btn-muted {
+    background:
+      radial-gradient(420px 140px at 18% 25%, rgba(255,255,255,0.18), rgba(255,255,255,0.00) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.14) inset,
+      0 14px 38px rgba(0,0,0,0.55),
+      0 0 24px rgba(255,255,255,0.10);
   }
 
-  .glass-glow::after {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    pointer-events: none;
-    background: radial-gradient(
-      600px 220px at 20% 0%,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0) 55%
-    );
-    opacity: 0.7;
-    filter: blur(10px);
+  .glass-btn-muted:hover {
+    border-color: rgba(255,255,255,0.28);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.16) inset,
+      0 20px 58px rgba(0,0,0,0.62),
+      0 0 30px rgba(255,255,255,0.16);
   }
+
+  /* ---------------------------------------------
+     Optional helper: apply stronger glow to any glass block
+     --------------------------------------------- */
+  .glass-glow-strong { }
 }
 
+/* Shine sweep for buttons (and can be reused elsewhere) */
 @keyframes glassShineSweep {
-  0%   { transform: translateX(-45%) rotate(8deg); }
-  100% { transform: translateX(45%) rotate(8deg); }
+  0%   { transform: translateX(-55%) rotate(8deg); }
+  100% { transform: translateX(55%) rotate(8deg); }
 }
