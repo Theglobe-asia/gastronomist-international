@@ -7,186 +7,218 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
 
 /* =========================================================
    TRUE OPTICAL "WATER-GLASS" UI SYSTEM (GLOBAL)
-   Target: match the approved cinematic glass visual:
-   - thickness illusion
-   - edge refraction glow
-   - inner highlights
-   - layered depth
+   IMPORTANT:
+   - Defined in @layer utilities so it loads AFTER Tailwind utilities.
+   - Uses !important on critical properties to prevent flattening.
    ========================================================= */
 
-@layer components {
-  /* ---------------------------------------------
-     Core glass surface primitives (internal)
-     --------------------------------------------- */
+@layer utilities {
+  /* ---------- Shared glass surface ---------- */
   .glass-surface {
-    @apply relative overflow-hidden border border-white/10 backdrop-blur-2xl;
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: inherit !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+
     background:
-      radial-gradient(1200px 380px at 18% 12%, rgba(255,255,255,0.10), rgba(255,255,255,0) 58%),
-      radial-gradient(900px 320px at 85% 18%, rgba(140,200,255,0.14), rgba(255,255,255,0) 55%),
-      linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      radial-gradient(1200px 380px at 18% 12%, rgba(255,255,255,0.11), rgba(255,255,255,0) 58%),
+      radial-gradient(900px 320px at 85% 18%, rgba(140,200,255,0.16), rgba(255,255,255,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04)) !important;
+
     box-shadow:
       0 1px 0 rgba(255,255,255,0.10) inset,
-      0 0 0 1px rgba(255,255,255,0.06),
-      0 30px 90px rgba(0,0,0,0.65);
-    transform: translateZ(0);
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 34px 110px rgba(0,0,0,0.72) !important;
+
+    transform: translateZ(0) !important;
   }
 
-  /* Outer edge glow + "thickness" illusion */
+  /* Outer edge glow (thickness illusion) */
   .glass-surface::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    pointer-events: none;
+    content: "" !important;
+    position: absolute !important;
+    inset: -2px !important;
+    border-radius: inherit !important;
+    pointer-events: none !important;
     background:
       linear-gradient(90deg,
         rgba(255,255,255,0.00) 0%,
-        rgba(255,255,255,0.18) 16%,
-        rgba(170,220,255,0.22) 40%,
-        rgba(255,255,255,0.18) 64%,
-        rgba(255,255,255,0.00) 100%);
-    opacity: 0.55;
-    filter: blur(10px);
+        rgba(255,255,255,0.22) 16%,
+        rgba(170,220,255,0.30) 40%,
+        rgba(255,255,255,0.22) 64%,
+        rgba(255,255,255,0.00) 100%) !important;
+    opacity: 0.70 !important;
+    filter: blur(12px) !important;
   }
 
-  /* Inner rim (gives depth like glass thickness) */
+  /* Inner rim highlight */
   .glass-surface::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: inherit !important;
+    pointer-events: none !important;
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.00) 40%),
-      linear-gradient(0deg, rgba(0,0,0,0.45), rgba(0,0,0,0.00) 55%);
-    mix-blend-mode: screen;
-    opacity: 0.55;
+      linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.00) 44%),
+      linear-gradient(0deg, rgba(0,0,0,0.55), rgba(0,0,0,0.00) 60%) !important;
+    opacity: 0.60 !important;
   }
 
-  /* ---------------------------------------------
-     Editorial Hero Panel
-     --------------------------------------------- */
+  /* ---------- Panel ---------- */
   .glass-panel {
-    @apply glass-surface rounded-[28px];
+    border-radius: 28px !important;
+  }
+  .glass-panel.glass-surface,
+  .glass-panel {
+    /* allow using glass-panel alone */
+  }
+  .glass-panel {
+    /* apply glass surface via inheritance approach */
+  }
+  .glass-panel {
+    /* apply shared surface */
+  }
+  .glass-panel {
+    /* final: attach shared class behavior */
+  }
+  .glass-panel {
+    /* Note: we still require glass-surface class in markup OR we can alias it below */
   }
 
-  .glass-panel-pad {
-    @apply p-6 sm:p-8 lg:p-10;
-  }
-
-  /* stronger edge glow on hero */
-  .glass-panel.glass-glow-strong::before {
-    opacity: 0.75;
-    filter: blur(12px);
-  }
-
-  /* ---------------------------------------------
-     Dashboard Glass Cards (thick blocks)
-     --------------------------------------------- */
-  .glass-card {
-    @apply glass-surface rounded-2xl;
-    transition:
-      transform 260ms cubic-bezier(.2,.85,.2,1),
-      box-shadow 260ms cubic-bezier(.2,.85,.2,1),
-      border-color 260ms cubic-bezier(.2,.85,.2,1);
-  }
-
-  .glass-card:hover {
-    border-color: rgba(255,255,255,0.18);
-    transform: translateY(-6px);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 0 0 1px rgba(255,255,255,0.08),
-      0 38px 120px rgba(0,0,0,0.72);
-  }
-
-  /* ---------------------------------------------
-     3D Frame (encased look)
-     --------------------------------------------- */
-  .glass-frame {
-    @apply glass-surface rounded-2xl;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 0 0 1px rgba(255,255,255,0.08),
-      0 40px 130px rgba(0,0,0,0.75);
-  }
-
-  /* ---------------------------------------------
-     Glass Buttons (match visual)
-     --------------------------------------------- */
-  .glass-btn {
-    @apply relative rounded-2xl px-6 py-3 font-medium text-white border border-white/15 backdrop-blur-2xl overflow-hidden;
+  /* Alias: allow glass-panel to work without adding glass-surface in JSX */
+  .glass-panel {
+    position: relative !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
     background:
-      radial-gradient(420px 140px at 18% 25%, rgba(180,235,255,0.60), rgba(255,255,255,0.00) 60%),
-      linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      radial-gradient(1200px 380px at 18% 12%, rgba(255,255,255,0.11), rgba(255,255,255,0) 58%),
+      radial-gradient(900px 320px at 85% 18%, rgba(140,200,255,0.16), rgba(255,255,255,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04)) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.10) inset,
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 34px 110px rgba(0,0,0,0.72) !important;
+    transform: translateZ(0) !important;
+  }
+  .glass-panel::before { content:"" !important; position:absolute !important; inset:-2px !important; border-radius:inherit !important; pointer-events:none !important;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 16%, rgba(170,220,255,0.30) 40%, rgba(255,255,255,0.22) 64%, rgba(255,255,255,0) 100%) !important;
+    opacity:0.70 !important; filter:blur(12px) !important; }
+  .glass-panel::after { content:"" !important; position:absolute !important; inset:0 !important; border-radius:inherit !important; pointer-events:none !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 44%), linear-gradient(0deg, rgba(0,0,0,0.55), rgba(0,0,0,0) 60%) !important;
+    opacity:0.60 !important; }
+
+  .glass-panel-pad { padding: 24px !important; }
+  @media (min-width: 640px) { .glass-panel-pad { padding: 32px !important; } }
+  @media (min-width: 1024px) { .glass-panel-pad { padding: 40px !important; } }
+
+  /* ---------- Cards ---------- */
+  .glass-card {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    background:
+      radial-gradient(900px 260px at 18% 14%, rgba(255,255,255,0.10), rgba(255,255,255,0) 60%),
+      radial-gradient(740px 260px at 90% 18%, rgba(140,200,255,0.14), rgba(255,255,255,0) 58%),
+      linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.10) inset,
+      0 0 0 1px rgba(255,255,255,0.06),
+      0 28px 90px rgba(0,0,0,0.70) !important;
+    transition: transform 260ms cubic-bezier(.2,.85,.2,1), box-shadow 260ms cubic-bezier(.2,.85,.2,1) !important;
+    transform: translateZ(0) !important;
+  }
+  .glass-card::before { content:"" !important; position:absolute !important; inset:-2px !important; border-radius:inherit !important; pointer-events:none !important;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.20) 18%, rgba(170,220,255,0.26) 45%, rgba(255,255,255,0.20) 70%, rgba(255,255,255,0) 100%) !important;
+    opacity:0.62 !important; filter:blur(12px) !important; }
+  .glass-card:hover {
+    transform: translateY(-6px) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.10) inset,
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 42px 140px rgba(0,0,0,0.78) !important;
+  }
+
+  /* ---------- 3D Frame ---------- */
+  .glass-frame {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    background:
+      radial-gradient(1000px 320px at 20% 20%, rgba(255,255,255,0.09), rgba(255,255,255,0) 58%),
+      radial-gradient(900px 340px at 88% 20%, rgba(140,200,255,0.16), rgba(255,255,255,0) 56%),
+      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.10) inset,
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 50px 160px rgba(0,0,0,0.80) !important;
+    transform: translateZ(0) !important;
+  }
+  .glass-frame::before { content:"" !important; position:absolute !important; inset:-2px !important; border-radius:inherit !important; pointer-events:none !important;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 16%, rgba(170,220,255,0.30) 40%, rgba(255,255,255,0.22) 64%, rgba(255,255,255,0) 100%) !important;
+    opacity:0.70 !important; filter:blur(12px) !important; }
+
+  /* ---------- Buttons (force override of Button base styles) ---------- */
+  .glass-btn {
+    color: #ffffff !important;
+    border: 1px solid rgba(200,240,255,0.32) !important;
+    backdrop-filter: blur(22px) !important;
+    -webkit-backdrop-filter: blur(22px) !important;
+
+    background:
+      radial-gradient(520px 160px at 18% 30%, rgba(120,220,255,0.72), rgba(255,255,255,0) 62%),
+      linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06)) !important;
+
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.22) inset,
+      0 18px 48px rgba(0,0,0,0.62),
+      0 0 44px rgba(120,220,255,0.34) !important;
+  }
+
+  .glass-btn-muted {
+    color: #ffffff !important;
+    border: 1px solid rgba(255,255,255,0.22) !important;
+    background:
+      radial-gradient(520px 160px at 18% 30%, rgba(255,255,255,0.22), rgba(255,255,255,0) 62%),
+      linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05)) !important;
     box-shadow:
       0 1px 0 rgba(255,255,255,0.18) inset,
-      0 14px 38px rgba(0,0,0,0.55),
-      0 0 30px rgba(120,220,255,0.22);
-    transition:
-      transform 220ms cubic-bezier(.2,.85,.2,1),
-      box-shadow 220ms cubic-bezier(.2,.85,.2,1),
-      border-color 220ms cubic-bezier(.2,.85,.2,1),
-      filter 220ms cubic-bezier(.2,.85,.2,1);
+      0 18px 48px rgba(0,0,0,0.62),
+      0 0 28px rgba(255,255,255,0.14) !important;
   }
 
-  .glass-btn::before {
-    content: "";
-    position: absolute;
-    inset: -30%;
+  /* Shine sweep */
+  .glass-shine { position: relative !important; }
+  .glass-shine::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: -30% !important;
+    pointer-events: none !important;
     background: linear-gradient(
       120deg,
       rgba(255,255,255,0) 38%,
-      rgba(255,255,255,0.30) 48%,
+      rgba(255,255,255,0.34) 48%,
       rgba(255,255,255,0) 58%
-    );
-    transform: translateX(-40%) rotate(8deg);
-    opacity: 0.0;
-    pointer-events: none;
+    ) !important;
+    transform: translateX(-55%) rotate(8deg) !important;
+    opacity: 0 !important;
   }
-
-  .glass-btn:hover {
-    border-color: rgba(200,240,255,0.35);
-    transform: translateY(-2px) scale(1.01);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.20) inset,
-      0 20px 58px rgba(0,0,0,0.62),
-      0 0 46px rgba(120,220,255,0.34);
-    filter: brightness(1.08);
+  .glass-shine:hover::before {
+    opacity: 1 !important;
+    animation: glassShineSweep 1.15s cubic-bezier(.2,.85,.2,1) both !important;
   }
-
-  .glass-btn:hover::before {
-    opacity: 1;
-    animation: glassShineSweep 1.15s cubic-bezier(.2,.85,.2,1) both;
-  }
-
-  /* Muted glass button (like "About Us" in visual) */
-  .glass-btn-muted {
-    background:
-      radial-gradient(420px 140px at 18% 25%, rgba(255,255,255,0.18), rgba(255,255,255,0.00) 60%),
-      linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.14) inset,
-      0 14px 38px rgba(0,0,0,0.55),
-      0 0 24px rgba(255,255,255,0.10);
-  }
-
-  .glass-btn-muted:hover {
-    border-color: rgba(255,255,255,0.28);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.16) inset,
-      0 20px 58px rgba(0,0,0,0.62),
-      0 0 30px rgba(255,255,255,0.16);
-  }
-
-  /* ---------------------------------------------
-     Optional helper: apply stronger glow to any glass block
-     --------------------------------------------- */
-  .glass-glow-strong { }
 }
 
-/* Shine sweep for buttons (and can be reused elsewhere) */
 @keyframes glassShineSweep {
-  0%   { transform: translateX(-55%) rotate(8deg); }
-  100% { transform: translateX(55%) rotate(8deg); }
+  0%   { transform: translateX(-65%) rotate(8deg); }
+  100% { transform: translateX(65%) rotate(8deg); }
 }
