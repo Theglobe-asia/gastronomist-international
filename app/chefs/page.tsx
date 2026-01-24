@@ -1,73 +1,111 @@
 // app/chefs/page.tsx
-"use client";
+"use client"
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import type { MotionProps } from "framer-motion";
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import type { MotionProps } from "framer-motion"
+import Button from "@/components/ui/Button"
 
-// ✅ Typed motion wrappers
+/* ✅ Typed motion wrappers (keeps TS build safe) */
 type ArticleMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"article"> & MotionProps> &
-  React.RefAttributes<HTMLElement>
->;
-const MotionArticle = motion.article as ArticleMotion;
+    React.RefAttributes<HTMLElement>
+>
+const MotionArticle = motion.article as ArticleMotion
 
 type DivMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
-  React.RefAttributes<HTMLDivElement>
->;
-const MotionDiv = motion.div as DivMotion;
+    React.RefAttributes<HTMLDivElement>
+>
+const MotionDiv = motion.div as DivMotion
 
 type SectionMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"section"> & MotionProps> &
-  React.RefAttributes<HTMLElement>
->;
-const MotionSection = motion.section as SectionMotion;
+    React.RefAttributes<HTMLElement>
+>
+const MotionSection = motion.section as SectionMotion
 
 const chefs = [
-  { name: "Chef Mar", role: "International Member", blurb: "Specializes in modernizing traditional recipes with innovative techniques.", img: "/images/chefmar.png" },
-  { name: "Chef Arman", role: "International Member", blurb: "Passionate about sustainable cooking and seasonal ingredients.", img: "/images/chefarman.png" },
-  { name: "Chef Sandar", role: "International Member", blurb: "Renowned for artistic pastry creations blending flavor and design.", img: "/images/chefsandar.png" },
-  { name: "Chef Deric", role: "International Member", blurb: "Expert in precision cooking and creative plating aesthetics.", img: "/images/chefderic.png" },
-  { name: "Chef Francis", role: "International Member", blurb: "Known for curating immersive dining experiences worldwide.", img: "/images/cheffrancis.png" },
-  { name: "Chef Rommel", role: "International Member", blurb: "Dedicated to training and mentoring the next generation of chefs.", img: "/images/chefrommel.png" },
-  { name: "Chef Kono", role: "International Member", blurb: "Blends global culinary heritage with modern techniques.", img: "/images/chefkono.png" },
-];
+  {
+    name: "Chef Mar",
+    role: "International Member",
+    blurb: "Specializes in modernizing traditional recipes with innovative techniques.",
+    img: "/images/chefmar.png",
+  },
+  {
+    name: "Chef Arman",
+    role: "International Member",
+    blurb: "Passionate about sustainable cooking and seasonal ingredients.",
+    img: "/images/chefarman.png",
+  },
+  {
+    name: "Chef Sandar",
+    role: "International Member",
+    blurb: "Renowned for artistic pastry creations blending flavor and design.",
+    img: "/images/chefsandar.png",
+  },
+  {
+    name: "Chef Deric",
+    role: "International Member",
+    blurb: "Expert in precision cooking and creative plating aesthetics.",
+    img: "/images/chefderic.png",
+  },
+  {
+    name: "Chef Francis",
+    role: "International Member",
+    blurb: "Known for curating immersive dining experiences worldwide.",
+    img: "/images/cheffrancis.png",
+  },
+  {
+    name: "Chef Rommel",
+    role: "International Member",
+    blurb: "Dedicated to training and mentoring the next generation of chefs.",
+    img: "/images/chefrommel.png",
+  },
+  {
+    name: "Chef Kono",
+    role: "International Member",
+    blurb: "Blends global culinary heritage with modern techniques.",
+    img: "/images/chefkono.png",
+  },
+]
 
-// 🔹 Animation Variants
+/* Animation variants */
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
     transition: { staggerChildren: 0.15 },
   },
-};
+}
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
+}
 
 export default function ChefsPage() {
-  const [selectedChef, setSelectedChef] = useState<any | null>(null);
+  const [selectedChef, setSelectedChef] = useState<any | null>(null)
 
   return (
-    <main className="container py-16 space-y-10">
+    <main className="container py-16 space-y-12">
       {/* Title */}
-      <section className="space-y-3">
-        <h1 className="text-4xl sm:text-5xl font-bold text-white">
-          Our{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
-            Chefs
-          </span>
+      <section className="glass-panel glass-panel-pad glass-glow">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
+          <span className="h-2 w-2 rounded-full bg-white/70" />
+          Global Members • Chefs Directory
+        </div>
+
+        <h1 className="mt-6 text-4xl sm:text-5xl font-bold text-white">
+          Our <span className="text-white/80">Chefs</span>
         </h1>
-        <p className="text-neutral-300 max-w-2xl">
+
+        <p className="mt-4 text-neutral-300 max-w-2xl leading-relaxed">
           Meet our dedicated culinary professionals, representing the spirit of Gastronomist International.
         </p>
-        <div className="h-px w-28 bg-yellow-500/60 rounded" />
       </section>
 
-      {/* Grid with staggered animation */}
+      {/* Grid */}
       <MotionSection
         className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
         variants={containerVariants}
@@ -79,17 +117,17 @@ export default function ChefsPage() {
           <MotionArticle
             key={c.name}
             variants={cardVariants}
-            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1 cursor-pointer"
+            className="glass-card glass-shine cursor-pointer"
             onClick={() => setSelectedChef(c)}
           >
-            {/* Portrait */}
-            <div className="w-full h-80 sm:h-96 md:h-[500px] flex items-center justify-center bg-gray-100">
+            <div className="w-full h-80 sm:h-96 md:h-[500px] flex items-center justify-center border-b border-white/10">
               <img src={c.img} alt={c.name} className="w-full h-full object-contain" />
             </div>
-            <div className="p-5 text-black">
-              <h3 className="font-semibold text-lg">{c.name}</h3>
-              <p className="text-xs text-gray-500">{c.role}</p>
-              <p className="text-sm text-gray-700 mt-2">{c.blurb}</p>
+
+            <div className="p-5">
+              <h3 className="font-medium text-white">{c.name}</h3>
+              <p className="text-xs text-neutral-400 mt-1">{c.role}</p>
+              <p className="text-sm text-neutral-300 mt-3 leading-relaxed">{c.blurb}</p>
             </div>
           </MotionArticle>
         ))}
@@ -101,32 +139,38 @@ export default function ChefsPage() {
           <>
             <MotionDiv
               onClick={() => setSelectedChef(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/70 backdrop-blur-md z-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             />
+
             <MotionDiv
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.25 }}
             >
-              <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full overflow-hidden">
-                <div className="w-full h-96 flex items-center justify-center bg-gray-100">
-                  <img src={selectedChef.img} alt={selectedChef.name} className="w-full h-full object-contain" />
+              <div className="glass-panel glass-panel-pad max-w-2xl w-full overflow-hidden">
+                <div className="w-full h-96 flex items-center justify-center border-b border-white/10">
+                  <img
+                    src={selectedChef.img}
+                    alt={selectedChef.name}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-                <div className="p-6 text-black">
-                  <h2 className="text-2xl font-bold">{selectedChef.name}</h2>
-                  <p className="text-sm text-gray-600 mt-1">{selectedChef.role}</p>
-                  <p className="mt-4 text-gray-700">{selectedChef.blurb}</p>
-                  <button
-                    onClick={() => setSelectedChef(null)}
-                    className="mt-6 px-4 py-2 rounded bg-yellow-500 text-black font-semibold hover:brightness-110 transition"
-                  >
-                    Close
-                  </button>
+
+                <div className="pt-6">
+                  <h2 className="text-2xl font-semibold text-white">{selectedChef.name}</h2>
+                  <p className="text-sm text-neutral-400 mt-1">{selectedChef.role}</p>
+                  <p className="mt-4 text-neutral-300 leading-relaxed">{selectedChef.blurb}</p>
+
+                  <div className="mt-6">
+                    <Button className="glass-btn glass-shine" onClick={() => setSelectedChef(null)}>
+                      Close
+                    </Button>
+                  </div>
                 </div>
               </div>
             </MotionDiv>
@@ -134,5 +178,5 @@ export default function ChefsPage() {
         )}
       </AnimatePresence>
     </main>
-  );
+  )
 }
