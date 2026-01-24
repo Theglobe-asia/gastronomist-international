@@ -2,9 +2,19 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, type MotionProps } from "framer-motion"
+import type { ComponentPropsWithoutRef } from "react"
 import Card from "@/components/ui/Card"
 import Button from "@/components/ui/Button"
+
+/* ✅ Typed motion wrappers (required for TS build) */
+type MotionArticleProps =
+  ComponentPropsWithoutRef<"article"> & MotionProps
+type MotionDivProps =
+  ComponentPropsWithoutRef<"div"> & MotionProps
+
+const MotionArticle = motion.article as React.FC<MotionArticleProps>
+const MotionDiv = motion.div as React.FC<MotionDivProps>
 
 const leaders = [
   {
@@ -56,16 +66,14 @@ export default function AboutPage() {
 
   return (
     <main className="relative container py-16 space-y-16">
-      {/* Page intro */}
+      {/* Intro */}
       <section className="glass-panel glass-panel-pad glass-glow">
         <h1 className="text-4xl sm:text-5xl font-bold text-white">
           About <span className="text-white/80">Gastronomist International</span>
         </h1>
-
         <p className="mt-4 max-w-3xl text-neutral-300 leading-relaxed">
-          We are a global culinary community focused on modern gastronomy,
-          knowledge-sharing, and professional recognition. Our platform connects
-          chefs, educators, creators, and industry partners worldwide.
+          A global culinary community focused on modern gastronomy,
+          knowledge-sharing, and professional recognition.
         </p>
       </section>
 
@@ -82,37 +90,9 @@ export default function AboutPage() {
         <Card className="p-6">
           <h3 className="font-semibold text-white">Our Vision</h3>
           <p className="mt-2 text-neutral-300">
-            A modern, inclusive culinary ecosystem where talent thrives on a
-            global stage.
+            A modern, inclusive culinary ecosystem with global reach.
           </p>
         </Card>
-      </section>
-
-      {/* What we do */}
-      <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-white">What We Do</h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              t: "Network",
-              d: "Connect chefs, educators, creators, and brands globally.",
-            },
-            {
-              t: "Recognize",
-              d: "Showcase achievements, profiles, and milestones.",
-            },
-            {
-              t: "Educate",
-              d: "Share research, standards, and modern gastronomy practices.",
-            },
-          ].map((i) => (
-            <Card key={i.t} className="p-6">
-              <h3 className="font-semibold text-white">{i.t}</h3>
-              <p className="mt-2 text-neutral-300">{i.d}</p>
-            </Card>
-          ))}
-        </div>
       </section>
 
       {/* Leadership */}
@@ -123,7 +103,7 @@ export default function AboutPage() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {leaders.map((p) => (
-            <motion.article
+            <MotionArticle
               key={p.name}
               className="glass-card glass-shine cursor-pointer"
               initial={{ opacity: 0, y: 30 }}
@@ -144,7 +124,7 @@ export default function AboutPage() {
                 <div className="mt-1 text-xs text-neutral-400">{p.role}</div>
                 <p className="mt-3 text-sm text-neutral-300">{p.blurb}</p>
               </div>
-            </motion.article>
+            </MotionArticle>
           ))}
         </div>
       </section>
@@ -153,7 +133,7 @@ export default function AboutPage() {
       <AnimatePresence>
         {active && (
           <>
-            <motion.div
+            <MotionDiv
               className="fixed inset-0 bg-black/70 backdrop-blur-md z-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -161,7 +141,7 @@ export default function AboutPage() {
               onClick={() => setActive(null)}
             />
 
-            <motion.div
+            <MotionDiv
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -193,7 +173,7 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </>
         )}
       </AnimatePresence>
