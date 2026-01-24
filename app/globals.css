@@ -273,3 +273,8 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
   0%   { transform: translateX(-70%) rotate(10deg); }
   100% { transform: translateX(70%) rotate(10deg); }
 }
+
+/* --- Ensure Buy Me a Coffee widget stays above floating widgets --- */
+[data-name="BMC-Widget"] {
+  z-index: 9999 !important;
+}
