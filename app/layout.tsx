@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import ContactWidget from "@/components/ContactWidget"
+import BuyMeACoffeeWidget from "@/components/BuyMeACoffeeWidget"
 
 export const metadata: Metadata = {
   title: "Gastronomist International",
@@ -34,6 +35,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <ContactWidget />
         </div>
+
+        <BuyMeACoffeeWidget />
       </body>
     </html>
   )
