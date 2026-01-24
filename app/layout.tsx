@@ -4,11 +4,29 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import ContactWidget from "@/components/ContactWidget"
 import BuyMeCoffee from "@/components/BuyMeCoffee"
+import PwaRegister from "@/components/PwaRegister"
 
 export const metadata: Metadata = {
   title: "Gastronomist International",
   description:
-    "We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques."
+    "We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques.",
+
+  // ✅ PWA / install metadata
+  manifest: "/manifest.webmanifest",
+  themeColor: "#0a0a0a",
+
+  // ✅ Force your logo everywhere (tab icon, Apple touch icon, installed app icon)
+  icons: {
+    icon: [{ url: "/logo.png" }],
+    shortcut: [{ url: "/logo.png" }],
+    apple: [{ url: "/logo.png" }],
+  },
+
+  appleWebApp: {
+    capable: true,
+    title: "Gastronomist International",
+    statusBarStyle: "black-translucent",
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -38,6 +56,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Buy Me a Coffee widget */}
         <BuyMeCoffee />
+
+        {/* ✅ PWA service worker registration */}
+        <PwaRegister />
       </body>
     </html>
   )
