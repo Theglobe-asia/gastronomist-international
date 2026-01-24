@@ -1,36 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { NextRequest, NextResponse } from "next/server"
+import { Resend } from "resend"
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+
+// Free-mode: Resend only allows sending to the account owner email
+const OWNER_EMAIL = "blackchef.alex@gmail.com"
 
 const clean = (v?: string) =>
-  (v ?? "").trim().replace(/^"(.*)"$/, "$1").replace(/\r?\n/g, "");
-
-const isEmail = (s: string) => /^[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+$/.test(s);
+  (v ?? "").trim().replace(/^"(.*)"$/, "$1").replace(/\r?\n/g, "")
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body = await req.json()
 
-    const RESEND_KEY = clean(process.env.RESEND_API_KEY);
-
-    const FROM = clean(process.env.EMAIL_FROM); // e.g. Gastronomist International <onboarding@resend.dev>
-    const TO_RAW = clean(process.env.CONTACT_TO); // e.g. gastronomist.intl@gmail.com
-    const TO = isEmail(TO_RAW) ? TO_RAW : "";
-
-    if (!RESEND_KEY) {
-      return NextResponse.json(
-        { error: "Missing RESEND_API_KEY. Add it in Vercel Environment Variables." },
-        { status: 400 }
-      );
-    }
-
-    if (!FROM || !TO) {
-      return NextResponse.json(
-        { error: "Email config missing or invalid. Set EMAIL_FROM and CONTACT_TO properly." },
-        { status: 400 }
-      );
-    }
-
-    const resend = new Resend(RESEND_KEY);
+    const FROM =
+      clean(process.env.EMAIL_FROM) ||
+      "Gastronomist International <onboarding@resend.dev>"
 
     const html = `
       <h2>New Contact</h2>
@@ -41,19 +26,19 @@ export async function POST(req: NextRequest) {
       <p><b>Company:</b> ${clean(body.currentCompany)}</p>
       <p><b>Experience:</b> ${clean(body.experience)}</p>
       <p><b>Reason:</b> ${clean(body.reason)}</p>
-    `;
+    `
 
     const { error } = await resend.emails.send({
       from: FROM,
-      to: [TO],
+      to: [OWNER_EMAIL],
       subject: "Gastronomist International — Contact",
       html,
       replyTo: clean(body.email),
-    });
+    })
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 422 });
-    return NextResponse.json({ ok: true });
+    if (error) return NextResponse.json({ error: error.message }, { status: 422 })
+    return NextResponse.json({ ok: true })
   } catch {
-    return NextResponse.json({ error: "Email send failed" }, { status: 500 });
+    return NextResponse.json({ error: "Email send failed" }, { status: 500 })
   }
 }
