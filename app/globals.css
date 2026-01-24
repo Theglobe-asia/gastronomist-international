@@ -276,10 +276,5 @@ body { margin: 0; background:#0a0a0a; color:#fff; }
 
 /* --- Ensure Buy Me a Coffee widget stays above floating widgets --- */
 [data-name="BMC-Widget"] {
-  z-index: 9999 !important;
-}
-
-/* Ensure Buy Me a Coffee widget is always on top */
-[data-name="BMC-Widget"] {
-  z-index: 9999 !important;
+  z-index: 99999 !important;
 }

@@ -4,24 +4,23 @@ import { useEffect } from "react"
 
 export default function BuyMeCoffee() {
   useEffect(() => {
-    console.log("🔥 BuyMeCoffee mounted")
+    // prevent duplicate injection
+    if (document.querySelector('[data-name="BMC-Widget"]')) return
 
-    const el = document.createElement("div")
-    el.innerText = "BMC TEST ELEMENT"
-    el.style.position = "fixed"
-    el.style.bottom = "20px"
-    el.style.right = "20px"
-    el.style.zIndex = "999999"
-    el.style.background = "red"
-    el.style.color = "white"
-    el.style.padding = "10px"
-    el.style.fontSize = "14px"
+    const script = document.createElement("script")
+    script.src = "/vendor/bmc-widget.prod.min.js" // ✅ local
+    script.async = true
 
-    document.body.appendChild(el)
+    script.setAttribute("data-name", "BMC-Widget")
+    script.setAttribute("data-id", "chefalex")
+    script.setAttribute("data-description", "Support me on Buy me a coffee!")
+    script.setAttribute("data-message", "")
+    script.setAttribute("data-color", "#5F7FFF")
+    script.setAttribute("data-position", "Right")
+    script.setAttribute("data-x_margin", "18")
+    script.setAttribute("data-y_margin", "18")
 
-    return () => {
-      el.remove()
-    }
+    document.body.appendChild(script)
   }, [])
 
   return null
