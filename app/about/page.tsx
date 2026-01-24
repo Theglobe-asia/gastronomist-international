@@ -1,22 +1,10 @@
 // app/about/page.tsx
-"use client";
+"use client"
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import type { MotionProps } from "framer-motion";
-
-// ✅ typed wrappers for motion elements
-type DivMotion = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
-  React.RefAttributes<HTMLDivElement>
->;
-type ArticleMotion = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<React.ComponentPropsWithoutRef<"article"> & MotionProps> &
-  React.RefAttributes<HTMLElement>
->;
-
-const MotionDiv = motion.div as DivMotion;
-const MotionArticle = motion.article as ArticleMotion;
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import Card from "@/components/ui/Card"
+import Button from "@/components/ui/Button"
 
 const leaders = [
   {
@@ -61,94 +49,89 @@ const leaders = [
       "Chefs and leaders worldwide who represent Gastronomist International in their regions.",
     img: "/images/chefwael.png?v=2",
   },
-];
+]
 
 export default function AboutPage() {
-  const [selectedLeader, setSelectedLeader] = useState<any | null>(null);
+  const [active, setActive] = useState<any | null>(null)
 
   return (
-    <main className="container py-16 space-y-14">
-      {/* Title + intro */}
-      <section className="space-y-4">
+    <main className="relative container py-16 space-y-16">
+      {/* Page intro */}
+      <section className="glass-panel glass-panel-pad glass-glow">
         <h1 className="text-4xl sm:text-5xl font-bold text-white">
-          About{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
-            Gastronomist International
-          </span>
+          About <span className="text-white/80">Gastronomist International</span>
         </h1>
-        <p className="text-neutral-300 max-w-3xl">
+
+        <p className="mt-4 max-w-3xl text-neutral-300 leading-relaxed">
           We are a global culinary community focused on modern gastronomy,
           knowledge-sharing, and professional recognition. Our platform connects
-          chefs, educators, creators, and industry partners to celebrate
-          excellence and elevate standards worldwide.
+          chefs, educators, creators, and industry partners worldwide.
         </p>
-        <div className="h-px w-28 bg-yellow-500/60 rounded" />
       </section>
 
-      {/* Mission & Vision */}
-      <section className="grid gap-6 sm:grid-cols-2">
-        <div className="rounded-2xl border border-yellow-500/40 bg-white/[0.02] p-6">
+      {/* Mission / Vision */}
+      <section className="grid sm:grid-cols-2 gap-6">
+        <Card className="p-6">
           <h3 className="font-semibold text-white">Our Mission</h3>
           <p className="mt-2 text-neutral-300">
-            To empower culinary professionals with community, recognition, and
-            opportunities—while championing innovation and ethical practice.
+            Empower culinary professionals through recognition, collaboration,
+            and innovation.
           </p>
-        </div>
-        <div className="rounded-2xl border border-yellow-500/40 bg-white/[0.02] p-6">
+        </Card>
+
+        <Card className="p-6">
           <h3 className="font-semibold text-white">Our Vision</h3>
           <p className="mt-2 text-neutral-300">
-            A modern, inclusive culinary ecosystem where talent thrives, ideas
-            travel, and excellence is visible on a global stage.
+            A modern, inclusive culinary ecosystem where talent thrives on a
+            global stage.
           </p>
-        </div>
+        </Card>
       </section>
 
       {/* What we do */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-white">What We Do</h2>
-        <div className="grid gap-6 md:grid-cols-3">
+
+        <div className="grid md:grid-cols-3 gap-6">
           {[
             {
               t: "Network",
-              d: "Connect chefs, educators, creators, and brands through events, media, and community spaces.",
+              d: "Connect chefs, educators, creators, and brands globally.",
             },
             {
               t: "Recognize",
-              d: "Showcase achievements, profiles, and milestones to elevate members’ careers.",
+              d: "Showcase achievements, profiles, and milestones.",
             },
             {
               t: "Educate",
-              d: "Share methods, research, and industry standards around modern gastronomy.",
+              d: "Share research, standards, and modern gastronomy practices.",
             },
           ].map((i) => (
-            <div
-              key={i.t}
-              className="rounded-2xl border border-yellow-500/40 bg-white/[0.02] p-6"
-            >
+            <Card key={i.t} className="p-6">
               <h3 className="font-semibold text-white">{i.t}</h3>
               <p className="mt-2 text-neutral-300">{i.d}</p>
-            </div>
+            </Card>
           ))}
         </div>
       </section>
 
-      {/* Leadership & Ambassadors with image cards */}
-      <section className="space-y-6">
+      {/* Leadership */}
+      <section className="space-y-8">
         <h2 className="text-2xl font-semibold text-white">
           Leadership & Ambassadors
         </h2>
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {leaders.map((p) => (
-            <MotionArticle
+            <motion.article
               key={p.name}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1 cursor-pointer"
+              className="glass-card glass-shine cursor-pointer"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              onClick={() => setSelectedLeader(p)}
+              transition={{ duration: 0.45 }}
+              onClick={() => setActive(p)}
             >
-              {/* Portrait */}
-              <div className="w-full h-80 sm:h-96 md:h-[500px] overflow-hidden flex items-center justify-center bg-gray-100">
+              <div className="h-72 overflow-hidden border-b border-white/10">
                 <img
                   src={p.img}
                   alt={p.name}
@@ -156,63 +139,64 @@ export default function AboutPage() {
                 />
               </div>
 
-              {/* Content */}
-              <div className="p-5 text-black">
-                <h3 className="font-semibold text-lg">{p.name}</h3>
-                <div className="text-xs text-gray-500 mt-1">{p.role}</div>
-                <p className="text-sm text-gray-700 mt-3">{p.blurb}</p>
+              <div className="p-5">
+                <h3 className="font-medium text-white">{p.name}</h3>
+                <div className="mt-1 text-xs text-neutral-400">{p.role}</div>
+                <p className="mt-3 text-sm text-neutral-300">{p.blurb}</p>
               </div>
-            </MotionArticle>
+            </motion.article>
           ))}
         </div>
       </section>
 
       {/* Modal */}
       <AnimatePresence>
-        {selectedLeader && (
+        {active && (
           <>
-            {/* Backdrop */}
-            <MotionDiv
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            <motion.div
+              className="fixed inset-0 bg-black/70 backdrop-blur-md z-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setSelectedLeader(null)}
+              onClick={() => setActive(null)}
             />
-            {/* Modal Content */}
-            <MotionDiv
+
+            <motion.div
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              exit={{ scale: 0.95, opacity: 0 }}
             >
-              <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full overflow-hidden">
-                <div className="w-full h-96 flex items-center justify-center bg-gray-100">
+              <div className="glass-panel glass-panel-pad max-w-2xl w-full">
+                <div className="h-80 overflow-hidden border-b border-white/10">
                   <img
-                    src={selectedLeader.img}
-                    alt={selectedLeader.name}
+                    src={active.img}
+                    alt={active.name}
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className="p-6 text-black">
-                  <h2 className="text-2xl font-bold">{selectedLeader.name}</h2>
-                  <p className="text-sm text-gray-600 mt-1">
-                    {selectedLeader.role}
-                  </p>
-                  <p className="mt-4 text-gray-700">{selectedLeader.blurb}</p>
-                  <button
-                    onClick={() => setSelectedLeader(null)}
-                    className="mt-6 px-4 py-2 rounded bg-yellow-500 text-black font-semibold hover:brightness-110 transition"
-                  >
-                    Close
-                  </button>
+
+                <div className="pt-6">
+                  <h2 className="text-2xl font-semibold text-white">
+                    {active.name}
+                  </h2>
+                  <p className="mt-1 text-sm text-neutral-400">{active.role}</p>
+                  <p className="mt-4 text-neutral-300">{active.blurb}</p>
+
+                  <div className="mt-6">
+                    <Button
+                      className="glass-btn glass-shine"
+                      onClick={() => setActive(null)}
+                    >
+                      Close
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </MotionDiv>
+            </motion.div>
           </>
         )}
       </AnimatePresence>
     </main>
-  );
+  )
 }
