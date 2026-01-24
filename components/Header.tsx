@@ -3,12 +3,20 @@
 import Link from "next/link"
 import { useState } from "react"
 import MobileSidebar from "@/components/MobileSidebar"
+import {
+  HiOutlineHome,
+  HiOutlineUsers,
+  HiOutlineNewspaper,
+  HiOutlineInformationCircle,
+  HiOutlineShoppingBag,
+} from "react-icons/hi2"
 
 const NAV = [
-  { href: "/", label: "Home" },
-  { href: "/chefs", label: "Our Chefs" },
-  { href: "/press", label: "Press Release" },
-  { href: "/about", label: "About Us" },
+  { href: "/", label: "Home", icon: HiOutlineHome },
+  { href: "/chefs", label: "Our Chefs", icon: HiOutlineUsers },
+  { href: "/press", label: "Press Release", icon: HiOutlineNewspaper },
+  { href: "/about", label: "About Us", icon: HiOutlineInformationCircle },
+  { href: "/shop", label: "Shop", icon: HiOutlineShoppingBag },
 ]
 
 export default function Header() {
@@ -44,23 +52,28 @@ export default function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-3">
-            {NAV.map((i) => (
-              <Link
-                key={i.href}
-                href={i.href}
-                className="
-                  px-4 py-2 rounded-xl
-                  border border-white/10
-                  bg-white/[0.04]
-                  text-sm text-white
-                  hover:border-white/20
-                  hover:bg-white/[0.08]
-                  transition
-                "
-              >
-                {i.label}
-              </Link>
-            ))}
+            {NAV.map((i) => {
+              const Icon = i.icon
+              return (
+                <Link
+                  key={i.href}
+                  href={i.href}
+                  className="
+                    inline-flex items-center gap-2
+                    px-4 py-2 rounded-xl
+                    border border-white/10
+                    bg-white/[0.04]
+                    text-sm text-white
+                    hover:border-white/20
+                    hover:bg-white/[0.08]
+                    transition
+                  "
+                >
+                  <Icon className="h-4 w-4 text-white/85" aria-hidden />
+                  <span>{i.label}</span>
+                </Link>
+              )
+            })}
           </nav>
 
           {/* Mobile toggle */}
@@ -68,6 +81,7 @@ export default function Header() {
             onClick={() => setOpen(true)}
             className="
               md:hidden
+              inline-flex items-center gap-2
               px-4 py-2 rounded-xl
               border border-white/10
               bg-white/[0.05]
@@ -77,7 +91,8 @@ export default function Header() {
               transition
             "
           >
-            Menu
+            <HiOutlineUsers className="h-4 w-4 text-white/85" aria-hidden />
+            <span>Menu</span>
           </button>
         </div>
       </div>

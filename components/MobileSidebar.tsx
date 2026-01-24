@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 import type { MotionProps } from "framer-motion"
+import type { IconType } from "react-icons"
 
 // ---- Typed motion wrappers (support className, onClick, and ref) ----
 type DivMotion = React.ForwardRefExoticComponent<
@@ -27,7 +28,7 @@ export default function MobileSidebar({
 }: {
   open: boolean
   setOpen: (v: boolean) => void
-  nav: { href: string; label: string }[]
+  nav: { href: string; label: string; icon?: IconType }[]
 }) {
   const pathname = usePathname()
   const panelRef = useRef<HTMLDivElement>(null)
@@ -110,20 +111,26 @@ export default function MobileSidebar({
                 <ul className="space-y-2">
                   {nav.map((l) => {
                     const active = pathname === l.href
+                    const Icon = l.icon
                     return (
                       <li key={l.href}>
                         <Link
                           href={l.href}
                           onClick={() => setOpen(false)}
                           className={[
-                            "block rounded-2xl px-4 py-3 text-base transition",
+                            "flex items-center gap-3 rounded-2xl px-4 py-3 text-base transition",
                             "border border-white/10 bg-white/[0.03] text-white",
                             "hover:border-white/20 hover:bg-white/[0.06]",
                             "focus:outline-none focus:ring-2 focus:ring-white/25",
                             active ? "border-white/25 bg-white/[0.06]" : "",
                           ].join(" ")}
                         >
-                          {l.label}
+                          {Icon ? (
+                            <Icon className="h-5 w-5 text-white/85" aria-hidden />
+                          ) : (
+                            <span className="h-5 w-5" aria-hidden />
+                          )}
+                          <span>{l.label}</span>
                         </Link>
                       </li>
                     )
