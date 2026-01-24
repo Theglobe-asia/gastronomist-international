@@ -45,7 +45,7 @@ export default function ContactWidget() {
   return (
     <>
       {/* Floating trigger */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-[8000]">
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -57,7 +57,7 @@ export default function ContactWidget() {
 
       {/* Modal */}
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-[8000] flex items-center justify-center">
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
           <div className="relative w-full max-w-lg rounded-2xl bg-neutral-900 p-6 border border-white/10">
             <div className="flex items-center justify-between mb-4">
