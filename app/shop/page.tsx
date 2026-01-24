@@ -31,7 +31,7 @@ const PRODUCTS: Product[] = [
     copy: "A hospitality SaaS platform answered to the cost, recipe, inventory challenges of every chefs, operators, of hotel, restaurant and bar.",
     priceUsdYearly: 540,
     href: "https://trackme.solutions/",
-    imagePng: "/track-me.png",
+    imagePng: "/images/track-me.png",
     featured: true,
   },
 ]
