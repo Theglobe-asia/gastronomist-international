@@ -294,7 +294,7 @@ export default function Page() {
                 <div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
                     <span className="h-2 w-2 rounded-full bg-white/70" />
-                    Modern Editorial Landing • Dashboard Panel
+                    Join Us
                   </div>
 
                   <h1 className="mt-6 text-4xl sm:text-5xl font-bold leading-tight text-white">
@@ -374,7 +374,7 @@ export default function Page() {
                 What Can We Do For Your <span className="text-white/80">Needs</span>
               </h2>
               <p className="mt-3 text-sm sm:text-base text-neutral-300 leading-relaxed">
-                A modern global platform for recognition, collaboration, and culinary excellence — presented as a dashboard landing experience.
+                A modern global platform for recognition, collaboration, and culinary excellence.
               </p>
 
               <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -397,7 +397,7 @@ export default function Page() {
                 <div>
                   <h3 className="text-lg sm:text-xl font-semibold text-white">Services</h3>
                   <p className="mt-1 text-sm text-neutral-400">
-                    Dashboard-style quick access modules.
+                    
                   </p>
                 </div>
                 <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-400">
@@ -440,7 +440,7 @@ export default function Page() {
                 <div>
                   <h3 className="text-lg sm:text-xl font-semibold text-white">Featured Highlights</h3>
                   <p className="mt-1 text-sm text-neutral-400">
-                    Recognition, membership, and collaboration — presented as a modern dashboard.
+                    Recognition, membership, and collaboration.
                   </p>
                 </div>
                 <a href="/press" className="text-xs text-neutral-300 hover:text-white transition">
