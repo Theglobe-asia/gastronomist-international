@@ -36,19 +36,13 @@ const SERVICES = [
   },
   {
     title: "Leader’s Collaboration",
-    desc: "Build bridges with partners and innovators worldwide.",
+    desc: "Build bridges with partners and innovators.",
     icon: "/images/partnership.png",
   },
 ]
 
 const PARTNERS = ["CSF Intl", "Gastronomist", "Press", "Membership", "Collaboration"]
 
-/**
- * World Graph Map Chart (no external libs)
- * Nodes are based on countries explicitly shown on your site (About page regional reps):
- * Azerbaijan, France, Myanmar, Saudi Arabia
- * You can extend this list later by adding more {label, x, y}.
- */
 function WorldGraphMap() {
   const nodes = [
     { label: "France", x: 44, y: 30 },
@@ -57,7 +51,6 @@ function WorldGraphMap() {
     { label: "Myanmar", x: 72, y: 42 },
   ]
 
-  // A hub point (visual “global network core”)
   const hub = { label: "Global Network", x: 55, y: 36 }
 
   const toPt = (p: { x: number; y: number }) => ({
@@ -70,10 +63,9 @@ function WorldGraphMap() {
   const arcPath = (from: { x: number; y: number }, to: { x: number; y: number }) => {
     const a = toPt(from)
     const b = toPt(to)
-    // control point above midpoint for a smooth arc
     const mx = (a.X + b.X) / 2
     const my = (a.Y + b.Y) / 2
-    const lift = Math.max(70, Math.min(160, Math.abs(a.X - b.X) * 0.18))
+    const lift = Math.max(85, Math.min(190, Math.abs(a.X - b.X) * 0.22))
     const cx = mx
     const cy = my - lift
     return `M ${a.X} ${a.Y} Q ${cx} ${cy} ${b.X} ${b.Y}`
@@ -96,9 +88,7 @@ function WorldGraphMap() {
       </div>
 
       <div className="mt-6 relative">
-        {/* Map glass viewport */}
         <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-          {/* soft internal bloom */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -111,14 +101,17 @@ function WorldGraphMap() {
             }}
           />
 
-          {/* SVG chart */}
+          {/* ZOOMED SVG:
+              - viewBox is cropped to focus on the network area
+              - height increased for readability
+          */}
           <svg
-            viewBox="0 0 1000 520"
-            className="relative z-10 block w-full h-[320px] sm:h-[360px]"
+            viewBox="120 50 760 420"
+            className="relative z-10 block w-full h-[360px] sm:h-[420px]"
             role="img"
             aria-label="World membership graph map"
+            preserveAspectRatio="xMidYMid meet"
           >
-            {/* subtle grid */}
             <defs>
               <linearGradient id="gridFade" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0" stopColor="rgba(255,255,255,0.08)" />
@@ -133,7 +126,7 @@ function WorldGraphMap() {
               </radialGradient>
 
               <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feGaussianBlur stdDeviation="7" result="blur" />
                 <feColorMatrix
                   in="blur"
                   type="matrix"
@@ -141,23 +134,45 @@ function WorldGraphMap() {
                     1 0 0 0 0
                     0 1 0 0 0
                     0 0 1 0 0
-                    0 0 0 0.8 0"
+                    0 0 0 0.85 0"
                 />
               </filter>
             </defs>
 
-            {/* longitude/latitude style lines */}
-            {Array.from({ length: 10 }).map((_, i) => {
-              const x = 70 + i * 95
-              return <line key={`v-${i}`} x1={x} y1={40} x2={x} y2={480} stroke="url(#gridFade)" strokeWidth="1" opacity="0.25" />
+            {/* slightly stronger grid */}
+            {Array.from({ length: 9 }).map((_, i) => {
+              const x = 170 + i * 85
+              return (
+                <line
+                  key={`v-${i}`}
+                  x1={x}
+                  y1={80}
+                  x2={x}
+                  y2={470}
+                  stroke="url(#gridFade)"
+                  strokeWidth="1.2"
+                  opacity="0.28"
+                />
+              )
             })}
             {Array.from({ length: 6 }).map((_, i) => {
-              const y = 70 + i * 70
-              return <line key={`h-${i}`} x1={60} y1={y} x2={940} y2={y} stroke="url(#gridFade)" strokeWidth="1" opacity="0.22" />
+              const y = 120 + i * 62
+              return (
+                <line
+                  key={`h-${i}`}
+                  x1={140}
+                  y1={y}
+                  x2={860}
+                  y2={y}
+                  stroke="url(#gridFade)"
+                  strokeWidth="1.2"
+                  opacity="0.25"
+                />
+              )
             })}
 
-            {/* abstract world silhouette (stylized, not a literal geographic map) */}
-            <g opacity="0.22">
+            {/* abstract silhouette */}
+            <g opacity="0.24">
               <path
                 d="M150,190 C210,140 290,140 340,185 C380,220 410,235 455,235 C520,235 560,190 610,185 C680,178 740,210 780,255 C815,295 805,345 765,365 C715,390 670,380 615,370 C560,360 525,372 470,388 C410,406 350,408 300,388 C250,368 215,350 180,318 C140,280 120,230 150,190 Z"
                 fill="rgba(255,255,255,0.10)"
@@ -172,28 +187,26 @@ function WorldGraphMap() {
               />
             </g>
 
-            {/* network arcs from hub to nodes */}
+            {/* arcs */}
             <g>
               {nodes.map((n) => (
                 <path
                   key={`arc-${n.label}`}
                   d={arcPath(hub, n)}
                   fill="none"
-                  stroke="rgba(120,220,255,0.55)"
-                  strokeWidth="2"
-                  opacity="0.55"
+                  stroke="rgba(120,220,255,0.62)"
+                  strokeWidth="3"
+                  opacity="0.62"
                 />
               ))}
-
-              {/* glow overlay for arcs */}
               {nodes.map((n) => (
                 <path
                   key={`arcGlow-${n.label}`}
                   d={arcPath(hub, n)}
                   fill="none"
                   stroke="rgba(120,220,255,0.35)"
-                  strokeWidth="6"
-                  opacity="0.18"
+                  strokeWidth="9"
+                  opacity="0.20"
                   filter="url(#softGlow)"
                 />
               ))}
@@ -201,9 +214,9 @@ function WorldGraphMap() {
 
             {/* hub */}
             <g>
-              <circle cx={hubPt.X} cy={hubPt.Y} r="26" fill="url(#nodeGlow)" opacity="0.9" />
-              <circle cx={hubPt.X} cy={hubPt.Y} r="7" fill="rgba(255,255,255,0.92)" />
-              <circle cx={hubPt.X} cy={hubPt.Y} r="12" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2" />
+              <circle cx={hubPt.X} cy={hubPt.Y} r="30" fill="url(#nodeGlow)" opacity="0.92" />
+              <circle cx={hubPt.X} cy={hubPt.Y} r="8" fill="rgba(255,255,255,0.92)" />
+              <circle cx={hubPt.X} cy={hubPt.Y} r="14" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2" />
             </g>
 
             {/* nodes */}
@@ -211,22 +224,22 @@ function WorldGraphMap() {
               const p = toPt(n)
               return (
                 <g key={`node-${n.label}`}>
-                  <circle cx={p.X} cy={p.Y} r="18" fill="url(#nodeGlow)" opacity="0.75" />
-                  <circle cx={p.X} cy={p.Y} r="5.5" fill="rgba(255,255,255,0.92)" />
-                  <circle cx={p.X} cy={p.Y} r="10" fill="none" stroke="rgba(255,255,255,0.30)" strokeWidth="2" />
+                  <circle cx={p.X} cy={p.Y} r="22" fill="url(#nodeGlow)" opacity="0.80" />
+                  <circle cx={p.X} cy={p.Y} r="6.5" fill="rgba(255,255,255,0.92)" />
+                  <circle cx={p.X} cy={p.Y} r="12" fill="none" stroke="rgba(255,255,255,0.32)" strokeWidth="2" />
                 </g>
               )
             })}
 
-            {/* labels */}
-            <g fontSize="14" fill="rgba(255,255,255,0.78)">
-              <text x={hubPt.X + 14} y={hubPt.Y - 14}>Global</text>
+            {/* labels bigger */}
+            <g fontSize="16" fill="rgba(255,255,255,0.82)">
+              <text x={hubPt.X + 18} y={hubPt.Y - 18}>Global</text>
               {nodes.map((n) => {
                 const p = toPt(n)
-                const dx = p.X < hubPt.X ? -10 : 10
+                const dx = p.X < hubPt.X ? -12 : 12
                 const anchor = p.X < hubPt.X ? "end" : "start"
                 return (
-                  <text key={`label-${n.label}`} x={p.X + dx} y={p.Y - 16} textAnchor={anchor}>
+                  <text key={`label-${n.label}`} x={p.X + dx} y={p.Y - 20} textAnchor={anchor}>
                     {n.label}
                   </text>
                 )
@@ -234,7 +247,6 @@ function WorldGraphMap() {
             </g>
           </svg>
 
-          {/* footer legend */}
           <div className="relative z-10 border-t border-white/10 px-4 py-3 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-xs text-neutral-300">
               <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: "rgba(120,220,255,0.85)" }} />
@@ -275,13 +287,10 @@ export default function Page() {
           }}
         />
 
-        {/* NEW: 12-col layout to use the marked right-side area on desktop */}
         <div className="grid lg:grid-cols-12 gap-6 items-stretch">
-          {/* Left: existing hero panel (unchanged internally) */}
           <div className="lg:col-span-8">
             <div className="glass-panel glass-panel-pad glass-shine glass-glow h-full">
               <div className="grid lg:grid-cols-2 gap-10 items-center">
-                {/* Left: editorial stack */}
                 <div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
                     <span className="h-2 w-2 rounded-full bg-white/70" />
@@ -297,7 +306,6 @@ export default function Page() {
                     “Your Talent Deserves Global, that’s why We Are Here”
                   </p>
 
-                  {/* CTAs */}
                   <div className="mt-8 flex flex-wrap gap-3">
                     <a href="https://www.csfint.com/" target="_blank" rel="noopener noreferrer">
                       <Button className="glass-btn glass-shine">CSF Intl</Button>
@@ -307,7 +315,6 @@ export default function Page() {
                     </a>
                   </div>
 
-                  {/* Mini KPI chips (hero) */}
                   <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3">
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
                       <div className="text-xs text-neutral-400">Focus</div>
@@ -324,7 +331,6 @@ export default function Page() {
                   </div>
                 </div>
 
-                {/* Right: 3D frame */}
                 <div className="glass-frame h-[420px] lg:h-[460px] relative">
                   <Canvas camera={{ position: [3, 3, 5], fov: 50 }}>
                     <ambientLight intensity={0.7} />
@@ -333,12 +339,10 @@ export default function Page() {
                     <OrbitControls enablePan={false} />
                   </Canvas>
 
-                  {/* overlay gradient for depth */}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-black/30" />
                 </div>
               </div>
 
-              {/* Partner/logo strip (dashboard panel inside hero) */}
               <div className="mt-10">
                 <Card className="p-4 sm:p-5">
                   <div className="flex flex-wrap items-center gap-3">
@@ -356,17 +360,14 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Right: NEW Worldwide Graph Map Chart panel (marked area) */}
           <div className="lg:col-span-4">
             <WorldGraphMap />
           </div>
         </div>
       </section>
 
-      {/* Dashboard grid section: Needs + Services (reference-style columns) */}
       <section className="container pb-10">
         <div className="grid lg:grid-cols-12 gap-6 items-start">
-          {/* Left: Needs + KPI grid */}
           <div className="lg:col-span-7">
             <Card className="p-6 sm:p-7">
               <h2 className="text-2xl sm:text-3xl font-semibold text-white">
@@ -390,7 +391,6 @@ export default function Page() {
             </Card>
           </div>
 
-          {/* Right: Service list panel */}
           <div className="lg:col-span-5">
             <Card className="p-6 sm:p-7">
               <div className="flex items-end justify-between gap-4">
@@ -432,10 +432,8 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Secondary dashboard row (portfolio + testimonial) */}
       <section className="container pb-16">
         <div className="grid lg:grid-cols-12 gap-6 items-start">
-          {/* Portfolio / Projects */}
           <div className="lg:col-span-7">
             <Card className="p-6 sm:p-7">
               <div className="flex items-end justify-between gap-4">
@@ -451,7 +449,6 @@ export default function Page() {
               </div>
 
               <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {/* Medal */}
                 <div className="glass-card glass-shine">
                   <div className="h-40 overflow-hidden border-b border-white/10">
                     <img src="/images/medal.png" alt="Our Official Medal" className="w-full h-full object-cover" />
@@ -464,7 +461,6 @@ export default function Page() {
                   </div>
                 </div>
 
-                {/* Recognition */}
                 <div className="glass-card glass-shine">
                   <div className="h-40 overflow-hidden border-b border-white/10">
                     <img src="/images/recognition.png" alt="Our Membership Recognition" className="w-full h-full object-cover" />
@@ -477,7 +473,6 @@ export default function Page() {
                   </div>
                 </div>
 
-                {/* Partnership */}
                 <div className="glass-card glass-shine">
                   <div className="h-40 overflow-hidden border-b border-white/10">
                     <img src="/images/partnership.png" alt="Leader’s Collaboration" className="w-full h-full object-cover" />
@@ -493,7 +488,6 @@ export default function Page() {
             </Card>
           </div>
 
-          {/* Testimonial / Quote panel */}
           <div className="lg:col-span-5">
             <Card className="p-6 sm:p-7">
               <h3 className="text-lg sm:text-xl font-semibold text-white">Member Spotlight</h3>
