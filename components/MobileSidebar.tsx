@@ -9,11 +9,11 @@ import type { MotionProps } from "framer-motion"
 // ---- Typed motion wrappers (support className, onClick, and ref) ----
 type DivMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
-  React.RefAttributes<HTMLDivElement>
+    React.RefAttributes<HTMLDivElement>
 >
 type AsideMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"aside"> & MotionProps> &
-  React.RefAttributes<HTMLElement>
+    React.RefAttributes<HTMLElement>
 >
 
 const MotionDiv = motion.div as DivMotion
@@ -54,65 +54,87 @@ export default function MobileSidebar({
           {/* Overlay */}
           <MotionDiv
             onClick={() => setOpen(false)}
-            className="fixed inset-0 z-[98] bg-black/60"
+            className="fixed inset-0 z-[98] bg-black/70 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             aria-hidden="true"
           />
 
-          {/* Gradient panel */}
+          {/* Water-glass panel */}
           <MotionAside
             ref={panelRef}
             role="dialog"
             aria-modal="true"
             aria-label="Mobile Menu"
-            className="fixed right-0 top-0 z-[99] h-full w-[86%] max-w-sm
-                       border-l border-yellow-500/60 shadow-2xl outline-none
-                       bg-gradient-to-br from-white/95 via-amber-50/90 to-yellow-100/85
-                       backdrop-blur"
+            className="fixed right-0 top-0 z-[99] h-full w-[86%] max-w-sm outline-none
+                       glass-panel glass-shine
+                       border-l border-white/10"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
           >
-            {/* Header */}
-            <div className="p-5 flex items-center justify-between border-b border-yellow-500/50">
-              <h2 className="font-semibold tracking-wide text-black">Menu</h2>
-              <button
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-black border border-yellow-500/50
-                           hover:bg-yellow-500 hover:text-white transition focus:outline-none
-                           focus:ring-2 focus:ring-yellow-500"
-                aria-label="Close menu"
-              >
-                ✕
-              </button>
-            </div>
+            {/* extra depth tint (keeps glass readable on all backgrounds) */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.55))",
+              }}
+            />
 
-            {/* Nav */}
-            <nav className="px-4 py-5">
-              <ul className="space-y-2">
-                {nav.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      onClick={() => setOpen(false)}
-                      className="block rounded-lg px-3 py-3 text-base text-black
-                                 border border-transparent
-                                 hover:text-yellow-600 hover:bg-yellow-100
-                                 transition focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            {/* Content layer */}
+            <div className="relative flex h-full flex-col">
+              {/* Header */}
+              <div className="p-5 flex items-center justify-between border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-white/70" />
+                  <h2 className="font-semibold tracking-wide text-white">Menu</h2>
+                </div>
 
-            {/* Footer (optional) */}
-            <div className="mt-auto p-4 text-xs text-black/70 border-t border-yellow-500/40">
-              © {new Date().getFullYear()} Gastronomist International
+                <button
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl px-3 py-2 text-white border border-white/15 bg-white/[0.04]
+                             hover:bg-white/[0.08] hover:border-white/25 transition
+                             focus:outline-none focus:ring-2 focus:ring-white/30"
+                  aria-label="Close menu"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Nav */}
+              <nav className="px-4 py-5">
+                <ul className="space-y-2">
+                  {nav.map((l) => {
+                    const active = pathname === l.href
+                    return (
+                      <li key={l.href}>
+                        <Link
+                          href={l.href}
+                          onClick={() => setOpen(false)}
+                          className={[
+                            "block rounded-2xl px-4 py-3 text-base transition",
+                            "border border-white/10 bg-white/[0.03] text-white",
+                            "hover:border-white/20 hover:bg-white/[0.06]",
+                            "focus:outline-none focus:ring-2 focus:ring-white/25",
+                            active ? "border-white/25 bg-white/[0.06]" : "",
+                          ].join(" ")}
+                        >
+                          {l.label}
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </nav>
+
+              {/* Footer */}
+              <div className="mt-auto p-4 text-xs text-neutral-300 border-t border-white/10">
+                © {new Date().getFullYear()} Gastronomist International
+              </div>
             </div>
           </MotionAside>
         </>
