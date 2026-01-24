@@ -11,7 +11,7 @@ import Card from "@/components/ui/Card"
 function SlideCube() {
   return (
     <Float speed={2} rotationIntensity={1.2} floatIntensity={1.2}>
-      <Image url="/images/logo.png" scale={[4.4, 2.8, 2]} transparent toneMapped={false} />
+      <Image url="/images/cube-logo.png" scale={[4.4, 2.8, 2]} transparent toneMapped={false} />
     </Float>
   )
 }
