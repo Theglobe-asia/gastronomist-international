@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function ContactWidget() {
+  const router = useRouter()
+
   const [open, setOpen] = useState(false)
   const [sending, setSending] = useState(false)
   const [ok, setOk] = useState<null | string>(null)
@@ -10,7 +13,7 @@ export default function ContactWidget() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const form = e.currentTarget // <- always the <form/>, never null
+    const form = e.currentTarget
     setSending(true)
     setOk(null)
     setErr(null)
@@ -29,14 +32,17 @@ export default function ContactWidget() {
         throw new Error(j.error || `HTTP ${res.status}`)
       }
 
-      form.reset()        // safe
-      setOk('Sent ✓')
+      form.reset()
+      setOk('Submitted ✓ Redirecting…')
+
+      // Close modal quickly, then redirect to fee page
       setTimeout(() => {
         setOk(null)
-        setOpen(false)    // close after success
-      }, 1200)
+        setOpen(false)
+        router.push('/membership-fee')
+      }, 700)
     } catch (e: any) {
-      setErr(e.message || 'Send failed')
+      setErr(e?.message || 'Send failed')
     } finally {
       setSending(false)
     }
@@ -45,7 +51,7 @@ export default function ContactWidget() {
   return (
     <>
       {/* Floating trigger */}
-      <div className="fixed bottom-6 right-6 z-[8000]">
+      <div className="fixed bottom-6 right-6 z-50">
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -57,7 +63,7 @@ export default function ContactWidget() {
 
       {/* Modal */}
       {open && (
-        <div className="fixed inset-0 z-[8000] flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
           <div className="relative w-full max-w-lg rounded-2xl bg-neutral-900 p-6 border border-white/10">
             <div className="flex items-center justify-between mb-4">
@@ -73,29 +79,53 @@ export default function ContactWidget() {
 
             <form onSubmit={onSubmit} className="space-y-3">
               <div className="grid sm:grid-cols-2 gap-3">
-                <input name="name" placeholder="Full name" required
-                  className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2" />
-                <input name="email" type="email" placeholder="Email" required
-                  className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2" />
+                <input
+                  name="name"
+                  placeholder="Full name"
+                  required
+                  className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2"
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  required
+                  className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2"
+                />
               </div>
 
-              <input name="address" placeholder="Address"
-                className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2" />
+              <input
+                name="address"
+                placeholder="Address"
+                className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2"
+              />
 
               <div className="grid sm:grid-cols-2 gap-3">
-                <input name="currentPosition" placeholder="Current position"
-                  className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2" />
-                <input name="currentCompany" placeholder="Current company"
-                  className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2" />
+                <input
+                  name="currentPosition"
+                  placeholder="Current position"
+                  className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2"
+                />
+                <input
+                  name="currentCompany"
+                  placeholder="Current company"
+                  className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2"
+                />
               </div>
 
-              <input name="experience" placeholder="Experience (e.g. 1-5 years)"
-                className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2" />
+              <input
+                name="experience"
+                placeholder="Experience (e.g. 1-5 years)"
+                className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2"
+              />
 
-              <textarea name="reason" placeholder="Tell us why you want to join"
-                className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2 min-h-[100px]" />
+              <textarea
+                name="reason"
+                placeholder="Tell us why you want to join"
+                className="w-full rounded-lg bg-neutral-800 border border-white/10 px-3 py-2 min-h-[100px]"
+              />
 
-              <div className="flex items-center gap-3 pt-2">
+              <div className="flex items-center gap-3 pt-2 flex-wrap">
                 <button
                   type="submit"
                   disabled={sending}
@@ -103,6 +133,7 @@ export default function ContactWidget() {
                 >
                   {sending ? 'Sending…' : 'Send'}
                 </button>
+
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -110,6 +141,7 @@ export default function ContactWidget() {
                 >
                   Cancel
                 </button>
+
                 {ok && <span className="text-green-400 text-sm">{ok}</span>}
                 {err && <span className="text-red-400 text-sm">{err}</span>}
               </div>
