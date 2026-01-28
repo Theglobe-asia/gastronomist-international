@@ -33,12 +33,12 @@ export default function LatestStory() {
         <div className="mt-6 grid lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-7">
             <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02]">
-              {/* Responsive banner frame (fits perfectly across devices) */}
-              <div className="relative w-full overflow-hidden aspect-[16/9] sm:aspect-[21/9]">
+              {/* Full-image friendly banner frame (no crop) */}
+              <div className="relative w-full overflow-hidden aspect-[16/9] sm:aspect-[21/9] bg-neutral-950">
                 <img
                   src={latest.banner}
                   alt={latest.title}
-                  className="absolute inset-0 w-full h-full object-cover object-center"
+                  className="absolute inset-0 w-full h-full object-contain object-center"
                   loading="lazy"
                 />
               </div>
