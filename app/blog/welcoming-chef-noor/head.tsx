@@ -1,11 +1,12 @@
 import { BLOG_POSTS } from "@/components/blog/posts"
 
+const SITE_URL = "https://www.gastronomistinternational.com"
+
 export default function Head() {
   const post = BLOG_POSTS.find((p) => p.slug === "welcoming-chef-noor")!
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || ""
-  const canonical = siteUrl ? `${siteUrl}/blog/${post.slug}` : `/blog/${post.slug}`
-  const ogImage = siteUrl ? `${siteUrl}${post.banner}` : post.banner
+  const canonical = `${SITE_URL}/blog/${post.slug}`
+  const ogImage = `${SITE_URL}${post.banner}`
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -17,9 +18,7 @@ export default function Head() {
     publisher: {
       "@type": "Organization",
       name: "Gastronomist International",
-      logo: siteUrl
-        ? { "@type": "ImageObject", url: `${siteUrl}/logo.png` }
-        : { "@type": "ImageObject", url: `/logo.png` },
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
     },
     datePublished: post.date,
     dateModified: post.date,
