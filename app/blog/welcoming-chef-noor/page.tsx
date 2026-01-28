@@ -8,7 +8,6 @@ import Link from "next/link"
 export default function BlogChefNoorPage() {
   return (
     <main className="container py-12 sm:py-16 space-y-10">
-      {/* Ambient editorial bloom */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10"
@@ -21,13 +20,13 @@ export default function BlogChefNoorPage() {
         }}
       />
 
-      {/* HERO / COVER */}
       <section className="glass-panel glass-panel-pad glass-shine glass-glow overflow-hidden">
-        <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 aspect-[16/9] sm:aspect-[21/9]">
+        {/* Full-image friendly hero (no crop) */}
+        <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 aspect-[16/9] sm:aspect-[21/9] bg-neutral-950">
           <img
             src="/images/chef-noor.png"
             alt="Chef Noor — GCC Modern Gastronomy"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            className="absolute inset-0 w-full h-full object-contain object-center"
             loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/10" />
@@ -63,7 +62,6 @@ export default function BlogChefNoorPage() {
             </div>
           </div>
 
-          {/* Snapshot */}
           <div className="lg:col-span-4">
             <Card className="p-6">
               <div className="text-sm font-medium text-white">Profile Snapshot</div>
@@ -164,7 +162,6 @@ export default function BlogChefNoorPage() {
           </Card>
         </div>
 
-        {/* SIDEBAR */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="p-6 sm:p-7">
             <h3 className="text-lg font-semibold text-white">Continue Reading</h3>
