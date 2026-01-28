@@ -13,7 +13,6 @@ export default function BlogIndexPage() {
 
   return (
     <main className="container py-12 sm:py-16 space-y-10">
-      {/* Ambient editorial bloom */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10"
@@ -26,7 +25,6 @@ export default function BlogIndexPage() {
         }}
       />
 
-      {/* Editorial header */}
       <section className="glass-panel glass-panel-pad glass-shine glass-glow">
         <div className="grid lg:grid-cols-12 gap-6 items-end">
           <div className="lg:col-span-8">
@@ -74,17 +72,16 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-      {/* Featured (always present) */}
       {featured && (
         <section className="grid lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-8">
             <Card className="p-0 overflow-hidden">
-              {/* Responsive featured banner frame (fits perfectly across devices) */}
-              <div className="relative w-full border-b border-white/10 overflow-hidden aspect-[16/9] sm:aspect-[21/9]">
+              {/* Full-image friendly featured frame (no crop) */}
+              <div className="relative w-full border-b border-white/10 overflow-hidden aspect-[16/9] sm:aspect-[21/9] bg-neutral-950">
                 <img
                   src={featured.banner}
                   alt={featured.title}
-                  className="absolute inset-0 w-full h-full object-cover object-center"
+                  className="absolute inset-0 w-full h-full object-contain object-center"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/10" />
@@ -97,9 +94,7 @@ export default function BlogIndexPage() {
               </div>
 
               <div className="p-6 sm:p-7">
-                <div className="text-xs text-neutral-400">
-                  {featured.date} • {featured.author}
-                </div>
+                <div className="text-xs text-neutral-400">{featured.date} • {featured.author}</div>
                 <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-white">
                   {featured.title}
                 </h2>
@@ -154,7 +149,6 @@ export default function BlogIndexPage() {
         </section>
       )}
 
-      {/* More posts */}
       <section className="grid lg:grid-cols-12 gap-6 items-start">
         <div className="lg:col-span-12">
           <Card className="p-6 sm:p-7">
