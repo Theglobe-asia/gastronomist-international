@@ -79,11 +79,13 @@ export default function BlogIndexPage() {
         <section className="grid lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-8">
             <Card className="p-0 overflow-hidden">
-              <div className="relative h-[240px] sm:h-[320px] lg:h-[380px] border-b border-white/10">
+              {/* Responsive featured banner frame (fits perfectly across devices) */}
+              <div className="relative w-full border-b border-white/10 overflow-hidden aspect-[16/9] sm:aspect-[21/9]">
                 <img
                   src={featured.banner}
                   alt={featured.title}
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/10" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -95,7 +97,9 @@ export default function BlogIndexPage() {
               </div>
 
               <div className="p-6 sm:p-7">
-                <div className="text-xs text-neutral-400">{featured.date} • {featured.author}</div>
+                <div className="text-xs text-neutral-400">
+                  {featured.date} • {featured.author}
+                </div>
                 <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-white">
                   {featured.title}
                 </h2>
@@ -169,7 +173,7 @@ export default function BlogIndexPage() {
                   className="group block rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden hover:border-white/20 hover:bg-white/[0.06] transition"
                 >
                   <div className="h-40 border-b border-white/10 bg-white/[0.02] overflow-hidden">
-                    <img src={p.banner} alt={p.title} className="w-full h-full object-cover" />
+                    <img src={p.banner} alt={p.title} className="w-full h-full object-cover object-center" loading="lazy" />
                   </div>
                   <div className="p-5">
                     <div className="text-xs text-neutral-400">{p.date}</div>
