@@ -9,10 +9,15 @@ import Button from "@/components/ui/Button"
 import Card from "@/components/ui/Card"
 import LatestStory from "@/components/blog/latest-story"
 
+// Cache-buster for static assets in /public/images.
+// Bump this value whenever you replace/delete images but keep the same filenames.
+const ASSET_V = "2026-01-28-1"
+const img = (path: string) => `${path}?v=${ASSET_V}`
+
 function SlideCube() {
   return (
     <Float speed={2} rotationIntensity={1.2} floatIntensity={1.2}>
-      <Image url="/images/cube-logo.png" scale={[4.4, 2.8, 2]} transparent toneMapped={false} />
+      <Image url={img("/images/cube-logo.png")} scale={[4.4, 2.8, 2]} transparent toneMapped={false} />
     </Float>
   )
 }
@@ -28,17 +33,17 @@ const SERVICES = [
   {
     title: "Global Culinary Network",
     desc: "Connect members, chefs, and leaders worldwide.",
-    icon: "/images/recognition.png",
+    icon: img("/images/recognition.png"),
   },
   {
     title: "Membership Recognition",
     desc: "Badges, medals, and official recognition.",
-    icon: "/images/medal.png",
+    icon: img("/images/medal.png"),
   },
   {
     title: "Leader’s Collaboration",
     desc: "Build bridges with partners and innovators.",
-    icon: "/images/partnership.png",
+    icon: img("/images/partnership.png"),
   },
 ]
 
@@ -102,10 +107,6 @@ function WorldGraphMap() {
             }}
           />
 
-          {/* ZOOMED SVG:
-              - viewBox is cropped to focus on the network area
-              - height increased for readability
-          */}
           <svg
             viewBox="120 50 760 420"
             className="relative z-10 block w-full h-[360px] sm:h-[420px]"
@@ -140,7 +141,6 @@ function WorldGraphMap() {
               </filter>
             </defs>
 
-            {/* slightly stronger grid */}
             {Array.from({ length: 9 }).map((_, i) => {
               const x = 170 + i * 85
               return (
@@ -172,7 +172,6 @@ function WorldGraphMap() {
               )
             })}
 
-            {/* abstract silhouette */}
             <g opacity="0.24">
               <path
                 d="M150,190 C210,140 290,140 340,185 C380,220 410,235 455,235 C520,235 560,190 610,185 C680,178 740,210 780,255 C815,295 805,345 765,365 C715,390 670,380 615,370 C560,360 525,372 470,388 C410,406 350,408 300,388 C250,368 215,350 180,318 C140,280 120,230 150,190 Z"
@@ -188,7 +187,6 @@ function WorldGraphMap() {
               />
             </g>
 
-            {/* arcs */}
             <g>
               {nodes.map((n) => (
                 <path
@@ -213,14 +211,12 @@ function WorldGraphMap() {
               ))}
             </g>
 
-            {/* hub */}
             <g>
               <circle cx={hubPt.X} cy={hubPt.Y} r="30" fill="url(#nodeGlow)" opacity="0.92" />
               <circle cx={hubPt.X} cy={hubPt.Y} r="8" fill="rgba(255,255,255,0.92)" />
               <circle cx={hubPt.X} cy={hubPt.Y} r="14" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2" />
             </g>
 
-            {/* nodes */}
             {nodes.map((n) => {
               const p = toPt(n)
               return (
@@ -232,7 +228,6 @@ function WorldGraphMap() {
               )
             })}
 
-            {/* labels bigger */}
             <g fontSize="16" fill="rgba(255,255,255,0.82)">
               <text x={hubPt.X + 18} y={hubPt.Y - 18}>Global</text>
               {nodes.map((n) => {
@@ -273,9 +268,7 @@ function WorldGraphMap() {
 export default function Page() {
   return (
     <div className="relative">
-      {/* Dashboard hero row */}
       <section className="container py-14 sm:py-16 lg:py-20 relative">
-        {/* Hero-local bloom (needed for glass depth) */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10"
@@ -397,9 +390,7 @@ export default function Page() {
               <div className="flex items-end justify-between gap-4">
                 <div>
                   <h3 className="text-lg sm:text-xl font-semibold text-white">Services</h3>
-                  <p className="mt-1 text-sm text-neutral-400">
-                    
-                  </p>
+                  <p className="mt-1 text-sm text-neutral-400"></p>
                 </div>
                 <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-400">
                   <span className="h-2 w-2 rounded-full bg-white/60" />
@@ -452,7 +443,7 @@ export default function Page() {
               <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 <div className="glass-card glass-shine">
                   <div className="h-40 overflow-hidden border-b border-white/10">
-                    <img src="/images/medal.png" alt="Our Official Medal" className="w-full h-full object-cover" />
+                    <img src={img("/images/medal.png")} alt="Our Official Medal" className="w-full h-full object-cover" />
                   </div>
                   <div className="p-5">
                     <h4 className="font-medium text-white">Our Official Medal</h4>
@@ -464,7 +455,7 @@ export default function Page() {
 
                 <div className="glass-card glass-shine">
                   <div className="h-40 overflow-hidden border-b border-white/10">
-                    <img src="/images/recognition.png" alt="Our Membership Recognition" className="w-full h-full object-cover" />
+                    <img src={img("/images/recognition.png")} alt="Our Membership Recognition" className="w-full h-full object-cover" />
                   </div>
                   <div className="p-5">
                     <h4 className="font-medium text-white">Our Membership Recognition</h4>
@@ -476,7 +467,7 @@ export default function Page() {
 
                 <div className="glass-card glass-shine">
                   <div className="h-40 overflow-hidden border-b border-white/10">
-                    <img src="/images/partnership.png" alt="Leader’s Collaboration" className="w-full h-full object-cover" />
+                    <img src={img("/images/partnership.png")} alt="Leader’s Collaboration" className="w-full h-full object-cover" />
                   </div>
                   <div className="p-5">
                     <h4 className="font-medium text-white">Leader’s Collaboration</h4>
@@ -519,7 +510,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-      {/* Latest Story (Blog Featured) */}
+
       <LatestStory />
     </div>
   )
