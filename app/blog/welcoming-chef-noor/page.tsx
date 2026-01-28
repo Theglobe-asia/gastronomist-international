@@ -23,11 +23,12 @@ export default function BlogChefNoorPage() {
 
       {/* HERO / COVER */}
       <section className="glass-panel glass-panel-pad glass-shine glass-glow overflow-hidden">
-        <div className="relative h-[260px] sm:h-[340px] lg:h-[420px] rounded-2xl overflow-hidden border border-white/10">
+        <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 aspect-[16/9] sm:aspect-[21/9]">
           <img
             src="/images/chef-noor.png"
             alt="Chef Noor — GCC Modern Gastronomy"
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
