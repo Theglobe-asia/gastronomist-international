@@ -1,9 +1,47 @@
 // app/blog/welcoming-chef-noor/page.tsx
-"use client"
 
+import type { Metadata } from "next"
 import Card from "@/components/ui/Card"
 import Button from "@/components/ui/Button"
 import Link from "next/link"
+
+const SITE_URL = "https://www.gastronomistinternational.com"
+const CANONICAL = `${SITE_URL}/blog/welcoming-chef-noor`
+const OG_IMAGE = `${SITE_URL}/images/noor.png`
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Welcoming Chef Noor — A New Culinary Chapter from the GCC",
+    description:
+      "Gastronomist International welcomes Chef Noor, representing the new wave of modern Middle Eastern gastronomy from the GCC.",
+    alternates: {
+      canonical: CANONICAL,
+    },
+    openGraph: {
+      type: "article",
+      url: CANONICAL,
+      siteName: "Gastronomist International",
+      title: "Welcoming Chef Noor — A New Culinary Chapter from the GCC",
+      description:
+        "Gastronomist International welcomes Chef Noor, representing the new wave of modern Middle Eastern gastronomy from the GCC.",
+      images: [
+        {
+          url: OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: "Welcoming Chef Noor — A New Culinary Chapter from the GCC",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Welcoming Chef Noor — A New Culinary Chapter from the GCC",
+      description:
+        "Gastronomist International welcomes Chef Noor, representing the new wave of modern Middle Eastern gastronomy from the GCC.",
+      images: [OG_IMAGE],
+    },
+  }
+}
 
 export default function BlogChefNoorPage() {
   return (
