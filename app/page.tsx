@@ -7,6 +7,7 @@ import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Float, Image } from "@react-three/drei"
 import Button from "@/components/ui/Button"
 import Card from "@/components/ui/Card"
+import LatestStory from "@/components/blog/latest-story"
 
 function SlideCube() {
   return (
@@ -518,6 +519,8 @@ export default function Page() {
           </div>
         </div>
       </section>
+      {/* Latest Story (Blog Featured) */}
+      <LatestStory />
     </div>
   )
 }
