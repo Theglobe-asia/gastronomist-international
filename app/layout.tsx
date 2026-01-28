@@ -6,7 +6,11 @@ import ContactWidget from "@/components/ContactWidget"
 import BuyMeCoffee from "@/components/BuyMeCoffee"
 // import PwaRegister from "@/components/PwaRegister"
 
+const SITE_URL = "https://www.gastronomistinternational.com"
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+
   title: "Gastronomist International",
   description:
     "We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques.",
@@ -26,6 +30,32 @@ export const metadata: Metadata = {
     capable: true,
     title: "Gastronomist International",
     statusBarStyle: "black-translucent",
+  },
+
+  // ✅ Global social sharing (fixes gray previews)
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Gastronomist International",
+    title: "Gastronomist International",
+    description:
+      "We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques.",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Gastronomist International",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Gastronomist International",
+    description:
+      "We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques.",
+    images: ["/logo.png"],
   },
 }
 
