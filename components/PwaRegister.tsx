@@ -6,16 +6,29 @@ export default function PwaRegister() {
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return
 
-    const onLoad = async () => {
+    const resetAndRegister = async () => {
       try {
-        await navigator.serviceWorker.register("/sw.js")
+        // 1️⃣ Unregister all existing service workers
+        const registrations = await navigator.serviceWorker.getRegistrations()
+        await Promise.all(registrations.map((r) => r.unregister()))
+
+        // 2️⃣ Clear all cache storage (critical for stale images)
+        if ("caches" in window) {
+          const keys = await caches.keys()
+          await Promise.all(keys.map((k) => caches.delete(k)))
+        }
+
+        // 3️⃣ Register fresh service worker
+        await navigator.serviceWorker.register("/sw.js", {
+          updateViaCache: "none",
+        })
       } catch {
-        // silent: SW registration should not break the site
+        // silent by design
       }
     }
 
-    window.addEventListener("load", onLoad)
-    return () => window.removeEventListener("load", onLoad)
+    window.addEventListener("load", resetAndRegister)
+    return () => window.removeEventListener("load", resetAndRegister)
   }, [])
 
   return null
