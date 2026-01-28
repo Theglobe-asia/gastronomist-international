@@ -4,7 +4,7 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import ContactWidget from "@/components/ContactWidget"
 import BuyMeCoffee from "@/components/BuyMeCoffee"
-import PwaRegister from "@/components/PwaRegister"
+// import PwaRegister from "@/components/PwaRegister"
 
 export const metadata: Metadata = {
   title: "Gastronomist International",
@@ -46,6 +46,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
+        {/* ✅ Emergency cache reset (fixes old images persisting on mobile/PWA) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+(function () {
+  try {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        return Promise.all(regs.map(function (r) { return r.unregister(); }));
+      }).catch(function(){});
+    }
+    if ("caches" in window) {
+      caches.keys().then(function (keys) {
+        return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+      }).catch(function(){});
+    }
+  } catch (e) {}
+})();
+`,
+          }}
+        />
+
         {/* App content */}
         <div className="relative z-10 flex flex-col min-h-screen">
           <Header />
@@ -57,8 +79,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Buy Me a Coffee widget */}
         <BuyMeCoffee />
 
-        {/* ✅ PWA service worker registration */}
-        <PwaRegister />
+        {/* ✅ PWA service worker registration (disabled to stop old cached images on devices) */}
+        {/* <PwaRegister /> */}
       </body>
     </html>
   )

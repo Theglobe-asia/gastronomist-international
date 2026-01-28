@@ -24,7 +24,7 @@ export default function BlogChefNoorPage() {
         {/* Full-image friendly hero (no crop) */}
         <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 aspect-[16/9] sm:aspect-[21/9] bg-neutral-950">
           <img
-            src="/images/chef-noor.png"
+            src="/images/noor.png"
             alt="Chef Noor — GCC Modern Gastronomy"
             className="absolute inset-0 w-full h-full object-contain object-center"
             loading="eager"

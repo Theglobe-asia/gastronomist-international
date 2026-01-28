@@ -18,7 +18,7 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       "Gastronomist International welcomes Chef Noor, representing the new wave of modern Middle Eastern gastronomy from the GCC.",
     date: "2026-01-24",
-    banner: "/images/chef-noor.png",
+    banner: "/images/noor.png",
     author: "Gastronomist International",
     tags: ["GCC", "Modern Gastronomy", "Membership", "Middle East"],
     region: "GCC — Middle East",
