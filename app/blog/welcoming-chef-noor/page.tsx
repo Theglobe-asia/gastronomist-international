@@ -1,192 +1,74 @@
-// app/blog/page.tsx
-"use client"
+// app/blog/welcoming-chef-noor/page.tsx
+import Image from "next/image"
 
-import Link from "next/link"
-import Card from "@/components/ui/Card"
-import Button from "@/components/ui/Button"
-import { getSortedPosts } from "@/components/blog/posts"
-
-export default function BlogIndexPage() {
-  const posts = getSortedPosts()
-  const featured = posts[0]
-  const others = posts.slice(1)
-
+export default function PostPage() {
   return (
-    <main className="container py-12 sm:py-16 space-y-10">
-      {/* Ambient editorial bloom */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 -z-10"
-        style={{
-          background: `
-            radial-gradient(1100px 520px at 18% 14%, rgba(120,220,255,0.18), transparent 62%),
-            radial-gradient(900px 480px at 86% 18%, rgba(255,255,255,0.10), transparent 70%),
-            radial-gradient(900px 520px at 50% 110%, rgba(80,120,255,0.08), transparent 70%)
-          `,
-        }}
-      />
+    <main className="container py-16 space-y-12 max-w-4xl">
+      {/* Banner */}
+      <div className="relative h-[320px] rounded-2xl overflow-hidden border border-white/10">
+        <Image
+          src="/images/chef-noor.png"
+          alt="Chef Noor"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      </div>
 
-      {/* Editorial header */}
-      <section className="glass-panel glass-panel-pad glass-shine glass-glow">
-        <div className="grid lg:grid-cols-12 gap-6 items-end">
-          <div className="lg:col-span-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
-              <span className="h-2 w-2 rounded-full bg-white/70" />
-              Editorial Magazine • Blog
-            </div>
-
-            <h1 className="mt-5 text-4xl sm:text-5xl font-bold text-white leading-tight">
-              Gastronomist{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
-                Journal
-              </span>
-            </h1>
-
-            <p className="mt-4 text-neutral-300 leading-relaxed max-w-3xl">
-              Membership welcomes, global culinary stories, and modern gastronomy features — presented in a refined editorial dashboard.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/">
-                <Button className="glass-btn glass-btn-muted glass-shine">Back to Home</Button>
-              </Link>
-              <Link href="/chefs">
-                <Button className="glass-btn glass-shine">Explore Chefs</Button>
-              </Link>
-            </div>
+      {/* Article */}
+      <article className="space-y-6 text-neutral-300 leading-relaxed">
+        <header className="space-y-3">
+          <div className="text-xs uppercase tracking-widest text-neutral-400">
+            Editorial Feature
           </div>
+          <h1 className="text-4xl font-bold text-white">
+            Welcoming Chef Noor — A New Culinary Chapter from the GCC
+          </h1>
+        </header>
 
-          <div className="lg:col-span-4">
-            <Card className="p-6">
-              <div className="text-sm font-medium text-white">Publishing</div>
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  <div className="text-[11px] text-neutral-400">Posts</div>
-                  <div className="mt-1 text-sm text-white">{posts.length}</div>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  <div className="text-[11px] text-neutral-400">Reach</div>
-                  <div className="mt-1 text-sm text-white">Worldwide</div>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
+        <p>
+          Gastronomist International proudly welcomes Chef Noor as our newest member,
+          representing the bold, evolving culinary identity of the Gulf Cooperation Council (GCC).
+        </p>
 
-      {/* Featured (always present) */}
-      {featured && (
-        <section className="grid lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-8">
-            <Card className="p-0 overflow-hidden">
-              <div className="relative h-[240px] sm:h-[320px] lg:h-[380px] border-b border-white/10">
-                <img
-                  src={featured.banner}
-                  alt={featured.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/10" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <p>
+          Chef Noor joins our international network as a symbol of a new generation of Middle
+          Eastern chefs — refined, forward-thinking, and deeply rooted in cultural heritage.
+        </p>
 
-                <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs text-neutral-200">
-                  <span className="h-2 w-2 rounded-full bg-yellow-400/90" />
-                  Featured Story
-                </div>
-              </div>
+        <h2 className="text-2xl font-semibold text-white pt-6">
+          The Rise of Modern GCC Gastronomy
+        </h2>
 
-              <div className="p-6 sm:p-7">
-                <div className="text-xs text-neutral-400">{featured.date} • {featured.author}</div>
-                <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-white">
-                  {featured.title}
-                </h2>
-                <p className="mt-3 text-neutral-300 leading-relaxed max-w-3xl">
-                  {featured.description}
-                </p>
+        <p>
+          Over the past decade, the GCC has emerged as a powerful force in global gastronomy.
+          Its culinary evolution reflects a seamless fusion of tradition and innovation —
+          a philosophy embodied by Chef Noor.
+        </p>
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link href={`/blog/${featured.slug}`}>
-                    <Button className="glass-btn glass-shine">Read Story</Button>
-                  </Link>
-                  <Link href="/about">
-                    <Button className="glass-btn glass-btn-muted glass-shine">About Us</Button>
-                  </Link>
-                </div>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Respect for regional ingredients and flavors</li>
+          <li>Contemporary reinterpretations of Middle Eastern cuisine</li>
+          <li>Precision, balance, and modern technique</li>
+          <li>A global culinary perspective grounded in authenticity</li>
+        </ul>
 
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {featured.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-neutral-200"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Card>
-          </div>
+        <h2 className="text-2xl font-semibold text-white pt-6">
+          A Shared Vision with Gastronomist International
+        </h2>
 
-          <div className="lg:col-span-4">
-            <Card className="p-6 sm:p-7">
-              <h3 className="text-lg font-semibold text-white">What you’ll find</h3>
-              <p className="mt-2 text-sm text-neutral-400 leading-relaxed">
-                Membership welcomes, global profiles, modern technique stories, and editorial press-style releases.
-              </p>
+        <p>
+          Chef Noor’s membership strengthens the GCC’s presence within our global chef network
+          and reinforces the region’s growing influence in fine dining and contemporary cuisine.
+        </p>
 
-              <div className="mt-5 space-y-3">
-                {[
-                  { k: "Editorial standard", v: "Magazine layout + glass panels" },
-                  { k: "SEO-ready", v: "Meta, OG, Twitter, JSON-LD" },
-                  { k: "Global reach", v: "Members worldwide" },
-                ].map((i) => (
-                  <div key={i.k} className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                    <div className="text-[11px] text-neutral-400">{i.k}</div>
-                    <div className="mt-1 text-sm text-white">{i.v}</div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
-        </section>
-      )}
-
-      {/* More posts */}
-      <section className="grid lg:grid-cols-12 gap-6 items-start">
-        <div className="lg:col-span-12">
-          <Card className="p-6 sm:p-7">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <h3 className="text-lg sm:text-xl font-semibold text-white">Latest Posts</h3>
-                <p className="mt-1 text-sm text-neutral-400">All stories, sorted newest first.</p>
-              </div>
-            </div>
-
-            <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {(others.length ? others : posts).map((p) => (
-                <Link
-                  key={p.slug}
-                  href={`/blog/${p.slug}`}
-                  className="group block rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden hover:border-white/20 hover:bg-white/[0.06] transition"
-                >
-                  <div className="h-40 border-b border-white/10 bg-white/[0.02] overflow-hidden">
-                    <img src={p.banner} alt={p.title} className="w-full h-full object-cover" />
-                  </div>
-                  <div className="p-5">
-                    <div className="text-xs text-neutral-400">{p.date}</div>
-                    <div className="mt-2 text-sm font-medium text-white">{p.title}</div>
-                    <div className="mt-2 text-sm text-neutral-300 leading-relaxed line-clamp-3">
-                      {p.description}
-                    </div>
-                    <div className="mt-4 text-white/50 group-hover:text-white/80 transition" aria-hidden>
-                      Read →
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </Card>
-        </div>
-      </section>
+        <p className="font-medium text-white">
+          Welcome to the international stage.
+          <br />
+          Welcome to Gastronomist International.
+        </p>
+      </article>
     </main>
   )
 }
