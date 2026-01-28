@@ -135,8 +135,8 @@ export default function BlogIndexPage() {
 
               <div className="mt-5 space-y-3">
                 {[
-                  { k: "Editorial standard", v: "Magazine layout + glass panels" },
-                  { k: "SEO-ready", v: "Meta, OG, Twitter, JSON-LD" },
+                  { k: "Editorial standard", v: "Magazine" },
+                  { k: "Blog", v: "Chefs" },
                   { k: "Global reach", v: "Members worldwide" },
                 ].map((i) => (
                   <div key={i.k} className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
