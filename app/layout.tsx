@@ -32,10 +32,11 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
   },
 
-  // ✅ Global social sharing (fixes gray previews)
+  // ✅ Global social sharing (default fallback)
+  // IMPORTANT: do NOT set openGraph.url here, so per-page routes (blog posts)
+  // can have correct canonical/og:url and show their own og:image.
   openGraph: {
     type: "website",
-    url: SITE_URL,
     siteName: "Gastronomist International",
     title: "Gastronomist International",
     description:
