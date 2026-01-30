@@ -90,7 +90,9 @@ export default function MembershipFeePage() {
           <Card className="p-6 sm:p-7">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-white">Complete Your Membership Fee</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold text-white">
+                  Complete Your Membership Fee
+                </h2>
                 <p className="mt-1 text-sm text-neutral-400">
                   Secure checkout powered by Stripe.
                 </p>
@@ -102,27 +104,26 @@ export default function MembershipFeePage() {
             </div>
 
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-              {/* Stripe Buy Button Web Component */}
               <stripe-buy-button
-                buy-button-id="buy_btn_1StUFUDJAqMG5OAa51ouNlbC"
-                publishable-key="pk_live_51SqSY8DJAqMG5OAaEnXl2JOsNeLP4EXJoEwYUNOStIBS7y8NJ1Rekz45Sk8Y4u8vxw6q3AtsOWvCffjFUy4SHe3500nZNam8IA"
+                buy-button-id="buy_btn_1SCDq7QKagTX2NV7iLEwYf0i"
+                publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
               />
             </div>
 
             <p className="mt-4 text-xs text-neutral-400 leading-relaxed">
-              After payment, keep an eye on your email for confirmation and next steps. If you need support, contact us
-              via the Register widget.
+              After payment, keep an eye on your email for confirmation and next steps. If you need support,
+              contact us via the Register widget.
             </p>
           </Card>
         </div>
 
-        {/* Right: reassurance / editorial notes */}
+        {/* Right: reassurance */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="p-6 sm:p-7">
             <h3 className="text-lg font-semibold text-white">Important</h3>
             <p className="mt-2 text-sm text-neutral-300 leading-relaxed">
-              Membership becomes official after the membership fee is completed. This helps us prepare and ship your
-              medal, certificate, and publish your recognition across our channels.
+              Membership becomes official after the membership fee is completed. This helps us prepare and ship
+              your medal, certificate, and publish your recognition across our channels.
             </p>
 
             <div className="mt-5 grid grid-cols-2 gap-3">
