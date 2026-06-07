@@ -9,12 +9,12 @@ const ASSET_V = "2026-01-28-1"
 const img = (path: string) => `${path}?v=${ASSET_V}`
 
 const FEATURES = [
-  ["Global Culinary Network", "Connecting chefs, culinary leaders, and professionals from around the world."],
-  ["Membership Recognition", "Official recognition for culinary excellence and professional achievement."],
-  ["Leader Collaboration", "Building partnerships and creating opportunities through global culinary collaboration."],
-  ["Worldwide Members", "A strong and diverse community with members across global hospitality markets."],
-  ["Prestigious Benefits", "Certificates, medals, publications, and global recognition."],
-  ["Events & Programs", "Global culinary events, forums, competitions, and educational programs."],
+  ["Global Culinary Network", "Connecting chefs, culinary leaders, and professionals across continents."],
+  ["Membership Recognition", "Official recognition for culinary excellence, leadership, and achievement."],
+  ["Leader Collaboration", "Creating international opportunities through culinary partnerships and exchange."],
+  ["Worldwide Members", "A diverse professional community connected across global hospitality markets."],
+  ["Prestigious Benefits", "Certificates, medals, publications, and international member visibility."],
+  ["Events & Programs", "Culinary events, forums, competitions, and professional development programs."],
 ]
 
 const BENEFITS = [
@@ -26,10 +26,92 @@ const BENEFITS = [
 
 const JOURNEY = [
   ["1. Submit Application", "Complete the membership application with your professional details."],
-  ["2. Application Review", "Our team reviews your application and professional background."],
-  ["3. Membership Fee", "Secure your membership by completing the membership fee payment."],
-  ["4. Membership Activation", "Your membership is activated and you become an official member."],
-  ["5. Recognition & Benefits", "Receive your benefits and join our global culinary community."],
+  ["2. Application Review", "Our team reviews your profile, background, and culinary experience."],
+  ["3. Membership Fee", "Secure your membership by completing the official membership fee."],
+  ["4. Membership Activation", "Your membership is activated and confirmed as official."],
+  ["5. Recognition & Benefits", "Receive your member benefits and join the global culinary community."],
+]
+
+const TESTIMONIALS = [
+  {
+    quote:
+      "Being connected to an international culinary platform has helped me expand my professional network and strengthen the credibility of my restaurant group.",
+    name: "Chef Alessio Romano",
+    role: "Executive Chef & Owner",
+    location: "Rome, Italy",
+  },
+  {
+    quote:
+      "The recognition gave my team and students a stronger sense of pride. It also opened meaningful conversations with chefs and educators outside my region.",
+    name: "Chef Amina Benali",
+    role: "Culinary Instructor",
+    location: "Marrakech, Morocco",
+  },
+  {
+    quote:
+      "For chefs working internationally, visibility matters. This platform gives professionals a polished way to present achievement, discipline, and dedication.",
+    name: "Chef Kenji Watanabe",
+    role: "Hotel Executive Chef",
+    location: "Tokyo, Japan",
+  },
+]
+
+const MAP_COUNTRIES = [
+  ["Canada", 205, 140],
+  ["United States", 215, 210],
+  ["Mexico", 175, 275],
+  ["Brazil", 315, 365],
+  ["United Kingdom", 465, 142],
+  ["France", 485, 188],
+  ["Spain", 468, 225],
+  ["Italy", 515, 230],
+  ["Germany", 532, 170],
+  ["Russia", 695, 128],
+  ["Nigeria", 525, 315],
+  ["South Africa", 555, 430],
+  ["UAE", 595, 260],
+  ["India", 665, 290],
+  ["China", 755, 235],
+  ["Japan", 850, 220],
+  ["Thailand", 735, 325],
+  ["Singapore", 745, 365],
+  ["Indonesia", 780, 395],
+  ["Australia", 835, 440],
+]
+
+const MAP_NODES = [
+  [500, 210],
+  [215, 210],
+  [315, 365],
+  [465, 142],
+  [485, 188],
+  [532, 170],
+  [595, 260],
+  [665, 290],
+  [755, 235],
+  [850, 220],
+  [735, 325],
+  [745, 365],
+  [835, 440],
+  [555, 430],
+  [525, 315],
+]
+
+const MAP_ROUTES = [
+  "M500 210 Q360 82 215 210",
+  "M500 210 Q405 245 315 365",
+  "M500 210 Q468 172 465 142",
+  "M500 210 Q485 200 485 188",
+  "M500 210 Q520 175 532 170",
+  "M500 210 Q560 230 595 260",
+  "M500 210 Q595 250 665 290",
+  "M500 210 Q635 150 755 235",
+  "M500 210 Q705 122 850 220",
+  "M500 210 Q660 315 735 325",
+  "M500 210 Q675 365 745 365",
+  "M500 210 Q710 390 835 440",
+  "M500 210 Q520 330 555 430",
+  "M500 210 Q505 290 525 315",
 ]
 
 export default function Page() {
@@ -153,15 +235,12 @@ export default function Page() {
         </div>
 
         <div className="gi-testimonial-grid">
-          {["Chef Marco Bianchi", "Chef Mei Lin", "Chef James Carter"].map((name) => (
-            <article className="gi-testimonial" key={name}>
-              <p>
-                “Gastronomist International has opened doors to incredible opportunities
-                and connected me with culinary leaders from around the world.”
-              </p>
-              <strong>{name}</strong>
-              <span>Global Culinary Member</span>
-              <small>★★★★★</small>
+          {TESTIMONIALS.map((item) => (
+            <article className="gi-testimonial" key={item.name}>
+              <p>“{item.quote}”</p>
+              <strong>{item.name}</strong>
+              <span>{item.role}</span>
+              <small>{item.location}</small>
             </article>
           ))}
         </div>
@@ -377,7 +456,7 @@ export default function Page() {
 
         .gi-network {
           display: grid;
-          grid-template-columns: 0.48fr 0.52fr;
+          grid-template-columns: 0.45fr 0.55fr;
           gap: 24px;
           padding: 28px;
           margin-bottom: 46px;
@@ -534,7 +613,7 @@ export default function Page() {
 
         .gi-map {
           position: relative;
-          min-height: 360px;
+          min-height: 390px;
           border-radius: 22px;
           overflow: hidden;
           border: 1px solid rgba(212, 163, 54, 0.22);
@@ -558,14 +637,20 @@ export default function Page() {
         }
 
         .gi-continent {
-          fill: rgba(230, 225, 212, 0.22);
-          stroke: rgba(255, 255, 255, 0.12);
+          fill: rgba(230, 225, 212, 0.2);
+          stroke: rgba(255, 255, 255, 0.13);
           stroke-width: 1;
+        }
+
+        .gi-country-zone {
+          fill: rgba(217, 163, 49, 0.08);
+          stroke: rgba(217, 163, 49, 0.16);
+          stroke-width: 0.8;
         }
 
         .gi-route {
           fill: none;
-          stroke: rgba(217, 163, 49, 0.66);
+          stroke: rgba(217, 163, 49, 0.68);
           stroke-width: 1.2;
           stroke-dasharray: 8 10;
           animation: giDash 7s linear infinite;
@@ -587,6 +672,43 @@ export default function Page() {
         .gi-grid-dot {
           fill: rgba(217, 163, 49, 0.18);
           animation: giTwinkle 4s ease-in-out infinite;
+        }
+
+        .gi-country-label {
+          fill: rgba(255, 248, 226, 0.94);
+          font-size: 13px;
+          font-weight: 700;
+          paint-order: stroke;
+          stroke: rgba(0, 0, 0, 0.82);
+          stroke-width: 4px;
+          stroke-linejoin: round;
+          pointer-events: none;
+        }
+
+        .gi-map.large .gi-country-label {
+          font-size: 14px;
+        }
+
+        .gi-map-caption {
+          position: absolute;
+          left: 18px;
+          top: 16px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #d9a331;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .gi-live-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 999px;
+          background: #25d366;
+          box-shadow: 0 0 18px rgba(37, 211, 102, 0.9);
         }
 
         @keyframes giDash {
@@ -662,7 +784,7 @@ export default function Page() {
           }
 
           .gi-map.large {
-            min-height: 340px;
+            min-height: 360px;
           }
 
           .gi-feature-grid,
@@ -675,6 +797,10 @@ export default function Page() {
           .gi-benefit-img {
             height: 220px;
           }
+
+          .gi-country-label {
+            font-size: 10px;
+          }
         }
       `}</style>
     </main>
@@ -684,9 +810,14 @@ export default function Page() {
 function GlobalMap({ large = false }) {
   return (
     <div className={`gi-map ${large ? "large" : ""}`}>
-      <svg viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet" aria-label="Animated global culinary map">
+      <div className="gi-map-caption">
+        <span className="gi-live-dot" />
+        Live Global Map
+      </div>
+
+      <svg viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet" aria-label="Animated global culinary map with country names">
         <g opacity="0.9">
-          {Array.from({ length: 95 }).map((_, i) => (
+          {Array.from({ length: 115 }).map((_, i) => (
             <circle
               key={i}
               className="gi-grid-dot"
@@ -699,23 +830,22 @@ function GlobalMap({ large = false }) {
         </g>
 
         <g>
-          <path className="gi-continent" d="M150 180C195 130 275 130 330 175C375 212 410 230 465 226C525 222 560 174 625 176C700 179 770 218 820 275C860 320 840 370 780 390C710 413 655 385 595 378C525 370 485 405 410 410C330 415 255 388 205 340C150 288 110 225 150 180Z" />
-          <path className="gi-continent" d="M700 105C760 72 850 95 882 150C910 198 890 262 835 282C780 302 730 270 710 220C692 174 660 128 700 105Z" />
-          <path className="gi-continent" d="M210 350C258 318 330 330 360 378C385 420 350 470 292 474C238 478 195 442 190 397C186 374 193 360 210 350Z" />
-          <path className="gi-continent" d="M535 260C575 248 615 274 622 315C630 360 600 410 560 420C520 430 490 392 498 350C505 312 502 274 535 260Z" />
-          <path className="gi-continent" d="M775 350C825 330 880 345 900 390C920 438 885 475 830 465C780 456 745 380 775 350Z" />
+          <path className="gi-continent" d="M120 150C170 90 270 92 340 145C390 183 410 230 470 224C525 218 560 170 625 175C710 182 780 220 835 282C875 328 850 380 785 398C715 417 665 388 600 380C525 370 490 408 410 412C320 417 240 390 185 340C125 285 75 205 120 150Z" />
+          <path className="gi-continent" d="M690 95C765 55 870 92 900 160C930 225 890 286 830 300C765 315 720 270 705 225C690 180 645 120 690 95Z" />
+          <path className="gi-continent" d="M205 350C258 312 330 330 365 380C392 420 352 473 292 476C235 480 190 442 188 398C186 374 190 360 205 350Z" />
+          <path className="gi-continent" d="M532 250C578 238 620 272 626 318C633 365 602 415 558 423C515 431 488 392 498 348C505 310 498 265 532 250Z" />
+          <path className="gi-continent" d="M770 345C828 322 890 345 910 392C930 443 888 478 828 468C775 459 738 380 770 345Z" />
+
+          <ellipse className="gi-country-zone" cx="215" cy="210" rx="44" ry="26" />
+          <ellipse className="gi-country-zone" cx="315" cy="365" rx="35" ry="42" />
+          <ellipse className="gi-country-zone" cx="500" cy="210" rx="82" ry="58" />
+          <ellipse className="gi-country-zone" cx="665" cy="290" rx="44" ry="36" />
+          <ellipse className="gi-country-zone" cx="755" cy="235" rx="58" ry="38" />
+          <ellipse className="gi-country-zone" cx="835" cy="440" rx="50" ry="30" />
         </g>
 
         <g>
-          {[
-            "M500 235 Q360 88 210 178",
-            "M500 235 Q665 80 805 165",
-            "M500 235 Q710 245 845 380",
-            "M500 235 Q455 330 290 408",
-            "M500 235 Q520 330 555 385",
-            "M500 235 Q350 260 190 310",
-            "M500 235 Q630 165 740 230",
-          ].map((d) => (
+          {MAP_ROUTES.map((d) => (
             <g key={d}>
               <path className="gi-route-glow" d={d} />
               <path className="gi-route" d={d} />
@@ -724,20 +854,16 @@ function GlobalMap({ large = false }) {
         </g>
 
         <g>
-          {[
-            [500, 235],
-            [210, 178],
-            [805, 165],
-            [845, 380],
-            [290, 408],
-            [555, 385],
-            [190, 310],
-            [740, 230],
-            [600, 180],
-            [420, 210],
-            [680, 320],
-          ].map(([cx, cy], i) => (
+          {MAP_NODES.map(([cx, cy], i) => (
             <circle key={i} className="gi-node" cx={cx} cy={cy} r={i === 0 ? 8 : 5} />
+          ))}
+        </g>
+
+        <g>
+          {MAP_COUNTRIES.map(([name, x, y]) => (
+            <text key={name} className="gi-country-label" x={x} y={y} textAnchor="middle">
+              {name}
+            </text>
           ))}
         </g>
       </svg>
