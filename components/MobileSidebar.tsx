@@ -7,11 +7,11 @@ import { AnimatePresence, motion } from "framer-motion"
 import type { MotionProps } from "framer-motion"
 import type { IconType } from "react-icons"
 
-// ---- Typed motion wrappers (support className, onClick, and ref) ----
 type DivMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
     React.RefAttributes<HTMLDivElement>
 >
+
 type AsideMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"aside"> & MotionProps> &
     React.RefAttributes<HTMLElement>
@@ -19,7 +19,6 @@ type AsideMotion = React.ForwardRefExoticComponent<
 
 const MotionDiv = motion.div as DivMotion
 const MotionAside = motion.aside as AsideMotion
-// --------------------------------------------------------------------
 
 export default function MobileSidebar({
   open,
@@ -33,18 +32,23 @@ export default function MobileSidebar({
   const pathname = usePathname()
   const panelRef = useRef<HTMLDivElement>(null)
 
-  // Close when route changes
   useEffect(() => {
     if (!open) return
     setOpen(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
-  // Close on ESC
   useEffect(() => {
     if (!open) return
-    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false)
+
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false)
+      }
+    }
+
     window.addEventListener("keydown", onEsc)
+
     return () => window.removeEventListener("keydown", onEsc)
   }, [open, setOpen])
 
@@ -52,85 +56,116 @@ export default function MobileSidebar({
     <AnimatePresence>
       {open && (
         <>
-          {/* Overlay */}
           <MotionDiv
             onClick={() => setOpen(false)}
-            className="fixed inset-0 z-[98] bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 z-[98] bg-black/80 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             aria-hidden="true"
           />
 
-          {/* Water-glass panel */}
           <MotionAside
             ref={panelRef}
             role="dialog"
             aria-modal="true"
             aria-label="Mobile Menu"
-            className="fixed right-0 top-0 z-[99] h-full w-[86%] max-w-sm outline-none
-                       glass-panel glass-shine
-                       border-l border-white/10"
+            className="
+              fixed right-0 top-0 z-[99]
+              h-full w-[88%] max-w-sm
+              overflow-hidden
+              border-l border-yellow-400/20
+              bg-black/95
+              shadow-[0_0_60px_rgba(0,0,0,0.7)]
+              outline-none
+            "
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 260, damping: 28 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 28,
+            }}
           >
-            {/* extra depth tint (keeps glass readable on all backgrounds) */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0"
               style={{
-                background:
-                  "linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.55))",
+                background: `
+                  radial-gradient(800px 300px at 10% 0%, rgba(212,163,54,0.18), transparent 65%),
+                  radial-gradient(700px 280px at 90% 0%, rgba(255,230,160,0.08), transparent 70%),
+                  linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))
+                `,
               }}
             />
 
-            {/* Content layer */}
             <div className="relative flex h-full flex-col">
-              {/* Header */}
-              <div className="p-5 flex items-center justify-between border-b border-white/10">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-white/70" />
-                  <h2 className="font-semibold tracking-wide text-white">Menu</h2>
-                </div>
+              <div className="border-b border-yellow-400/15 p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-xs uppercase tracking-[0.25em] text-yellow-300">
+                      Gastronomist
+                    </div>
 
-                <button
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-2 text-white border border-white/15 bg-white/[0.04]
-                             hover:bg-white/[0.08] hover:border-white/25 transition
-                             focus:outline-none focus:ring-2 focus:ring-white/30"
-                  aria-label="Close menu"
-                >
-                  ✕
-                </button>
+                    <h2 className="mt-1 text-lg font-semibold text-white">
+                      International
+                    </h2>
+                  </div>
+
+                  <button
+                    onClick={() => setOpen(false)}
+                    aria-label="Close menu"
+                    className="
+                      rounded-xl
+                      border border-yellow-400/20
+                      bg-white/[0.03]
+                      px-3 py-2
+                      text-white
+                      transition
+                      hover:border-yellow-400/40
+                      hover:text-yellow-300
+                    "
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
 
-              {/* Nav */}
               <nav className="px-4 py-5">
                 <ul className="space-y-2">
-                  {nav.map((l) => {
-                    const active = pathname === l.href
-                    const Icon = l.icon
+                  {nav.map((item) => {
+                    const active =
+                      pathname === item.href ||
+                      (item.href !== "/" && pathname.startsWith(item.href))
+
+                    const Icon = item.icon
+
                     return (
-                      <li key={l.href}>
+                      <li key={item.href}>
                         <Link
-                          href={l.href}
+                          href={item.href}
                           onClick={() => setOpen(false)}
                           className={[
-                            "flex items-center gap-3 rounded-2xl px-4 py-3 text-base transition",
-                            "border border-white/10 bg-white/[0.03] text-white",
-                            "hover:border-white/20 hover:bg-white/[0.06]",
-                            "focus:outline-none focus:ring-2 focus:ring-white/25",
-                            active ? "border-white/25 bg-white/[0.06]" : "",
+                            "flex items-center gap-3 rounded-2xl px-4 py-3 transition",
+                            "border bg-white/[0.02]",
+                            active
+                              ? "border-yellow-400/40 bg-yellow-400/10 text-yellow-200"
+                              : "border-white/10 text-white hover:border-yellow-400/30 hover:bg-yellow-400/5",
                           ].join(" ")}
                         >
                           {Icon ? (
-                            <Icon className="h-5 w-5 text-white/85" aria-hidden />
+                            <Icon
+                              className="h-5 w-5 text-yellow-300"
+                              aria-hidden
+                            />
                           ) : (
                             <span className="h-5 w-5" aria-hidden />
                           )}
-                          <span>{l.label}</span>
+
+                          <span className="font-medium">
+                            {item.label}
+                          </span>
                         </Link>
                       </li>
                     )
@@ -138,9 +173,19 @@ export default function MobileSidebar({
                 </ul>
               </nav>
 
-              {/* Footer */}
-              <div className="mt-auto p-4 text-xs text-neutral-300 border-t border-white/10">
-                © {new Date().getFullYear()} Gastronomist International
+              <div className="mt-auto border-t border-yellow-400/10 p-5">
+                <div className="text-xs uppercase tracking-[0.2em] text-yellow-300">
+                  Global Culinary Community
+                </div>
+
+                <p className="mt-2 text-sm leading-relaxed text-neutral-400">
+                  Connecting culinary professionals, leaders, educators, and
+                  innovators through a worldwide network dedicated to excellence.
+                </p>
+
+                <div className="mt-4 text-xs text-neutral-500">
+                  © {new Date().getFullYear()} Gastronomist International
+                </div>
               </div>
             </div>
           </MotionAside>
