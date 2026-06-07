@@ -9,10 +9,12 @@ import {
   HiOutlineNewspaper,
   HiOutlineInformationCircle,
   HiOutlineShoppingBag,
+  HiOutlineSparkles,
 } from "react-icons/hi2"
 
 const NAV = [
   { href: "/", label: "Home", icon: HiOutlineHome },
+  { href: "/?register=1", label: "Membership", icon: HiOutlineSparkles },
   { href: "/chefs", label: "Our Chefs", icon: HiOutlineUsers },
   { href: "/press", label: "Press Release", icon: HiOutlineNewspaper },
   { href: "/about", label: "About Us", icon: HiOutlineInformationCircle },
@@ -24,33 +26,29 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Glass header shell */}
-      <div className="relative border-b border-white/10 bg-black/40 backdrop-blur-2xl">
-        {/* Edge glow + refraction (aligned with panels) */}
+      <div className="relative border-b border-yellow-400/20 bg-black/70 backdrop-blur-2xl">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background: `
-              radial-gradient(900px 140px at 18% 0%, rgba(120,220,255,0.26), transparent 62%),
-              radial-gradient(700px 120px at 82% 0%, rgba(255,255,255,0.14), transparent 70%),
-              linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03))
+              radial-gradient(900px 140px at 18% 0%, rgba(212,163,54,0.22), transparent 62%),
+              radial-gradient(700px 120px at 82% 0%, rgba(255,230,160,0.10), transparent 70%),
+              linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015))
             `,
           }}
         />
 
         <div className="container relative flex h-16 items-center justify-between px-4">
-          {/* Logo / Title */}
           <Link
             href="/"
-            className="flex items-center gap-3 text-transparent bg-clip-text
-                       bg-gradient-to-r from-yellow-400 to-yellow-200
-                       font-bold text-lg tracking-wide"
+            className="flex items-center gap-3 font-bold tracking-wide text-white transition hover:text-yellow-300"
           >
-            Gastronomist International
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
+              Gastronomist International
+            </span>
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-3">
             {NAV.map((i) => {
               const Icon = i.icon
@@ -60,44 +58,41 @@ export default function Header() {
                   href={i.href}
                   className="
                     inline-flex items-center gap-2
-                    px-4 py-2 rounded-xl
-                    border border-white/10
-                    bg-white/[0.04]
-                    text-sm text-white
-                    hover:border-white/20
-                    hover:bg-white/[0.08]
+                    rounded-xl border border-yellow-400/15
+                    bg-white/[0.03] px-4 py-2
+                    text-sm text-neutral-100
                     transition
+                    hover:border-yellow-400/45
+                    hover:bg-yellow-400/10
+                    hover:text-yellow-200
                   "
                 >
-                  <Icon className="h-4 w-4 text-white/85" aria-hidden />
+                  <Icon className="h-4 w-4 text-yellow-300/85" aria-hidden />
                   <span>{i.label}</span>
                 </Link>
               )
             })}
           </nav>
 
-          {/* Mobile toggle */}
           <button
             onClick={() => setOpen(true)}
             className="
               md:hidden
               inline-flex items-center gap-2
-              px-4 py-2 rounded-xl
-              border border-white/10
-              bg-white/[0.05]
+              rounded-xl border border-yellow-400/20
+              bg-white/[0.04] px-4 py-2
               text-sm text-white
-              hover:border-white/20
-              hover:bg-white/[0.08]
               transition
+              hover:border-yellow-400/45
+              hover:bg-yellow-400/10
             "
           >
-            <HiOutlineUsers className="h-4 w-4 text-white/85" aria-hidden />
+            <HiOutlineUsers className="h-4 w-4 text-yellow-300/85" aria-hidden />
             <span>Menu</span>
           </button>
         </div>
       </div>
 
-      {/* Mobile sidebar */}
       <MobileSidebar open={open} setOpen={setOpen} nav={NAV} />
     </header>
   )
