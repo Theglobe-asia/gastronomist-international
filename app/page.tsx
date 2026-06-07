@@ -2,10 +2,19 @@
 // @ts-nocheck
 "use client"
 
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Line,
+  Marker,
+} from "react-simple-maps"
 import LatestStory from "@/components/blog/latest-story"
 
 const ASSET_V = "2026-01-28-1"
 const img = (path: string) => `${path}?v=${ASSET_V}`
+
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
 
 const FEATURES = [
   ["Global Culinary Network", "Connecting chefs, culinary leaders, educators, and hospitality professionals worldwide."],
@@ -53,38 +62,28 @@ const TESTIMONIALS = [
   },
 ]
 
-const MAP_POINTS = [
-  ["Canada", 210, 130],
-  ["United States", 220, 210],
-  ["Mexico", 185, 280],
-  ["Brazil", 330, 370],
-  ["United Kingdom", 465, 150],
-  ["France", 490, 195],
-  ["Spain", 465, 230],
-  ["Italy", 520, 230],
-  ["Germany", 535, 170],
-  ["UAE", 610, 260],
-  ["India", 675, 295],
-  ["Thailand", 735, 330],
-  ["China", 765, 235],
-  ["Japan", 860, 220],
-  ["Australia", 845, 435],
-  ["South Africa", 555, 430],
-]
+const HUB = {
+  name: "Global Hub",
+  coordinates: [12.4964, 41.9028],
+}
 
-const ROUTES = [
-  "M505 208 Q350 75 220 210",
-  "M505 208 Q400 280 330 370",
-  "M505 208 Q480 160 465 150",
-  "M505 208 Q490 195 490 195",
-  "M505 208 Q535 170 535 170",
-  "M505 208 Q565 235 610 260",
-  "M505 208 Q610 270 675 295",
-  "M505 208 Q650 175 765 235",
-  "M505 208 Q720 120 860 220",
-  "M505 208 Q690 315 735 330",
-  "M505 208 Q725 390 845 435",
-  "M505 208 Q535 330 555 430",
+const CITIES = [
+  { name: "Canada", coordinates: [-106.3468, 56.1304] },
+  { name: "United States", coordinates: [-98.5795, 39.8283] },
+  { name: "Mexico", coordinates: [-102.5528, 23.6345] },
+  { name: "Brazil", coordinates: [-51.9253, -14.235] },
+  { name: "United Kingdom", coordinates: [-3.436, 55.3781] },
+  { name: "France", coordinates: [2.2137, 46.2276] },
+  { name: "Spain", coordinates: [-3.7492, 40.4637] },
+  { name: "Italy", coordinates: [12.4964, 41.9028] },
+  { name: "Germany", coordinates: [10.4515, 51.1657] },
+  { name: "UAE", coordinates: [53.8478, 23.4241] },
+  { name: "India", coordinates: [78.9629, 20.5937] },
+  { name: "Thailand", coordinates: [100.9925, 15.87] },
+  { name: "China", coordinates: [104.1954, 35.8617] },
+  { name: "Japan", coordinates: [138.2529, 36.2048] },
+  { name: "Australia", coordinates: [133.7751, -25.2744] },
+  { name: "South Africa", coordinates: [22.9375, -30.5595] },
 ]
 
 export default function Page() {
@@ -109,7 +108,7 @@ export default function Page() {
           </div>
         </div>
 
-        <PremiumWorldMap large />
+        <GlobalNetworkMap large />
       </section>
 
       <section className="gi-feature-row">
@@ -152,7 +151,7 @@ export default function Page() {
           </div>
         </div>
 
-        <PremiumWorldMap />
+        <GlobalNetworkMap />
       </section>
 
       <section id="recognition" className="gi-section">
@@ -549,7 +548,8 @@ export default function Page() {
           overflow: hidden;
           border: 1px solid rgba(217, 163, 49, 0.26);
           background:
-            radial-gradient(circle at 55% 38%, rgba(217, 163, 49, 0.18), transparent 18%),
+            radial-gradient(circle at 52% 42%, rgba(217, 163, 49, 0.16), transparent 19%),
+            radial-gradient(circle at 50% 50%, rgba(255, 230, 160, 0.06), transparent 42%),
             linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
           box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.08),
@@ -588,6 +588,23 @@ export default function Page() {
           animation: giBlink 1.5s ease-in-out infinite;
         }
 
+        .gi-map-frame {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+        }
+
+        .gi-map-glow {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background:
+            radial-gradient(circle at 49% 45%, rgba(245, 184, 63, 0.18), transparent 10%),
+            radial-gradient(circle at 26% 45%, rgba(245, 184, 63, 0.12), transparent 8%),
+            radial-gradient(circle at 74% 46%, rgba(245, 184, 63, 0.11), transparent 10%);
+          pointer-events: none;
+        }
+
         .gi-map svg {
           width: 100%;
           height: 100%;
@@ -595,116 +612,76 @@ export default function Page() {
           display: block;
         }
 
-        .gi-map-bg {
-          fill: rgba(255, 255, 255, 0.018);
+        .gi-country {
+          fill: rgba(145, 143, 134, 0.48);
+          stroke: rgba(255, 230, 160, 0.2);
+          stroke-width: 0.45;
+          outline: none;
+          filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.55));
+          transition: fill 0.22s ease, stroke 0.22s ease;
         }
 
-        .gi-ocean-line {
-          fill: none;
-          stroke: rgba(217, 163, 49, 0.08);
-          stroke-width: 1;
+        .gi-country:hover {
+          fill: rgba(217, 163, 49, 0.36);
+          stroke: rgba(255, 230, 160, 0.55);
         }
 
-        .gi-land {
-          fill: url(#landGradient);
-          stroke: rgba(255, 230, 160, 0.18);
+        .gi-route-line {
+          stroke: rgba(217, 163, 49, 0.72);
           stroke-width: 1.1;
-          filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.65));
-        }
-
-        .gi-land-shadow {
-          fill: rgba(0, 0, 0, 0.28);
-          filter: blur(8px);
-        }
-
-        .gi-country-line {
-          fill: none;
-          stroke: rgba(255, 230, 160, 0.10);
-          stroke-width: 0.8;
-        }
-
-        .gi-route {
-          fill: none;
-          stroke: rgba(217, 163, 49, 0.74);
-          stroke-width: 1.15;
-          stroke-dasharray: 7 9;
+          stroke-dasharray: 6 8;
           animation: giDash 7s linear infinite;
-        }
-
-        .gi-route-glow {
-          fill: none;
-          stroke: rgba(217, 163, 49, 0.24);
-          stroke-width: 8;
-          filter: blur(8px);
-        }
-
-        .gi-node-halo {
-          fill: rgba(217, 163, 49, 0.16);
-          stroke: rgba(217, 163, 49, 0.42);
-          stroke-width: 1;
-          animation: giPulseHalo 2.8s ease-in-out infinite;
-        }
-
-        .gi-node {
-          fill: #f5b83f;
-          filter: drop-shadow(0 0 11px rgba(245, 184, 63, 1));
-          animation: giPulse 2.4s ease-in-out infinite;
-        }
-
-        .gi-city-label {
-          fill: rgba(255, 248, 226, 0.92);
-          font-size: 12px;
-          font-weight: 800;
-          paint-order: stroke;
-          stroke: rgba(0, 0, 0, 0.85);
-          stroke-width: 4px;
-          stroke-linejoin: round;
           pointer-events: none;
         }
 
-        .gi-map.large .gi-city-label {
-          font-size: 13px;
+        .gi-route-glow {
+          stroke: rgba(217, 163, 49, 0.18);
+          stroke-width: 7;
+          filter: blur(5px);
+          pointer-events: none;
         }
 
-        .gi-map-dot {
-          fill: rgba(217, 163, 49, 0.16);
-          animation: giTwinkle 4s ease-in-out infinite;
+        .gi-marker-ring {
+          fill: rgba(217, 163, 49, 0.12);
+          stroke: rgba(245, 184, 63, 0.62);
+          stroke-width: 1.2;
+          animation: giPulseRing 2.5s ease-in-out infinite;
+        }
+
+        .gi-marker-dot {
+          fill: #f5b83f;
+          filter: drop-shadow(0 0 12px rgba(245, 184, 63, 1));
+        }
+
+        .gi-marker-label {
+          fill: rgba(255, 248, 226, 0.96);
+          font-size: 8px;
+          font-weight: 800;
+          paint-order: stroke;
+          stroke: rgba(0, 0, 0, 0.88);
+          stroke-width: 3px;
+          pointer-events: none;
+          text-anchor: middle;
+        }
+
+        .gi-map.large .gi-marker-label {
+          font-size: 9px;
         }
 
         @keyframes giDash {
           to {
-            stroke-dashoffset: -180;
+            stroke-dashoffset: -160;
           }
         }
 
-        @keyframes giPulse {
+        @keyframes giPulseRing {
           0%, 100% {
-            opacity: 0.86;
-            transform: scale(1);
+            r: 5;
+            opacity: 0.45;
           }
           50% {
-            opacity: 1;
-            transform: scale(1.25);
-          }
-        }
-
-        @keyframes giPulseHalo {
-          0%, 100% {
-            opacity: 0.5;
-            transform: scale(1);
-          }
-          50% {
+            r: 11;
             opacity: 0.95;
-            transform: scale(1.7);
-          }
-        }
-
-        @keyframes giTwinkle {
-          0%, 100% {
-            opacity: 0.16;
-          }
-          50% {
-            opacity: 0.55;
           }
         }
 
@@ -764,12 +741,12 @@ export default function Page() {
             min-height: 360px;
           }
 
-          .gi-city-label {
-            font-size: 9px;
-          }
-
           .gi-benefit-img {
             height: 230px;
+          }
+
+          .gi-marker-label {
+            font-size: 6px;
           }
         }
       `}</style>
@@ -777,88 +754,62 @@ export default function Page() {
   )
 }
 
-function PremiumWorldMap({ large = false }) {
+function GlobalNetworkMap({ large = false }) {
   return (
     <div className={`gi-map ${large ? "large" : ""}`}>
       <div className="gi-map-caption">
         <span className="gi-live-dot" />
-        Global Network Map
+        Live Global Map
       </div>
 
-      <svg viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet" aria-label="Premium global culinary network map">
-        <defs>
-          <linearGradient id="landGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(230,225,212,0.34)" />
-            <stop offset="45%" stopColor="rgba(150,145,132,0.24)" />
-            <stop offset="100%" stopColor="rgba(70,68,62,0.28)" />
-          </linearGradient>
-        </defs>
+      <div className="gi-map-glow" />
 
-        <rect className="gi-map-bg" width="1000" height="520" rx="24" />
+      <div className="gi-map-frame">
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={{
+            scale: large ? 150 : 138,
+            center: [10, 20],
+          }}
+        >
+          <Geographies geography={GEO_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  className="gi-country"
+                />
+              ))
+            }
+          </Geographies>
 
-        <g opacity="0.9">
-          {Array.from({ length: 150 }).map((_, i) => (
-            <circle
-              key={i}
-              className="gi-map-dot"
-              cx={(i * 83) % 980 + 10}
-              cy={(i * 47) % 500 + 10}
-              r={(i % 3) + 0.6}
-              style={{ animationDelay: `${(i % 11) * 0.18}s` }}
-            />
-          ))}
-        </g>
-
-        <g>
-          {Array.from({ length: 9 }).map((_, i) => (
-            <ellipse
-              key={i}
-              className="gi-ocean-line"
-              cx="510"
-              cy="260"
-              rx={160 + i * 70}
-              ry={70 + i * 32}
-            />
-          ))}
-        </g>
-
-        <g transform="translate(8 10)">
-          <path className="gi-land-shadow" d="M120 130C165 84 245 72 310 110C350 134 370 174 420 170C455 168 474 142 505 136C565 124 620 148 675 174C740 205 820 220 875 282C915 326 895 382 830 398C760 416 690 390 620 384C548 378 505 410 420 414C330 419 250 392 190 342C132 294 72 185 120 130Z" />
-          <path className="gi-land" d="M116 124C162 78 246 68 314 108C356 132 372 171 422 168C458 166 476 140 510 134C568 124 628 148 682 174C742 203 824 220 878 278C918 322 898 378 832 395C764 412 692 386 622 380C548 374 505 406 424 410C330 415 252 388 192 338C132 288 72 180 116 124Z" />
-          <path className="gi-land" d="M680 86C748 48 858 78 900 142C943 208 903 284 828 300C770 313 720 282 700 228C684 184 638 112 680 86Z" />
-          <path className="gi-land" d="M205 350C258 314 330 330 365 380C392 420 352 472 292 476C235 480 190 442 188 398C186 374 190 360 205 350Z" />
-          <path className="gi-land" d="M532 250C578 238 620 272 626 318C633 365 602 415 558 423C515 431 488 392 498 348C505 310 498 265 532 250Z" />
-          <path className="gi-land" d="M770 345C828 322 890 345 910 392C930 443 888 478 828 468C775 459 738 380 770 345Z" />
-
-          <path className="gi-country-line" d="M170 155C230 178 290 178 345 152" />
-          <path className="gi-country-line" d="M185 240C250 226 315 238 372 280" />
-          <path className="gi-country-line" d="M440 170C494 192 548 190 598 170" />
-          <path className="gi-country-line" d="M585 230C650 246 705 242 760 218" />
-          <path className="gi-country-line" d="M690 120C745 154 805 162 870 150" />
-          <path className="gi-country-line" d="M500 310C535 338 575 348 616 340" />
-        </g>
-
-        <g>
-          {ROUTES.map((d) => (
-            <g key={d}>
-              <path className="gi-route-glow" d={d} />
-              <path className="gi-route" d={d} />
+          {CITIES.map((city) => (
+            <g key={`route-${city.name}`}>
+              <Line
+                from={HUB.coordinates}
+                to={city.coordinates}
+                className="gi-route-glow"
+              />
+              <Line
+                from={HUB.coordinates}
+                to={city.coordinates}
+                className="gi-route-line"
+              />
             </g>
           ))}
-        </g>
 
-        <g>
-          {MAP_POINTS.map(([name, cx, cy], i) => (
-            <g key={name}>
-              <circle className="gi-node-halo" cx={cx} cy={cy} r={i === 4 ? 11 : 8} />
-              <circle className="gi-node" cx={cx} cy={cy} r={i === 4 ? 6 : 4.5} />
-              <text className="gi-city-label" x={cx} y={cy - 14} textAnchor="middle">
-                {name}
+          {CITIES.map((city) => (
+            <Marker key={city.name} coordinates={city.coordinates}>
+              <circle className="gi-marker-ring" r={5} />
+              <circle className="gi-marker-dot" r={2.8} />
+              <text y={-8} className="gi-marker-label">
+                {city.name}
               </text>
-            </g>
+            </Marker>
           ))}
-        </g>
-      </svg>
+        </ComposableMap>
+      </div>
     </div>
   )
 }
