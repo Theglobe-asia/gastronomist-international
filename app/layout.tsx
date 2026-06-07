@@ -1,5 +1,5 @@
 ﻿import "./globals.css"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import ContactWidget from "@/components/ContactWidget"
@@ -15,11 +15,8 @@ export const metadata: Metadata = {
   description:
     "We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques.",
 
-  // ✅ PWA / install metadata
   manifest: "/manifest.webmanifest",
-  themeColor: "#0a0a0a",
 
-  // ✅ Force your logo everywhere (tab icon, Apple touch icon, installed app icon)
   icons: {
     icon: [{ url: "/logo.png" }],
     shortcut: [{ url: "/logo.png" }],
@@ -32,9 +29,6 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
   },
 
-  // ✅ Global social sharing (default fallback)
-  // IMPORTANT: do NOT set openGraph.url here, so per-page routes (blog posts)
-  // can have correct canonical/og:url and show their own og:image.
   openGraph: {
     type: "website",
     siteName: "Gastronomist International",
@@ -60,24 +54,43 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport: Viewport = {
+  themeColor: "#050505",
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100 relative overflow-x-hidden">
-        {/* Global background light field */}
+      <body className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#050505] text-neutral-100">
         <div
           aria-hidden
           className="pointer-events-none fixed inset-0 z-0"
           style={{
             background: `
-              radial-gradient(1200px 600px at 20% -10%, rgba(120,220,255,0.18), transparent 60%),
-              radial-gradient(1000px 500px at 90% 10%, rgba(255,255,255,0.10), transparent 65%),
-              radial-gradient(900px 500px at 50% 100%, rgba(80,120,255,0.08), transparent 70%)
+              radial-gradient(1200px 620px at 18% -10%, rgba(212,163,54,0.16), transparent 62%),
+              radial-gradient(1000px 520px at 88% 6%, rgba(255,230,160,0.08), transparent 68%),
+              radial-gradient(900px 520px at 50% 110%, rgba(212,163,54,0.08), transparent 72%),
+              linear-gradient(180deg, #050505 0%, #0b0906 46%, #030303 100%)
             `,
           }}
         />
 
-        {/* ✅ Emergency cache reset (fixes old images persisting on mobile/PWA) */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-0 opacity-[0.22]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
+            `,
+            backgroundSize: "64px 64px",
+            maskImage:
+              "radial-gradient(circle at center, black 0%, black 46%, transparent 82%)",
+            WebkitMaskImage:
+              "radial-gradient(circle at center, black 0%, black 46%, transparent 82%)",
+          }}
+        />
+
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -99,18 +112,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
-        {/* App content */}
-        <div className="relative z-10 flex flex-col min-h-screen">
+        <div className="relative z-10 flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
           <ContactWidget />
         </div>
 
-        {/* Buy Me a Coffee widget */}
         <BuyMeCoffee />
 
-        {/* ✅ PWA service worker registration (disabled to stop old cached images on devices) */}
         {/* <PwaRegister /> */}
       </body>
     </html>
