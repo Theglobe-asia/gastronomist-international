@@ -1,11 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 export default function ContactWidget() {
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const [open, setOpen] = useState(false)
   const [sending, setSending] = useState(false)
@@ -13,24 +12,34 @@ export default function ContactWidget() {
   const [err, setErr] = useState<null | string>(null)
 
   useEffect(() => {
-    if (searchParams.get('register') === '1') {
+    if (typeof window === 'undefined') return
+
+    const params = new URLSearchParams(window.location.search)
+
+    if (params.get('register') === '1') {
       setOpen(true)
     }
-  }, [searchParams])
+  }, [])
 
   function closeModal() {
     setOpen(false)
     setOk(null)
     setErr(null)
 
-    if (searchParams.get('register') === '1') {
-      router.replace('/')
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+
+      if (params.get('register') === '1') {
+        router.replace('/')
+      }
     }
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
     const form = e.currentTarget
+
     setSending(true)
     setOk(null)
     setErr(null)
@@ -40,7 +49,9 @@ export default function ContactWidget() {
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data),
       })
 
@@ -50,6 +61,7 @@ export default function ContactWidget() {
       }
 
       form.reset()
+
       setOk('Application submitted ✓ Redirecting to membership fee…')
 
       setTimeout(() => {
@@ -78,7 +90,10 @@ export default function ContactWidget() {
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-          <div className="absolute inset-0 bg-black/75 backdrop-blur-md" onClick={closeModal} />
+          <div
+            className="absolute inset-0 bg-black/75 backdrop-blur-md"
+            onClick={closeModal}
+          />
 
           <div className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-yellow-400/25 bg-[#070707]/95 p-6 shadow-2xl shadow-black/70">
             <div
@@ -99,11 +114,14 @@ export default function ContactWidget() {
                   <p className="text-xs font-bold uppercase tracking-[0.22em] text-yellow-300">
                     Gastronomist International
                   </p>
+
                   <h3 className="mt-2 text-2xl font-semibold text-white">
                     Membership Application
                   </h3>
+
                   <p className="mt-2 text-sm leading-relaxed text-neutral-300">
-                    Submit your professional details first. After submission, you will be redirected to complete the membership fee.
+                    Submit your professional details first. After submission,
+                    you will be redirected to complete the membership fee.
                   </p>
                 </div>
 
@@ -124,6 +142,7 @@ export default function ContactWidget() {
                     required
                     className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                   />
+
                   <input
                     name="email"
                     type="email"
@@ -145,6 +164,7 @@ export default function ContactWidget() {
                     placeholder="Current position"
                     className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                   />
+
                   <input
                     name="currentCompany"
                     placeholder="Current company"
