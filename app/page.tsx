@@ -2,516 +2,745 @@
 // @ts-nocheck
 "use client"
 
-import type {} from "@react-three/fiber"
-import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Float, Image } from "@react-three/drei"
 import Button from "@/components/ui/Button"
-import Card from "@/components/ui/Card"
 import LatestStory from "@/components/blog/latest-story"
 
-// Cache-buster for static assets in /public/images.
-// Bump this value whenever you replace/delete images but keep the same filenames.
 const ASSET_V = "2026-01-28-1"
 const img = (path: string) => `${path}?v=${ASSET_V}`
 
-function SlideCube() {
-  return (
-    <Float speed={2} rotationIntensity={1.2} floatIntensity={1.2}>
-      <Image url={img("/images/cube-logo.png")} scale={[4.4, 2.8, 2]} transparent toneMapped={false} />
-    </Float>
-  )
-}
-
-const KPIS = [
-  { label: "Projects Completed", value: "100+" },
-  { label: "Reviews Given", value: "100+" },
-  { label: "Happy Clients", value: "100+" },
-  { label: "Experience", value: "10+" },
+const FEATURES = [
+  ["Global Culinary Network", "Connecting chefs, culinary leaders, and professionals from around the world."],
+  ["Membership Recognition", "Official recognition for culinary excellence and professional achievement."],
+  ["Leader Collaboration", "Building partnerships and creating opportunities through global culinary collaboration."],
+  ["Worldwide Members", "A strong and diverse community with members across global hospitality markets."],
+  ["Prestigious Benefits", "Certificates, medals, publications, and global recognition."],
+  ["Events & Programs", "Global culinary events, forums, competitions, and educational programs."],
 ]
 
-const SERVICES = [
-  {
-    title: "Global Culinary Network",
-    desc: "Connect members, chefs, and leaders worldwide.",
-    icon: img("/images/recognition.png"),
-  },
-  {
-    title: "Membership Recognition",
-    desc: "Badges, medals, and official recognition.",
-    icon: img("/images/medal.png"),
-  },
-  {
-    title: "Leader’s Collaboration",
-    desc: "Build bridges with partners and innovators.",
-    icon: img("/images/partnership.png"),
-  },
+const BENEFITS = [
+  ["Chef Recognition", "Honoring culinary professionals and their achievements.", img("/images/recognition.png")],
+  ["Excellence Award", "Recognizing outstanding culinary excellence worldwide.", img("/images/cube-logo.png")],
+  ["Membership Medal", "Symbol of honor, dedication, and professional excellence.", img("/images/medal.png")],
+  ["Certificates & Badges", "Authentication of skills, expertise, and achievement.", img("/images/partnership.png")],
 ]
 
-const PARTNERS = ["CSF Intl", "Gastronomist", "Press", "Membership", "Collaboration"]
-
-function WorldGraphMap() {
-  const nodes = [
-    { label: "France", x: 44, y: 30 },
-    { label: "Azerbaijan", x: 58, y: 33 },
-    { label: "Saudi Arabia", x: 60, y: 41 },
-    { label: "Myanmar", x: 72, y: 42 },
-  ]
-
-  const hub = { label: "Global Network", x: 55, y: 36 }
-
-  const toPt = (p: { x: number; y: number }) => ({
-    X: (p.x / 100) * 1000,
-    Y: (p.y / 100) * 520,
-  })
-
-  const hubPt = toPt(hub)
-
-  const arcPath = (from: { x: number; y: number }, to: { x: number; y: number }) => {
-    const a = toPt(from)
-    const b = toPt(to)
-    const mx = (a.X + b.X) / 2
-    const my = (a.Y + b.Y) / 2
-    const lift = Math.max(85, Math.min(190, Math.abs(a.X - b.X) * 0.22))
-    const cx = mx
-    const cy = my - lift
-    return `M ${a.X} ${a.Y} Q ${cx} ${cy} ${b.X} ${b.Y}`
-  }
-
-  return (
-    <Card className="p-6 sm:p-7 h-full">
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <h3 className="text-lg sm:text-xl font-semibold text-white">Worldwide Members</h3>
-          <p className="mt-1 text-sm text-neutral-400">
-            Global membership presence visualized as a network graph.
-          </p>
-        </div>
-
-        <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-400">
-          <span className="h-2 w-2 rounded-full bg-white/60" />
-          Live Map
-        </div>
-      </div>
-
-      <div className="mt-6 relative">
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background: `
-                radial-gradient(700px 360px at 22% 30%, rgba(120,220,255,0.20), transparent 60%),
-                radial-gradient(640px 340px at 78% 34%, rgba(255,255,255,0.10), transparent 70%),
-                radial-gradient(700px 420px at 55% 110%, rgba(80,120,255,0.08), transparent 75%)
-              `,
-            }}
-          />
-
-          <svg
-            viewBox="120 50 760 420"
-            className="relative z-10 block w-full h-[360px] sm:h-[420px]"
-            role="img"
-            aria-label="World membership graph map"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <defs>
-              <linearGradient id="gridFade" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stopColor="rgba(255,255,255,0.08)" />
-                <stop offset="0.5" stopColor="rgba(120,220,255,0.10)" />
-                <stop offset="1" stopColor="rgba(255,255,255,0.06)" />
-              </linearGradient>
-
-              <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0" stopColor="rgba(120,220,255,0.95)" />
-                <stop offset="0.55" stopColor="rgba(120,220,255,0.42)" />
-                <stop offset="1" stopColor="rgba(120,220,255,0)" />
-              </radialGradient>
-
-              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="7" result="blur" />
-                <feColorMatrix
-                  in="blur"
-                  type="matrix"
-                  values="
-                    1 0 0 0 0
-                    0 1 0 0 0
-                    0 0 1 0 0
-                    0 0 0 0.85 0"
-                />
-              </filter>
-            </defs>
-
-            {Array.from({ length: 9 }).map((_, i) => {
-              const x = 170 + i * 85
-              return (
-                <line
-                  key={`v-${i}`}
-                  x1={x}
-                  y1={80}
-                  x2={x}
-                  y2={470}
-                  stroke="url(#gridFade)"
-                  strokeWidth="1.2"
-                  opacity="0.28"
-                />
-              )
-            })}
-            {Array.from({ length: 6 }).map((_, i) => {
-              const y = 120 + i * 62
-              return (
-                <line
-                  key={`h-${i}`}
-                  x1={140}
-                  y1={y}
-                  x2={860}
-                  y2={y}
-                  stroke="url(#gridFade)"
-                  strokeWidth="1.2"
-                  opacity="0.25"
-                />
-              )
-            })}
-
-            <g opacity="0.24">
-              <path
-                d="M150,190 C210,140 290,140 340,185 C380,220 410,235 455,235 C520,235 560,190 610,185 C680,178 740,210 780,255 C815,295 805,345 765,365 C715,390 670,380 615,370 C560,360 525,372 470,388 C410,406 350,408 300,388 C250,368 215,350 180,318 C140,280 120,230 150,190 Z"
-                fill="rgba(255,255,255,0.10)"
-              />
-              <path
-                d="M720,120 C760,95 820,105 850,140 C875,170 875,215 850,240 C820,270 770,265 745,235 C725,210 700,160 720,120 Z"
-                fill="rgba(120,220,255,0.08)"
-              />
-              <path
-                d="M210,360 C250,335 305,340 330,370 C350,395 340,430 305,450 C270,468 230,460 210,430 C190,400 185,380 210,360 Z"
-                fill="rgba(120,220,255,0.06)"
-              />
-            </g>
-
-            <g>
-              {nodes.map((n) => (
-                <path
-                  key={`arc-${n.label}`}
-                  d={arcPath(hub, n)}
-                  fill="none"
-                  stroke="rgba(120,220,255,0.62)"
-                  strokeWidth="3"
-                  opacity="0.62"
-                />
-              ))}
-              {nodes.map((n) => (
-                <path
-                  key={`arcGlow-${n.label}`}
-                  d={arcPath(hub, n)}
-                  fill="none"
-                  stroke="rgba(120,220,255,0.35)"
-                  strokeWidth="9"
-                  opacity="0.20"
-                  filter="url(#softGlow)"
-                />
-              ))}
-            </g>
-
-            <g>
-              <circle cx={hubPt.X} cy={hubPt.Y} r="30" fill="url(#nodeGlow)" opacity="0.92" />
-              <circle cx={hubPt.X} cy={hubPt.Y} r="8" fill="rgba(255,255,255,0.92)" />
-              <circle cx={hubPt.X} cy={hubPt.Y} r="14" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2" />
-            </g>
-
-            {nodes.map((n) => {
-              const p = toPt(n)
-              return (
-                <g key={`node-${n.label}`}>
-                  <circle cx={p.X} cy={p.Y} r="22" fill="url(#nodeGlow)" opacity="0.80" />
-                  <circle cx={p.X} cy={p.Y} r="6.5" fill="rgba(255,255,255,0.92)" />
-                  <circle cx={p.X} cy={p.Y} r="12" fill="none" stroke="rgba(255,255,255,0.32)" strokeWidth="2" />
-                </g>
-              )
-            })}
-
-            <g fontSize="16" fill="rgba(255,255,255,0.82)">
-              <text x={hubPt.X + 18} y={hubPt.Y - 18}>Global</text>
-              {nodes.map((n) => {
-                const p = toPt(n)
-                const dx = p.X < hubPt.X ? -12 : 12
-                const anchor = p.X < hubPt.X ? "end" : "start"
-                return (
-                  <text key={`label-${n.label}`} x={p.X + dx} y={p.Y - 20} textAnchor={anchor}>
-                    {n.label}
-                  </text>
-                )
-              })}
-            </g>
-          </svg>
-
-          <div className="relative z-10 border-t border-white/10 px-4 py-3 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-xs text-neutral-300">
-              <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: "rgba(120,220,255,0.85)" }} />
-              Nodes = Regions • Lines = Connections
-            </div>
-            <div className="text-xs text-neutral-400">Worldwide Network</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-5 flex flex-wrap gap-3">
-        <a href="/chefs">
-          <Button className="glass-btn glass-shine">Explore Members</Button>
-        </a>
-        <a href="/about">
-          <Button className="glass-btn glass-btn-muted glass-shine">Regional Leaders</Button>
-        </a>
-      </div>
-    </Card>
-  )
-}
+const JOURNEY = [
+  ["1. Submit Application", "Complete the membership application with your professional details."],
+  ["2. Application Review", "Our team reviews your application and professional background."],
+  ["3. Membership Fee", "Secure your membership by completing the membership fee payment."],
+  ["4. Membership Activation", "Your membership is activated and you become an official member."],
+  ["5. Recognition & Benefits", "Receive your benefits and join our global culinary community."],
+]
 
 export default function Page() {
   return (
-    <div className="relative">
-      <section className="container py-14 sm:py-16 lg:py-20 relative">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background: `
-              radial-gradient(1100px 520px at 18% 16%, rgba(120,220,255,0.34), transparent 62%),
-              radial-gradient(900px 460px at 82% 22%, rgba(255,255,255,0.16), transparent 68%),
-              radial-gradient(900px 520px at 50% 110%, rgba(80,120,255,0.10), transparent 70%)
-            `,
-          }}
-        />
-
-        <div className="grid lg:grid-cols-12 gap-6 items-stretch">
-          <div className="lg:col-span-8">
-            <div className="glass-panel glass-panel-pad glass-shine glass-glow h-full">
-              <div className="grid lg:grid-cols-2 gap-10 items-center">
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
-                    <span className="h-2 w-2 rounded-full bg-white/70" />
-                    Join Us
-                  </div>
-
-                  <h1 className="mt-6 text-4xl sm:text-5xl font-bold leading-tight text-white">
-                    Gastronomist International
-                  </h1>
-
-                  <p className="mt-4 text-neutral-300 leading-relaxed">
-                    We embrace the diversity of talent and expertise within the culinary community, particularly focusing on modern gastronomy techniques.
-                    “Your Talent Deserves Global, that’s why We Are Here”
-                  </p>
-
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <a href="https://www.csfint.com/" target="_blank" rel="noopener noreferrer">
-                      <Button className="glass-btn glass-shine">CSF Intl</Button>
-                    </a>
-                    <a href="/about">
-                      <Button className="glass-btn glass-btn-muted glass-shine">About Us</Button>
-                    </a>
-                  </div>
-
-                  <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                      <div className="text-xs text-neutral-400">Focus</div>
-                      <div className="mt-1 text-sm text-white">Modern Gastronomy</div>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                      <div className="text-xs text-neutral-400">Community</div>
-                      <div className="mt-1 text-sm text-white">Global Talent</div>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                      <div className="text-xs text-neutral-400">Standard</div>
-                      <div className="mt-1 text-sm text-white">Excellence</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="glass-frame h-[420px] lg:h-[460px] relative">
-                  <Canvas camera={{ position: [3, 3, 5], fov: 50 }}>
-                    <ambientLight intensity={0.7} />
-                    <directionalLight position={[5, 5, 5]} intensity={1} />
-                    <SlideCube />
-                    <OrbitControls enablePan={false} />
-                  </Canvas>
-
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-black/30" />
-                </div>
-              </div>
-
-              <div className="mt-10">
-                <Card className="p-4 sm:p-5">
-                  <div className="flex flex-wrap items-center gap-3">
-                    {PARTNERS.map((p) => (
-                      <div
-                        key={p}
-                        className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs text-neutral-200"
-                      >
-                        {p}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              </div>
+    <main className="gi-page">
+      <section className="gi-hero">
+        <header className="gi-nav">
+          <div className="gi-brand">
+            <img src={img("/images/cube-logo.png")} alt="Gastronomist International" />
+            <div>
+              <strong>GASTRONOMIST</strong>
+              <span>INTERNATIONAL</span>
             </div>
           </div>
 
-          <div className="lg:col-span-4">
-            <WorldGraphMap />
+          <nav>
+            <a href="/">Home</a>
+            <a href="/about">About Us</a>
+            <a href="/membership-fee">Membership</a>
+            <a href="/chefs">Leaders</a>
+            <a href="/press">Press</a>
+            <a href="/events">Events</a>
+            <a href="/contact">Contact</a>
+          </nav>
+
+          <a href="/membership-fee" className="gi-apply">
+            Apply for Membership
+          </a>
+        </header>
+
+        <div className="gi-hero-grid">
+          <div className="gi-copy">
+            <span className="gi-eyebrow">Global Culinary Community</span>
+            <h1>Uniting Culinary Excellence Around the World</h1>
+            <div className="gi-line" />
+            <p>
+              We embrace the diversity of talent and expertise within the culinary community,
+              particularly focusing on modern gastronomy techniques.
+            </p>
+
+            <div className="gi-actions">
+              <a href="/membership-fee">
+                <Button className="glass-btn glass-shine">Apply for Membership</Button>
+              </a>
+              <a href="/about">
+                <Button className="glass-btn glass-btn-muted glass-shine">Discover More</Button>
+              </a>
+            </div>
           </div>
+
+          <GlobalMap large />
         </div>
       </section>
 
-      <section className="container pb-10">
-        <div className="grid lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-7">
-            <Card className="p-6 sm:p-7">
-              <h2 className="text-2xl sm:text-3xl font-semibold text-white">
-                What Can We Do For Your <span className="text-white/80">Needs</span>
-              </h2>
-              <p className="mt-3 text-sm sm:text-base text-neutral-300 leading-relaxed">
-                A modern global platform for recognition, collaboration, and culinary excellence.
-              </p>
+      <section className="gi-feature-grid">
+        {FEATURES.map(([title, desc]) => (
+          <article className="gi-card gi-feature" key={title}>
+            <div className="gi-icon">◎</div>
+            <h3>{title}</h3>
+            <p>{desc}</p>
+          </article>
+        ))}
+      </section>
 
-              <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {KPIS.map((k) => (
-                  <div
-                    key={k.label}
-                    className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4"
-                  >
-                    <div className="text-xl sm:text-2xl font-semibold text-white">{k.value}</div>
-                    <div className="mt-1 text-xs text-neutral-400">{k.label}</div>
-                  </div>
-                ))}
-              </div>
-            </Card>
+      <section className="gi-network gi-card">
+        <div className="gi-network-copy">
+          <span className="gi-eyebrow">Worldwide Community</span>
+          <h2>A Global Network of Culinary Excellence</h2>
+          <p>
+            Our members represent a diverse and talented community of culinary professionals
+            from every corner of the world.
+          </p>
+
+          <div className="gi-stats">
+            <div><strong>25K+</strong><span>Members Worldwide</span></div>
+            <div><strong>100+</strong><span>Countries Represented</span></div>
+            <div><strong>200+</strong><span>Culinary Associations</span></div>
+            <div><strong>6</strong><span>Continents Connected</span></div>
           </div>
+        </div>
 
-          <div className="lg:col-span-5">
-            <Card className="p-6 sm:p-7">
-              <div className="flex items-end justify-between gap-4">
-                <div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-white">Services</h3>
-                  <p className="mt-1 text-sm text-neutral-400"></p>
-                </div>
-                <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-400">
-                  <span className="h-2 w-2 rounded-full bg-white/60" />
-                  Live Modules
-                </div>
+        <GlobalMap />
+      </section>
+
+      <section className="gi-section">
+        <span className="gi-eyebrow center">Member Benefits & Recognition</span>
+        <h2 className="gi-title">Honoring Excellence. Empowering Chefs.</h2>
+
+        <div className="gi-benefits">
+          {BENEFITS.map(([title, desc, image]) => (
+            <article className="gi-card gi-benefit" key={title}>
+              <div className="gi-benefit-img">
+                <img src={image} alt={title} />
               </div>
-
-              <div className="mt-6 space-y-3">
-                {SERVICES.map((s) => (
-                  <div
-                    key={s.title}
-                    className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 hover:border-white/20 hover:bg-white/[0.05] transition"
-                  >
-                    <div className="h-11 w-11 overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
-                      <img src={s.icon} alt={s.title} className="h-full w-full object-cover" />
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-white">{s.title}</div>
-                      <div className="mt-0.5 text-xs text-neutral-400 truncate">{s.desc}</div>
-                    </div>
-
-                    <div className="text-white/50 group-hover:text-white/80 transition" aria-hidden>
-                      →
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
+              <h3>{title}</h3>
+              <p>{desc}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="container pb-16">
-        <div className="grid lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-7">
-            <Card className="p-6 sm:p-7">
-              <div className="flex items-end justify-between gap-4">
-                <div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-white">Featured Highlights</h3>
-                  <p className="mt-1 text-sm text-neutral-400">
-                    Recognition, membership, and collaboration.
-                  </p>
-                </div>
-                <a href="/press" className="text-xs text-neutral-300 hover:text-white transition">
-                  View Press →
-                </a>
-              </div>
+      <section className="gi-section">
+        <span className="gi-eyebrow center">How It Works</span>
+        <h2 className="gi-title">Your Journey to Membership</h2>
 
-              <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <div className="glass-card glass-shine">
-                  <div className="h-40 overflow-hidden border-b border-white/10">
-                    <img src={img("/images/medal.png")} alt="Our Official Medal" className="w-full h-full object-cover" />
-                  </div>
-                  <div className="p-5">
-                    <h4 className="font-medium text-white">Our Official Medal</h4>
-                    <p className="mt-2 text-sm text-neutral-400 leading-relaxed">
-                      A symbol of excellence, representing achievement and dedication within Gastronomist International.
-                    </p>
-                  </div>
-                </div>
+        <div className="gi-journey">
+          {JOURNEY.map(([title, desc]) => (
+            <article className="gi-step" key={title}>
+              <div className="gi-step-icon">✦</div>
+              <h3>{title}</h3>
+              <p>{desc}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
-                <div className="glass-card glass-shine">
-                  <div className="h-40 overflow-hidden border-b border-white/10">
-                    <img src={img("/images/recognition.png")} alt="Our Membership Recognition" className="w-full h-full object-cover" />
-                  </div>
-                  <div className="p-5">
-                    <h4 className="font-medium text-white">Our Membership Recognition</h4>
-                    <p className="mt-2 text-sm text-neutral-400 leading-relaxed">
-                      Honoring members with a badge of recognition, highlighting their commitment to global gastronomy.
-                    </p>
-                  </div>
-                </div>
+      <section className="gi-testimonials gi-card">
+        <div>
+          <span className="gi-eyebrow">Member Testimonials</span>
+          <h2>Voices of Our Global Community</h2>
+        </div>
 
-                <div className="glass-card glass-shine">
-                  <div className="h-40 overflow-hidden border-b border-white/10">
-                    <img src={img("/images/partnership.png")} alt="Leader’s Collaboration" className="w-full h-full object-cover" />
-                  </div>
-                  <div className="p-5">
-                    <h4 className="font-medium text-white">Leader’s Collaboration</h4>
-                    <p className="mt-2 text-sm text-neutral-400 leading-relaxed">
-                      Building global bridges through collaboration with leaders, chefs, and innovators worldwide.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          <div className="lg:col-span-5">
-            <Card className="p-6 sm:p-7">
-              <h3 className="text-lg sm:text-xl font-semibold text-white">Member Spotlight</h3>
-              <p className="mt-1 text-sm text-neutral-400">
-                A dashboard-style testimonial block.
+        <div className="gi-testimonial-grid">
+          {["Chef Marco Bianchi", "Chef Mei Lin", "Chef James Carter"].map((name) => (
+            <article className="gi-testimonial" key={name}>
+              <p>
+                “Gastronomist International has opened doors to incredible opportunities
+                and connected me with culinary leaders from around the world.”
               </p>
-
-              <div className="mt-6 flex items-start gap-4">
-                <div className="h-14 w-14 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]" />
-                <div className="min-w-0">
-                  <p className="text-sm text-neutral-300 leading-relaxed">
-                    “Gastronomist International creates a refined global platform where culinary professionals can be recognized and connected with real purpose.”
-                  </p>
-                  <div className="mt-4 text-sm font-medium text-white">Gastronomist Member</div>
-                  <div className="mt-1 text-xs text-neutral-400">Global Culinary Community</div>
-                </div>
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/chefs">
-                  <Button className="glass-btn glass-shine">Explore Chefs</Button>
-                </a>
-                <a href="/about">
-                  <Button className="glass-btn glass-btn-muted glass-shine">Learn More</Button>
-                </a>
-              </div>
-            </Card>
-          </div>
+              <strong>{name}</strong>
+              <span>Global Culinary Member</span>
+              <small>★★★★★</small>
+            </article>
+          ))}
         </div>
       </section>
 
       <LatestStory />
+
+      <style jsx global>{`
+        .gi-page {
+          min-height: 100vh;
+          background:
+            radial-gradient(circle at 20% 10%, rgba(212, 163, 54, 0.14), transparent 30%),
+            radial-gradient(circle at 85% 20%, rgba(255, 196, 77, 0.1), transparent 28%),
+            linear-gradient(180deg, #05090b 0%, #081015 45%, #030506 100%);
+          color: #f7f0df;
+          overflow: hidden;
+        }
+
+        .gi-hero,
+        .gi-feature-grid,
+        .gi-network,
+        .gi-section,
+        .gi-testimonials {
+          width: min(1440px, calc(100% - 40px));
+          margin: 0 auto;
+        }
+
+        .gi-hero {
+          padding: 26px 0 28px;
+        }
+
+        .gi-nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 22px;
+          padding: 18px 20px;
+          border: 1px solid rgba(212, 163, 54, 0.28);
+          border-radius: 22px;
+          background: rgba(255, 255, 255, 0.035);
+          box-shadow: 0 20px 80px rgba(0, 0, 0, 0.45);
+          backdrop-filter: blur(18px);
+        }
+
+        .gi-brand {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+
+        .gi-brand img {
+          width: 54px;
+          height: 54px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .gi-brand strong {
+          display: block;
+          font-size: 20px;
+          letter-spacing: 0.06em;
+          color: white;
+        }
+
+        .gi-brand span {
+          display: block;
+          color: #d9a331;
+          letter-spacing: 0.34em;
+          font-size: 12px;
+        }
+
+        .gi-nav nav {
+          display: flex;
+          gap: 22px;
+          font-size: 12px;
+          text-transform: uppercase;
+        }
+
+        .gi-nav a {
+          color: #f6edd9;
+          text-decoration: none;
+        }
+
+        .gi-nav a:hover {
+          color: #d9a331;
+        }
+
+        .gi-apply {
+          border: 1px solid #d9a331;
+          color: #d9a331 !important;
+          border-radius: 8px;
+          padding: 12px 16px;
+          font-size: 12px;
+          text-transform: uppercase;
+        }
+
+        .gi-hero-grid {
+          display: grid;
+          grid-template-columns: 0.82fr 1.18fr;
+          gap: 32px;
+          align-items: center;
+          padding: 70px 8px 34px;
+        }
+
+        .gi-copy h1,
+        .gi-title,
+        .gi-network h2,
+        .gi-testimonials h2 {
+          font-family: Georgia, "Times New Roman", serif;
+          font-weight: 500;
+          letter-spacing: -0.04em;
+        }
+
+        .gi-copy h1 {
+          font-size: clamp(48px, 6vw, 92px);
+          line-height: 0.98;
+          color: white;
+        }
+
+        .gi-eyebrow {
+          display: block;
+          color: #d9a331;
+          text-transform: uppercase;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          font-size: 13px;
+          margin-bottom: 18px;
+        }
+
+        .gi-eyebrow.center {
+          text-align: center;
+        }
+
+        .gi-line {
+          width: 190px;
+          height: 1px;
+          margin: 28px 0;
+          background: linear-gradient(90deg, transparent, #d9a331, transparent);
+        }
+
+        .gi-copy p,
+        .gi-network p,
+        .gi-feature p,
+        .gi-benefit p,
+        .gi-step p,
+        .gi-testimonial p {
+          color: rgba(247, 240, 223, 0.76);
+          line-height: 1.7;
+        }
+
+        .gi-copy p {
+          max-width: 560px;
+          font-size: 16px;
+        }
+
+        .gi-actions {
+          margin-top: 34px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+
+        .gi-card {
+          border: 1px solid rgba(212, 163, 54, 0.26);
+          background:
+            linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
+            rgba(3, 7, 9, 0.72);
+          border-radius: 22px;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 22px 80px rgba(0, 0, 0, 0.36);
+          backdrop-filter: blur(18px);
+        }
+
+        .gi-feature-grid {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 18px;
+          padding-bottom: 34px;
+        }
+
+        .gi-feature {
+          padding: 28px 20px;
+          text-align: center;
+          transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .gi-feature:hover,
+        .gi-benefit:hover {
+          transform: translateY(-6px);
+          border-color: rgba(212, 163, 54, 0.72);
+        }
+
+        .gi-icon {
+          color: #d9a331;
+          font-size: 48px;
+          line-height: 1;
+          margin-bottom: 18px;
+        }
+
+        .gi-feature h3,
+        .gi-benefit h3 {
+          color: #d9a331;
+          text-transform: uppercase;
+          font-size: 15px;
+          line-height: 1.3;
+          margin-bottom: 12px;
+        }
+
+        .gi-feature p {
+          font-size: 13px;
+        }
+
+        .gi-network {
+          display: grid;
+          grid-template-columns: 0.48fr 0.52fr;
+          gap: 24px;
+          padding: 28px;
+          margin-bottom: 46px;
+        }
+
+        .gi-network h2,
+        .gi-testimonials h2,
+        .gi-title {
+          font-size: clamp(34px, 4vw, 56px);
+          color: white;
+          line-height: 1.05;
+        }
+
+        .gi-stats {
+          margin-top: 28px;
+          display: grid;
+          gap: 12px;
+          max-width: 260px;
+        }
+
+        .gi-stats div {
+          border: 1px solid rgba(212, 163, 54, 0.26);
+          border-radius: 16px;
+          padding: 14px 16px;
+          background: rgba(255, 255, 255, 0.04);
+        }
+
+        .gi-stats strong {
+          display: block;
+          color: #d9a331;
+          font-size: 28px;
+          line-height: 1;
+        }
+
+        .gi-stats span {
+          display: block;
+          color: rgba(247, 240, 223, 0.72);
+          font-size: 12px;
+          margin-top: 4px;
+        }
+
+        .gi-section {
+          padding: 28px 0 52px;
+        }
+
+        .gi-title {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+
+        .gi-benefits {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 22px;
+        }
+
+        .gi-benefit {
+          padding: 18px;
+          text-align: center;
+          transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .gi-benefit-img {
+          height: 260px;
+          border-radius: 18px;
+          overflow: hidden;
+          border: 1px solid rgba(212, 163, 54, 0.25);
+          background: radial-gradient(circle, rgba(212, 163, 54, 0.12), rgba(255, 255, 255, 0.02));
+          margin-bottom: 18px;
+        }
+
+        .gi-benefit-img img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .gi-journey {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 18px;
+          position: relative;
+        }
+
+        .gi-step {
+          text-align: center;
+          padding: 10px;
+        }
+
+        .gi-step-icon {
+          width: 86px;
+          height: 86px;
+          margin: 0 auto 16px;
+          border-radius: 999px;
+          border: 1px solid rgba(212, 163, 54, 0.36);
+          display: grid;
+          place-items: center;
+          color: #d9a331;
+          font-size: 30px;
+          background: rgba(255, 255, 255, 0.04);
+          box-shadow: 0 0 42px rgba(212, 163, 54, 0.12);
+        }
+
+        .gi-step h3 {
+          color: white;
+          font-size: 15px;
+          margin-bottom: 8px;
+        }
+
+        .gi-step p {
+          font-size: 13px;
+        }
+
+        .gi-testimonials {
+          padding: 28px;
+          margin-bottom: 40px;
+        }
+
+        .gi-testimonial-grid {
+          margin-top: 24px;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 18px;
+        }
+
+        .gi-testimonial {
+          border: 1px solid rgba(212, 163, 54, 0.22);
+          border-radius: 18px;
+          padding: 22px;
+          background: rgba(255, 255, 255, 0.035);
+        }
+
+        .gi-testimonial strong,
+        .gi-testimonial span,
+        .gi-testimonial small {
+          display: block;
+        }
+
+        .gi-testimonial strong {
+          color: white;
+          margin-top: 18px;
+        }
+
+        .gi-testimonial span {
+          color: rgba(247, 240, 223, 0.62);
+          font-size: 12px;
+          margin-top: 4px;
+        }
+
+        .gi-testimonial small {
+          color: #d9a331;
+          margin-top: 8px;
+        }
+
+        .gi-map {
+          position: relative;
+          min-height: 360px;
+          border-radius: 22px;
+          overflow: hidden;
+          border: 1px solid rgba(212, 163, 54, 0.22);
+          background:
+            radial-gradient(circle at 52% 42%, rgba(212, 163, 54, 0.22), transparent 12%),
+            radial-gradient(circle at 18% 35%, rgba(212, 163, 54, 0.16), transparent 9%),
+            linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+        }
+
+        .gi-map.large {
+          min-height: 560px;
+          border: none;
+          background: transparent;
+        }
+
+        .gi-map svg {
+          width: 100%;
+          height: 100%;
+          min-height: inherit;
+          display: block;
+        }
+
+        .gi-continent {
+          fill: rgba(230, 225, 212, 0.22);
+          stroke: rgba(255, 255, 255, 0.12);
+          stroke-width: 1;
+        }
+
+        .gi-route {
+          fill: none;
+          stroke: rgba(217, 163, 49, 0.66);
+          stroke-width: 1.2;
+          stroke-dasharray: 8 10;
+          animation: giDash 7s linear infinite;
+        }
+
+        .gi-route-glow {
+          fill: none;
+          stroke: rgba(217, 163, 49, 0.24);
+          stroke-width: 8;
+          filter: blur(8px);
+        }
+
+        .gi-node {
+          fill: #f5b83f;
+          filter: drop-shadow(0 0 10px rgba(245, 184, 63, 0.95));
+          animation: giPulse 2.4s ease-in-out infinite;
+        }
+
+        .gi-grid-dot {
+          fill: rgba(217, 163, 49, 0.18);
+          animation: giTwinkle 4s ease-in-out infinite;
+        }
+
+        @keyframes giDash {
+          to {
+            stroke-dashoffset: -180;
+          }
+        }
+
+        @keyframes giPulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.85;
+          }
+          50% {
+            transform: scale(1.35);
+            opacity: 1;
+          }
+        }
+
+        @keyframes giTwinkle {
+          0%, 100% {
+            opacity: 0.16;
+          }
+          50% {
+            opacity: 0.58;
+          }
+        }
+
+        @media (max-width: 1180px) {
+          .gi-nav nav {
+            display: none;
+          }
+
+          .gi-hero-grid,
+          .gi-network {
+            grid-template-columns: 1fr;
+          }
+
+          .gi-feature-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+
+          .gi-benefits {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .gi-journey {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 720px) {
+          .gi-hero,
+          .gi-feature-grid,
+          .gi-network,
+          .gi-section,
+          .gi-testimonials {
+            width: min(100% - 24px, 1440px);
+          }
+
+          .gi-nav {
+            align-items: flex-start;
+            flex-direction: column;
+          }
+
+          .gi-apply {
+            width: 100%;
+            text-align: center;
+          }
+
+          .gi-hero-grid {
+            padding-top: 42px;
+          }
+
+          .gi-map.large {
+            min-height: 340px;
+          }
+
+          .gi-feature-grid,
+          .gi-benefits,
+          .gi-journey,
+          .gi-testimonial-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .gi-benefit-img {
+            height: 220px;
+          }
+        }
+      `}</style>
+    </main>
+  )
+}
+
+function GlobalMap({ large = false }) {
+  return (
+    <div className={`gi-map ${large ? "large" : ""}`}>
+      <svg viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet" aria-label="Animated global culinary map">
+        <g opacity="0.9">
+          {Array.from({ length: 95 }).map((_, i) => (
+            <circle
+              key={i}
+              className="gi-grid-dot"
+              cx={(i * 97) % 980 + 10}
+              cy={(i * 53) % 500 + 10}
+              r={(i % 3) + 0.8}
+              style={{ animationDelay: `${(i % 9) * 0.22}s` }}
+            />
+          ))}
+        </g>
+
+        <g>
+          <path className="gi-continent" d="M150 180C195 130 275 130 330 175C375 212 410 230 465 226C525 222 560 174 625 176C700 179 770 218 820 275C860 320 840 370 780 390C710 413 655 385 595 378C525 370 485 405 410 410C330 415 255 388 205 340C150 288 110 225 150 180Z" />
+          <path className="gi-continent" d="M700 105C760 72 850 95 882 150C910 198 890 262 835 282C780 302 730 270 710 220C692 174 660 128 700 105Z" />
+          <path className="gi-continent" d="M210 350C258 318 330 330 360 378C385 420 350 470 292 474C238 478 195 442 190 397C186 374 193 360 210 350Z" />
+          <path className="gi-continent" d="M535 260C575 248 615 274 622 315C630 360 600 410 560 420C520 430 490 392 498 350C505 312 502 274 535 260Z" />
+          <path className="gi-continent" d="M775 350C825 330 880 345 900 390C920 438 885 475 830 465C780 456 745 380 775 350Z" />
+        </g>
+
+        <g>
+          {[
+            "M500 235 Q360 88 210 178",
+            "M500 235 Q665 80 805 165",
+            "M500 235 Q710 245 845 380",
+            "M500 235 Q455 330 290 408",
+            "M500 235 Q520 330 555 385",
+            "M500 235 Q350 260 190 310",
+            "M500 235 Q630 165 740 230",
+          ].map((d) => (
+            <g key={d}>
+              <path className="gi-route-glow" d={d} />
+              <path className="gi-route" d={d} />
+            </g>
+          ))}
+        </g>
+
+        <g>
+          {[
+            [500, 235],
+            [210, 178],
+            [805, 165],
+            [845, 380],
+            [290, 408],
+            [555, 385],
+            [190, 310],
+            [740, 230],
+            [600, 180],
+            [420, 210],
+            [680, 320],
+          ].map(([cx, cy], i) => (
+            <circle key={i} className="gi-node" cx={cx} cy={cy} r={i === 0 ? 8 : 5} />
+          ))}
+        </g>
+      </svg>
     </div>
   )
 }
