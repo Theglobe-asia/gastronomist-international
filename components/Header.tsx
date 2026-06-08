@@ -9,12 +9,10 @@ import {
   HiOutlineNewspaper,
   HiOutlineInformationCircle,
   HiOutlineShoppingBag,
-  HiOutlineSparkles,
 } from "react-icons/hi2"
 
 const NAV = [
   { href: "/", label: "Home", icon: HiOutlineHome },
-  { href: "/?register=1", label: "Membership", icon: HiOutlineSparkles },
   { href: "/chefs", label: "Our Chefs", icon: HiOutlineUsers },
   { href: "/press", label: "Press Release", icon: HiOutlineNewspaper },
   { href: "/about", label: "About Us", icon: HiOutlineInformationCircle },
@@ -52,6 +50,7 @@ export default function Header() {
           <nav className="hidden md:flex items-center gap-3">
             {NAV.map((i) => {
               const Icon = i.icon
+
               return (
                 <Link
                   key={i.href}
@@ -67,7 +66,10 @@ export default function Header() {
                     hover:text-yellow-200
                   "
                 >
-                  <Icon className="h-4 w-4 text-yellow-300/85" aria-hidden />
+                  <Icon
+                    className="h-4 w-4 text-yellow-300/85"
+                    aria-hidden
+                  />
                   <span>{i.label}</span>
                 </Link>
               )
@@ -87,7 +89,10 @@ export default function Header() {
               hover:bg-yellow-400/10
             "
           >
-            <HiOutlineUsers className="h-4 w-4 text-yellow-300/85" aria-hidden />
+            <HiOutlineUsers
+              className="h-4 w-4 text-yellow-300/85"
+              aria-hidden
+            />
             <span>Menu</span>
           </button>
         </div>
