@@ -108,7 +108,9 @@ export default function Page() {
           </div>
         </div>
 
-        <GlobalNetworkMap large />
+        <div className="gi-map-stage">
+          <GlobalNetworkMap large />
+        </div>
       </section>
 
       <section className="gi-feature-row">
@@ -132,22 +134,10 @@ export default function Page() {
           </p>
 
           <div className="gi-stat-grid">
-            <div>
-              <strong>25K+</strong>
-              <span>Members Worldwide</span>
-            </div>
-            <div>
-              <strong>100+</strong>
-              <span>Countries Represented</span>
-            </div>
-            <div>
-              <strong>200+</strong>
-              <span>Culinary Associations</span>
-            </div>
-            <div>
-              <strong>6</strong>
-              <span>Continents Connected</span>
-            </div>
+            <div><strong>25K+</strong><span>Members Worldwide</span></div>
+            <div><strong>100+</strong><span>Countries Represented</span></div>
+            <div><strong>200+</strong><span>Culinary Associations</span></div>
+            <div><strong>6</strong><span>Continents Connected</span></div>
           </div>
         </div>
 
@@ -215,7 +205,11 @@ export default function Page() {
           overflow: hidden;
         }
 
-        .gi-hero,
+        .gi-hero {
+          width: min(1800px, calc(100% - 40px));
+          margin: 0 auto;
+        }
+
         .gi-feature-row,
         .gi-network-panel,
         .gi-section,
@@ -226,10 +220,22 @@ export default function Page() {
 
         .gi-hero {
           display: grid;
-          grid-template-columns: 0.78fr 1.22fr;
-          gap: 34px;
+          grid-template-columns: minmax(340px, 0.42fr) minmax(840px, 1.58fr);
+          gap: 20px;
           align-items: center;
           padding: 78px 0 34px;
+          overflow: visible;
+        }
+
+        .gi-map-stage {
+          position: relative;
+          min-width: 0;
+          overflow: visible;
+        }
+
+        .gi-hero-copy {
+          position: relative;
+          z-index: 4;
         }
 
         .gi-hero-copy h1,
@@ -558,10 +564,11 @@ export default function Page() {
         }
 
         .gi-map.large {
-          min-height: 560px;
+          min-height: 760px;
           border: none;
           background: transparent;
           box-shadow: none;
+          overflow: visible;
         }
 
         .gi-map-caption {
@@ -588,12 +595,6 @@ export default function Page() {
           animation: giBlink 1.5s ease-in-out infinite;
         }
 
-        .gi-map-frame {
-          position: absolute;
-          inset: 0;
-          z-index: 2;
-        }
-
         .gi-map-glow {
           position: absolute;
           inset: 0;
@@ -603,6 +604,16 @@ export default function Page() {
             radial-gradient(circle at 26% 45%, rgba(245, 184, 63, 0.12), transparent 8%),
             radial-gradient(circle at 74% 46%, rgba(245, 184, 63, 0.11), transparent 10%);
           pointer-events: none;
+        }
+
+        .gi-map-frame {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+        }
+
+        .gi-map.large .gi-map-frame {
+          inset: -70px -180px -50px -100px;
         }
 
         .gi-map svg {
@@ -694,10 +705,28 @@ export default function Page() {
           }
         }
 
+        @media (max-width: 1280px) {
+          .gi-hero {
+            grid-template-columns: minmax(320px, 0.5fr) minmax(620px, 1.5fr);
+          }
+
+          .gi-map.large {
+            min-height: 620px;
+          }
+
+          .gi-map.large .gi-map-frame {
+            inset: -50px -110px -35px -70px;
+          }
+        }
+
         @media (max-width: 1180px) {
           .gi-hero,
           .gi-network-panel {
             grid-template-columns: 1fr;
+          }
+
+          .gi-map-stage {
+            min-height: 560px;
           }
 
           .gi-feature-row {
@@ -736,9 +765,18 @@ export default function Page() {
             grid-template-columns: 1fr;
           }
 
+          .gi-map-stage {
+            min-height: 430px;
+          }
+
           .gi-map.large,
           .gi-map {
-            min-height: 360px;
+            min-height: 420px;
+          }
+
+          .gi-map.large .gi-map-frame,
+          .gi-map-frame {
+            inset: -35px -70px -25px -55px;
           }
 
           .gi-benefit-img {
@@ -768,8 +806,8 @@ function GlobalNetworkMap({ large = false }) {
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
-            scale: large ? 150 : 138,
-            center: [10, 20],
+            scale: large ? 205 : 138,
+            center: [18, 18],
           }}
         >
           <Geographies geography={GEO_URL}>
