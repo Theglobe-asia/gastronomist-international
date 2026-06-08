@@ -1,21 +1,27 @@
 // app/chefs/page.tsx
 "use client"
 
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import type { MotionProps } from "framer-motion"
-import Card from "@/components/ui/Card"
-import Button from "@/components/ui/Button"
+import type { IconType } from "react-icons"
+import {
+  HiOutlineGlobeAlt,
+  HiOutlineSparkles,
+  HiOutlineUserGroup,
+  HiOutlineTrophy,
+} from "react-icons/hi2"
 
-// ✅ Typed motion wrappers (avoid TS className errors)
 type DivMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
     React.RefAttributes<HTMLDivElement>
 >
+
 type SectionMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"section"> & MotionProps> &
     React.RefAttributes<HTMLElement>
 >
+
 type ArticleMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"article"> & MotionProps> &
     React.RefAttributes<HTMLElement>
@@ -84,6 +90,20 @@ const chefs = [
   },
 ]
 
+const regions = ["All", "Asia", "Europe", "Americas", "Oceania"] as const
+type Region = (typeof regions)[number]
+
+const stats: {
+  label: string
+  value: string
+  icon: IconType
+}[] = [
+  { label: "Active Members", value: `${chefs.length}`, icon: HiOutlineUserGroup },
+  { label: "Global Coverage", value: "Worldwide", icon: HiOutlineGlobeAlt },
+  { label: "Recognition", value: "Official", icon: HiOutlineTrophy },
+  { label: "Modern Gastronomy", value: "Innovation", icon: HiOutlineSparkles },
+]
+
 const containerVariants = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: 0.08 } },
@@ -94,399 +114,213 @@ const cardVariants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 }
 
-const regions = ["All", "Asia", "Europe", "Americas", "Oceania"] as const
-type Region = (typeof regions)[number]
-
 export default function ChefsPage() {
   const [selectedChef, setSelectedChef] = useState<(typeof chefs)[number] | null>(null)
   const [region, setRegion] = useState<Region>("All")
 
   const filtered = useMemo(() => {
     if (region === "All") return chefs
-    return chefs.filter((c) => c.region === region)
+    return chefs.filter((chef) => chef.region === region)
   }, [region])
 
-  const totalMembers = chefs.length
-
   return (
-    <main className="container py-12 sm:py-16 space-y-10">
-      {/* HERO COVER (editorial) */}
-      <section className="relative">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background: `
-              radial-gradient(1100px 460px at 18% 24%, rgba(120,220,255,0.26), transparent 60%),
-              radial-gradient(900px 420px at 82% 22%, rgba(255,255,255,0.14), transparent 68%),
-              radial-gradient(900px 520px at 50% 120%, rgba(80,120,255,0.10), transparent 70%)
-            `,
-          }}
-        />
+    <main className="chefs-page">
+      <section className="chefs-hero">
+        <div className="chefs-hero-copy">
+          <span className="chefs-eyebrow">Global Members • Editorial Directory</span>
+          <h1>
+            Our <span>Chefs</span>
+          </h1>
+          <div className="chefs-divider" />
+          <p>
+            Meet culinary professionals worldwide — connected through recognition,
+            collaboration, and modern gastronomy.
+          </p>
 
-        <div className="glass-panel glass-panel-pad glass-shine glass-glow relative overflow-hidden">
-          {/* Cover image strip (cinematic placeholder) */}
-          <div className="relative h-[180px] sm:h-[240px] lg:h-[280px] overflow-hidden rounded-2xl border border-white/10">
-            {/* Use an existing image you already have; change if you want later */}
-            <img
-              src="/images/partnership.png"
-              alt="Global Culinary Network"
-              className="h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-
-            <div className="absolute left-6 right-6 bottom-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
-                <span className="h-2 w-2 rounded-full bg-white/70" />
-                Global Members • Editorial Directory
-              </div>
-
-              <h1 className="mt-4 text-4xl sm:text-5xl font-bold text-white leading-tight">
-                Our Chefs
-              </h1>
-
-              <p className="mt-3 text-neutral-300 max-w-3xl">
-                Meet our culinary professionals worldwide — connected through recognition, collaboration, and modern gastronomy.
-              </p>
-
-              <div className="mt-5 flex flex-wrap gap-3">
-                <a href="/about">
-                  <Button className="glass-btn glass-shine">About Gastronomist</Button>
-                </a>
-                <a href="/press">
-                  <Button className="glass-btn glass-btn-muted glass-shine">Press Release</Button>
-                </a>
-              </div>
-            </div>
+          <div className="chefs-hero-links">
+            <a href="/about">About Gastronomist</a>
+            <a href="/press">Press Release</a>
           </div>
+        </div>
 
-          {/* KPI + Filter row */}
-          <div className="mt-7 grid lg:grid-cols-12 gap-6 items-start">
-            <div className="lg:col-span-8">
-              <Card className="p-5 sm:p-6">
-                <div className="flex items-end justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg sm:text-xl font-semibold text-white">Member Dashboard</h2>
-                    <p className="mt-1 text-sm text-neutral-400">
-                      Browse chefs by region — presented in an editorial magazine format.
-                    </p>
-                  </div>
-                  <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-400">
-                    <span className="h-2 w-2 rounded-full bg-white/60" />
-                    Live Directory
-                  </div>
-                </div>
-
-                <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                    <div className="text-xl font-semibold text-white">{totalMembers}</div>
-                    <div className="mt-1 text-[11px] text-neutral-400">Active Members</div>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                    <div className="text-xl font-semibold text-white">Worldwide</div>
-                    <div className="mt-1 text-[11px] text-neutral-400">Coverage</div>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                    <div className="text-xl font-semibold text-white">Recognition</div>
-                    <div className="mt-1 text-[11px] text-neutral-400">Standard</div>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                    <div className="text-xl font-semibold text-white">Modern</div>
-                    <div className="mt-1 text-[11px] text-neutral-400">Gastronomy</div>
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            <div className="lg:col-span-4">
-              <Card className="p-5 sm:p-6">
-                <div className="text-sm font-medium text-white">Filter by Region</div>
-                <p className="mt-1 text-xs text-neutral-400">A quick editorial filter.</p>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {regions.map((r) => {
-                    const active = region === r
-                    return (
-                      <button
-                        key={r}
-                        type="button"
-                        onClick={() => setRegion(r)}
-                        className={[
-                          "px-4 py-2 rounded-2xl text-sm transition",
-                          "border bg-white/[0.03]",
-                          active
-                            ? "border-white/25 bg-white/[0.06] text-white"
-                            : "border-white/10 text-neutral-200 hover:border-white/20 hover:bg-white/[0.06]",
-                        ].join(" ")}
-                      >
-                        {r}
-                      </button>
-                    )
-                  })}
-                </div>
-
-                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  <div className="text-[11px] text-neutral-400">Showing</div>
-                  <div className="mt-1 text-sm text-white">
-                    {filtered.length} member{filtered.length === 1 ? "" : "s"}
-                  </div>
-                </div>
-              </Card>
-            </div>
+        <div className="chefs-hero-visual">
+          <img src="/images/partnership.png" alt="Global Culinary Network" />
+          <div className="chefs-hero-overlay" />
+          <div className="chefs-hero-card">
+            <strong>International Culinary Directory</strong>
+            <span>
+              A curated platform for chefs, leaders, educators, and gastronomy
+              professionals across regions.
+            </span>
           </div>
         </div>
       </section>
 
-      {/* MAGAZINE GRID (cards + sidebar blocks) */}
-      <section className="grid lg:grid-cols-12 gap-6 items-start">
-        {/* Main grid */}
-        <div className="lg:col-span-8 space-y-6">
-          <Card className="p-6 sm:p-7">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <h3 className="text-xl sm:text-2xl font-semibold text-white">Featured Members</h3>
-                <p className="mt-1 text-sm text-neutral-400">
-                  Tap a chef card to open the editorial profile.
-                </p>
-              </div>
-              <a href="/about" className="text-xs text-neutral-300 hover:text-white transition">
-                Leadership & Ambassadors →
-              </a>
-            </div>
+      <section className="chefs-dashboard">
+        <div className="chefs-dashboard-main">
+          <span className="chefs-eyebrow">Member Dashboard</span>
+          <h2>Browse chefs by region.</h2>
+          <p>
+            Presented in a premium editorial format, each profile reflects professional
+            recognition, global visibility, and culinary contribution.
+          </p>
 
-            <MotionSection
-              className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-            >
-              {filtered.map((c) => (
-                <MotionArticle
-                  key={c.name}
-                  variants={cardVariants}
-                  className="glass-card glass-shine cursor-pointer"
-                  onClick={() => setSelectedChef(c)}
+          <div className="chefs-stats">
+            {stats.map((item) => {
+              const Icon = item.icon
+
+              return (
+                <article key={item.label}>
+                  <Icon className="chefs-stat-icon" aria-hidden />
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </article>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="chefs-filter-card">
+          <span className="chefs-eyebrow">Filter by Region</span>
+          <p>A quick editorial filter for the global member directory.</p>
+
+          <div className="chefs-filter-list">
+            {regions.map((item) => {
+              const active = region === item
+
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setRegion(item)}
+                  className={active ? "active" : ""}
                 >
-                  {/* Portrait */}
-                  <div className="h-44 overflow-hidden border-b border-white/10 bg-white/[0.02] flex items-center justify-center">
-                    <img src={c.img} alt={c.name} className="h-full w-full object-contain" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <h4 className="font-medium text-white truncate">{c.name}</h4>
-                        <div className="mt-1 text-xs text-neutral-400">{c.role}</div>
-                      </div>
-                      <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] text-neutral-200">
-                        {c.region}
-                      </div>
-                    </div>
-
-                    <p className="mt-3 text-sm text-neutral-300 leading-relaxed line-clamp-3">
-                      {c.blurb}
-                    </p>
-
-                    <div className="mt-4 flex items-center justify-between">
-                      <div className="text-xs text-neutral-400">
-                        Specialty: <span className="text-neutral-200">{c.specialty}</span>
-                      </div>
-                      <div className="text-white/50" aria-hidden>
-                        →
-                      </div>
-                    </div>
-                  </div>
-                </MotionArticle>
-              ))}
-            </MotionSection>
-          </Card>
-
-          {/* Editorial quote block */}
-          <Card className="p-6 sm:p-7">
-            <div className="flex items-start gap-4">
-              <div className="h-12 w-12 rounded-2xl border border-white/10 bg-white/[0.03]" />
-              <div className="min-w-0">
-                <p className="text-white text-base sm:text-lg leading-relaxed">
-                  “A global culinary community where talent is visible, standards are elevated, and recognition carries real meaning.”
-                </p>
-                <div className="mt-4 text-sm font-medium text-white">Gastronomist International</div>
-                <div className="mt-1 text-xs text-neutral-400">Member Directory Editorial</div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Sidebar */}
-        <div className="lg:col-span-4 space-y-6">
-          <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Directory Notes</h3>
-            <p className="mt-1 text-sm text-neutral-400">A magazine-style sidebar for context.</p>
-
-            <div className="mt-5 space-y-3">
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
-                <div className="text-sm font-medium text-white">Recognition</div>
-                <div className="mt-1 text-sm text-neutral-300">
-                  Member profiles highlight commitment, craft, and international standards.
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
-                <div className="text-sm font-medium text-white">Collaboration</div>
-                <div className="mt-1 text-sm text-neutral-300">
-                  Connect chefs and leaders worldwide through shared projects and opportunities.
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
-                <div className="text-sm font-medium text-white">Modern Gastronomy</div>
-                <div className="mt-1 text-sm text-neutral-300">
-                  Techniques, innovation, and education — presented with a refined editorial feel.
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Continue Exploring</h3>
-            <p className="mt-1 text-sm text-neutral-400">Editorial navigation blocks.</p>
-
-            <div className="mt-5 space-y-3">
-              <a
-                href="/press"
-                className="group block rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 hover:border-white/20 hover:bg-white/[0.06] transition"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-sm font-medium text-white">Press Release</div>
-                  <div className="text-white/50 group-hover:text-white/80 transition" aria-hidden>
-                    →
-                  </div>
-                </div>
-                <div className="mt-1 text-xs text-neutral-400">Official announcements & collaborations.</div>
-              </a>
-
-              <a
-                href="/about"
-                className="group block rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 hover:border-white/20 hover:bg-white/[0.06] transition"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-sm font-medium text-white">About</div>
-                  <div className="text-white/50 group-hover:text-white/80 transition" aria-hidden>
-                    →
-                  </div>
-                </div>
-                <div className="mt-1 text-xs text-neutral-400">Mission, vision, and ambassadors.</div>
-              </a>
-
-              <a
-                href="/shop"
-                className="group block rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 hover:border-white/20 hover:bg-white/[0.06] transition"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-sm font-medium text-white">Shop</div>
-                  <div className="text-white/50 group-hover:text-white/80 transition" aria-hidden>
-                    →
-                  </div>
-                </div>
-                <div className="mt-1 text-xs text-neutral-400">Membership & official items.</div>
-              </a>
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href="/about">
-                <Button className="glass-btn glass-shine">Leadership</Button>
-              </a>
-              <a href="/press">
-                <Button className="glass-btn glass-btn-muted glass-shine">Read Press</Button>
-              </a>
-            </div>
-          </Card>
+                  {item}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </section>
 
-      {/* MODAL (editorial profile) */}
+      <section className="chefs-section">
+        <div className="chefs-section-head">
+          <span className="chefs-eyebrow">Leadership & Ambassadors</span>
+          <h2>Professional members across the global culinary community.</h2>
+          <p>
+            Click a profile to view the full editorial card. All images are shown in
+            full view without cropping.
+          </p>
+        </div>
+
+        <MotionSection
+          className="chefs-grid"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+        >
+          {filtered.map((chef) => (
+            <MotionArticle
+              key={chef.name}
+              variants={cardVariants}
+              className="chef-card"
+              onClick={() => setSelectedChef(chef)}
+            >
+              <div className="chef-image">
+                <img src={chef.img} alt={chef.name} />
+              </div>
+
+              <div className="chef-content">
+                <div className="chef-meta">
+                  <span>{chef.region}</span>
+                  <small>{chef.specialty}</small>
+                </div>
+
+                <h3>{chef.name}</h3>
+                <p className="chef-role">{chef.role}</p>
+                <p>{chef.blurb}</p>
+              </div>
+            </MotionArticle>
+          ))}
+        </MotionSection>
+      </section>
+
+      <section className="chefs-notes">
+        <article>
+          <span className="chefs-eyebrow">Editorial Mission</span>
+          <h2>Recognition, connection, and global professionalism.</h2>
+          <p>
+            “We embrace the diversity of talent and expertise within the culinary
+            community — modern techniques, global recognition, and real collaboration.”
+          </p>
+        </article>
+
+        <div className="chefs-note-list">
+          <div>
+            <strong>Standards</strong>
+            <span>A consistent platform for recognition and global professionalism.</span>
+          </div>
+
+          <div>
+            <strong>Community</strong>
+            <span>Members worldwide connected through shared purpose and craft.</span>
+          </div>
+
+          <div>
+            <strong>Innovation</strong>
+            <span>Modern gastronomy techniques and education presented with clarity.</span>
+          </div>
+        </div>
+      </section>
+
       <AnimatePresence>
         {selectedChef && (
           <>
             <MotionDiv
-              onClick={() => setSelectedChef(null)}
-              className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-md"
+              className="chef-modal-backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              onClick={() => setSelectedChef(null)}
             />
 
             <MotionDiv
-              className="fixed inset-0 z-[91] flex items-center justify-center p-4"
+              className="chef-modal-wrap"
               initial={{ opacity: 0, scale: 0.96, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 10 }}
               transition={{ duration: 0.22 }}
             >
-              <div className="glass-panel glass-panel-pad glass-shine w-full max-w-3xl relative">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
-                      <span className="h-2 w-2 rounded-full bg-white/70" />
-                      Member Profile • {selectedChef.region}
-                    </div>
+              <div className="chef-modal">
+                <button
+                  type="button"
+                  onClick={() => setSelectedChef(null)}
+                  aria-label="Close"
+                  className="chef-modal-close"
+                >
+                  ✕
+                </button>
 
-                    <h2 className="mt-4 text-2xl sm:text-3xl font-bold text-white">
-                      {selectedChef.name}
-                    </h2>
-                    <p className="mt-1 text-sm text-neutral-300">{selectedChef.role}</p>
-                  </div>
-
-                  <button
-                    onClick={() => setSelectedChef(null)}
-                    className="rounded-xl px-3 py-2 text-white border border-white/15 bg-white/[0.04]
-                               hover:bg-white/[0.08] hover:border-white/25 transition
-                               focus:outline-none focus:ring-2 focus:ring-white/30"
-                    aria-label="Close"
-                  >
-                    ✕
-                  </button>
+                <div className="chef-modal-image">
+                  <img src={selectedChef.img} alt={selectedChef.name} />
                 </div>
 
-                <div className="mt-6 grid md:grid-cols-12 gap-6 items-start">
-                  <div className="md:col-span-5">
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden">
-                      <div className="h-[320px] bg-white/[0.02] flex items-center justify-center">
-                        <img
-                          src={selectedChef.img}
-                          alt={selectedChef.name}
-                          className="h-full w-full object-contain"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                <div className="chef-modal-content">
+                  <span className="chefs-eyebrow">Leader Profile • {selectedChef.region}</span>
+                  <h2>{selectedChef.name}</h2>
+                  <p className="chef-modal-role">{selectedChef.role}</p>
+                  <p>{selectedChef.blurb}</p>
 
-                  <div className="md:col-span-7">
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                      <div className="text-xs text-neutral-400">Editorial Summary</div>
-                      <p className="mt-2 text-neutral-200 leading-relaxed">{selectedChef.blurb}</p>
-
-                      <div className="mt-5 grid grid-cols-2 gap-3">
-                        <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                          <div className="text-[11px] text-neutral-400">Region</div>
-                          <div className="mt-1 text-sm text-white">{selectedChef.region}</div>
-                        </div>
-                        <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                          <div className="text-[11px] text-neutral-400">Specialty</div>
-                          <div className="mt-1 text-sm text-white">{selectedChef.specialty}</div>
-                        </div>
-                      </div>
+                  <div className="chef-modal-grid">
+                    <div>
+                      <small>Region</small>
+                      <strong>{selectedChef.region}</strong>
                     </div>
 
-                    <div className="mt-5 flex flex-wrap gap-3">
-                      <a href="/about">
-                        <Button className="glass-btn glass-shine">About</Button>
-                      </a>
-                      <button onClick={() => setSelectedChef(null)}>
-                        <Button className="glass-btn glass-btn-muted glass-shine">Close</Button>
-                      </button>
+                    <div>
+                      <small>Focus</small>
+                      <strong>{selectedChef.specialty}</strong>
                     </div>
                   </div>
                 </div>
@@ -495,6 +329,542 @@ export default function ChefsPage() {
           </>
         )}
       </AnimatePresence>
+
+      <style jsx global>{`
+        .chefs-page {
+          width: min(1440px, calc(100% - 40px));
+          margin: 0 auto;
+          padding: 70px 0 40px;
+          color: #f7f0df;
+        }
+
+        .chefs-hero {
+          display: grid;
+          grid-template-columns: 0.9fr 1.1fr;
+          gap: 34px;
+          align-items: center;
+          margin-bottom: 34px;
+        }
+
+        .chefs-hero-copy h1,
+        .chefs-dashboard-main h2,
+        .chefs-section-head h2,
+        .chefs-notes h2,
+        .chef-modal-content h2 {
+          font-family: Georgia, "Times New Roman", serif;
+          color: #fff;
+          font-weight: 500;
+          letter-spacing: -0.045em;
+        }
+
+        .chefs-hero-copy h1 {
+          font-size: clamp(48px, 6vw, 92px);
+          line-height: 0.98;
+        }
+
+        .chefs-hero-copy h1 span {
+          color: #d9a331;
+        }
+
+        .chefs-eyebrow {
+          display: block;
+          margin-bottom: 16px;
+          color: #d9a331;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+
+        .chefs-divider {
+          width: 210px;
+          height: 1px;
+          margin: 26px 0;
+          background: linear-gradient(90deg, transparent, #d9a331, transparent);
+          position: relative;
+        }
+
+        .chefs-divider::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 9px;
+          height: 9px;
+          border: 1px solid #d9a331;
+          transform: translate(-50%, -50%) rotate(45deg);
+          background: #050505;
+        }
+
+        .chefs-hero-copy p,
+        .chefs-dashboard-main p,
+        .chefs-filter-card p,
+        .chefs-section-head p,
+        .chef-content p,
+        .chefs-notes p,
+        .chefs-note-list span,
+        .chef-modal-content p {
+          color: rgba(247, 240, 223, 0.76);
+          line-height: 1.72;
+        }
+
+        .chefs-hero-copy p {
+          max-width: 620px;
+          font-size: 16px;
+        }
+
+        .chefs-hero-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
+          margin-top: 32px;
+        }
+
+        .chefs-hero-links a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 46px;
+          padding: 0 20px;
+          border-radius: 12px;
+          border: 1px solid rgba(217, 163, 49, 0.45);
+          background: rgba(255, 255, 255, 0.035);
+          color: #f4d98a;
+          text-decoration: none;
+          font-size: 13px;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          transition: 0.25s ease;
+        }
+
+        .chefs-hero-links a:hover {
+          border-color: rgba(244, 217, 138, 0.85);
+          background: rgba(217, 163, 49, 0.12);
+          transform: translateY(-2px);
+        }
+
+        .chefs-hero-visual {
+          position: relative;
+          min-height: 520px;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.26);
+          border-radius: 28px;
+          background:
+            radial-gradient(700px 260px at 20% 0%, rgba(217, 163, 49, 0.12), transparent 64%),
+            rgba(255, 255, 255, 0.03);
+          box-shadow: 0 34px 110px rgba(0, 0, 0, 0.55);
+        }
+
+        .chefs-hero-visual img {
+          width: 100%;
+          height: 100%;
+          min-height: 520px;
+          object-fit: contain;
+          padding: 18px;
+          opacity: 0.92;
+        }
+
+        .chefs-hero-overlay {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 56%),
+            linear-gradient(0deg, rgba(0, 0, 0, 0.72), transparent 56%);
+        }
+
+        .chefs-hero-card {
+          position: absolute;
+          left: 24px;
+          right: 24px;
+          bottom: 24px;
+          border: 1px solid rgba(217, 163, 49, 0.24);
+          border-radius: 20px;
+          padding: 20px;
+          background: rgba(0, 0, 0, 0.68);
+          backdrop-filter: blur(16px);
+        }
+
+        .chefs-hero-card strong,
+        .chefs-hero-card span {
+          display: block;
+        }
+
+        .chefs-hero-card strong {
+          color: #fff;
+          font-size: 18px;
+        }
+
+        .chefs-hero-card span {
+          margin-top: 6px;
+          color: rgba(247, 240, 223, 0.72);
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        .chefs-dashboard {
+          display: grid;
+          grid-template-columns: 1fr 0.42fr;
+          gap: 22px;
+          margin-bottom: 54px;
+        }
+
+        .chefs-dashboard-main,
+        .chefs-filter-card,
+        .chef-card,
+        .chefs-notes,
+        .chefs-note-list div,
+        .chef-modal {
+          border: 1px solid rgba(217, 163, 49, 0.26);
+          background:
+            radial-gradient(700px 260px at 20% 0%, rgba(217, 163, 49, 0.12), transparent 64%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+          border-radius: 22px;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 30px 100px rgba(0, 0, 0, 0.48);
+          backdrop-filter: blur(18px);
+        }
+
+        .chefs-dashboard-main,
+        .chefs-filter-card {
+          padding: 28px;
+        }
+
+        .chefs-dashboard-main h2,
+        .chefs-section-head h2,
+        .chefs-notes h2 {
+          font-size: clamp(32px, 4vw, 56px);
+          line-height: 1.05;
+        }
+
+        .chefs-stats {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 12px;
+          margin-top: 24px;
+        }
+
+        .chefs-stats article {
+          border: 1px solid rgba(217, 163, 49, 0.22);
+          border-radius: 16px;
+          padding: 16px;
+          background: rgba(255, 255, 255, 0.03);
+        }
+
+        .chefs-stat-icon {
+          width: 22px;
+          height: 22px;
+          color: #d9a331;
+          margin-bottom: 10px;
+        }
+
+        .chefs-stats strong {
+          display: block;
+          color: #fff;
+          font-size: 20px;
+        }
+
+        .chefs-stats span {
+          display: block;
+          color: rgba(247, 240, 223, 0.62);
+          font-size: 11px;
+          margin-top: 4px;
+        }
+
+        .chefs-filter-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 18px;
+        }
+
+        .chefs-filter-list button {
+          border: 1px solid rgba(217, 163, 49, 0.22);
+          border-radius: 999px;
+          padding: 10px 14px;
+          color: rgba(247, 240, 223, 0.8);
+          background: rgba(255, 255, 255, 0.03);
+          transition: 0.25s ease;
+        }
+
+        .chefs-filter-list button:hover,
+        .chefs-filter-list button.active {
+          border-color: rgba(217, 163, 49, 0.72);
+          color: #f4d98a;
+          background: rgba(217, 163, 49, 0.12);
+        }
+
+        .chefs-section {
+          margin-bottom: 58px;
+        }
+
+        .chefs-section-head {
+          max-width: 900px;
+          margin-bottom: 28px;
+        }
+
+        .chefs-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+
+        .chef-card {
+          overflow: hidden;
+          cursor: pointer;
+          transition: border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .chef-card:hover {
+          border-color: rgba(217, 163, 49, 0.68);
+        }
+
+        .chef-image {
+          height: 340px;
+          overflow: hidden;
+          background:
+            radial-gradient(circle at center, rgba(217, 163, 49, 0.08), transparent 58%),
+            rgba(255, 255, 255, 0.025);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-bottom: 1px solid rgba(217, 163, 49, 0.16);
+        }
+
+        .chef-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          padding: 16px;
+          transition: 0.4s ease;
+        }
+
+        .chef-card:hover .chef-image img {
+          transform: scale(1.035);
+        }
+
+        .chef-content {
+          padding: 20px;
+        }
+
+        .chef-meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+
+        .chef-meta span,
+        .chef-meta small {
+          color: #d9a331;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .chef-meta small {
+          color: rgba(247, 240, 223, 0.58);
+          text-align: right;
+        }
+
+        .chef-content h3 {
+          color: #fff;
+          font-size: 21px;
+          margin-bottom: 4px;
+        }
+
+        .chef-role {
+          color: #d9a331 !important;
+          font-size: 13px;
+          margin-bottom: 10px;
+        }
+
+        .chefs-notes {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 26px;
+          align-items: center;
+          padding: 30px;
+          margin-bottom: 40px;
+        }
+
+        .chefs-note-list {
+          display: grid;
+          gap: 12px;
+        }
+
+        .chefs-note-list div {
+          padding: 16px;
+        }
+
+        .chefs-note-list strong {
+          display: block;
+          color: #fff;
+          margin-bottom: 6px;
+        }
+
+        .chefs-note-list span {
+          display: block;
+          font-size: 14px;
+        }
+
+        .chef-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 90;
+          background: rgba(0, 0, 0, 0.78);
+          backdrop-filter: blur(10px);
+        }
+
+        .chef-modal-wrap {
+          position: fixed;
+          inset: 0;
+          z-index: 91;
+          display: grid;
+          place-items: center;
+          padding: 20px;
+        }
+
+        .chef-modal {
+          position: relative;
+          width: min(980px, 100%);
+          max-height: 90vh;
+          overflow: auto;
+          display: grid;
+          grid-template-columns: 0.9fr 1.1fr;
+          gap: 24px;
+          padding: 24px;
+        }
+
+        .chef-modal-close {
+          position: absolute;
+          right: 18px;
+          top: 18px;
+          z-index: 5;
+          border: 1px solid rgba(217, 163, 49, 0.25);
+          border-radius: 12px;
+          padding: 8px 11px;
+          color: #fff;
+          background: rgba(255, 255, 255, 0.04);
+          transition: 0.25s ease;
+        }
+
+        .chef-modal-close:hover {
+          border-color: rgba(217, 163, 49, 0.6);
+          color: #f4d98a;
+        }
+
+        .chef-modal-image {
+          min-height: 520px;
+          border: 1px solid rgba(217, 163, 49, 0.18);
+          border-radius: 20px;
+          background:
+            radial-gradient(circle at center, rgba(217, 163, 49, 0.08), transparent 58%),
+            rgba(255, 255, 255, 0.025);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        .chef-modal-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          padding: 18px;
+        }
+
+        .chef-modal-content {
+          padding: 34px 12px 12px;
+        }
+
+        .chef-modal-content h2 {
+          font-size: clamp(34px, 4vw, 54px);
+          line-height: 1.05;
+        }
+
+        .chef-modal-role {
+          color: #d9a331 !important;
+          margin-top: 8px;
+          margin-bottom: 16px;
+        }
+
+        .chef-modal-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+          margin-top: 26px;
+        }
+
+        .chef-modal-grid div {
+          border: 1px solid rgba(217, 163, 49, 0.18);
+          border-radius: 16px;
+          padding: 16px;
+          background: rgba(255, 255, 255, 0.03);
+        }
+
+        .chef-modal-grid small,
+        .chef-modal-grid strong {
+          display: block;
+        }
+
+        .chef-modal-grid small {
+          color: rgba(247, 240, 223, 0.58);
+          font-size: 11px;
+          margin-bottom: 6px;
+        }
+
+        .chef-modal-grid strong {
+          color: #fff;
+        }
+
+        @media (max-width: 1180px) {
+          .chefs-hero,
+          .chefs-dashboard,
+          .chefs-notes,
+          .chef-modal {
+            grid-template-columns: 1fr;
+          }
+
+          .chefs-stats,
+          .chefs-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 720px) {
+          .chefs-page {
+            width: min(100% - 24px, 1440px);
+            padding-top: 46px;
+          }
+
+          .chefs-stats,
+          .chefs-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .chefs-hero-visual,
+          .chefs-hero-visual img {
+            min-height: 380px;
+          }
+
+          .chef-image {
+            height: 320px;
+          }
+
+          .chef-modal-image {
+            min-height: 420px;
+          }
+
+          .chef-modal-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
     </main>
   )
 }
