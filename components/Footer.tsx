@@ -20,8 +20,7 @@ export default function Footer() {
         />
 
         <div className="container relative py-14">
-          <div className="grid gap-10 lg:grid-cols-4">
-            {/* Brand */}
+          <div className="grid gap-10 lg:grid-cols-3">
             <div>
               <h3 className="text-2xl font-bold text-white">
                 Gastronomist International
@@ -34,59 +33,8 @@ export default function Footer() {
                 educators, and innovators through a global network dedicated to
                 excellence in gastronomy.
               </p>
-
-              <Link
-                href="/?register=1"
-                className="
-                  mt-6 inline-flex items-center
-                  rounded-xl
-                  border border-yellow-400/40
-                  bg-gradient-to-r from-yellow-500 to-yellow-200
-                  px-5 py-3
-                  font-semibold
-                  text-black
-                  transition
-                  hover:scale-[1.02]
-                "
-              >
-                Apply for Membership
-              </Link>
             </div>
 
-            {/* Membership */}
-            <div>
-              <h4 className="font-semibold text-yellow-300">
-                Membership
-              </h4>
-
-              <ul className="mt-4 space-y-3 text-sm text-neutral-400">
-                <li>
-                  <Link href="/?register=1" className="hover:text-yellow-300">
-                    Become a Member
-                  </Link>
-                </li>
-
-                <li>
-                  <Link href="/membership-fee" className="hover:text-yellow-300">
-                    Membership Fee
-                  </Link>
-                </li>
-
-                <li>
-                  <Link href="/about" className="hover:text-yellow-300">
-                    Benefits
-                  </Link>
-                </li>
-
-                <li>
-                  <Link href="/press" className="hover:text-yellow-300">
-                    Recognition
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Organization */}
             <div>
               <h4 className="font-semibold text-yellow-300">
                 Organization
@@ -94,20 +42,20 @@ export default function Footer() {
 
               <ul className="mt-4 space-y-3 text-sm text-neutral-400">
                 <li>
+                  <Link href="/" className="hover:text-yellow-300">
+                    Home
+                  </Link>
+                </li>
+
+                <li>
                   <Link href="/chefs" className="hover:text-yellow-300">
-                    Global Leaders
+                    Our Chefs
                   </Link>
                 </li>
 
                 <li>
                   <Link href="/press" className="hover:text-yellow-300">
-                    Press Releases
-                  </Link>
-                </li>
-
-                <li>
-                  <Link href="/shop" className="hover:text-yellow-300">
-                    Official Shop
+                    Press Release
                   </Link>
                 </li>
 
@@ -116,18 +64,23 @@ export default function Footer() {
                     About Us
                   </Link>
                 </li>
+
+                <li>
+                  <Link href="/shop" className="hover:text-yellow-300">
+                    Shop
+                  </Link>
+                </li>
               </ul>
             </div>
 
-            {/* Connect */}
             <div>
               <h4 className="font-semibold text-yellow-300">
                 Connect
               </h4>
 
               <p className="mt-4 text-sm text-neutral-400">
-                Follow Gastronomist International and stay updated with global
-                culinary news, member recognition, and upcoming initiatives.
+                Follow Gastronomist International for global culinary stories,
+                chef recognition, press updates, and professional community news.
               </p>
 
               <div className="mt-6 flex gap-4">
@@ -145,6 +98,7 @@ export default function Footer() {
                     hover:border-yellow-400/50
                     hover:text-yellow-300
                   "
+                  aria-label="Instagram"
                 >
                   <FaInstagram size={18} />
                 </Link>
@@ -163,6 +117,7 @@ export default function Footer() {
                     hover:border-yellow-400/50
                     hover:text-yellow-300
                   "
+                  aria-label="Facebook"
                 >
                   <FaFacebook size={18} />
                 </Link>
