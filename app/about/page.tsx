@@ -383,8 +383,9 @@ export default function AboutPage() {
           width: 100%;
           height: 100%;
           min-height: 520px;
-          object-fit: cover;
-          opacity: 0.82;
+          object-fit: contain;
+          opacity: 0.9;
+          padding: 18px;
         }
 
         .about-visual-overlay {
@@ -540,7 +541,8 @@ export default function AboutPage() {
         .leader-image img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
+          padding: 14px;
           transition: 0.4s ease;
         }
 
@@ -635,10 +637,11 @@ export default function AboutPage() {
 
         .leader-modal-card img {
           width: 100%;
-          height: 360px;
-          object-fit: cover;
+          height: 420px;
+          object-fit: contain;
           border-radius: 20px;
           margin-bottom: 18px;
+          background: rgba(255, 255, 255, 0.03);
         }
 
         .leader-modal-card .role {
