@@ -1,22 +1,21 @@
 // app/press/page.tsx
 "use client"
 
+import React from "react"
 import { motion } from "framer-motion"
 import type { MotionProps } from "framer-motion"
-import Card from "@/components/ui/Card"
-import Button from "@/components/ui/Button"
 
-// ✅ Typed wrappers
 type H1Motion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"h1"> & MotionProps> &
     React.RefAttributes<HTMLHeadingElement>
 >
-const MotionH1 = motion.h1 as H1Motion
 
 type DivMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
     React.RefAttributes<HTMLDivElement>
 >
+
+const MotionH1 = motion.h1 as H1Motion
 const MotionDiv = motion.div as DivMotion
 
 const FACTS = [
@@ -34,9 +33,18 @@ const STATS = [
 ]
 
 const TIMELINE = [
-  { t: "Announcement", d: "Gastronomist International confirms strategic collaboration with CSF International." },
-  { t: "Shared Mission", d: "Supporting chefs, empowering communities in need, and preserving artisan traditions." },
-  { t: "Sustainable Action", d: "Creating practical opportunities and meaningful assistance where it matters most." },
+  {
+    t: "Announcement",
+    d: "Gastronomist International confirms strategic collaboration with CSF International.",
+  },
+  {
+    t: "Shared Mission",
+    d: "Supporting chefs, empowering communities in need, and preserving artisan traditions.",
+  },
+  {
+    t: "Sustainable Action",
+    d: "Creating practical opportunities and meaningful assistance where it matters most.",
+  },
 ]
 
 const GALLERY = [
@@ -46,185 +54,513 @@ const GALLERY = [
 ]
 
 const RELATED = [
-  { title: "Explore Our Chefs", href: "/chefs", desc: "Meet members representing Gastronomist International worldwide." },
-  { title: "About Gastronomist", href: "/about", desc: "Our mission, vision, and leadership network." },
-  { title: "Visit CSF Intl", href: "https://www.csfint.com/", desc: "Learn more about CSF International’s work and impact.", external: true },
+  {
+    title: "Explore Our Chefs",
+    href: "/chefs",
+    desc: "Meet members representing Gastronomist International worldwide.",
+  },
+  {
+    title: "About Gastronomist",
+    href: "/about",
+    desc: "Our mission, vision, and leadership network.",
+  },
+  {
+    title: "Visit CSF Intl",
+    href: "https://www.csfint.com/",
+    desc: "Learn more about CSF International’s work and impact.",
+    external: true,
+  },
 ]
 
 export default function PressPage() {
   return (
-    <main className="container py-12 sm:py-16 space-y-10">
-      {/* HERO */}
-      <section className="relative">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background: `
-              radial-gradient(1100px 460px at 18% 24%, rgba(120,220,255,0.26), transparent 60%),
-              radial-gradient(900px 420px at 82% 22%, rgba(255,255,255,0.14), transparent 68%)
-            `,
-          }}
-        />
-
-        <div className="glass-panel glass-panel-pad glass-shine glass-glow">
-          <div className="relative h-[240px] sm:h-[320px] overflow-hidden rounded-2xl border border-white/10">
-            <img
-              src="/images/collab.png"
-              alt="Gastronomist x CSF Intl Collaboration"
-              className="h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+    <main className="press-page">
+      <section className="press-hero">
+        <div className="press-hero-visual">
+          <img
+            src="/images/collab.png"
+            alt="Gastronomist International and CSF International collaboration"
+          />
+          <div className="press-hero-overlay" />
+          <div className="press-hero-card">
+            <strong>Official Announcement</strong>
+            <span>Strategic collaboration supporting chefs, communities, and artisan traditions.</span>
           </div>
+        </div>
 
-          <div className="mt-7 grid lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-8">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
-                Official Announcement • Editorial Release
-              </div>
+        <div className="press-hero-copy">
+          <span className="press-eyebrow">Official Announcement • Editorial Release</span>
 
-              <MotionH1
-                className="mt-5 text-4xl sm:text-5xl font-bold text-white"
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                Press Release
-              </MotionH1>
+          <MotionH1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            Press <span>Release</span>
+          </MotionH1>
 
-              <MotionDiv
-                className="mt-3 text-lg text-neutral-300"
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <strong className="text-white">
-                  Gastronomist International Announces Strategic Collaboration with CSF International
-                </strong>
-              </MotionDiv>
-            </div>
+          <div className="press-divider" />
 
-            <div className="lg:col-span-4">
-              <Card className="p-5">
-                <div className="text-sm font-medium text-white">Release Snapshot</div>
-                <div className="mt-4 space-y-3">
-                  {FACTS.map((f) => (
-                    <div key={f.label} className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                      <div className="text-[11px] text-neutral-400">{f.label}</div>
-                      <div className="mt-1 text-sm text-white">{f.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            </div>
-          </div>
+          <MotionDiv
+            className="press-hero-lead"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            Gastronomist International Announces Strategic Collaboration with CSF International.
+          </MotionDiv>
+
+          <p>
+            This collaboration aligns culinary leadership with community-driven action,
+            connecting influence to initiatives that support chefs, empower communities,
+            and preserve artisan traditions.
+          </p>
         </div>
       </section>
 
-      {/* MAIN GRID */}
-      <section className="grid lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-8 space-y-6">
-          {/* ARTICLE */}
-          <Card className="p-6 sm:p-7">
-            <h2 className="text-xl font-semibold text-white">Editorial Story</h2>
-            <div className="mt-5 space-y-5 text-neutral-300 leading-relaxed">
-              <p>
-                Gastronomist International has officially partnered with CSF International in a shared mission
-                to support chefs, empower communities in need, and preserve artisan traditions.
-              </p>
-              <p>
-                This collaboration aligns global culinary leadership with community-driven action,
-                connecting influence to initiatives that improve lives.
-              </p>
-            </div>
-          </Card>
+      <section className="press-facts">
+        {FACTS.map((item) => (
+          <article key={item.label}>
+            <span>{item.label}</span>
+            <strong>{item.value}</strong>
+          </article>
+        ))}
+      </section>
 
-          {/* TIMELINE */}
-          <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Release Timeline</h3>
-            <div className="mt-5 space-y-3">
-              {TIMELINE.map((x) => (
-                <div key={x.t} className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
-                  <div className="text-sm font-medium text-white">{x.t}</div>
-                  <div className="mt-1 text-sm text-neutral-300">{x.d}</div>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* 🔥 MAGAZINE IMAGE STRIP */}
-          <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">In Focus</h3>
-            <p className="mt-1 text-sm text-neutral-400">
-              Recognition, partnership, and shared purpose.
+      <section className="press-layout">
+        <div className="press-main">
+          <article className="press-card">
+            <span className="press-eyebrow">Editorial Story</span>
+            <h2>Partnership with purpose.</h2>
+            <p>
+              Gastronomist International has officially partnered with CSF International
+              in a shared mission to support chefs, empower communities in need, and
+              preserve artisan traditions.
             </p>
+            <p>
+              The collaboration reflects a commitment to meaningful action, professional
+              recognition, cultural preservation, and sustainable support within the global
+              culinary community.
+            </p>
+          </article>
 
-            <div className="mt-6 grid sm:grid-cols-3 gap-4">
-              {GALLERY.map((g) => (
-                <div
-                  key={g.src}
-                  className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03]"
-                >
-                  <div className="h-40 flex items-center justify-center p-4">
-                    <img
-                      src={g.src}
-                      alt={g.label}
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-                  <div className="px-4 py-3 text-xs text-neutral-300 text-center border-t border-white/10">
-                    {g.label}
-                  </div>
+          <article className="press-card">
+            <span className="press-eyebrow">Release Timeline</span>
+            <h2>Key points of the announcement.</h2>
+
+            <div className="press-timeline">
+              {TIMELINE.map((item) => (
+                <div key={item.t}>
+                  <strong>{item.t}</strong>
+                  <span>{item.d}</span>
                 </div>
               ))}
             </div>
-          </Card>
+          </article>
+
+          <article className="press-card">
+            <span className="press-eyebrow">In Focus</span>
+            <h2>Recognition, partnership, and shared purpose.</h2>
+
+            <div className="press-gallery">
+              {GALLERY.map((item) => (
+                <div key={item.src}>
+                  <div className="press-gallery-image">
+                    <img src={item.src} alt={item.label} />
+                  </div>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </article>
         </div>
 
-        {/* SIDEBAR */}
-        <div className="lg:col-span-4 space-y-6">
-          <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">At a Glance</h3>
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              {STATS.map((s) => (
-                <div key={s.label} className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                  <div className="text-sm font-semibold text-white">{s.value}</div>
-                  <div className="mt-1 text-[11px] text-neutral-400">{s.label}</div>
+        <aside className="press-sidebar">
+          <article className="press-card">
+            <span className="press-eyebrow">At a Glance</span>
+
+            <div className="press-stat-grid">
+              {STATS.map((item) => (
+                <div key={item.label}>
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
                 </div>
               ))}
             </div>
-          </Card>
+          </article>
 
-          <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Related</h3>
-            <div className="mt-5 space-y-3">
-              {RELATED.map((r) => (
+          <article className="press-card">
+            <span className="press-eyebrow">Related</span>
+
+            <div className="press-related">
+              {RELATED.map((item) => (
                 <a
-                  key={r.title}
-                  href={r.href}
-                  target={r.external ? "_blank" : undefined}
-                  rel={r.external ? "noopener noreferrer" : undefined}
-                  className="block rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 hover:bg-white/[0.06]"
+                  key={item.title}
+                  href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
                 >
-                  <div className="text-sm font-medium text-white">{r.title}</div>
-                  <div className="mt-1 text-xs text-neutral-400">{r.desc}</div>
+                  <strong>{item.title}</strong>
+                  <span>{item.desc}</span>
                 </a>
               ))}
             </div>
-          </Card>
+          </article>
 
-          <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Join the Network</h3>
-            <div className="mt-5 flex gap-3">
-              <a href="/chefs">
-                <Button className="glass-btn glass-shine">Explore Chefs</Button>
-              </a>
-              <a href="/about">
-                <Button className="glass-btn glass-btn-muted glass-shine">Learn More</Button>
-              </a>
-            </div>
-          </Card>
-        </div>
+          <article className="press-card">
+            <span className="press-eyebrow">Global Network</span>
+            <h3>Professional culinary recognition worldwide.</h3>
+            <p>
+              Gastronomist International continues to build a platform for chefs,
+              hospitality professionals, and culinary leaders across regions.
+            </p>
+          </article>
+        </aside>
       </section>
+
+      <style jsx global>{`
+        .press-page {
+          width: min(1440px, calc(100% - 40px));
+          margin: 0 auto;
+          padding: 70px 0 40px;
+          color: #f7f0df;
+        }
+
+        .press-hero {
+          display: grid;
+          grid-template-columns: 1.05fr 0.95fr;
+          gap: 34px;
+          align-items: center;
+          margin-bottom: 34px;
+        }
+
+        .press-hero-copy h1,
+        .press-card h2,
+        .press-card h3 {
+          font-family: Georgia, "Times New Roman", serif;
+          color: #fff;
+          font-weight: 500;
+          letter-spacing: -0.045em;
+        }
+
+        .press-hero-copy h1 {
+          font-size: clamp(48px, 6vw, 92px);
+          line-height: 0.98;
+        }
+
+        .press-hero-copy h1 span {
+          color: #d9a331;
+        }
+
+        .press-eyebrow {
+          display: block;
+          margin-bottom: 16px;
+          color: #d9a331;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+
+        .press-divider {
+          width: 210px;
+          height: 1px;
+          margin: 26px 0;
+          background: linear-gradient(90deg, transparent, #d9a331, transparent);
+          position: relative;
+        }
+
+        .press-divider::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 9px;
+          height: 9px;
+          border: 1px solid #d9a331;
+          transform: translate(-50%, -50%) rotate(45deg);
+          background: #050505;
+        }
+
+        .press-hero-lead {
+          color: #fff;
+          font-size: 20px;
+          line-height: 1.5;
+          margin-bottom: 16px;
+        }
+
+        .press-hero-copy p,
+        .press-card p,
+        .press-related span,
+        .press-timeline span {
+          color: rgba(247, 240, 223, 0.76);
+          line-height: 1.72;
+        }
+
+        .press-hero-copy p {
+          max-width: 620px;
+          font-size: 16px;
+        }
+
+        .press-hero-visual {
+          position: relative;
+          min-height: 520px;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.26);
+          border-radius: 28px;
+          background:
+            radial-gradient(700px 260px at 20% 0%, rgba(217, 163, 49, 0.12), transparent 64%),
+            rgba(255, 255, 255, 0.03);
+          box-shadow: 0 34px 110px rgba(0, 0, 0, 0.55);
+        }
+
+        .press-hero-visual img {
+          width: 100%;
+          height: 100%;
+          min-height: 520px;
+          object-fit: contain;
+          padding: 18px;
+          opacity: 0.94;
+        }
+
+        .press-hero-overlay {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 56%),
+            linear-gradient(0deg, rgba(0, 0, 0, 0.72), transparent 56%);
+        }
+
+        .press-hero-card {
+          position: absolute;
+          left: 24px;
+          right: 24px;
+          bottom: 24px;
+          border: 1px solid rgba(217, 163, 49, 0.24);
+          border-radius: 20px;
+          padding: 20px;
+          background: rgba(0, 0, 0, 0.68);
+          backdrop-filter: blur(16px);
+        }
+
+        .press-hero-card strong,
+        .press-hero-card span {
+          display: block;
+        }
+
+        .press-hero-card strong {
+          color: #fff;
+          font-size: 18px;
+        }
+
+        .press-hero-card span {
+          margin-top: 6px;
+          color: rgba(247, 240, 223, 0.72);
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        .press-facts {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 18px;
+          margin-bottom: 34px;
+        }
+
+        .press-facts article,
+        .press-card {
+          border: 1px solid rgba(217, 163, 49, 0.26);
+          background:
+            radial-gradient(700px 260px at 20% 0%, rgba(217, 163, 49, 0.12), transparent 64%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+          border-radius: 22px;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 30px 100px rgba(0, 0, 0, 0.48);
+          backdrop-filter: blur(18px);
+        }
+
+        .press-facts article {
+          padding: 20px;
+        }
+
+        .press-facts span,
+        .press-stat-grid span {
+          display: block;
+          color: rgba(247, 240, 223, 0.58);
+          font-size: 11px;
+          margin-bottom: 6px;
+        }
+
+        .press-facts strong,
+        .press-stat-grid strong {
+          display: block;
+          color: #fff;
+          font-size: 15px;
+          line-height: 1.35;
+        }
+
+        .press-layout {
+          display: grid;
+          grid-template-columns: 1fr 0.42fr;
+          gap: 24px;
+        }
+
+        .press-main,
+        .press-sidebar {
+          display: grid;
+          gap: 22px;
+          align-content: start;
+        }
+
+        .press-card {
+          padding: 28px;
+        }
+
+        .press-card h2 {
+          font-size: clamp(32px, 4vw, 52px);
+          line-height: 1.05;
+          margin-bottom: 18px;
+        }
+
+        .press-card h3 {
+          font-size: 28px;
+          line-height: 1.1;
+          margin-bottom: 14px;
+        }
+
+        .press-card p + p {
+          margin-top: 16px;
+        }
+
+        .press-timeline {
+          display: grid;
+          gap: 12px;
+          margin-top: 20px;
+        }
+
+        .press-timeline div,
+        .press-stat-grid div,
+        .press-related a,
+        .press-gallery > div {
+          border: 1px solid rgba(217, 163, 49, 0.22);
+          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.03);
+        }
+
+        .press-timeline div {
+          padding: 16px;
+        }
+
+        .press-timeline strong {
+          display: block;
+          color: #fff;
+          margin-bottom: 6px;
+        }
+
+        .press-gallery {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+          margin-top: 24px;
+        }
+
+        .press-gallery > div {
+          overflow: hidden;
+        }
+
+        .press-gallery-image {
+          height: 190px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background:
+            radial-gradient(circle at center, rgba(217, 163, 49, 0.08), transparent 58%),
+            rgba(255, 255, 255, 0.025);
+        }
+
+        .press-gallery-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          padding: 14px;
+        }
+
+        .press-gallery span {
+          display: block;
+          border-top: 1px solid rgba(217, 163, 49, 0.14);
+          padding: 12px;
+          text-align: center;
+          color: rgba(247, 240, 223, 0.74);
+          font-size: 12px;
+        }
+
+        .press-stat-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+
+        .press-stat-grid div {
+          padding: 16px;
+        }
+
+        .press-related {
+          display: grid;
+          gap: 12px;
+        }
+
+        .press-related a {
+          display: block;
+          padding: 16px;
+          text-decoration: none;
+          transition: 0.25s ease;
+        }
+
+        .press-related a:hover {
+          border-color: rgba(217, 163, 49, 0.62);
+          background: rgba(217, 163, 49, 0.08);
+        }
+
+        .press-related strong {
+          display: block;
+          color: #fff;
+          margin-bottom: 6px;
+        }
+
+        .press-related span {
+          display: block;
+          font-size: 13px;
+        }
+
+        @media (max-width: 1180px) {
+          .press-hero,
+          .press-layout {
+            grid-template-columns: 1fr;
+          }
+
+          .press-facts {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 720px) {
+          .press-page {
+            width: min(100% - 24px, 1440px);
+            padding-top: 46px;
+          }
+
+          .press-facts,
+          .press-gallery,
+          .press-stat-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .press-hero-visual,
+          .press-hero-visual img {
+            min-height: 380px;
+          }
+        }
+      `}</style>
     </main>
   )
 }
