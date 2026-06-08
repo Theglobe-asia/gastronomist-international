@@ -14,7 +14,7 @@ import LatestStory from "@/components/blog/latest-story"
 const ASSET_V = "2026-01-28-1"
 const img = (path: string) => `${path}?v=${ASSET_V}`
 
-const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
+const GEO_URL = "/maps/countries-110m.json"
 
 const FEATURES = [
   ["Global Culinary Network", "Connecting chefs, culinary leaders, educators, and hospitality professionals worldwide."],
