@@ -18,6 +18,7 @@ const ASSET_V = "2026-01-28-1"
 const img = (path: string) => `${path}?v=${ASSET_V}`
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
+const REAL_AIRPLANE_SRC = "/images/real-airplane.png"
 
 const FEATURES = [
   ["Global Culinary Network", "Connecting chefs, culinary leaders, educators, and hospitality professionals worldwide."],
@@ -830,27 +831,23 @@ export default function Page() {
         }
 
         .gi-plane-aura {
-          fill: rgba(245, 184, 63, 0.18);
-          opacity: 0.9;
+          fill: rgba(245, 184, 63, 0.2);
+          opacity: 0.92;
         }
 
         .gi-plane-trail {
           fill: none;
-          stroke: rgba(245, 184, 63, 0.52);
-          stroke-width: 1.2;
+          stroke: rgba(245, 184, 63, 0.5);
+          stroke-width: 1.1;
           stroke-linecap: round;
-          opacity: 0.9;
+          opacity: 0.88;
         }
 
-        .gi-plane-body {
-          fill: #fffdf7;
-          stroke: #f5b83f;
-          stroke-width: 0.55;
-        }
-
-        .gi-plane-center {
-          fill: #f5b83f;
-          opacity: 0.95;
+        .gi-real-plane {
+          pointer-events: none;
+          image-rendering: auto;
+          transform-box: fill-box;
+          transform-origin: center;
         }
 
         @keyframes giDash {
@@ -1062,8 +1059,10 @@ function GlobalNetworkMap({ large = false }) {
 
   const scale = large ? 310 : 205
   const markerRadius = large ? 1.8 : 1.4
+  const planeWidth = large ? 20 : 15
+  const planeHeight = large ? 32 : 24
   const sphereGradientId = large ? "giEarthOceanLarge" : "giEarthOceanSmall"
-  const planeGlowId = large ? "giPlaneGlowLarge" : "giPlaneGlowSmall"
+  const planeGlowId = large ? "giRealPlaneGlowLarge" : "giRealPlaneGlowSmall"
 
   return (
     <div className={`gi-map ${large ? "large" : ""}`}>
@@ -1096,8 +1095,8 @@ function GlobalNetworkMap({ large = false }) {
               </radialGradient>
 
               <filter id={planeGlowId} x="-120%" y="-120%" width="340%" height="340%">
-                <feDropShadow dx="0" dy="0" stdDeviation="1.8" floodColor="#f5b83f" floodOpacity="0.95" />
-                <feDropShadow dx="0" dy="0" stdDeviation="4.2" floodColor="#f5b83f" floodOpacity="0.42" />
+                <feDropShadow dx="0" dy="0" stdDeviation="1.6" floodColor="#f5b83f" floodOpacity="0.78" />
+                <feDropShadow dx="0" dy="0" stdDeviation="3.6" floodColor="#f5b83f" floodOpacity="0.32" />
               </filter>
             </defs>
 
@@ -1147,17 +1146,18 @@ function GlobalNetworkMap({ large = false }) {
             {activeFlights.map((flight) => (
               <Marker key={`plane-${flight.id}`} coordinates={flight.current}>
                 <g className="gi-plane-group" transform={`rotate(${flight.bearing})`}>
-                  <ellipse className="gi-plane-aura" cx="0" cy="8" rx="3.4" ry="7.8" />
-                  <path
-                    className="gi-plane-trail"
-                    d="M0 7 L0 18"
-                  />
-                  <path
-                    className="gi-plane-body"
+                  <ellipse className="gi-plane-aura" cx="0" cy="8" rx="3.5" ry="8" />
+                  <path className="gi-plane-trail" d="M0 8 L0 19" />
+                  <image
+                    className="gi-real-plane"
+                    href={REAL_AIRPLANE_SRC}
+                    x={planeWidth / -2}
+                    y={planeHeight / -2}
+                    width={planeWidth}
+                    height={planeHeight}
+                    preserveAspectRatio="xMidYMid meet"
                     filter={`url(#${planeGlowId})`}
-                    d="M0 -12.5 L2.4 -2.6 L10.8 0 L2.5 2.1 L0 11.8 L-1.6 3.2 L-6.9 4.9 L-3.3 1.4 L-11.2 0 L-3.3 -1.4 L-6.9 -4.9 L-1.6 -3.2 Z"
                   />
-                  <circle className="gi-plane-center" cx="0" cy="0" r="1.2" />
                 </g>
               </Marker>
             ))}
