@@ -557,8 +557,8 @@ export default function Page() {
           overflow: hidden;
           border: 1px solid rgba(217, 163, 49, 0.26);
           background:
-            radial-gradient(circle at 50% 45%, rgba(217, 163, 49, 0.12), transparent 14%),
-            radial-gradient(circle at 50% 50%, rgba(255, 230, 160, 0.06), transparent 40%),
+            radial-gradient(circle at 50% 45%, rgba(217, 163, 49, 0.13), transparent 15%),
+            radial-gradient(circle at 50% 50%, rgba(255, 230, 160, 0.065), transparent 42%),
             linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
           box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.08),
@@ -578,7 +578,7 @@ export default function Page() {
           position: absolute;
           top: 16px;
           left: 18px;
-          z-index: 8;
+          z-index: 9;
           display: flex;
           align-items: center;
           gap: 8px;
@@ -603,9 +603,9 @@ export default function Page() {
           inset: 0;
           z-index: 1;
           background:
-            radial-gradient(circle at 50% 48%, rgba(245, 184, 63, 0.12), transparent 18%),
-            radial-gradient(circle at 30% 45%, rgba(245, 184, 63, 0.07), transparent 12%),
-            radial-gradient(circle at 72% 54%, rgba(245, 184, 63, 0.06), transparent 12%);
+            radial-gradient(circle at 50% 47%, rgba(245, 184, 63, 0.13), transparent 19%),
+            radial-gradient(circle at 28% 42%, rgba(245, 184, 63, 0.075), transparent 12%),
+            radial-gradient(circle at 75% 56%, rgba(245, 184, 63, 0.065), transparent 13%);
           pointer-events: none;
         }
 
@@ -629,7 +629,9 @@ export default function Page() {
           border-radius: 999px;
           display: grid;
           place-items: center;
-          filter: drop-shadow(0 34px 90px rgba(0, 0, 0, 0.55));
+          filter:
+            drop-shadow(0 34px 90px rgba(0, 0, 0, 0.58))
+            drop-shadow(0 0 42px rgba(217, 163, 49, 0.12));
         }
 
         .gi-map.large .gi-earth-shell {
@@ -638,14 +640,26 @@ export default function Page() {
 
         .gi-earth-aura {
           position: absolute;
-          inset: 7%;
+          inset: 5%;
           border-radius: 999px;
           background:
-            radial-gradient(circle at 42% 35%, rgba(245, 184, 63, 0.2), transparent 12%),
+            radial-gradient(circle at 42% 35%, rgba(245, 184, 63, 0.22), transparent 12%),
             radial-gradient(circle at 58% 56%, rgba(217, 163, 49, 0.15), transparent 18%),
-            radial-gradient(circle, rgba(245, 184, 63, 0.14), transparent 62%);
-          filter: blur(14px);
-          animation: giAuraPulse 4.5s ease-in-out infinite;
+            radial-gradient(circle, rgba(245, 184, 63, 0.15), transparent 62%);
+          filter: blur(16px);
+          animation: giAuraPulse 4.8s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .gi-earth-light {
+          position: absolute;
+          inset: -4%;
+          border-radius: 999px;
+          background:
+            radial-gradient(circle at 31% 25%, rgba(255, 248, 221, 0.18), transparent 13%),
+            radial-gradient(circle at 44% 38%, rgba(217, 163, 49, 0.07), transparent 28%);
+          mix-blend-mode: screen;
+          z-index: 7;
           pointer-events: none;
         }
 
@@ -654,27 +668,27 @@ export default function Page() {
           inset: 0;
           border-radius: 999px;
           background:
-            radial-gradient(circle at 32% 28%, rgba(255, 248, 226, 0.16), transparent 16%),
-            radial-gradient(circle at 68% 68%, rgba(0, 0, 0, 0.38), transparent 34%),
-            linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.34));
+            radial-gradient(circle at 32% 28%, transparent 0 31%, rgba(0, 0, 0, 0.14) 55%, rgba(0, 0, 0, 0.66) 100%),
+            linear-gradient(125deg, rgba(255, 255, 255, 0.08), transparent 34%, rgba(0, 0, 0, 0.45) 100%);
           box-shadow:
-            inset -60px -38px 110px rgba(0, 0, 0, 0.58),
-            inset 24px 14px 52px rgba(255, 245, 204, 0.06),
-            0 0 42px rgba(217, 163, 49, 0.14);
+            inset -66px -42px 118px rgba(0, 0, 0, 0.62),
+            inset 24px 14px 54px rgba(255, 245, 204, 0.08),
+            0 0 48px rgba(217, 163, 49, 0.15);
           pointer-events: none;
-          z-index: 5;
+          z-index: 6;
         }
 
         .gi-earth-rim {
           position: absolute;
           inset: 0;
           border-radius: 999px;
-          border: 1px solid rgba(255, 230, 160, 0.2);
+          border: 1px solid rgba(255, 230, 160, 0.22);
           box-shadow:
-            0 0 40px rgba(217, 163, 49, 0.1),
-            inset 0 0 26px rgba(255, 230, 160, 0.05);
+            0 0 44px rgba(217, 163, 49, 0.13),
+            inset 0 0 28px rgba(255, 230, 160, 0.06),
+            inset 0 0 1px rgba(255, 255, 255, 0.24);
           pointer-events: none;
-          z-index: 6;
+          z-index: 8;
         }
 
         .gi-map-svg {
@@ -683,43 +697,43 @@ export default function Page() {
           width: 100%;
           height: 100%;
           display: block;
+          border-radius: 999px;
         }
 
         .gi-sphere {
-          fill: #0a0d12;
-          stroke: rgba(255, 230, 160, 0.16);
+          stroke: rgba(255, 230, 160, 0.18);
           stroke-width: 0.7;
         }
 
         .gi-graticule {
           fill: none;
-          stroke: rgba(255, 238, 190, 0.13);
+          stroke: rgba(255, 238, 190, 0.15);
           stroke-width: 0.45;
         }
 
         .gi-country {
-          fill: rgba(158, 165, 176, 0.58);
-          stroke: rgba(255, 242, 205, 0.22);
-          stroke-width: 0.4;
+          fill: rgba(165, 171, 181, 0.62);
+          stroke: rgba(255, 242, 205, 0.24);
+          stroke-width: 0.38;
           outline: none;
           transition: fill 0.22s ease, stroke 0.22s ease;
         }
 
         .gi-country:hover {
-          fill: rgba(217, 163, 49, 0.44);
-          stroke: rgba(255, 238, 190, 0.52);
+          fill: rgba(217, 163, 49, 0.46);
+          stroke: rgba(255, 238, 190, 0.56);
         }
 
         .gi-route-glow {
           stroke: rgba(217, 163, 49, 0.18);
-          stroke-width: 4.5;
+          stroke-width: 4.8;
           fill: none;
-          filter: blur(2.5px);
+          filter: blur(2.8px);
           pointer-events: none;
         }
 
         .gi-route-line {
-          stroke: rgba(245, 184, 63, 0.92);
+          stroke: rgba(245, 184, 63, 0.9);
           stroke-width: 0.9;
           stroke-dasharray: 2 4;
           fill: none;
@@ -729,9 +743,9 @@ export default function Page() {
 
         .gi-marker-ring {
           fill: rgba(217, 163, 49, 0.08);
-          stroke: rgba(245, 184, 63, 0.75);
+          stroke: rgba(245, 184, 63, 0.78);
           stroke-width: 0.8;
-          animation: giPulseRing 2.2s ease-in-out infinite;
+          animation: giPulseRing 2.25s ease-in-out infinite;
         }
 
         .gi-marker-dot {
@@ -744,7 +758,7 @@ export default function Page() {
           font-size: 6px;
           font-weight: 800;
           paint-order: stroke;
-          stroke: rgba(0, 0, 0, 0.9);
+          stroke: rgba(0, 0, 0, 0.92);
           stroke-width: 2.5px;
           pointer-events: none;
           text-anchor: middle;
@@ -762,11 +776,15 @@ export default function Page() {
           height: var(--h);
           transform: translate(-50%, -50%) rotate(var(--tilt));
           border-radius: 999px;
-          border: 1px solid rgba(217, 163, 49, 0.24);
-          border-left-color: rgba(245, 184, 63, 0.06);
+          border: 1px solid rgba(217, 163, 49, 0.23);
+          border-left-color: rgba(245, 184, 63, 0.055);
           border-bottom-color: rgba(245, 184, 63, 0.08);
+          box-shadow:
+            0 0 16px rgba(217, 163, 49, 0.11),
+            inset 0 0 18px rgba(217, 163, 49, 0.06);
           animation: giPlaneOrbit var(--speed) linear infinite;
-          z-index: 2;
+          animation-delay: var(--delay);
+          z-index: 3;
           pointer-events: none;
         }
 
@@ -780,8 +798,20 @@ export default function Page() {
           font-size: var(--plane);
           line-height: 1;
           text-shadow:
-            0 0 12px rgba(255, 255, 255, 0.65),
-            0 0 16px rgba(217, 163, 49, 0.48);
+            0 0 12px rgba(255, 255, 255, 0.68),
+            0 0 18px rgba(217, 163, 49, 0.52);
+        }
+
+        .gi-plane-orbit::after {
+          content: "";
+          position: absolute;
+          left: calc(100% - 28px);
+          top: 50%;
+          width: 32px;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(245, 184, 63, 0.55), transparent);
+          transform: translateY(-50%);
+          filter: blur(1px);
         }
 
         .gi-plane-orbit.p1 {
@@ -789,6 +819,7 @@ export default function Page() {
           --h: 38%;
           --tilt: 10deg;
           --speed: 15s;
+          --delay: -1s;
           --plane: 22px;
         }
 
@@ -797,6 +828,7 @@ export default function Page() {
           --h: 44%;
           --tilt: -26deg;
           --speed: 21s;
+          --delay: -7s;
           --plane: 18px;
         }
 
@@ -805,8 +837,19 @@ export default function Page() {
           --h: 32%;
           --tilt: 42deg;
           --speed: 18s;
+          --delay: -11s;
           --plane: 16px;
-          opacity: 0.78;
+          opacity: 0.8;
+        }
+
+        .gi-plane-orbit.p4 {
+          --w: 140%;
+          --h: 48%;
+          --tilt: 28deg;
+          --speed: 26s;
+          --delay: -15s;
+          --plane: 14px;
+          opacity: 0.58;
         }
 
         @keyframes giDash {
@@ -933,7 +976,8 @@ export default function Page() {
             width: min(92%, 420px);
           }
 
-          .gi-plane-orbit.p3 {
+          .gi-plane-orbit.p3,
+          .gi-plane-orbit.p4 {
             display: none;
           }
 
@@ -961,7 +1005,7 @@ export default function Page() {
 }
 
 function GlobalNetworkMap({ large = false }) {
-  const [rotation, setRotation] = useState(-18)
+  const [rotation, setRotation] = useState(-24)
 
   useEffect(() => {
     const prefersReduced =
@@ -971,18 +1015,31 @@ function GlobalNetworkMap({ large = false }) {
 
     if (prefersReduced) return
 
-    const id = window.setInterval(() => {
-      setRotation((prev) => {
-        const next = prev + 0.35
-        return next >= 360 ? 0 : next
-      })
-    }, 40)
+    let frame = 0
+    let last = performance.now()
 
-    return () => window.clearInterval(id)
+    const animate = (time: number) => {
+      const delta = time - last
+
+      if (delta >= 34) {
+        setRotation((prev) => {
+          const next = prev + 0.22
+          return next >= 360 ? 0 : next
+        })
+        last = time
+      }
+
+      frame = window.requestAnimationFrame(animate)
+    }
+
+    frame = window.requestAnimationFrame(animate)
+
+    return () => window.cancelAnimationFrame(frame)
   }, [])
 
   const scale = large ? 310 : 205
   const markerRadius = large ? 1.8 : 1.5
+  const gradientId = large ? "giEarthOceanLarge" : "giEarthOceanSmall"
 
   return (
     <div className={`gi-map ${large ? "large" : ""}`}>
@@ -996,9 +1053,11 @@ function GlobalNetworkMap({ large = false }) {
       <div className="gi-earth-stage">
         <div className="gi-earth-shell">
           <div className="gi-earth-aura" />
+
           <div className="gi-plane-orbit p1" />
           <div className="gi-plane-orbit p2" />
           <div className="gi-plane-orbit p3" />
+          <div className="gi-plane-orbit p4" />
 
           <ComposableMap
             className="gi-map-svg"
@@ -1009,7 +1068,16 @@ function GlobalNetworkMap({ large = false }) {
               rotate: [-rotation, -18, 0],
             }}
           >
-            <Sphere className="gi-sphere" />
+            <defs>
+              <radialGradient id={gradientId} cx="38%" cy="30%" r="72%">
+                <stop offset="0%" stopColor="#28313d" />
+                <stop offset="42%" stopColor="#111821" />
+                <stop offset="73%" stopColor="#07090d" />
+                <stop offset="100%" stopColor="#020304" />
+              </radialGradient>
+            </defs>
+
+            <Sphere className="gi-sphere" fill={`url(#${gradientId})`} />
             <Graticule className="gi-graticule" />
 
             <Geographies geography={GEO_URL}>
@@ -1059,6 +1127,7 @@ function GlobalNetworkMap({ large = false }) {
           </ComposableMap>
 
           <div className="gi-earth-shadow" />
+          <div className="gi-earth-light" />
           <div className="gi-earth-rim" />
         </div>
       </div>
