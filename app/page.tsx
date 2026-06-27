@@ -2,7 +2,7 @@
 // @ts-nocheck
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
   ComposableMap,
   Geographies,
@@ -145,15 +145,19 @@ function getPlaneBearing(current: number[], next: number[]) {
 function AnimatedCount({
   value,
   suffix = "",
-  duration = 1800,
+  start = false,
+  duration = 4200,
 }: {
   value: number
   suffix?: string
+  start?: boolean
   duration?: number
 }) {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
+    if (!start) return
+
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia &&
@@ -165,10 +169,10 @@ function AnimatedCount({
     }
 
     let frame = 0
-    const start = performance.now()
+    const animationStart = performance.now()
 
     const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1)
+      const progress = Math.min((now - animationStart) / duration, 1)
       const eased = 1 - Math.pow(1 - progress, 3)
 
       setCount(Math.round(value * eased))
@@ -181,7 +185,7 @@ function AnimatedCount({
     frame = requestAnimationFrame(tick)
 
     return () => cancelAnimationFrame(frame)
-  }, [value, duration])
+  }, [value, duration, start])
 
   return (
     <>
@@ -202,13 +206,47 @@ function AnimatedStatCard({
   label: string
   index: number
 }) {
+  const cardRef = useRef<HTMLElement | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const element = cardRef.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      {
+        threshold: 0.45,
+        rootMargin: "0px 0px -8% 0px",
+      }
+    )
+
+    observer.observe(element)
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <article
-      className="gi-stat-card"
-      style={{ animationDelay: `${index * 120}ms` }}
+      ref={cardRef}
+      className={`gi-stat-card ${isVisible ? "is-visible" : ""}`}
+      style={{
+        "--statDelay": `${index * 180}ms`,
+        animationDelay: `${index * 180}ms, ${index * 180 + 1100}ms`,
+      }}
     >
       <strong>
-        <AnimatedCount value={value} suffix={suffix} />
+        <AnimatedCount
+          value={value}
+          suffix={suffix}
+          start={isVisible}
+          duration={4200}
+        />
       </strong>
       <span>{label}</span>
     </article>
@@ -556,6 +594,8 @@ export default function Page() {
         .gi-stat-card {
           position: relative;
           overflow: hidden;
+          opacity: 0;
+          transform: translateY(18px);
           border: 1px solid rgba(217, 163, 49, 0.28);
           border-radius: 16px;
           padding: 18px 18px;
@@ -565,9 +605,16 @@ export default function Page() {
           box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.06),
             0 12px 30px rgba(0, 0, 0, 0.18);
+          transition:
+            transform 0.25s ease,
+            border-color 0.25s ease,
+            box-shadow 0.25s ease;
+        }
+
+        .gi-stat-card.is-visible {
           animation:
-            giStatAppear 0.8s ease both,
-            giStatFloat 5.6s ease-in-out infinite;
+            giStatAppear 0.9s ease both,
+            giStatFloat 7.2s ease-in-out infinite;
         }
 
         .gi-stat-card::before {
@@ -583,7 +630,11 @@ export default function Page() {
             rgba(255, 221, 136, 0.12),
             transparent
           );
-          animation: giStatShine 3.8s linear infinite;
+        }
+
+        .gi-stat-card.is-visible::before {
+          animation: giStatShine 5.8s linear infinite;
+          animation-delay: var(--statDelay);
         }
 
         .gi-stat-card:hover {
@@ -600,7 +651,10 @@ export default function Page() {
           font-size: 34px;
           line-height: 1;
           text-shadow: 0 0 16px rgba(231, 178, 60, 0.14);
-          animation: giNumberGlow 2.8s ease-in-out infinite;
+        }
+
+        .gi-stat-card.is-visible strong {
+          animation: giNumberGlow 4.2s ease-in-out infinite;
         }
 
         .gi-stat-card span {
