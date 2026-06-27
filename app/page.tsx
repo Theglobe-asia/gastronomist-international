@@ -142,6 +142,50 @@ function getPlaneBearing(current: number[], next: number[]) {
   return (Math.atan2(dx, -dy) * 180) / Math.PI
 }
 
+function ChefHatIcon() {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      aria-hidden="true"
+      role="img"
+      fill="none"
+    >
+      <path
+        d="M21 48h22"
+        stroke="currentColor"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M23 48V34h18v14"
+        stroke="currentColor"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M20 34c-4.6 0-8-3.4-8-8 0-4.2 3-7.7 7-8.4.9-6.6 6.4-10.6 13-10.6 5.7 0 10.5 3.1 12.4 8.6 5 .3 8.6 4.1 8.6 9 0 5.2-4 9.4-9.5 9.4H20Z"
+        stroke="currentColor"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M28 20.5c1.2-2 3-3.1 5.2-3.1 2.2 0 4 1.1 5.1 3.1"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+      />
+      <path
+        d="M28 27.5h8"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
 function AnimatedCount({
   value,
   suffix = "",
@@ -283,7 +327,9 @@ export default function Page() {
       <section className="gi-feature-row">
         {FEATURES.map(([title, desc]) => (
           <article className="gi-feature-card" key={title}>
-            <div className="gi-feature-icon">◎</div>
+            <div className="gi-feature-icon">
+              <ChefHatIcon />
+            </div>
             <h3>{title}</h3>
             <p>{desc}</p>
           </article>
@@ -542,11 +588,20 @@ export default function Page() {
         }
 
         .gi-feature-icon {
+          width: 58px;
+          height: 58px;
+          margin: 0 auto 18px;
+          display: grid;
+          place-items: center;
           color: #d9a331;
-          font-size: 46px;
-          line-height: 1;
-          margin-bottom: 18px;
           text-shadow: 0 0 24px rgba(217, 163, 49, 0.32);
+        }
+
+        .gi-feature-icon svg {
+          width: 58px;
+          height: 58px;
+          display: block;
+          filter: drop-shadow(0 0 10px rgba(217, 163, 49, 0.18));
         }
 
         .gi-feature-card h3,
