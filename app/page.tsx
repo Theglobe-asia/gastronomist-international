@@ -2,7 +2,7 @@
 // @ts-nocheck
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
   ComposableMap,
   Geographies,
@@ -88,6 +88,51 @@ const CITIES = [
   { name: "Australia", coordinates: [133.7751, -25.2744] },
   { name: "South Africa", coordinates: [22.9375, -30.5595] },
 ]
+
+const FLIGHT_ROUTES = [
+  { id: "f1", from: "Canada", to: "United Kingdom", duration: 18, offset: 0.03 },
+  { id: "f2", from: "United States", to: "France", duration: 16, offset: 0.14 },
+  { id: "f3", from: "Mexico", to: "Spain", duration: 20, offset: 0.26 },
+  { id: "f4", from: "Brazil", to: "South Africa", duration: 22, offset: 0.41 },
+  { id: "f5", from: "Italy", to: "UAE", duration: 13, offset: 0.54 },
+  { id: "f6", from: "Germany", to: "India", duration: 17, offset: 0.62 },
+  { id: "f7", from: "UAE", to: "Thailand", duration: 15, offset: 0.71 },
+  { id: "f8", from: "India", to: "Japan", duration: 19, offset: 0.82 },
+  { id: "f9", from: "Thailand", to: "Australia", duration: 21, offset: 0.91 },
+  { id: "f10", from: "China", to: "United States", duration: 24, offset: 0.18 },
+  { id: "f11", from: "Japan", to: "Canada", duration: 23, offset: 0.37 },
+  { id: "f12", from: "South Africa", to: "Italy", duration: 20, offset: 0.49 },
+  { id: "f13", from: "United Kingdom", to: "Germany", duration: 11, offset: 0.57 },
+  { id: "f14", from: "France", to: "UAE", duration: 14, offset: 0.68 },
+  { id: "f15", from: "Australia", to: "Japan", duration: 20, offset: 0.76 },
+  { id: "f16", from: "Brazil", to: "United States", duration: 19, offset: 0.85 },
+]
+
+function normalizeLongitude(value: number) {
+  let lon = value
+  while (lon > 180) lon -= 360
+  while (lon < -180) lon += 360
+  return lon
+}
+
+function shortestLongitudeDelta(fromLon: number, toLon: number) {
+  let diff = toLon - fromLon
+  while (diff > 180) diff -= 360
+  while (diff < -180) diff += 360
+  return diff
+}
+
+function interpolateCoordinates(from: number[], to: number[], t: number) {
+  const lon = normalizeLongitude(from[0] + shortestLongitudeDelta(from[0], to[0]) * t)
+  const lat = from[1] + (to[1] - from[1]) * t
+  return [lon, lat]
+}
+
+function getPlaneBearing(current: number[], next: number[]) {
+  const dx = shortestLongitudeDelta(current[0], next[0])
+  const dy = next[1] - current[1]
+  return (Math.atan2(dx, -dy) * 180) / Math.PI
+}
 
 export default function Page() {
   return (
@@ -725,20 +770,31 @@ export default function Page() {
         }
 
         .gi-route-glow {
-          stroke: rgba(217, 163, 49, 0.18);
-          stroke-width: 4.8;
+          stroke: rgba(217, 163, 49, 0.16);
+          stroke-width: 4.2;
           fill: none;
           filter: blur(2.8px);
           pointer-events: none;
         }
 
         .gi-route-line {
-          stroke: rgba(245, 184, 63, 0.9);
-          stroke-width: 0.9;
-          stroke-dasharray: 2 4;
+          stroke: rgba(245, 184, 63, 0.68);
+          stroke-width: 0.82;
+          stroke-dasharray: 2.2 4.4;
           fill: none;
-          animation: giDash 5.6s linear infinite;
+          animation: giDash 5.4s linear infinite;
           pointer-events: none;
+        }
+
+        .gi-city-ring {
+          fill: rgba(217, 163, 49, 0.06);
+          stroke: rgba(245, 184, 63, 0.48);
+          stroke-width: 0.7;
+        }
+
+        .gi-city-dot {
+          fill: rgba(255, 248, 226, 0.98);
+          filter: drop-shadow(0 0 6px rgba(245, 184, 63, 0.95));
         }
 
         .gi-marker-ring {
@@ -769,87 +825,32 @@ export default function Page() {
           font-size: 7px;
         }
 
-        .gi-plane-orbit {
-          position: absolute;
-          inset: 50%;
-          width: var(--w);
-          height: var(--h);
-          transform: translate(-50%, -50%) rotate(var(--tilt));
-          border-radius: 999px;
-          border: 1px solid rgba(217, 163, 49, 0.23);
-          border-left-color: rgba(245, 184, 63, 0.055);
-          border-bottom-color: rgba(245, 184, 63, 0.08);
-          box-shadow:
-            0 0 16px rgba(217, 163, 49, 0.11),
-            inset 0 0 18px rgba(217, 163, 49, 0.06);
-          animation: giPlaneOrbit var(--speed) linear infinite;
-          animation-delay: var(--delay);
-          z-index: 3;
+        .gi-plane-group {
           pointer-events: none;
         }
 
-        .gi-plane-orbit::before {
-          content: "✈";
-          position: absolute;
-          left: 100%;
-          top: 50%;
-          transform: translate(-50%, -50%) rotate(18deg);
-          color: #fff8e2;
-          font-size: var(--plane);
-          line-height: 1;
-          text-shadow:
-            0 0 12px rgba(255, 255, 255, 0.68),
-            0 0 18px rgba(217, 163, 49, 0.52);
+        .gi-plane-aura {
+          fill: rgba(245, 184, 63, 0.18);
+          opacity: 0.9;
         }
 
-        .gi-plane-orbit::after {
-          content: "";
-          position: absolute;
-          left: calc(100% - 28px);
-          top: 50%;
-          width: 32px;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(245, 184, 63, 0.55), transparent);
-          transform: translateY(-50%);
-          filter: blur(1px);
+        .gi-plane-trail {
+          fill: none;
+          stroke: rgba(245, 184, 63, 0.52);
+          stroke-width: 1.2;
+          stroke-linecap: round;
+          opacity: 0.9;
         }
 
-        .gi-plane-orbit.p1 {
-          --w: 116%;
-          --h: 38%;
-          --tilt: 10deg;
-          --speed: 15s;
-          --delay: -1s;
-          --plane: 22px;
+        .gi-plane-body {
+          fill: #fffdf7;
+          stroke: #f5b83f;
+          stroke-width: 0.55;
         }
 
-        .gi-plane-orbit.p2 {
-          --w: 128%;
-          --h: 44%;
-          --tilt: -26deg;
-          --speed: 21s;
-          --delay: -7s;
-          --plane: 18px;
-        }
-
-        .gi-plane-orbit.p3 {
-          --w: 102%;
-          --h: 32%;
-          --tilt: 42deg;
-          --speed: 18s;
-          --delay: -11s;
-          --plane: 16px;
-          opacity: 0.8;
-        }
-
-        .gi-plane-orbit.p4 {
-          --w: 140%;
-          --h: 48%;
-          --tilt: 28deg;
-          --speed: 26s;
-          --delay: -15s;
-          --plane: 14px;
-          opacity: 0.58;
+        .gi-plane-center {
+          fill: #f5b83f;
+          opacity: 0.95;
         }
 
         @keyframes giDash {
@@ -886,15 +887,6 @@ export default function Page() {
           50% {
             transform: scale(1.035);
             opacity: 1;
-          }
-        }
-
-        @keyframes giPlaneOrbit {
-          from {
-            transform: translate(-50%, -50%) rotate(var(--tilt)) rotate(0deg);
-          }
-          to {
-            transform: translate(-50%, -50%) rotate(var(--tilt)) rotate(360deg);
           }
         }
 
@@ -976,11 +968,6 @@ export default function Page() {
             width: min(92%, 420px);
           }
 
-          .gi-plane-orbit.p3,
-          .gi-plane-orbit.p4 {
-            display: none;
-          }
-
           .gi-benefit-img {
             height: 230px;
           }
@@ -994,8 +981,7 @@ export default function Page() {
           .gi-live-dot,
           .gi-marker-ring,
           .gi-earth-aura,
-          .gi-route-line,
-          .gi-plane-orbit {
+          .gi-route-line {
             animation: none !important;
           }
         }
@@ -1005,7 +991,10 @@ export default function Page() {
 }
 
 function GlobalNetworkMap({ large = false }) {
-  const [rotation, setRotation] = useState(-24)
+  const [scene, setScene] = useState({
+    rotation: -24,
+    time: 0,
+  })
 
   useEffect(() => {
     const prefersReduced =
@@ -1015,31 +1004,66 @@ function GlobalNetworkMap({ large = false }) {
 
     if (prefersReduced) return
 
-    let frame = 0
+    let raf = 0
     let last = performance.now()
+    const start = performance.now()
 
-    const animate = (time: number) => {
-      const delta = time - last
+    const animate = (now: number) => {
+      const delta = now - last
 
-      if (delta >= 34) {
-        setRotation((prev) => {
-          const next = prev + 0.22
-          return next >= 360 ? 0 : next
+      if (delta >= 33) {
+        const elapsed = (now - start) / 1000
+        setScene({
+          time: elapsed,
+          rotation: ((elapsed * 5.4) % 360) - 24,
         })
-        last = time
+        last = now
       }
 
-      frame = window.requestAnimationFrame(animate)
+      raf = window.requestAnimationFrame(animate)
     }
 
-    frame = window.requestAnimationFrame(animate)
+    raf = window.requestAnimationFrame(animate)
 
-    return () => window.cancelAnimationFrame(frame)
+    return () => window.cancelAnimationFrame(raf)
   }, [])
 
+  const cityMap = useMemo(() => {
+    const map: Record<string, number[]> = {}
+    for (const city of CITIES) {
+      map[city.name] = city.coordinates
+    }
+    map[HUB.name] = HUB.coordinates
+    return map
+  }, [])
+
+  const activeFlights = useMemo(() => {
+    return FLIGHT_ROUTES.map((route) => {
+      const from = cityMap[route.from]
+      const to = cityMap[route.to]
+      if (!from || !to) return null
+
+      const progress = ((scene.time / route.duration) + route.offset) % 1
+      const nextProgress = (((scene.time + 0.15) / route.duration) + route.offset) % 1
+
+      const current = interpolateCoordinates(from, to, progress)
+      const next = interpolateCoordinates(from, to, nextProgress)
+      const bearing = getPlaneBearing(current, next)
+
+      return {
+        ...route,
+        from,
+        to,
+        current,
+        bearing,
+      }
+    }).filter(Boolean)
+  }, [scene.time, cityMap])
+
   const scale = large ? 310 : 205
-  const markerRadius = large ? 1.8 : 1.5
-  const gradientId = large ? "giEarthOceanLarge" : "giEarthOceanSmall"
+  const markerRadius = large ? 1.8 : 1.4
+  const sphereGradientId = large ? "giEarthOceanLarge" : "giEarthOceanSmall"
+  const planeGlowId = large ? "giPlaneGlowLarge" : "giPlaneGlowSmall"
 
   return (
     <div className={`gi-map ${large ? "large" : ""}`}>
@@ -1054,30 +1078,30 @@ function GlobalNetworkMap({ large = false }) {
         <div className="gi-earth-shell">
           <div className="gi-earth-aura" />
 
-          <div className="gi-plane-orbit p1" />
-          <div className="gi-plane-orbit p2" />
-          <div className="gi-plane-orbit p3" />
-          <div className="gi-plane-orbit p4" />
-
           <ComposableMap
             className="gi-map-svg"
             projection="geoOrthographic"
             projectionConfig={{
               scale,
               center: [0, 0],
-              rotate: [-rotation, -18, 0],
+              rotate: [-scene.rotation, -18, 0],
             }}
           >
             <defs>
-              <radialGradient id={gradientId} cx="38%" cy="30%" r="72%">
-                <stop offset="0%" stopColor="#28313d" />
+              <radialGradient id={sphereGradientId} cx="38%" cy="30%" r="72%">
+                <stop offset="0%" stopColor="#2d3847" />
                 <stop offset="42%" stopColor="#111821" />
-                <stop offset="73%" stopColor="#07090d" />
+                <stop offset="74%" stopColor="#07090d" />
                 <stop offset="100%" stopColor="#020304" />
               </radialGradient>
+
+              <filter id={planeGlowId} x="-120%" y="-120%" width="340%" height="340%">
+                <feDropShadow dx="0" dy="0" stdDeviation="1.8" floodColor="#f5b83f" floodOpacity="0.95" />
+                <feDropShadow dx="0" dy="0" stdDeviation="4.2" floodColor="#f5b83f" floodOpacity="0.42" />
+              </filter>
             </defs>
 
-            <Sphere className="gi-sphere" fill={`url(#${gradientId})`} />
+            <Sphere className="gi-sphere" fill={`url(#${sphereGradientId})`} />
             <Graticule className="gi-graticule" />
 
             <Geographies geography={GEO_URL}>
@@ -1092,24 +1116,22 @@ function GlobalNetworkMap({ large = false }) {
               }
             </Geographies>
 
-            {CITIES.map((city) => (
-              <g key={`route-${city.name}`}>
-                <Line
-                  from={HUB.coordinates}
-                  to={city.coordinates}
-                  className="gi-route-glow"
-                />
-                <Line
-                  from={HUB.coordinates}
-                  to={city.coordinates}
-                  className="gi-route-line"
-                />
-              </g>
-            ))}
+            {FLIGHT_ROUTES.map((route) => {
+              const from = cityMap[route.from]
+              const to = cityMap[route.to]
+              if (!from || !to) return null
+
+              return (
+                <g key={`route-${route.id}`}>
+                  <Line from={from} to={to} className="gi-route-glow" />
+                  <Line from={from} to={to} className="gi-route-line" />
+                </g>
+              )
+            })}
 
             <Marker coordinates={HUB.coordinates}>
-              <circle className="gi-marker-ring" r={markerRadius + 1.4} />
-              <circle className="gi-marker-dot" r={markerRadius + 0.7} />
+              <circle className="gi-marker-ring" r={markerRadius + 1.5} />
+              <circle className="gi-marker-dot" r={markerRadius + 0.75} />
               <text y={-7} className="gi-marker-label">
                 {HUB.name}
               </text>
@@ -1117,11 +1139,26 @@ function GlobalNetworkMap({ large = false }) {
 
             {CITIES.map((city) => (
               <Marker key={city.name} coordinates={city.coordinates}>
-                <circle className="gi-marker-ring" r={markerRadius} />
-                <circle className="gi-marker-dot" r={markerRadius * 0.62} />
-                <text y={-6} className="gi-marker-label">
-                  {city.name}
-                </text>
+                <circle className="gi-city-ring" r={markerRadius + 0.3} />
+                <circle className="gi-city-dot" r={markerRadius * 0.52} />
+              </Marker>
+            ))}
+
+            {activeFlights.map((flight) => (
+              <Marker key={`plane-${flight.id}`} coordinates={flight.current}>
+                <g className="gi-plane-group" transform={`rotate(${flight.bearing})`}>
+                  <ellipse className="gi-plane-aura" cx="0" cy="8" rx="3.4" ry="7.8" />
+                  <path
+                    className="gi-plane-trail"
+                    d="M0 7 L0 18"
+                  />
+                  <path
+                    className="gi-plane-body"
+                    filter={`url(#${planeGlowId})`}
+                    d="M0 -12.5 L2.4 -2.6 L10.8 0 L2.5 2.1 L0 11.8 L-1.6 3.2 L-6.9 4.9 L-3.3 1.4 L-11.2 0 L-3.3 -1.4 L-6.9 -4.9 L-1.6 -3.2 Z"
+                  />
+                  <circle className="gi-plane-center" cx="0" cy="0" r="1.2" />
+                </g>
               </Marker>
             ))}
           </ComposableMap>
