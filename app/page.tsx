@@ -702,8 +702,8 @@ export default function Page() {
           inset: -4%;
           border-radius: 999px;
           background:
-            radial-gradient(circle at 31% 25%, rgba(255, 248, 221, 0.18), transparent 13%),
-            radial-gradient(circle at 44% 38%, rgba(217, 163, 49, 0.07), transparent 28%);
+            radial-gradient(circle at 31% 25%, rgba(255, 248, 221, 0.14), transparent 13%),
+            radial-gradient(circle at 44% 38%, rgba(217, 163, 49, 0.05), transparent 28%);
           mix-blend-mode: screen;
           z-index: 7;
           pointer-events: none;
@@ -714,25 +714,26 @@ export default function Page() {
           inset: 0;
           border-radius: 999px;
           background:
-            radial-gradient(circle at 32% 28%, transparent 0 31%, rgba(0, 0, 0, 0.14) 55%, rgba(0, 0, 0, 0.66) 100%),
-            linear-gradient(125deg, rgba(255, 255, 255, 0.08), transparent 34%, rgba(0, 0, 0, 0.45) 100%);
+            radial-gradient(circle at 32% 28%, transparent 0 42%, rgba(0, 0, 0, 0.08) 58%, rgba(0, 0, 0, 0.48) 100%),
+            linear-gradient(125deg, rgba(255, 255, 255, 0.055), transparent 39%, rgba(0, 0, 0, 0.31) 100%);
           box-shadow:
-            inset -66px -42px 118px rgba(0, 0, 0, 0.62),
-            inset 24px 14px 54px rgba(255, 245, 204, 0.08),
+            inset -48px -32px 88px rgba(0, 0, 0, 0.42),
+            inset 22px 14px 44px rgba(255, 245, 204, 0.07),
             0 0 48px rgba(217, 163, 49, 0.15);
           pointer-events: none;
           z-index: 6;
+          opacity: 0.68;
         }
 
         .gi-earth-rim {
           position: absolute;
           inset: 0;
           border-radius: 999px;
-          border: 1px solid rgba(255, 230, 160, 0.22);
+          border: 1px solid rgba(255, 230, 160, 0.26);
           box-shadow:
-            0 0 44px rgba(217, 163, 49, 0.13),
-            inset 0 0 28px rgba(255, 230, 160, 0.06),
-            inset 0 0 1px rgba(255, 255, 255, 0.24);
+            0 0 44px rgba(217, 163, 49, 0.15),
+            inset 0 0 28px rgba(255, 230, 160, 0.07),
+            inset 0 0 1px rgba(255, 255, 255, 0.28);
           pointer-events: none;
           z-index: 8;
         }
@@ -747,31 +748,33 @@ export default function Page() {
         }
 
         .gi-sphere {
-          stroke: rgba(255, 230, 160, 0.18);
-          stroke-width: 0.7;
+          stroke: rgba(255, 230, 160, 0.24);
+          stroke-width: 0.75;
         }
 
         .gi-graticule {
           fill: none;
-          stroke: rgba(255, 238, 190, 0.15);
+          stroke: rgba(255, 238, 190, 0.2);
           stroke-width: 0.45;
         }
 
         .gi-country {
-          fill: rgba(165, 171, 181, 0.62);
-          stroke: rgba(255, 242, 205, 0.24);
-          stroke-width: 0.38;
+          fill: rgba(218, 181, 88, 0.88);
+          stroke: rgba(255, 246, 215, 0.62);
+          stroke-width: 0.52;
           outline: none;
+          vector-effect: non-scaling-stroke;
+          filter: drop-shadow(0 0 2px rgba(245, 184, 63, 0.18));
           transition: fill 0.22s ease, stroke 0.22s ease;
         }
 
         .gi-country:hover {
-          fill: rgba(217, 163, 49, 0.46);
-          stroke: rgba(255, 238, 190, 0.56);
+          fill: rgba(255, 215, 118, 0.98);
+          stroke: rgba(255, 255, 255, 0.78);
         }
 
         .gi-route-glow {
-          stroke: rgba(217, 163, 49, 0.16);
+          stroke: rgba(217, 163, 49, 0.14);
           stroke-width: 4.2;
           fill: none;
           filter: blur(2.8px);
@@ -779,8 +782,8 @@ export default function Page() {
         }
 
         .gi-route-line {
-          stroke: rgba(245, 184, 63, 0.68);
-          stroke-width: 0.82;
+          stroke: rgba(255, 226, 158, 0.62);
+          stroke-width: 0.78;
           stroke-dasharray: 2.2 4.4;
           fill: none;
           animation: giDash 5.4s linear infinite;
@@ -788,9 +791,9 @@ export default function Page() {
         }
 
         .gi-city-ring {
-          fill: rgba(217, 163, 49, 0.06);
-          stroke: rgba(245, 184, 63, 0.48);
-          stroke-width: 0.7;
+          fill: rgba(217, 163, 49, 0.08);
+          stroke: rgba(255, 237, 181, 0.64);
+          stroke-width: 0.75;
         }
 
         .gi-city-dot {
@@ -799,9 +802,9 @@ export default function Page() {
         }
 
         .gi-marker-ring {
-          fill: rgba(217, 163, 49, 0.08);
-          stroke: rgba(245, 184, 63, 0.78);
-          stroke-width: 0.8;
+          fill: rgba(217, 163, 49, 0.1);
+          stroke: rgba(255, 237, 181, 0.82);
+          stroke-width: 0.85;
           animation: giPulseRing 2.25s ease-in-out infinite;
         }
 
@@ -1088,10 +1091,10 @@ function GlobalNetworkMap({ large = false }) {
           >
             <defs>
               <radialGradient id={sphereGradientId} cx="38%" cy="30%" r="72%">
-                <stop offset="0%" stopColor="#2d3847" />
-                <stop offset="42%" stopColor="#111821" />
-                <stop offset="74%" stopColor="#07090d" />
-                <stop offset="100%" stopColor="#020304" />
+                <stop offset="0%" stopColor="#243246" />
+                <stop offset="42%" stopColor="#101926" />
+                <stop offset="74%" stopColor="#05080d" />
+                <stop offset="100%" stopColor="#010203" />
               </radialGradient>
 
               <filter id={planeGlowId} x="-120%" y="-120%" width="340%" height="340%">
