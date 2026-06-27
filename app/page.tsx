@@ -154,12 +154,23 @@ function AnimatedCount({
   const [count, setCount] = useState(0)
 
   useEffect(() => {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (prefersReduced) {
+      setCount(value)
+      return
+    }
+
     let frame = 0
     const start = performance.now()
 
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1)
       const eased = 1 - Math.pow(1 - progress, 3)
+
       setCount(Math.round(value * eased))
 
       if (progress < 1) {
@@ -168,6 +179,7 @@ function AnimatedCount({
     }
 
     frame = requestAnimationFrame(tick)
+
     return () => cancelAnimationFrame(frame)
   }, [value, duration])
 
@@ -262,8 +274,6 @@ export default function Page() {
             ))}
           </div>
         </div>
-
-        <GlobalNetworkMap />
       </section>
 
       <section id="recognition" className="gi-section">
@@ -515,11 +525,17 @@ export default function Page() {
         }
 
         .gi-network-panel {
-          display: grid;
-          grid-template-columns: 0.38fr 0.62fr;
-          gap: 24px;
+          display: block;
           padding: 28px;
           margin-bottom: 52px;
+        }
+
+        .gi-network-info {
+          max-width: 100%;
+        }
+
+        .gi-network-info p {
+          max-width: 820px;
         }
 
         .gi-network-info h2,
@@ -531,9 +547,10 @@ export default function Page() {
 
         .gi-stat-grid {
           display: grid;
-          gap: 14px;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 16px;
           margin-top: 28px;
-          max-width: 270px;
+          max-width: 100%;
         }
 
         .gi-stat-card {
@@ -541,7 +558,7 @@ export default function Page() {
           overflow: hidden;
           border: 1px solid rgba(217, 163, 49, 0.28);
           border-radius: 16px;
-          padding: 14px 16px;
+          padding: 18px 18px;
           background:
             linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
             radial-gradient(circle at 20% 20%, rgba(217, 163, 49, 0.08), transparent 55%);
@@ -580,7 +597,7 @@ export default function Page() {
         .gi-stat-card strong {
           display: block;
           color: #e7b23c;
-          font-size: 30px;
+          font-size: 34px;
           line-height: 1;
           text-shadow: 0 0 16px rgba(231, 178, 60, 0.14);
           animation: giNumberGlow 2.8s ease-in-out infinite;
@@ -588,7 +605,7 @@ export default function Page() {
 
         .gi-stat-card span {
           display: block;
-          margin-top: 6px;
+          margin-top: 7px;
           color: rgba(247, 240, 223, 0.72);
           font-size: 12px;
         }
@@ -779,6 +796,7 @@ export default function Page() {
 
         .gi-earth-shell {
           position: relative;
+          width: min(86%, 680px);
           aspect-ratio: 1;
           border-radius: 999px;
           display: grid;
@@ -788,15 +806,8 @@ export default function Page() {
             drop-shadow(0 0 42px rgba(217, 163, 49, 0.12));
         }
 
-        .gi-earth-shell.large {
+        .gi-map.large .gi-earth-shell {
           width: min(92%, 860px);
-        }
-
-        .gi-earth-shell.compact {
-          width: min(64%, 360px);
-          filter:
-            drop-shadow(0 18px 48px rgba(0, 0, 0, 0.45))
-            drop-shadow(0 0 18px rgba(217, 163, 49, 0.08));
         }
 
         .gi-earth-aura {
@@ -812,12 +823,6 @@ export default function Page() {
           pointer-events: none;
         }
 
-        .gi-earth-shell.compact .gi-earth-aura {
-          inset: 3%;
-          filter: blur(10px);
-          opacity: 0.72;
-        }
-
         .gi-earth-light {
           position: absolute;
           inset: -4%;
@@ -828,11 +833,6 @@ export default function Page() {
           mix-blend-mode: screen;
           z-index: 7;
           pointer-events: none;
-        }
-
-        .gi-earth-shell.compact .gi-earth-light {
-          inset: -2%;
-          opacity: 0.82;
         }
 
         .gi-earth-shadow {
@@ -851,14 +851,6 @@ export default function Page() {
           opacity: 0.68;
         }
 
-        .gi-earth-shell.compact .gi-earth-shadow {
-          opacity: 0.6;
-          box-shadow:
-            inset -28px -18px 52px rgba(0, 0, 0, 0.34),
-            inset 12px 8px 24px rgba(255, 245, 204, 0.05),
-            0 0 18px rgba(217, 163, 49, 0.08);
-        }
-
         .gi-earth-rim {
           position: absolute;
           inset: 0;
@@ -870,13 +862,6 @@ export default function Page() {
             inset 0 0 1px rgba(255, 255, 255, 0.28);
           pointer-events: none;
           z-index: 8;
-        }
-
-        .gi-earth-shell.compact .gi-earth-rim {
-          box-shadow:
-            0 0 18px rgba(217, 163, 49, 0.08),
-            inset 0 0 12px rgba(255, 230, 160, 0.04),
-            inset 0 0 1px rgba(255, 255, 255, 0.18);
         }
 
         .gi-map-svg {
@@ -1084,8 +1069,7 @@ export default function Page() {
         }
 
         @media (max-width: 1180px) {
-          .gi-hero,
-          .gi-network-panel {
+          .gi-hero {
             grid-template-columns: 1fr;
           }
 
@@ -1108,6 +1092,10 @@ export default function Page() {
           .gi-testimonial-grid {
             grid-template-columns: 1fr;
           }
+
+          .gi-stat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
         }
 
         @media (max-width: 720px) {
@@ -1125,7 +1113,8 @@ export default function Page() {
 
           .gi-feature-row,
           .gi-benefit-grid,
-          .gi-journey {
+          .gi-journey,
+          .gi-stat-grid {
             grid-template-columns: 1fr;
           }
 
@@ -1143,12 +1132,8 @@ export default function Page() {
             inset: -35px -70px -25px -55px;
           }
 
-          .gi-earth-shell.large {
+          .gi-earth-shell {
             width: min(92%, 420px);
-          }
-
-          .gi-earth-shell.compact {
-            width: min(74%, 280px);
           }
 
           .gi-benefit-img {
@@ -1263,7 +1248,7 @@ function GlobalNetworkMap({ large = false }) {
       <div className="gi-map-glow" />
 
       <div className="gi-earth-stage">
-        <div className={`gi-earth-shell ${large ? "large" : "compact"}`}>
+        <div className="gi-earth-shell">
           <div className="gi-earth-aura" />
 
           <ComposableMap
