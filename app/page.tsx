@@ -19,7 +19,7 @@ const img = (path: string) => `${path}?v=${ASSET_V}`
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
 const REAL_AIRPLANE_SRC = "/images/real-airplane.png"
-const REAL_CHEF_HAT_SRC = "/images/elegant_chef_s_hat_with_gold_accents.png"
+const REAL_CHEF_HAT_SRC = "/images/chef-hat-no-bg.png"
 
 const FEATURES = [
   ["Global Culinary Network", "Connecting chefs, culinary leaders, educators, and hospitality professionals worldwide."],
@@ -545,30 +545,24 @@ export default function Page() {
         }
 
         .gi-feature-icon {
-          width: 78px;
-          height: 78px;
+          width: 82px;
+          height: 82px;
           margin: 0 auto 18px;
           display: grid;
           place-items: center;
-          overflow: hidden;
-          border-radius: 999px;
-          background:
-            radial-gradient(circle at 50% 50%, rgba(217, 163, 49, 0.12), transparent 64%),
-            rgba(0, 0, 0, 0.18);
-          box-shadow:
-            inset 0 0 18px rgba(217, 163, 49, 0.07),
-            0 0 22px rgba(217, 163, 49, 0.08);
+          background: transparent;
+          border: none;
+          box-shadow: none;
+          overflow: visible;
         }
 
         .gi-feature-icon img {
-          width: 98px;
-          height: 98px;
-          object-fit: cover;
+          width: 82px;
+          height: 82px;
+          object-fit: contain;
           display: block;
-          transform: scale(1.22);
-          filter:
-            drop-shadow(0 0 10px rgba(217, 163, 49, 0.2))
-            drop-shadow(0 0 18px rgba(0, 0, 0, 0.5));
+          transform: none;
+          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.42));
         }
 
         .gi-feature-card h3,
