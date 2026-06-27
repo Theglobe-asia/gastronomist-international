@@ -66,6 +66,13 @@ const TESTIMONIALS = [
   },
 ]
 
+const NETWORK_STATS = [
+  { value: 25, suffix: "K+", label: "Members Worldwide" },
+  { value: 100, suffix: "+", label: "Countries Represented" },
+  { value: 200, suffix: "+", label: "Culinary Associations" },
+  { value: 6, suffix: "", label: "Continents Connected" },
+]
+
 const HUB = {
   name: "Global Hub",
   coordinates: [12.4964, 41.9028],
@@ -135,6 +142,67 @@ function getPlaneBearing(current: number[], next: number[]) {
   return (Math.atan2(dx, -dy) * 180) / Math.PI
 }
 
+function AnimatedCount({
+  value,
+  suffix = "",
+  duration = 1800,
+}: {
+  value: number
+  suffix?: string
+  duration?: number
+}) {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    let frame = 0
+    const start = performance.now()
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.round(value * eased))
+
+      if (progress < 1) {
+        frame = requestAnimationFrame(tick)
+      }
+    }
+
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [value, duration])
+
+  return (
+    <>
+      {count}
+      {suffix}
+    </>
+  )
+}
+
+function AnimatedStatCard({
+  value,
+  suffix,
+  label,
+  index,
+}: {
+  value: number
+  suffix: string
+  label: string
+  index: number
+}) {
+  return (
+    <article
+      className="gi-stat-card"
+      style={{ animationDelay: `${index * 120}ms` }}
+    >
+      <strong>
+        <AnimatedCount value={value} suffix={suffix} />
+      </strong>
+      <span>{label}</span>
+    </article>
+  )
+}
+
 export default function Page() {
   return (
     <main className="gi-page">
@@ -183,10 +251,15 @@ export default function Page() {
           </p>
 
           <div className="gi-stat-grid">
-            <div><strong>25K+</strong><span>Members Worldwide</span></div>
-            <div><strong>100+</strong><span>Countries Represented</span></div>
-            <div><strong>200+</strong><span>Culinary Associations</span></div>
-            <div><strong>6</strong><span>Continents Connected</span></div>
+            {NETWORK_STATS.map((stat, index) => (
+              <AnimatedStatCard
+                key={stat.label}
+                value={stat.value}
+                suffix={stat.suffix}
+                label={stat.label}
+                index={index}
+              />
+            ))}
           </div>
         </div>
 
@@ -458,29 +531,65 @@ export default function Page() {
 
         .gi-stat-grid {
           display: grid;
-          gap: 12px;
+          gap: 14px;
           margin-top: 28px;
           max-width: 270px;
         }
 
-        .gi-stat-grid div {
-          border: 1px solid rgba(217, 163, 49, 0.26);
+        .gi-stat-card {
+          position: relative;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.28);
           border-radius: 16px;
           padding: 14px 16px;
-          background: rgba(255, 255, 255, 0.035);
+          background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+            radial-gradient(circle at 20% 20%, rgba(217, 163, 49, 0.08), transparent 55%);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            0 12px 30px rgba(0, 0, 0, 0.18);
+          animation:
+            giStatAppear 0.8s ease both,
+            giStatFloat 5.6s ease-in-out infinite;
         }
 
-        .gi-stat-grid strong {
+        .gi-stat-card::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -140%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 221, 136, 0.12),
+            transparent
+          );
+          animation: giStatShine 3.8s linear infinite;
+        }
+
+        .gi-stat-card:hover {
+          transform: translateY(-4px);
+          border-color: rgba(244, 217, 138, 0.5);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 18px 36px rgba(0, 0, 0, 0.24);
+        }
+
+        .gi-stat-card strong {
           display: block;
-          color: #d9a331;
+          color: #e7b23c;
           font-size: 30px;
           line-height: 1;
+          text-shadow: 0 0 16px rgba(231, 178, 60, 0.14);
+          animation: giNumberGlow 2.8s ease-in-out infinite;
         }
 
-        .gi-stat-grid span {
+        .gi-stat-card span {
           display: block;
-          margin-top: 4px;
-          color: rgba(247, 240, 223, 0.68);
+          margin-top: 6px;
+          color: rgba(247, 240, 223, 0.72);
           font-size: 12px;
         }
 
@@ -670,7 +779,6 @@ export default function Page() {
 
         .gi-earth-shell {
           position: relative;
-          width: min(86%, 680px);
           aspect-ratio: 1;
           border-radius: 999px;
           display: grid;
@@ -680,8 +788,15 @@ export default function Page() {
             drop-shadow(0 0 42px rgba(217, 163, 49, 0.12));
         }
 
-        .gi-map.large .gi-earth-shell {
+        .gi-earth-shell.large {
           width: min(92%, 860px);
+        }
+
+        .gi-earth-shell.compact {
+          width: min(64%, 360px);
+          filter:
+            drop-shadow(0 18px 48px rgba(0, 0, 0, 0.45))
+            drop-shadow(0 0 18px rgba(217, 163, 49, 0.08));
         }
 
         .gi-earth-aura {
@@ -697,6 +812,12 @@ export default function Page() {
           pointer-events: none;
         }
 
+        .gi-earth-shell.compact .gi-earth-aura {
+          inset: 3%;
+          filter: blur(10px);
+          opacity: 0.72;
+        }
+
         .gi-earth-light {
           position: absolute;
           inset: -4%;
@@ -707,6 +828,11 @@ export default function Page() {
           mix-blend-mode: screen;
           z-index: 7;
           pointer-events: none;
+        }
+
+        .gi-earth-shell.compact .gi-earth-light {
+          inset: -2%;
+          opacity: 0.82;
         }
 
         .gi-earth-shadow {
@@ -725,6 +851,14 @@ export default function Page() {
           opacity: 0.68;
         }
 
+        .gi-earth-shell.compact .gi-earth-shadow {
+          opacity: 0.6;
+          box-shadow:
+            inset -28px -18px 52px rgba(0, 0, 0, 0.34),
+            inset 12px 8px 24px rgba(255, 245, 204, 0.05),
+            0 0 18px rgba(217, 163, 49, 0.08);
+        }
+
         .gi-earth-rim {
           position: absolute;
           inset: 0;
@@ -736,6 +870,13 @@ export default function Page() {
             inset 0 0 1px rgba(255, 255, 255, 0.28);
           pointer-events: none;
           z-index: 8;
+        }
+
+        .gi-earth-shell.compact .gi-earth-rim {
+          box-shadow:
+            0 0 18px rgba(217, 163, 49, 0.08),
+            inset 0 0 12px rgba(255, 230, 160, 0.04),
+            inset 0 0 1px rgba(255, 255, 255, 0.18);
         }
 
         .gi-map-svg {
@@ -890,6 +1031,44 @@ export default function Page() {
           }
         }
 
+        @keyframes giStatAppear {
+          from {
+            opacity: 0;
+            transform: translateY(18px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes giStatFloat {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-4px);
+          }
+        }
+
+        @keyframes giStatShine {
+          0% {
+            left: -140%;
+          }
+          100% {
+            left: 160%;
+          }
+        }
+
+        @keyframes giNumberGlow {
+          0%, 100% {
+            text-shadow: 0 0 12px rgba(231, 178, 60, 0.08);
+          }
+          50% {
+            text-shadow: 0 0 22px rgba(231, 178, 60, 0.22);
+          }
+        }
+
         @media (max-width: 1280px) {
           .gi-hero {
             grid-template-columns: minmax(320px, 0.5fr) minmax(620px, 1.5fr);
@@ -964,8 +1143,12 @@ export default function Page() {
             inset: -35px -70px -25px -55px;
           }
 
-          .gi-earth-shell {
+          .gi-earth-shell.large {
             width: min(92%, 420px);
+          }
+
+          .gi-earth-shell.compact {
+            width: min(74%, 280px);
           }
 
           .gi-benefit-img {
@@ -981,7 +1164,10 @@ export default function Page() {
           .gi-live-dot,
           .gi-marker-ring,
           .gi-earth-aura,
-          .gi-route-line {
+          .gi-route-line,
+          .gi-stat-card,
+          .gi-stat-card::before,
+          .gi-stat-card strong {
             animation: none !important;
           }
         }
@@ -1077,7 +1263,7 @@ function GlobalNetworkMap({ large = false }) {
       <div className="gi-map-glow" />
 
       <div className="gi-earth-stage">
-        <div className="gi-earth-shell">
+        <div className={`gi-earth-shell ${large ? "large" : "compact"}`}>
           <div className="gi-earth-aura" />
 
           <ComposableMap
