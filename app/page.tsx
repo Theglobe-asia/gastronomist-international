@@ -67,6 +67,15 @@ const NETWORK_STATS = [
   { value: 6, suffix: "", label: "Continents Connected" },
 ]
 
+const LATEST_FEATURE_NOTICE = {
+  eyebrow: "Latest Feature",
+  title: "Interactive Recognition Experience",
+  message:
+    "Explore the new animated member benefits and global voices carousel, designed to present recognition with a more premium global experience.",
+  actionLabel: "View Recognition",
+  actionHref: "#recognition",
+}
+
 const HUB = {
   name: "Global Hub",
   coordinates: [12.4964, 41.9028],
@@ -480,9 +489,60 @@ function Testimonials3DCarousel() {
   )
 }
 
+function LatestFeaturePopup({
+  visible,
+  onClose,
+}: {
+  visible: boolean
+  onClose: () => void
+}) {
+  if (!visible) return null
+
+  return (
+    <aside className="gi-feature-popup" role="status" aria-live="polite">
+      <div className="gi-feature-popup-glow" />
+      <button
+        type="button"
+        className="gi-feature-popup-close"
+        onClick={onClose}
+        aria-label="Close latest feature notification"
+      >
+        ×
+      </button>
+
+      <div className="gi-feature-popup-mark">
+        <span>✦</span>
+      </div>
+
+      <div className="gi-feature-popup-content">
+        <span>{LATEST_FEATURE_NOTICE.eyebrow}</span>
+        <h3>{LATEST_FEATURE_NOTICE.title}</h3>
+        <p>{LATEST_FEATURE_NOTICE.message}</p>
+        <a href={LATEST_FEATURE_NOTICE.actionHref} onClick={onClose}>
+          {LATEST_FEATURE_NOTICE.actionLabel}
+        </a>
+      </div>
+    </aside>
+  )
+}
+
 export default function Page() {
+  const [showFeatureNotice, setShowFeatureNotice] = useState(false)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setShowFeatureNotice(true)
+    }, 700)
+
+    return () => window.clearTimeout(timer)
+  }, [])
+
   return (
     <main className="gi-page">
+      <LatestFeaturePopup
+        visible={showFeatureNotice}
+        onClose={() => setShowFeatureNotice(false)}
+      />
       <section className="gi-hero">
         <div className="gi-hero-copy">
           <span className="gi-eyebrow">Global Culinary Community</span>
@@ -567,6 +627,150 @@ export default function Page() {
         .gi-testimonials {
           width: min(1440px, calc(100% - 40px));
           margin: 0 auto;
+        }
+
+        .gi-feature-popup {
+          position: fixed;
+          right: 24px;
+          bottom: 24px;
+          z-index: 80;
+          width: min(410px, calc(100vw - 32px));
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 24px;
+          padding: 18px;
+          display: grid;
+          grid-template-columns: 58px 1fr;
+          gap: 14px;
+          background:
+            radial-gradient(360px 220px at 18% 0%, rgba(217, 163, 49, 0.18), transparent 64%),
+            linear-gradient(180deg, rgba(18, 15, 10, 0.96), rgba(5, 5, 5, 0.94));
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.09),
+            0 28px 80px rgba(0, 0, 0, 0.52),
+            0 0 44px rgba(217, 163, 49, 0.12);
+          backdrop-filter: blur(18px);
+          animation: giFeaturePopupIn 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .gi-feature-popup-glow {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            120deg,
+            transparent 8%,
+            rgba(255, 238, 177, 0.11) 44%,
+            transparent 74%
+          );
+          transform: translateX(-92%);
+          animation: giFeaturePopupShine 5.2s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .gi-feature-popup-close {
+          position: absolute;
+          right: 12px;
+          top: 12px;
+          z-index: 3;
+          width: 32px;
+          height: 32px;
+          border: 1px solid rgba(217, 163, 49, 0.26);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.045);
+          color: rgba(247, 240, 223, 0.86);
+          cursor: pointer;
+          font-size: 20px;
+          line-height: 1;
+          transition:
+            transform 0.22s ease,
+            border-color 0.22s ease,
+            background 0.22s ease;
+        }
+
+        .gi-feature-popup-close:hover {
+          transform: rotate(90deg);
+          border-color: rgba(244, 217, 138, 0.72);
+          background: rgba(217, 163, 49, 0.12);
+        }
+
+        .gi-feature-popup-mark {
+          position: relative;
+          z-index: 2;
+          width: 58px;
+          height: 58px;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 18px;
+          display: grid;
+          place-items: center;
+          color: #d9a331;
+          background:
+            radial-gradient(circle, rgba(217, 163, 49, 0.18), transparent 62%),
+            rgba(255, 255, 255, 0.035);
+          box-shadow: 0 0 28px rgba(217, 163, 49, 0.12);
+        }
+
+        .gi-feature-popup-mark span {
+          animation: giFeaturePopupPulse 1.8s ease-in-out infinite;
+        }
+
+        .gi-feature-popup-content {
+          position: relative;
+          z-index: 2;
+          padding-right: 26px;
+        }
+
+        .gi-feature-popup-content span {
+          display: block;
+          margin-bottom: 6px;
+          color: #d9a331;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+
+        .gi-feature-popup-content h3 {
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: 22px;
+          line-height: 1.08;
+          font-weight: 500;
+          letter-spacing: -0.035em;
+          margin-bottom: 8px;
+        }
+
+        .gi-feature-popup-content p {
+          color: rgba(247, 240, 223, 0.74);
+          font-size: 13px;
+          line-height: 1.58;
+          margin-bottom: 14px;
+        }
+
+        .gi-feature-popup-content a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 38px;
+          padding: 0 14px;
+          border: 1px solid rgba(217, 163, 49, 0.42);
+          border-radius: 999px;
+          background: rgba(217, 163, 49, 0.1);
+          color: #f4d98a;
+          text-decoration: none;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          transition:
+            transform 0.22s ease,
+            border-color 0.22s ease,
+            background 0.22s ease;
+        }
+
+        .gi-feature-popup-content a:hover {
+          transform: translateY(-2px);
+          border-color: rgba(244, 217, 138, 0.84);
+          background: rgba(217, 163, 49, 0.16);
         }
 
         .gi-hero {
@@ -1599,6 +1803,42 @@ export default function Page() {
           }
         }
 
+        @keyframes giFeaturePopupIn {
+          from {
+            opacity: 0;
+            transform: translateY(24px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes giFeaturePopupShine {
+          0%, 26% {
+            opacity: 0;
+            transform: translateX(-92%);
+          }
+          42% {
+            opacity: 1;
+          }
+          62%, 100% {
+            opacity: 0;
+            transform: translateX(92%);
+          }
+        }
+
+        @keyframes giFeaturePopupPulse {
+          0%, 100% {
+            transform: scale(1) rotate(0deg);
+            opacity: 0.82;
+          }
+          50% {
+            transform: scale(1.18) rotate(12deg);
+            opacity: 1;
+          }
+        }
+
         @media (max-width: 1280px) {
           .gi-hero {
             grid-template-columns: minmax(320px, 0.5fr) minmax(620px, 1.5fr);
@@ -1723,6 +1963,35 @@ export default function Page() {
             gap: 12px;
           }
 
+          .gi-feature-popup {
+            left: 12px;
+            right: 12px;
+            bottom: 14px;
+            width: auto;
+            grid-template-columns: 46px 1fr;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 20px;
+          }
+
+          .gi-feature-popup-mark {
+            width: 46px;
+            height: 46px;
+            border-radius: 15px;
+          }
+
+          .gi-feature-popup-content {
+            padding-right: 22px;
+          }
+
+          .gi-feature-popup-content h3 {
+            font-size: 19px;
+          }
+
+          .gi-feature-popup-content p {
+            font-size: 12px;
+          }
+
           .gi-marker-label {
             font-size: 5px;
           }
@@ -1738,12 +2007,17 @@ export default function Page() {
           .gi-stat-card strong,
           .gi-carousel-card.is-active .gi-card-shine,
           .gi-benefits-spin-section::before,
-          .gi-benefit-spin-card.is-active .gi-benefit-card-shine {
+          .gi-benefit-spin-card.is-active .gi-benefit-card-shine,
+          .gi-feature-popup,
+          .gi-feature-popup-glow,
+          .gi-feature-popup-mark span {
             animation: none !important;
           }
 
           .gi-carousel-card,
-          .gi-benefit-spin-card {
+          .gi-benefit-spin-card,
+          .gi-feature-popup-close,
+          .gi-feature-popup-content a {
             transition: none !important;
           }
         }
