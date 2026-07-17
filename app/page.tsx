@@ -247,6 +247,124 @@ function AnimatedStatCard({
   )
 }
 
+function Testimonials3DCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const total = TESTIMONIALS.length
+
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (prefersReduced || total <= 1) return
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % total)
+    }, 4200)
+
+    return () => window.clearInterval(timer)
+  }, [total])
+
+  const moveCarousel = (direction: number) => {
+    setActiveIndex((current) => (current + direction + total) % total)
+  }
+
+  const getOffset = (index: number) => {
+    let offset = index - activeIndex
+
+    if (offset > total / 2) {
+      offset -= total
+    }
+
+    if (offset < total / -2) {
+      offset += total
+    }
+
+    return offset
+  }
+
+  return (
+    <section className="gi-testimonials">
+      <div className="gi-testimonial-head">
+        <div>
+          <span className="gi-eyebrow">Global Voices</span>
+          <h2>Professional Recognition Across Borders</h2>
+        </div>
+      </div>
+
+      <div className="gi-testimonial-carousel" aria-label="Global voices carousel">
+        <div className="gi-testimonial-stage">
+          {TESTIMONIALS.map((item, index) => {
+            const offset = getOffset(index)
+            const distance = Math.min(Math.abs(offset), 2)
+            const isActive = offset === 0
+
+            return (
+              <article
+                className={`gi-testimonial-card gi-carousel-card ${
+                  isActive ? "is-active" : ""
+                }`}
+                key={item.name}
+                style={{
+                  "--cardX": `${offset * 48}%`,
+                  "--cardZ": `${distance * -120}px`,
+                  "--cardRotate": `${offset * -18}deg`,
+                  "--cardScale": `${1 - distance * 0.08}`,
+                  "--cardOpacity": `${distance > 1 ? 0 : isActive ? 1 : 0.58}`,
+                  "--mobileCardX": `${offset * 78}%`,
+                  "--mobileCardRotate": `${offset * -6}deg`,
+                  "--mobileCardScale": `${1 - distance * 0.1}`,
+                  zIndex: 20 - distance,
+                }}
+                aria-hidden={!isActive}
+              >
+                <div className="gi-card-shine" />
+                <div className="gi-quote-mark">“</div>
+                <p>“{item.quote}”</p>
+                <strong>{item.name}</strong>
+                <span>{item.role}</span>
+                <small>{item.location}</small>
+              </article>
+            )
+          })}
+        </div>
+
+        <div className="gi-carousel-controls" aria-label="Carousel controls">
+          <button
+            type="button"
+            onClick={() => moveCarousel(-1)}
+            aria-label="Previous global voice"
+          >
+            ‹
+          </button>
+
+          <div className="gi-carousel-dots">
+            {TESTIMONIALS.map((item, index) => (
+              <button
+                type="button"
+                key={item.name}
+                className={index === activeIndex ? "active" : ""}
+                onClick={() => setActiveIndex(index)}
+                aria-label={`View ${item.name}`}
+                aria-pressed={index === activeIndex}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => moveCarousel(1)}
+            aria-label="Next global voice"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function Page() {
   return (
     <main className="gi-page">
@@ -327,25 +445,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="gi-testimonials">
-        <div className="gi-testimonial-head">
-          <div>
-            <span className="gi-eyebrow">Global Voices</span>
-            <h2>Professional Recognition Across Borders</h2>
-          </div>
-        </div>
-
-        <div className="gi-testimonial-grid">
-          {TESTIMONIALS.map((item) => (
-            <article className="gi-testimonial-card" key={item.name}>
-              <p>“{item.quote}”</p>
-              <strong>{item.name}</strong>
-              <span>{item.role}</span>
-              <small>{item.location}</small>
-            </article>
-          ))}
-        </div>
-      </section>
+      <Testimonials3DCarousel />
 
       <LatestStory />
 
@@ -694,15 +794,40 @@ export default function Page() {
         }
 
         .gi-testimonials {
+          position: relative;
           padding: 28px;
           margin-bottom: 44px;
+          overflow: hidden;
         }
 
-        .gi-testimonial-grid {
+        .gi-testimonials::before {
+          content: "";
+          position: absolute;
+          inset: -40% 10% auto;
+          height: 260px;
+          background: radial-gradient(circle, rgba(217, 163, 49, 0.16), transparent 68%);
+          pointer-events: none;
+        }
+
+        .gi-testimonial-head {
+          position: relative;
+          z-index: 3;
+        }
+
+        .gi-testimonial-carousel {
+          position: relative;
+          z-index: 3;
           margin-top: 24px;
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 18px;
+          gap: 20px;
+        }
+
+        .gi-testimonial-stage {
+          position: relative;
+          min-height: 310px;
+          perspective: 1400px;
+          transform-style: preserve-3d;
+          overflow: hidden;
         }
 
         .gi-testimonial-card {
@@ -712,10 +837,80 @@ export default function Page() {
           background: rgba(255, 255, 255, 0.03);
         }
 
+        .gi-carousel-card {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: min(620px, 72%);
+          min-height: 250px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          overflow: hidden;
+          background:
+            radial-gradient(circle at 12% 8%, rgba(217, 163, 49, 0.18), transparent 34%),
+            linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.09),
+            0 26px 70px rgba(0, 0, 0, 0.4);
+          opacity: var(--cardOpacity);
+          transform:
+            translate(-50%, -50%)
+            translateX(var(--cardX))
+            translateZ(var(--cardZ))
+            rotateY(var(--cardRotate))
+            scale(var(--cardScale));
+          transform-style: preserve-3d;
+          transition:
+            opacity 0.65s ease,
+            transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.35s ease,
+            box-shadow 0.35s ease;
+        }
+
+        .gi-carousel-card.is-active {
+          border-color: rgba(244, 217, 138, 0.68);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 34px 100px rgba(0, 0, 0, 0.5),
+            0 0 52px rgba(217, 163, 49, 0.16);
+        }
+
+        .gi-card-shine {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            120deg,
+            transparent 10%,
+            rgba(255, 238, 177, 0.12) 46%,
+            transparent 72%
+          );
+          opacity: 0;
+          transform: translateX(-90%);
+          pointer-events: none;
+        }
+
+        .gi-carousel-card.is-active .gi-card-shine {
+          animation: giCarouselShine 4.2s ease-in-out infinite;
+        }
+
+        .gi-quote-mark {
+          position: absolute;
+          right: 24px;
+          top: 10px;
+          color: rgba(217, 163, 49, 0.15);
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: 120px;
+          line-height: 1;
+          pointer-events: none;
+        }
+
         .gi-testimonial-card strong,
         .gi-testimonial-card span,
         .gi-testimonial-card small {
           display: block;
+          position: relative;
+          z-index: 2;
         }
 
         .gi-testimonial-card strong {
@@ -732,6 +927,61 @@ export default function Page() {
         .gi-testimonial-card small {
           color: #d9a331;
           margin-top: 8px;
+        }
+
+        .gi-carousel-controls {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+        }
+
+        .gi-carousel-controls > button {
+          width: 44px;
+          height: 44px;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.035);
+          color: #f4d98a;
+          font-size: 26px;
+          line-height: 1;
+          cursor: pointer;
+          transition:
+            transform 0.24s ease,
+            border-color 0.24s ease,
+            background 0.24s ease;
+        }
+
+        .gi-carousel-controls > button:hover {
+          transform: translateY(-2px);
+          border-color: rgba(244, 217, 138, 0.85);
+          background: rgba(217, 163, 49, 0.12);
+        }
+
+        .gi-carousel-dots {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .gi-carousel-dots button {
+          width: 10px;
+          height: 10px;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.08);
+          cursor: pointer;
+          transition:
+            width 0.28s ease,
+            background 0.28s ease,
+            border-color 0.28s ease;
+        }
+
+        .gi-carousel-dots button.active {
+          width: 30px;
+          border-color: rgba(244, 217, 138, 0.9);
+          background: #d9a331;
         }
 
         .gi-map {
@@ -1066,6 +1316,20 @@ export default function Page() {
           }
         }
 
+        @keyframes giCarouselShine {
+          0%, 28% {
+            opacity: 0;
+            transform: translateX(-90%);
+          }
+          42% {
+            opacity: 1;
+          }
+          62%, 100% {
+            opacity: 0;
+            transform: translateX(90%);
+          }
+        }
+
         @media (max-width: 1280px) {
           .gi-hero {
             grid-template-columns: minmax(320px, 0.5fr) minmax(620px, 1.5fr);
@@ -1095,10 +1359,6 @@ export default function Page() {
 
           .gi-benefit-grid {
             grid-template-columns: repeat(2, 1fr);
-          }
-
-          .gi-testimonial-grid {
-            grid-template-columns: 1fr;
           }
 
           .gi-stat-grid {
@@ -1147,6 +1407,30 @@ export default function Page() {
             height: 230px;
           }
 
+          .gi-testimonials {
+            padding: 22px 14px;
+          }
+
+          .gi-testimonial-stage {
+            min-height: 390px;
+          }
+
+          .gi-carousel-card {
+            width: min(100%, 360px);
+            min-height: 330px;
+            padding: 22px 18px;
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--mobileCardX))
+              translateZ(0)
+              rotateY(var(--mobileCardRotate))
+              scale(var(--mobileCardScale));
+          }
+
+          .gi-carousel-controls {
+            gap: 12px;
+          }
+
           .gi-marker-label {
             font-size: 5px;
           }
@@ -1159,8 +1443,13 @@ export default function Page() {
           .gi-route-line,
           .gi-stat-card,
           .gi-stat-card::before,
-          .gi-stat-card strong {
+          .gi-stat-card strong,
+          .gi-carousel-card.is-active .gi-card-shine {
             animation: none !important;
+          }
+
+          .gi-carousel-card {
+            transition: none !important;
           }
         }
       `}</style>
