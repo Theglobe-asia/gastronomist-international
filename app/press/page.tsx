@@ -160,9 +160,17 @@ export default function PressPage() {
             <span className="press-eyebrow">In Focus</span>
             <h2>Recognition, partnership, and shared purpose.</h2>
 
-            <div className="press-gallery">
-              {GALLERY.map((item) => (
-                <div key={item.src}>
+            <div className="press-gallery press-falling-gallery" aria-label="In Focus falling gallery">
+              {GALLERY.map((item, index) => (
+                <div
+                  className="press-falling-card"
+                  key={item.src}
+                  style={{
+                    "--fallDelay": `${index * 1.25}s`,
+                    "--fallX": `${(index - 1) * 108}%`,
+                    "--fallMobileX": `${(index - 1) * 76}%`,
+                  }}
+                >
                   <div className="press-gallery-image">
                     <img src={item.src} alt={item.label} />
                   </div>
@@ -468,6 +476,73 @@ export default function PressPage() {
           overflow: hidden;
         }
 
+        .press-falling-gallery {
+          position: relative;
+          display: block;
+          min-height: 292px;
+          overflow: hidden;
+          perspective: 1200px;
+          border-radius: 20px;
+          background:
+            radial-gradient(circle at 50% 12%, rgba(217, 163, 49, 0.11), transparent 32%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
+        }
+
+        .press-falling-gallery::before,
+        .press-falling-gallery::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          z-index: 4;
+          height: 62px;
+          pointer-events: none;
+        }
+
+        .press-falling-gallery::before {
+          top: 0;
+          background: linear-gradient(180deg, rgba(5, 5, 5, 0.78), transparent);
+        }
+
+        .press-falling-gallery::after {
+          bottom: 0;
+          background: linear-gradient(0deg, rgba(5, 5, 5, 0.78), transparent);
+        }
+
+        .press-falling-card {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: min(30%, 250px);
+          min-width: 190px;
+          overflow: hidden;
+          transform-style: preserve-3d;
+          animation: pressFocusFall 5.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+          animation-delay: var(--fallDelay);
+          will-change: transform, opacity, filter;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 24px 70px rgba(0, 0, 0, 0.38);
+        }
+
+        .press-falling-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          background: linear-gradient(
+            120deg,
+            transparent 10%,
+            rgba(255, 238, 177, 0.16) 48%,
+            transparent 74%
+          );
+          opacity: 0;
+          transform: translateX(-90%);
+          animation: pressFocusShine 5.4s ease-in-out infinite;
+          animation-delay: var(--fallDelay);
+          pointer-events: none;
+        }
+
         .press-gallery-image {
           height: 190px;
           display: flex;
@@ -532,6 +607,146 @@ export default function PressPage() {
           font-size: 13px;
         }
 
+        @keyframes pressFocusFall {
+          0% {
+            opacity: 0;
+            filter: blur(8px);
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--fallX))
+              translateY(-190px)
+              translateZ(-170px)
+              rotateX(68deg)
+              rotateZ(-8deg)
+              scale(0.82);
+          }
+          18% {
+            opacity: 1;
+            filter: blur(0);
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--fallX))
+              translateY(0)
+              translateZ(0)
+              rotateX(0deg)
+              rotateZ(0deg)
+              scale(1);
+          }
+          58% {
+            opacity: 1;
+            filter: blur(0);
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--fallX))
+              translateY(0)
+              translateZ(0)
+              rotateX(0deg)
+              rotateZ(0deg)
+              scale(1);
+          }
+          82% {
+            opacity: 0;
+            filter: blur(7px);
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--fallX))
+              translateY(205px)
+              translateZ(-130px)
+              rotateX(-48deg)
+              rotateZ(7deg)
+              scale(0.86);
+          }
+          100% {
+            opacity: 0;
+            filter: blur(7px);
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--fallX))
+              translateY(205px)
+              translateZ(-130px)
+              rotateX(-48deg)
+              rotateZ(7deg)
+              scale(0.86);
+          }
+        }
+
+        @keyframes pressFocusShine {
+          0%, 22% {
+            opacity: 0;
+            transform: translateX(-90%);
+          }
+          34% {
+            opacity: 1;
+          }
+          54%, 100% {
+            opacity: 0;
+            transform: translateX(92%);
+          }
+        }
+
+        @keyframes pressFocusFallMobile {
+          0% {
+            opacity: 0;
+            filter: blur(8px);
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--fallMobileX))
+              translateY(-220px)
+              translateZ(-120px)
+              rotateX(58deg)
+              rotateZ(-5deg)
+              scale(0.8);
+          }
+          18% {
+            opacity: 1;
+            filter: blur(0);
+            transform:
+              translate(-50%, -50%)
+              translateX(0)
+              translateY(0)
+              translateZ(0)
+              rotateX(0deg)
+              rotateZ(0deg)
+              scale(1);
+          }
+          58% {
+            opacity: 1;
+            filter: blur(0);
+            transform:
+              translate(-50%, -50%)
+              translateX(0)
+              translateY(0)
+              translateZ(0)
+              rotateX(0deg)
+              rotateZ(0deg)
+              scale(1);
+          }
+          82% {
+            opacity: 0;
+            filter: blur(7px);
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--fallMobileX))
+              translateY(230px)
+              translateZ(-100px)
+              rotateX(-42deg)
+              rotateZ(5deg)
+              scale(0.84);
+          }
+          100% {
+            opacity: 0;
+            filter: blur(7px);
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--fallMobileX))
+              translateY(230px)
+              translateZ(-100px)
+              rotateX(-42deg)
+              rotateZ(5deg)
+              scale(0.84);
+          }
+        }
+
         @media (max-width: 1180px) {
           .press-hero,
           .press-layout {
@@ -555,9 +770,56 @@ export default function PressPage() {
             grid-template-columns: 1fr;
           }
 
+          .press-falling-gallery {
+            min-height: 360px;
+          }
+
+          .press-falling-card {
+            width: min(86%, 320px);
+            min-width: 0;
+            animation-name: pressFocusFallMobile;
+          }
+
+          .press-gallery-image {
+            height: 210px;
+          }
+
           .press-hero-visual,
           .press-hero-visual img {
             min-height: 380px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .press-falling-card,
+          .press-falling-card::before {
+            animation: none !important;
+          }
+
+          .press-falling-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            min-height: 0;
+            overflow: visible;
+            perspective: none;
+            background: transparent;
+          }
+
+          .press-falling-gallery::before,
+          .press-falling-gallery::after {
+            display: none;
+          }
+
+          .press-falling-card {
+            position: relative;
+            left: auto;
+            top: auto;
+            width: auto;
+            min-width: 0;
+            opacity: 1;
+            filter: none;
+            transform: none;
           }
         }
       `}</style>
