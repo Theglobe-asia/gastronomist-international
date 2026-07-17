@@ -247,6 +247,121 @@ function AnimatedStatCard({
   )
 }
 
+function Benefits3DSpinCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const total = BENEFITS.length
+
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (prefersReduced || total <= 1) return
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % total)
+    }, 3800)
+
+    return () => window.clearInterval(timer)
+  }, [total])
+
+  const moveCarousel = (direction: number) => {
+    setActiveIndex((current) => (current + direction + total) % total)
+  }
+
+  const getOffset = (index: number) => {
+    let offset = index - activeIndex
+
+    if (offset > total / 2) {
+      offset -= total
+    }
+
+    if (offset < total / -2) {
+      offset += total
+    }
+
+    return offset
+  }
+
+  return (
+    <section id="recognition" className="gi-section gi-benefits-spin-section">
+      <span className="gi-eyebrow gi-center">Member Benefits & Recognition</span>
+      <h2 className="gi-section-title">Honoring Excellence. Empowering Chefs.</h2>
+
+      <div className="gi-benefit-spin-carousel" aria-label="Member benefits carousel">
+        <div className="gi-benefit-spin-stage">
+          {BENEFITS.map(([title, desc, image], index) => {
+            const offset = getOffset(index)
+            const distance = Math.min(Math.abs(offset), 2)
+            const isActive = offset === 0
+
+            return (
+              <article
+                className={`gi-benefit-card gi-benefit-spin-card ${
+                  isActive ? "is-active" : ""
+                }`}
+                key={title}
+                style={{
+                  "--benefitX": `${offset * 44}%`,
+                  "--benefitZ": `${distance * -155}px`,
+                  "--benefitRotateY": `${offset * -38}deg`,
+                  "--benefitRotateZ": `${offset * -3}deg`,
+                  "--benefitScale": `${1 - distance * 0.08}`,
+                  "--benefitOpacity": `${distance > 1 ? 0 : isActive ? 1 : 0.52}`,
+                  "--mobileBenefitX": `${offset * 78}%`,
+                  "--mobileBenefitRotateY": `${offset * -9}deg`,
+                  "--mobileBenefitScale": `${1 - distance * 0.1}`,
+                  zIndex: 20 - distance,
+                }}
+                aria-hidden={!isActive}
+              >
+                <div className="gi-benefit-card-shine" />
+                <div className="gi-benefit-img">
+                  <img src={image} alt={title} />
+                </div>
+                <h3>{title}</h3>
+                <p>{desc}</p>
+              </article>
+            )
+          })}
+        </div>
+
+        <div className="gi-benefit-carousel-controls" aria-label="Member benefit controls">
+          <button
+            type="button"
+            onClick={() => moveCarousel(-1)}
+            aria-label="Previous member benefit"
+          >
+            ‹
+          </button>
+
+          <div className="gi-benefit-carousel-dots">
+            {BENEFITS.map(([title], index) => (
+              <button
+                type="button"
+                key={title}
+                className={index === activeIndex ? "active" : ""}
+                onClick={() => setActiveIndex(index)}
+                aria-label={`View ${title}`}
+                aria-pressed={index === activeIndex}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => moveCarousel(1)}
+            aria-label="Next member benefit"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function Testimonials3DCarousel() {
   const [activeIndex, setActiveIndex] = useState(0)
   const total = TESTIMONIALS.length
@@ -428,22 +543,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="recognition" className="gi-section">
-        <span className="gi-eyebrow gi-center">Member Benefits & Recognition</span>
-        <h2 className="gi-section-title">Honoring Excellence. Empowering Chefs.</h2>
-
-        <div className="gi-benefit-grid">
-          {BENEFITS.map(([title, desc, image]) => (
-            <article className="gi-benefit-card" key={title}>
-              <div className="gi-benefit-img">
-                <img src={image} alt={title} />
-              </div>
-              <h3>{title}</h3>
-              <p>{desc}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <Benefits3DSpinCarousel />
 
       <Testimonials3DCarousel />
 
@@ -791,6 +891,166 @@ export default function Page() {
           width: 100%;
           height: 100%;
           object-fit: cover;
+        }
+
+        .gi-benefits-spin-section {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .gi-benefits-spin-section::before {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 52%;
+          width: min(720px, 90vw);
+          height: min(720px, 90vw);
+          border-radius: 999px;
+          background:
+            radial-gradient(circle, rgba(217, 163, 49, 0.16), transparent 58%),
+            conic-gradient(from 0deg, transparent, rgba(217, 163, 49, 0.12), transparent);
+          transform: translate(-50%, -50%);
+          animation: giBenefitAuraSpin 18s linear infinite;
+          pointer-events: none;
+        }
+
+        .gi-benefit-spin-carousel {
+          position: relative;
+          z-index: 2;
+          display: grid;
+          gap: 22px;
+          margin-top: 10px;
+        }
+
+        .gi-benefit-spin-stage {
+          position: relative;
+          min-height: 500px;
+          perspective: 1500px;
+          transform-style: preserve-3d;
+          overflow: hidden;
+        }
+
+        .gi-benefit-spin-card {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: min(390px, 68%);
+          min-height: 430px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          overflow: hidden;
+          opacity: var(--benefitOpacity);
+          transform:
+            translate(-50%, -50%)
+            translateX(var(--benefitX))
+            translateZ(var(--benefitZ))
+            rotateY(var(--benefitRotateY))
+            rotateZ(var(--benefitRotateZ))
+            scale(var(--benefitScale));
+          transform-style: preserve-3d;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 28px 80px rgba(0, 0, 0, 0.42);
+          transition:
+            opacity 0.68s ease,
+            transform 0.82s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.35s ease,
+            box-shadow 0.35s ease;
+        }
+
+        .gi-benefit-spin-card.is-active {
+          border-color: rgba(244, 217, 138, 0.72);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 38px 110px rgba(0, 0, 0, 0.52),
+            0 0 64px rgba(217, 163, 49, 0.18);
+        }
+
+        .gi-benefit-card-shine {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          background: linear-gradient(
+            120deg,
+            transparent 8%,
+            rgba(255, 238, 177, 0.16) 44%,
+            transparent 70%
+          );
+          opacity: 0;
+          transform: translateX(-95%);
+          pointer-events: none;
+        }
+
+        .gi-benefit-spin-card.is-active .gi-benefit-card-shine {
+          animation: giCarouselShine 4.2s ease-in-out infinite;
+        }
+
+        .gi-benefit-spin-card .gi-benefit-img {
+          position: relative;
+          z-index: 1;
+          height: 260px;
+        }
+
+        .gi-benefit-spin-card h3,
+        .gi-benefit-spin-card p {
+          position: relative;
+          z-index: 3;
+        }
+
+        .gi-benefit-carousel-controls {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+        }
+
+        .gi-benefit-carousel-controls > button {
+          width: 44px;
+          height: 44px;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.035);
+          color: #f4d98a;
+          font-size: 26px;
+          line-height: 1;
+          cursor: pointer;
+          transition:
+            transform 0.24s ease,
+            border-color 0.24s ease,
+            background 0.24s ease;
+        }
+
+        .gi-benefit-carousel-controls > button:hover {
+          transform: translateY(-2px);
+          border-color: rgba(244, 217, 138, 0.85);
+          background: rgba(217, 163, 49, 0.12);
+        }
+
+        .gi-benefit-carousel-dots {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .gi-benefit-carousel-dots button {
+          width: 10px;
+          height: 10px;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.08);
+          cursor: pointer;
+          transition:
+            width 0.28s ease,
+            background 0.28s ease,
+            border-color 0.28s ease;
+        }
+
+        .gi-benefit-carousel-dots button.active {
+          width: 30px;
+          border-color: rgba(244, 217, 138, 0.9);
+          background: #d9a331;
         }
 
         .gi-testimonials {
@@ -1330,6 +1590,15 @@ export default function Page() {
           }
         }
 
+        @keyframes giBenefitAuraSpin {
+          from {
+            transform: translate(-50%, -50%) rotate(0deg);
+          }
+          to {
+            transform: translate(-50%, -50%) rotate(360deg);
+          }
+        }
+
         @media (max-width: 1280px) {
           .gi-hero {
             grid-template-columns: minmax(320px, 0.5fr) minmax(620px, 1.5fr);
@@ -1407,6 +1676,29 @@ export default function Page() {
             height: 230px;
           }
 
+          .gi-benefit-spin-stage {
+            min-height: 520px;
+          }
+
+          .gi-benefit-spin-card {
+            width: min(100%, 340px);
+            min-height: 450px;
+            transform:
+              translate(-50%, -50%)
+              translateX(var(--mobileBenefitX))
+              translateZ(0)
+              rotateY(var(--mobileBenefitRotateY))
+              scale(var(--mobileBenefitScale));
+          }
+
+          .gi-benefit-spin-card .gi-benefit-img {
+            height: 245px;
+          }
+
+          .gi-benefit-carousel-controls {
+            gap: 12px;
+          }
+
           .gi-testimonials {
             padding: 22px 14px;
           }
@@ -1444,11 +1736,14 @@ export default function Page() {
           .gi-stat-card,
           .gi-stat-card::before,
           .gi-stat-card strong,
-          .gi-carousel-card.is-active .gi-card-shine {
+          .gi-carousel-card.is-active .gi-card-shine,
+          .gi-benefits-spin-section::before,
+          .gi-benefit-spin-card.is-active .gi-benefit-card-shine {
             animation: none !important;
           }
 
-          .gi-carousel-card {
+          .gi-carousel-card,
+          .gi-benefit-spin-card {
             transition: none !important;
           }
         }
