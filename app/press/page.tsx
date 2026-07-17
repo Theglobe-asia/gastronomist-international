@@ -165,11 +165,13 @@ export default function PressPage() {
                 <div
                   className="press-falling-card"
                   key={item.src}
-                  style={{
-                    "--fallDelay": `${index * 1.25}s`,
-                    "--fallX": `${(index - 1) * 108}%`,
-                    "--fallMobileX": `${(index - 1) * 76}%`,
-                  }}
+                  style={
+                    {
+                      "--fallDelay": `${index * 1.25}s`,
+                      "--fallX": `${(index - 1) * 108}%`,
+                      "--fallMobileX": `${(index - 1) * 76}%`,
+                    } as React.CSSProperties
+                  }
                 >
                   <div className="press-gallery-image">
                     <img src={item.src} alt={item.label} />
