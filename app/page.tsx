@@ -13,6 +13,7 @@ import {
   Sphere,
 } from "react-simple-maps"
 import LatestStory from "@/components/blog/latest-story"
+import { getLatestPost } from "@/components/blog/posts"
 
 const ASSET_V = "2026-01-28-1"
 const img = (path: string) => `${path}?v=${ASSET_V}`
@@ -66,15 +67,6 @@ const NETWORK_STATS = [
   { value: 200, suffix: "+", label: "Culinary Associations" },
   { value: 6, suffix: "", label: "Continents Connected" },
 ]
-
-const LATEST_FEATURE_NOTICE = {
-  eyebrow: "Latest Feature",
-  title: "Interactive Recognition Experience",
-  message:
-    "Explore the new animated member benefits and global voices carousel, designed to present recognition with a more premium global experience.",
-  actionLabel: "View Recognition",
-  actionHref: "#recognition",
-}
 
 const HUB = {
   name: "Global Hub",
@@ -492,11 +484,19 @@ function Testimonials3DCarousel() {
 function LatestFeaturePopup({
   visible,
   onClose,
+  latestPost,
 }: {
   visible: boolean
   onClose: () => void
+  latestPost: any
 }) {
-  if (!visible) return null
+  if (!visible || !latestPost) return null
+
+  const featureHref = latestPost.slug ? `/blog/${latestPost.slug}` : "/blog"
+  const featureTitle = latestPost.title || "Latest from the Journal"
+  const featureDescription =
+    latestPost.description ||
+    "Read the newest chef feature and editorial story from the Gastronomist International Journal."
 
   return (
     <aside className="gi-feature-popup" role="status" aria-live="polite">
@@ -505,21 +505,28 @@ function LatestFeaturePopup({
         type="button"
         className="gi-feature-popup-close"
         onClick={onClose}
-        aria-label="Close latest feature notification"
+        aria-label="Close latest journal feature notification"
       >
         ×
       </button>
 
       <div className="gi-feature-popup-mark">
-        <span>✦</span>
+        {latestPost.banner ? (
+          <img src={latestPost.banner} alt={featureTitle} />
+        ) : (
+          <span>✦</span>
+        )}
       </div>
 
       <div className="gi-feature-popup-content">
-        <span>{LATEST_FEATURE_NOTICE.eyebrow}</span>
-        <h3>{LATEST_FEATURE_NOTICE.title}</h3>
-        <p>{LATEST_FEATURE_NOTICE.message}</p>
-        <a href={LATEST_FEATURE_NOTICE.actionHref} onClick={onClose}>
-          {LATEST_FEATURE_NOTICE.actionLabel}
+        <span>Latest Journal Feature</span>
+        <h3>{featureTitle}</h3>
+        <p>{featureDescription}</p>
+
+        {latestPost.date ? <small>{latestPost.date}</small> : null}
+
+        <a href={featureHref} onClick={onClose}>
+          Read Story
         </a>
       </div>
     </aside>
@@ -527,20 +534,24 @@ function LatestFeaturePopup({
 }
 
 export default function Page() {
+  const latestPost = getLatestPost()
   const [showFeatureNotice, setShowFeatureNotice] = useState(false)
 
   useEffect(() => {
+    if (!latestPost) return
+
     const timer = window.setTimeout(() => {
       setShowFeatureNotice(true)
     }, 700)
 
     return () => window.clearTimeout(timer)
-  }, [])
+  }, [latestPost])
 
   return (
     <main className="gi-page">
       <LatestFeaturePopup
         visible={showFeatureNotice}
+        latestPost={latestPost}
         onClose={() => setShowFeatureNotice(false)}
       />
       <section className="gi-hero">
@@ -634,13 +645,13 @@ export default function Page() {
           right: 24px;
           bottom: 24px;
           z-index: 80;
-          width: min(410px, calc(100vw - 32px));
+          width: min(480px, calc(100vw - 32px));
           overflow: hidden;
           border: 1px solid rgba(217, 163, 49, 0.34);
           border-radius: 24px;
           padding: 18px;
           display: grid;
-          grid-template-columns: 58px 1fr;
+          grid-template-columns: 104px 1fr;
           gap: 14px;
           background:
             radial-gradient(360px 220px at 18% 0%, rgba(217, 163, 49, 0.18), transparent 64%),
@@ -696,8 +707,8 @@ export default function Page() {
         .gi-feature-popup-mark {
           position: relative;
           z-index: 2;
-          width: 58px;
-          height: 58px;
+          width: 104px;
+          height: 104px;
           border: 1px solid rgba(217, 163, 49, 0.34);
           border-radius: 18px;
           display: grid;
@@ -707,6 +718,14 @@ export default function Page() {
             radial-gradient(circle, rgba(217, 163, 49, 0.18), transparent 62%),
             rgba(255, 255, 255, 0.035);
           box-shadow: 0 0 28px rgba(217, 163, 49, 0.12);
+          overflow: hidden;
+        }
+
+        .gi-feature-popup-mark img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
         }
 
         .gi-feature-popup-mark span {
@@ -743,7 +762,16 @@ export default function Page() {
           color: rgba(247, 240, 223, 0.74);
           font-size: 13px;
           line-height: 1.58;
+          margin-bottom: 10px;
+        }
+
+        .gi-feature-popup-content small {
+          display: block;
           margin-bottom: 14px;
+          color: rgba(247, 240, 223, 0.54);
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
 
         .gi-feature-popup-content a {
@@ -1968,15 +1996,15 @@ export default function Page() {
             right: 12px;
             bottom: 14px;
             width: auto;
-            grid-template-columns: 46px 1fr;
+            grid-template-columns: 74px 1fr;
             gap: 12px;
             padding: 14px;
             border-radius: 20px;
           }
 
           .gi-feature-popup-mark {
-            width: 46px;
-            height: 46px;
+            width: 74px;
+            height: 74px;
             border-radius: 15px;
           }
 
