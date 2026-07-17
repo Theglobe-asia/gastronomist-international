@@ -2,7 +2,7 @@
 // @ts-nocheck
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import Card from "@/components/ui/Card"
 
@@ -64,10 +64,26 @@ const leaders = [
 ]
 
 const stats = [
-  ["100+", "Countries Connected"],
-  ["25K+", "Culinary Professionals"],
-  ["200+", "Partner Associations"],
-  ["6", "Continents Represented"],
+  {
+    value: "100+",
+    label: "Countries Connected",
+    trend: [42, 48, 44, 57, 61, 66, 63, 72, 78, 84, 88, 94],
+  },
+  {
+    value: "25K+",
+    label: "Culinary Professionals",
+    trend: [18, 23, 27, 31, 36, 42, 48, 54, 61, 68, 74, 82],
+  },
+  {
+    value: "200+",
+    label: "Partner Associations",
+    trend: [25, 30, 28, 36, 40, 46, 51, 55, 62, 70, 76, 83],
+  },
+  {
+    value: "6",
+    label: "Continents Represented",
+    trend: [34, 38, 42, 48, 53, 57, 62, 67, 70, 76, 82, 88],
+  },
 ]
 
 const pillars = [
@@ -88,6 +104,160 @@ const pillars = [
     text: "Supporting regional representatives and global ambassadors who strengthen the culinary community.",
   },
 ]
+
+function buildLivePath(values: number[], width: number, height: number, padding: number) {
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const span = Math.max(1, max - min)
+  const xStep = (width - padding * 2) / Math.max(1, values.length - 1)
+
+  return values
+    .map((value, index) => {
+      const x = padding + index * xStep
+      const normalized = (value - min) / span
+      const y = padding + (1 - normalized) * (height - padding * 2)
+
+      return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`
+    })
+    .join(" ")
+}
+
+function LiveStatsCard({
+  value,
+  label,
+  trend,
+  index,
+}: {
+  value: string
+  label: string
+  trend: number[]
+  index: number
+}) {
+  const [liveTrend, setLiveTrend] = useState<number[]>(trend)
+
+  useEffect(() => {
+    setLiveTrend(trend)
+  }, [trend])
+
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (prefersReduced) return
+
+    const timer = window.setInterval(() => {
+      setLiveTrend((currentTrend) => {
+        const current = currentTrend.length ? currentTrend : trend
+        const last = current[current.length - 1] ?? 50
+        const previous = current[current.length - 2] ?? last
+        const direction = last >= previous ? 1 : -1
+        const wave = Math.sin(Date.now() / (620 + index * 90)) * (4 + index)
+        const lift = direction * 1.2
+        const pulse = Math.round((Math.random() - 0.32) * (7 + index))
+        const next = Math.max(12, Math.min(98, Math.round(last + wave + lift + pulse)))
+
+        return [...current.slice(1), next]
+      })
+    }, 820 + index * 130)
+
+    return () => window.clearInterval(timer)
+  }, [index, trend])
+
+  const chartWidth = 260
+  const chartHeight = 82
+  const chartPadding = 10
+  const linePath = useMemo(
+    () => buildLivePath(liveTrend, chartWidth, chartHeight, chartPadding),
+    [liveTrend]
+  )
+
+  const min = Math.min(...liveTrend)
+  const max = Math.max(...liveTrend)
+  const span = Math.max(1, max - min)
+  const lastValue = liveTrend[liveTrend.length - 1] ?? 0
+  const previousValue = liveTrend[liveTrend.length - 2] ?? lastValue
+  const lastY = chartPadding + (1 - (lastValue - min) / span) * (chartHeight - chartPadding * 2)
+  const directionText = lastValue >= previousValue ? "Rising" : "Tracking"
+
+  return (
+    <motion.article
+      className="about-live-stat-card"
+      initial={{ opacity: 0, y: 18, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.55, delay: index * 0.08, ease: "easeOut" }}
+    >
+      <div className="about-live-stat-top">
+        <div>
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </div>
+
+        <div className="about-live-badge">
+          <i />
+          Live
+        </div>
+      </div>
+
+      <div className="about-live-chart" aria-label={`${label} live trend graph`}>
+        <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} role="img">
+          {Array.from({ length: 4 }).map((_, gridIndex) => {
+            const y = chartPadding + gridIndex * ((chartHeight - chartPadding * 2) / 3)
+
+            return (
+              <line
+                key={gridIndex}
+                x1={chartPadding}
+                x2={chartWidth - chartPadding}
+                y1={y}
+                y2={y}
+              />
+            )
+          })}
+
+          <motion.path
+            d={linePath}
+            initial={false}
+            animate={{ d: linePath }}
+            transition={{ duration: 0.55, ease: "easeInOut" }}
+          />
+
+          <motion.circle
+            cx={chartWidth - chartPadding}
+            cy={lastY}
+            r="4"
+            initial={false}
+            animate={{ r: [3.5, 6.5, 3.5], opacity: [1, 0.45, 1] }}
+            transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </svg>
+      </div>
+
+      <div className="about-live-stat-footer">
+        <span>{directionText} signal</span>
+        <span>{String(lastValue).padStart(2, "0")}%</span>
+      </div>
+    </motion.article>
+  )
+}
+
+function LiveStatsPanel() {
+  return (
+    <section className="about-stats about-live-stats" aria-label="Live global statistics">
+      {stats.map((item, index) => (
+        <LiveStatsCard
+          key={item.label}
+          value={item.value}
+          label={item.label}
+          trend={item.trend}
+          index={index}
+        />
+      ))}
+    </section>
+  )
+}
 
 export default function AboutPage() {
   const [selectedLeader, setSelectedLeader] = useState<(typeof leaders)[number] | null>(null)
@@ -123,14 +293,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="about-stats">
-        {stats.map(([value, label]) => (
-          <article key={label}>
-            <strong>{value}</strong>
-            <span>{label}</span>
-          </article>
-        ))}
-      </section>
+      <LiveStatsPanel />
 
       <section className="about-grid">
         <Card className="about-card about-card-large">
@@ -467,6 +630,147 @@ export default function AboutPage() {
           font-size: 13px;
         }
 
+        .about-live-stats {
+          align-items: stretch;
+        }
+
+        .about-live-stat-card {
+          position: relative;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.26);
+          border-radius: 22px;
+          padding: 18px;
+          background:
+            radial-gradient(360px 160px at 20% 0%, rgba(217, 163, 49, 0.16), transparent 64%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.018));
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 24px 80px rgba(0, 0, 0, 0.42);
+          backdrop-filter: blur(18px);
+        }
+
+        .about-live-stat-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            120deg,
+            transparent 10%,
+            rgba(255, 238, 177, 0.12) 46%,
+            transparent 72%
+          );
+          transform: translateX(-90%);
+          animation: aboutLiveStatShine 5.4s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .about-live-stat-top {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 12px;
+          text-align: left;
+        }
+
+        .about-live-stat-top strong {
+          display: block;
+          color: #d9a331;
+          font-size: 34px;
+          line-height: 1;
+          text-shadow: 0 0 18px rgba(217, 163, 49, 0.18);
+        }
+
+        .about-live-stat-top span {
+          display: block;
+          margin-top: 8px;
+          color: rgba(247, 240, 223, 0.7);
+          font-size: 13px;
+        }
+
+        .about-live-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          border: 1px solid rgba(217, 163, 49, 0.3);
+          border-radius: 999px;
+          padding: 6px 9px;
+          background: rgba(217, 163, 49, 0.08);
+          color: #f4d98a;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .about-live-badge i {
+          width: 7px;
+          height: 7px;
+          border-radius: 999px;
+          background: #d9a331;
+          box-shadow: 0 0 16px rgba(217, 163, 49, 0.9);
+          animation: aboutLiveBlink 1.1s ease-in-out infinite;
+        }
+
+        .about-live-chart {
+          position: relative;
+          z-index: 2;
+          margin-top: 18px;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.16);
+          border-radius: 16px;
+          background:
+            radial-gradient(circle at 80% 30%, rgba(217, 163, 49, 0.08), transparent 38%),
+            rgba(0, 0, 0, 0.18);
+        }
+
+        .about-live-chart svg {
+          display: block;
+          width: 100%;
+          height: 92px;
+        }
+
+        .about-live-chart line {
+          stroke: rgba(255, 255, 255, 0.08);
+          stroke-width: 1;
+        }
+
+        .about-live-chart path {
+          fill: none;
+          stroke: #d9a331;
+          stroke-width: 4;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          filter: drop-shadow(0 0 8px rgba(217, 163, 49, 0.36));
+        }
+
+        .about-live-chart circle {
+          fill: #f7f0df;
+          stroke: #d9a331;
+          stroke-width: 2;
+          filter: drop-shadow(0 0 12px rgba(217, 163, 49, 0.72));
+        }
+
+        .about-live-stat-footer {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-top: 12px;
+          color: rgba(247, 240, 223, 0.62);
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+        }
+
+        .about-live-stat-footer span:last-child {
+          color: #f4d98a;
+          font-weight: 900;
+        }
+
         .about-grid {
           display: grid;
           grid-template-columns: 1.2fr 0.8fr;
@@ -648,6 +952,31 @@ export default function AboutPage() {
           color: #d9a331;
         }
 
+        @keyframes aboutLiveBlink {
+          0%, 100% {
+            opacity: 0.45;
+            transform: scale(0.86);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.18);
+          }
+        }
+
+        @keyframes aboutLiveStatShine {
+          0%, 28% {
+            opacity: 0;
+            transform: translateX(-90%);
+          }
+          42% {
+            opacity: 1;
+          }
+          62%, 100% {
+            opacity: 0;
+            transform: translateX(90%);
+          }
+        }
+
         @media (max-width: 1180px) {
           .about-hero,
           .about-grid,
@@ -680,8 +1009,32 @@ export default function AboutPage() {
             min-height: 380px;
           }
 
+          .about-live-stat-card {
+            padding: 18px 16px;
+          }
+
+          .about-live-stat-top {
+            gap: 10px;
+          }
+
+          .about-live-chart svg {
+            height: 86px;
+          }
+
           .leader-image {
             height: 300px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .about-live-badge i,
+          .about-live-stat-card::before {
+            animation: none !important;
+          }
+
+          .about-live-chart path,
+          .about-live-chart circle {
+            transition: none !important;
           }
         }
       `}</style>
