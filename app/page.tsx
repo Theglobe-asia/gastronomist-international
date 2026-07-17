@@ -35,13 +35,6 @@ const BENEFITS = [
   ["Certificates & Badges", "Authentication of skills, expertise, and achievement.", img("/images/partnership.png")],
 ]
 
-const JOURNEY = [
-  ["1. Application", "Submit your professional details through the floating application widget."],
-  ["2. Review", "Your background and culinary profile are reviewed by the organization."],
-  ["3. Fee Completion", "After submission, the official membership fee page becomes available."],
-  ["4. Activation", "Your membership is confirmed and prepared for recognition."],
-  ["5. Recognition", "Receive official benefits and become part of the global culinary community."],
-]
 
 const TESTIMONIALS = [
   {
@@ -334,21 +327,6 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="gi-section">
-        <span className="gi-eyebrow gi-center">How It Works</span>
-        <h2 className="gi-section-title">Your Journey to Recognition</h2>
-
-        <div className="gi-journey">
-          {JOURNEY.map(([title, desc]) => (
-            <article className="gi-step" key={title}>
-              <div className="gi-step-icon">✦</div>
-              <h3>{title}</h3>
-              <p>{desc}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section className="gi-testimonials">
         <div className="gi-testimonial-head">
           <div>
@@ -468,7 +446,6 @@ export default function Page() {
         .gi-network-info p,
         .gi-feature-card p,
         .gi-benefit-card p,
-        .gi-step p,
         .gi-testimonial-card p {
           color: rgba(247, 240, 223, 0.76);
           line-height: 1.72;
@@ -714,41 +691,6 @@ export default function Page() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-        }
-
-        .gi-journey {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 18px;
-        }
-
-        .gi-step {
-          text-align: center;
-          padding: 10px;
-        }
-
-        .gi-step-icon {
-          width: 86px;
-          height: 86px;
-          margin: 0 auto 16px;
-          border-radius: 999px;
-          border: 1px solid rgba(217, 163, 49, 0.36);
-          display: grid;
-          place-items: center;
-          color: #d9a331;
-          font-size: 30px;
-          background: rgba(255, 255, 255, 0.035);
-          box-shadow: 0 0 42px rgba(217, 163, 49, 0.13);
-        }
-
-        .gi-step h3 {
-          color: #fff;
-          font-size: 15px;
-          margin-bottom: 8px;
-        }
-
-        .gi-step p {
-          font-size: 13px;
         }
 
         .gi-testimonials {
@@ -1155,10 +1097,6 @@ export default function Page() {
             grid-template-columns: repeat(2, 1fr);
           }
 
-          .gi-journey {
-            grid-template-columns: repeat(2, 1fr);
-          }
-
           .gi-testimonial-grid {
             grid-template-columns: 1fr;
           }
@@ -1183,7 +1121,6 @@ export default function Page() {
 
           .gi-feature-row,
           .gi-benefit-grid,
-          .gi-journey,
           .gi-stat-grid {
             grid-template-columns: 1fr;
           }
