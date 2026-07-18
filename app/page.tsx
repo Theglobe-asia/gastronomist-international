@@ -1723,15 +1723,20 @@ export default function Page() {
           transform-box: fill-box;
           transform-origin: center;
           filter:
-            drop-shadow(0 0 6px rgba(245, 184, 63, 0.84))
-            drop-shadow(0 0 14px rgba(217, 163, 49, 0.34));
-          animation: giMemberPulse 2.65s ease-out infinite;
+            drop-shadow(0 0 10px rgba(245, 184, 63, 0.98))
+            drop-shadow(0 0 26px rgba(217, 163, 49, 0.62));
+          animation: giMemberPulse 2.95s ease-out infinite;
           animation-delay: var(--memberPulseDelay);
         }
 
         .gi-member-pulse-ring-two {
-          animation-delay: calc(var(--memberPulseDelay) + 1.25s);
-          opacity: 0.7;
+          animation-delay: calc(var(--memberPulseDelay) + 0.95s);
+          opacity: 0.74;
+        }
+
+        .gi-member-pulse-ring-three {
+          animation-delay: calc(var(--memberPulseDelay) + 1.9s);
+          opacity: 0.56;
         }
 
         .gi-member-pulse-core {
@@ -1739,9 +1744,10 @@ export default function Page() {
           stroke: rgba(255, 248, 226, 0.95);
           stroke-width: 0.55;
           filter:
-            drop-shadow(0 0 7px rgba(245, 184, 63, 1))
-            drop-shadow(0 0 16px rgba(217, 163, 49, 0.72));
-          animation: giMemberCoreGlow 1.9s ease-in-out infinite;
+            drop-shadow(0 0 12px rgba(245, 184, 63, 1))
+            drop-shadow(0 0 30px rgba(217, 163, 49, 0.9))
+            drop-shadow(0 0 48px rgba(217, 163, 49, 0.36));
+          animation: giMemberCoreGlow 1.75s ease-in-out infinite;
           animation-delay: var(--memberPulseDelay);
         }
 
@@ -1849,19 +1855,19 @@ export default function Page() {
 
         @keyframes giMemberPulse {
           0% {
-            r: 2.8;
-            opacity: 0.88;
-            stroke-width: 0.86;
+            r: 5.5;
+            opacity: 0.96;
+            stroke-width: 1.25;
           }
           72% {
-            r: 12.8;
+            r: 30;
             opacity: 0;
-            stroke-width: 0.32;
+            stroke-width: 0.42;
           }
           100% {
-            r: 12.8;
+            r: 30;
             opacity: 0;
-            stroke-width: 0.32;
+            stroke-width: 0.42;
           }
         }
 
@@ -2146,6 +2152,10 @@ export default function Page() {
             font-size: 12px;
           }
 
+          .gi-member-pulse-marker {
+            transform: scale(1.08);
+          }
+
           .gi-member-pulse-label {
             display: none;
           }
@@ -2352,10 +2362,11 @@ function GlobalNetworkMap({ large = false }) {
                   }}
                 >
                   <title>{`${location.name} — Gastronomist Member Presence`}</title>
-                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-one" r={4.4} />
-                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-two" r={4.4} />
-                  <circle className="gi-member-pulse-core" r={large ? 2.25 : 1.7} />
-                  <circle className="gi-member-pulse-spark" r={large ? 0.72 : 0.54} />
+                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-one" r={8.8} />
+                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-two" r={8.8} />
+                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-three" r={8.8} />
+                  <circle className="gi-member-pulse-core" r={large ? 4.8 : 3.7} />
+                  <circle className="gi-member-pulse-spark" r={large ? 1.25 : 0.95} />
                   <text y={large ? -9 : -7} className="gi-member-pulse-label">
                     {location.name}
                   </text>
