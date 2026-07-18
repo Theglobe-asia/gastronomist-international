@@ -1709,9 +1709,6 @@ export default function Page() {
         }
 
         .gi-member-pulse-marker {
-          transform-box: fill-box;
-          transform-origin: center;
-          transform: scale(var(--memberPulseScale));
           pointer-events: auto;
           cursor: pointer;
         }
@@ -1719,13 +1716,11 @@ export default function Page() {
         .gi-member-pulse-ring {
           fill: rgba(217, 163, 49, 0.11);
           stroke: rgba(255, 228, 156, 0.86);
-          stroke-width: 0.72;
-          transform-box: fill-box;
-          transform-origin: center;
+          stroke-width: 1.2;
           filter:
-            drop-shadow(0 0 10px rgba(245, 184, 63, 0.98))
-            drop-shadow(0 0 26px rgba(217, 163, 49, 0.62));
-          animation: giMemberPulse 2.95s ease-out infinite;
+            drop-shadow(0 0 18px rgba(245, 184, 63, 1))
+            drop-shadow(0 0 48px rgba(217, 163, 49, 0.78));
+          animation: giMemberPulse 3.2s ease-out infinite;
           animation-delay: var(--memberPulseDelay);
         }
 
@@ -1742,11 +1737,11 @@ export default function Page() {
         .gi-member-pulse-core {
           fill: #f5b83f;
           stroke: rgba(255, 248, 226, 0.95);
-          stroke-width: 0.55;
+          stroke-width: 1.2;
           filter:
-            drop-shadow(0 0 12px rgba(245, 184, 63, 1))
-            drop-shadow(0 0 30px rgba(217, 163, 49, 0.9))
-            drop-shadow(0 0 48px rgba(217, 163, 49, 0.36));
+            drop-shadow(0 0 24px rgba(245, 184, 63, 1))
+            drop-shadow(0 0 62px rgba(217, 163, 49, 0.92))
+            drop-shadow(0 0 96px rgba(217, 163, 49, 0.42));
           animation: giMemberCoreGlow 1.75s ease-in-out infinite;
           animation-delay: var(--memberPulseDelay);
         }
@@ -1855,19 +1850,19 @@ export default function Page() {
 
         @keyframes giMemberPulse {
           0% {
-            r: 5.5;
+            r: 16.5;
             opacity: 0.96;
-            stroke-width: 1.25;
+            stroke-width: 2.2;
           }
           72% {
-            r: 30;
+            r: 90;
             opacity: 0;
-            stroke-width: 0.42;
+            stroke-width: 0.72;
           }
           100% {
-            r: 30;
+            r: 90;
             opacity: 0;
-            stroke-width: 0.42;
+            stroke-width: 0.72;
           }
         }
 
@@ -2152,10 +2147,6 @@ export default function Page() {
             font-size: 12px;
           }
 
-          .gi-member-pulse-marker {
-            transform: scale(1.08);
-          }
-
           .gi-member-pulse-label {
             display: none;
           }
@@ -2358,15 +2349,14 @@ function GlobalNetworkMap({ large = false }) {
                   className="gi-member-pulse-marker"
                   style={{
                     "--memberPulseDelay": `${index * 0.16}s`,
-                    "--memberPulseScale": `${large ? 1 : 0.82}`,
                   }}
                 >
                   <title>{`${location.name} — Gastronomist Member Presence`}</title>
-                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-one" r={8.8} />
-                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-two" r={8.8} />
-                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-three" r={8.8} />
-                  <circle className="gi-member-pulse-core" r={large ? 4.8 : 3.7} />
-                  <circle className="gi-member-pulse-spark" r={large ? 1.25 : 0.95} />
+                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-one" r={26.4} />
+                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-two" r={26.4} />
+                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-three" r={26.4} />
+                  <circle className="gi-member-pulse-core" r={large ? 14.4 : 11.1} />
+                  <circle className="gi-member-pulse-spark" r={large ? 3.75 : 2.85} />
                   <text y={large ? -9 : -7} className="gi-member-pulse-label">
                     {location.name}
                   </text>
