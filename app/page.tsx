@@ -92,6 +92,33 @@ const CITIES = [
   { name: "South Africa", coordinates: [22.9375, -30.5595] },
 ]
 
+const MEMBER_PULSE_LOCATIONS = [
+  { name: "France", coordinates: [2.2137, 46.2276], count: "Member Presence" },
+  { name: "Thailand", coordinates: [100.9925, 15.87], count: "Member Presence" },
+  { name: "Saudi Arabia", coordinates: [45.0792, 23.8859], count: "Member Presence" },
+  { name: "Myanmar", coordinates: [95.956, 21.9162], count: "Member Presence" },
+  { name: "Russia", coordinates: [105.3188, 61.524], count: "Member Presence" },
+  { name: "Azerbaijan", coordinates: [47.5769, 40.1431], count: "Member Presence" },
+  { name: "Morocco", coordinates: [-7.0926, 31.7917], count: "Member Presence" },
+  { name: "Philippines", coordinates: [121.774, 12.8797], count: "Member Presence" },
+  { name: "Italy", coordinates: [12.4964, 41.9028], count: "Member Presence" },
+  { name: "Brazil", coordinates: [-51.9253, -14.235], count: "Member Presence" },
+  { name: "Spain", coordinates: [-3.7492, 40.4637], count: "Member Presence" },
+  { name: "Japan", coordinates: [138.2529, 36.2048], count: "Member Presence" },
+  { name: "South Korea", coordinates: [127.7669, 35.9078], count: "Member Presence" },
+  { name: "China", coordinates: [104.1954, 35.8617], count: "Member Presence" },
+  { name: "Malaysia", coordinates: [101.9758, 4.2105], count: "Member Presence" },
+  { name: "Singapore", coordinates: [103.8198, 1.3521], count: "Member Presence" },
+  { name: "Egypt", coordinates: [30.8025, 26.8206], count: "Member Presence" },
+  { name: "Indonesia", coordinates: [113.9213, -0.7893], count: "Member Presence" },
+  { name: "United Kingdom", coordinates: [-3.436, 55.3781], count: "Member Presence" },
+  { name: "United States", coordinates: [-98.5795, 39.8283], count: "Member Presence" },
+  { name: "New York", coordinates: [-74.006, 40.7128], count: "Member Presence" },
+  { name: "United Arab Emirates", coordinates: [53.8478, 23.4241], count: "Member Presence" },
+  { name: "Qatar", coordinates: [51.1839, 25.3548], count: "Member Presence" },
+  { name: "Kuwait", coordinates: [47.4818, 29.3117], count: "Member Presence" },
+]
+
 const FLIGHT_ROUTES = [
   { id: "f1", from: "Canada", to: "United Kingdom", duration: 18, offset: 0.03 },
   { id: "f2", from: "United States", to: "France", duration: 16, offset: 0.14 },
@@ -1681,6 +1708,76 @@ export default function Page() {
           filter: drop-shadow(0 0 6px rgba(245, 184, 63, 0.95));
         }
 
+        .gi-member-pulse-marker {
+          transform-box: fill-box;
+          transform-origin: center;
+          transform: scale(var(--memberPulseScale));
+          pointer-events: auto;
+          cursor: pointer;
+        }
+
+        .gi-member-pulse-ring {
+          fill: rgba(217, 163, 49, 0.11);
+          stroke: rgba(255, 228, 156, 0.86);
+          stroke-width: 0.72;
+          transform-box: fill-box;
+          transform-origin: center;
+          filter:
+            drop-shadow(0 0 6px rgba(245, 184, 63, 0.84))
+            drop-shadow(0 0 14px rgba(217, 163, 49, 0.34));
+          animation: giMemberPulse 2.65s ease-out infinite;
+          animation-delay: var(--memberPulseDelay);
+        }
+
+        .gi-member-pulse-ring-two {
+          animation-delay: calc(var(--memberPulseDelay) + 1.25s);
+          opacity: 0.7;
+        }
+
+        .gi-member-pulse-core {
+          fill: #f5b83f;
+          stroke: rgba(255, 248, 226, 0.95);
+          stroke-width: 0.55;
+          filter:
+            drop-shadow(0 0 7px rgba(245, 184, 63, 1))
+            drop-shadow(0 0 16px rgba(217, 163, 49, 0.72));
+          animation: giMemberCoreGlow 1.9s ease-in-out infinite;
+          animation-delay: var(--memberPulseDelay);
+        }
+
+        .gi-member-pulse-spark {
+          fill: rgba(255, 255, 255, 0.95);
+          opacity: 0.92;
+          filter: drop-shadow(0 0 5px rgba(255, 246, 215, 0.9));
+          transform: translate(-0.8px, -0.8px);
+        }
+
+        .gi-member-pulse-label {
+          fill: rgba(255, 248, 226, 0.98);
+          font-size: 5.3px;
+          font-weight: 900;
+          letter-spacing: 0.02em;
+          text-anchor: middle;
+          paint-order: stroke;
+          stroke: rgba(0, 0, 0, 0.88);
+          stroke-width: 2.4px;
+          opacity: 0;
+          transform: translateY(2px);
+          transition:
+            opacity 0.22s ease,
+            transform 0.22s ease;
+          pointer-events: none;
+        }
+
+        .gi-map.large .gi-member-pulse-label {
+          font-size: 6.2px;
+        }
+
+        .gi-member-pulse-marker:hover .gi-member-pulse-label {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
         .gi-marker-ring {
           fill: rgba(217, 163, 49, 0.1);
           stroke: rgba(255, 237, 181, 0.82);
@@ -1747,6 +1844,35 @@ export default function Page() {
           50% {
             r: 5.2;
             opacity: 1;
+          }
+        }
+
+        @keyframes giMemberPulse {
+          0% {
+            r: 2.8;
+            opacity: 0.88;
+            stroke-width: 0.86;
+          }
+          72% {
+            r: 12.8;
+            opacity: 0;
+            stroke-width: 0.32;
+          }
+          100% {
+            r: 12.8;
+            opacity: 0;
+            stroke-width: 0.32;
+          }
+        }
+
+        @keyframes giMemberCoreGlow {
+          0%, 100% {
+            opacity: 0.88;
+            transform: scale(0.92);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.18);
           }
         }
 
@@ -2020,6 +2146,10 @@ export default function Page() {
             font-size: 12px;
           }
 
+          .gi-member-pulse-label {
+            display: none;
+          }
+
           .gi-marker-label {
             font-size: 5px;
           }
@@ -2038,7 +2168,9 @@ export default function Page() {
           .gi-benefit-spin-card.is-active .gi-benefit-card-shine,
           .gi-feature-popup,
           .gi-feature-popup-glow,
-          .gi-feature-popup-mark span {
+          .gi-feature-popup-mark span,
+          .gi-member-pulse-ring,
+          .gi-member-pulse-core {
             animation: none !important;
           }
 
@@ -2207,6 +2339,27 @@ function GlobalNetworkMap({ large = false }) {
               <Marker key={city.name} coordinates={city.coordinates}>
                 <circle className="gi-city-ring" r={markerRadius + 0.3} />
                 <circle className="gi-city-dot" r={markerRadius * 0.52} />
+              </Marker>
+            ))}
+
+            {MEMBER_PULSE_LOCATIONS.map((location, index) => (
+              <Marker key={`member-pulse-${location.name}`} coordinates={location.coordinates}>
+                <g
+                  className="gi-member-pulse-marker"
+                  style={{
+                    "--memberPulseDelay": `${index * 0.16}s`,
+                    "--memberPulseScale": `${large ? 1 : 0.82}`,
+                  }}
+                >
+                  <title>{`${location.name} — Gastronomist Member Presence`}</title>
+                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-one" r={4.4} />
+                  <circle className="gi-member-pulse-ring gi-member-pulse-ring-two" r={4.4} />
+                  <circle className="gi-member-pulse-core" r={large ? 2.25 : 1.7} />
+                  <circle className="gi-member-pulse-spark" r={large ? 0.72 : 0.54} />
+                  <text y={large ? -9 : -7} className="gi-member-pulse-label">
+                    {location.name}
+                  </text>
+                </g>
               </Marker>
             ))}
 
