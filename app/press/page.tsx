@@ -18,21 +18,21 @@ type DivMotion = React.ForwardRefExoticComponent<
 const MotionH1 = motion.h1 as H1Motion
 const MotionDiv = motion.div as DivMotion
 
-const FACTS = [
+const LATEST_FACTS = [
   { label: "Category", value: "Honorary Cultural Partnership" },
   { label: "Representative", value: "Yulia Antonova — Mystic Mask" },
   { label: "Representation", value: "Gastronomist International in Russia" },
   { label: "Focus", value: "Culture • Art • Literature • Global Exchange" },
 ]
 
-const STATS = [
+const LATEST_STATS = [
   { label: "Country", value: "Russia" },
   { label: "Role", value: "Honorary Partner" },
   { label: "Creative Field", value: "Arts + Literature" },
   { label: "Mission", value: "Cultural Exchange" },
 ]
 
-const TIMELINE = [
+const LATEST_TIMELINE = [
   {
     t: "Official Announcement",
     d: "Gastronomist International announces an honorary cultural partnership with Yulia Antonova, known by her stage name Mystic Mask.",
@@ -47,17 +47,45 @@ const TIMELINE = [
   },
 ]
 
-const GALLERY = [
+const LATEST_GALLERY = [
   { src: "/images/yulia-antonova-mystic-mask.png", label: "Mystic Mask" },
   { src: "/images/recognition.png", label: "Honorary Recognition" },
   { src: "/images/medal.png", label: "Global Partnership" },
+]
+
+const CSF_FACTS = [
+  { label: "Category", value: "Strategic Collaboration" },
+  { label: "Partners", value: "Gastronomist International × CSF International" },
+  { label: "Focus", value: "Support chefs • Empower communities • Preserve artisan traditions" },
+  { label: "Reach", value: "Worldwide" },
+]
+
+const CSF_TIMELINE = [
+  {
+    t: "Announcement",
+    d: "Gastronomist International confirms strategic collaboration with CSF International.",
+  },
+  {
+    t: "Shared Mission",
+    d: "Supporting chefs, empowering communities in need, and preserving artisan traditions.",
+  },
+  {
+    t: "Sustainable Action",
+    d: "Creating practical opportunities and meaningful assistance where it matters most.",
+  },
+]
+
+const CSF_GALLERY = [
+  { src: "/images/medal.png", label: "Recognition" },
+  { src: "/images/recognition.png", label: "Global Acknowledgment" },
+  { src: "/images/partnership.png", label: "Strategic Partnership" },
 ]
 
 const RELATED = [
   {
     title: "Read Journal Feature",
     href: "/blog/honorary-partnership-yulia-antonova-mystic-mask-russia",
-    desc: "View the official Gastronomist Journal article about this honorary partnership.",
+    desc: "View the official Gastronomist Journal article about the Yulia Antonova honorary partnership.",
   },
   {
     title: "About Gastronomist",
@@ -65,9 +93,10 @@ const RELATED = [
     desc: "Learn more about the mission, vision, and international network of Gastronomist International.",
   },
   {
-    title: "Explore Our Chefs",
-    href: "/chefs",
-    desc: "Meet members and culinary professionals connected through Gastronomist International.",
+    title: "Visit CSF Intl",
+    href: "https://www.csfint.com/",
+    desc: "Learn more about CSF International’s work and impact.",
+    external: true,
   },
 ]
 
@@ -82,7 +111,7 @@ export default function PressPage() {
           />
           <div className="press-hero-overlay" />
           <div className="press-hero-card">
-            <strong>Official Press Release</strong>
+            <strong>Latest Official Press Release</strong>
             <span>
               Honorary cultural partnership recognizing Yulia Antonova — Mystic Mask
               as the representative of Gastronomist International in Russia.
@@ -121,7 +150,7 @@ export default function PressPage() {
       </section>
 
       <section className="press-facts">
-        {FACTS.map((item) => (
+        {LATEST_FACTS.map((item) => (
           <article key={item.label}>
             <span>{item.label}</span>
             <strong>{item.value}</strong>
@@ -132,7 +161,7 @@ export default function PressPage() {
       <section className="press-layout">
         <div className="press-main">
           <article className="press-card">
-            <span className="press-eyebrow">Editorial Story</span>
+            <span className="press-eyebrow">Latest Release</span>
             <h2>Honorary partnership with cultural purpose.</h2>
 
             <p>
@@ -177,11 +206,11 @@ export default function PressPage() {
           </article>
 
           <article className="press-card">
-            <span className="press-eyebrow">Release Timeline</span>
-            <h2>Key points of the announcement.</h2>
+            <span className="press-eyebrow">Latest Release Timeline</span>
+            <h2>Key points of the honorary partnership.</h2>
 
             <div className="press-timeline">
-              {TIMELINE.map((item) => (
+              {LATEST_TIMELINE.map((item) => (
                 <div key={item.t}>
                   <strong>{item.t}</strong>
                   <span>{item.d}</span>
@@ -194,8 +223,8 @@ export default function PressPage() {
             <span className="press-eyebrow">In Focus</span>
             <h2>Recognition, partnership, and shared purpose.</h2>
 
-            <div className="press-gallery press-falling-gallery" aria-label="In Focus falling gallery">
-              {GALLERY.map((item, index) => (
+            <div className="press-gallery press-falling-gallery" aria-label="Latest press release focus gallery">
+              {LATEST_GALLERY.map((item, index) => (
                 <div
                   className="press-falling-card"
                   key={item.src}
@@ -225,14 +254,82 @@ export default function PressPage() {
               presence are a meaningful addition to our global community.
             </p>
           </article>
+
+          <section className="press-archive-section" aria-label="Previous press release">
+            <div className="press-archive-head">
+              <span className="press-eyebrow">Previous Press Release</span>
+              <h2>Strategic collaboration with CSF International.</h2>
+              <p>
+                The previous Gastronomist International press release remains part
+                of the official press archive and continues to represent the
+                organization’s shared mission with CSF International.
+              </p>
+            </div>
+
+            <div className="press-facts press-facts-archive">
+              {CSF_FACTS.map((item) => (
+                <article key={item.label}>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                </article>
+              ))}
+            </div>
+
+            <article className="press-card">
+              <span className="press-eyebrow">Editorial Story</span>
+              <h2>Partnership with purpose.</h2>
+
+              <p>
+                Gastronomist International has officially partnered with CSF
+                International in a shared mission to support chefs, empower
+                communities in need, and preserve artisan traditions.
+              </p>
+
+              <p>
+                The collaboration reflects a commitment to meaningful action,
+                professional recognition, cultural preservation, and sustainable
+                support within the global culinary community.
+              </p>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">Release Timeline</span>
+              <h2>Key points of the CSF International announcement.</h2>
+
+              <div className="press-timeline">
+                {CSF_TIMELINE.map((item) => (
+                  <div key={item.t}>
+                    <strong>{item.t}</strong>
+                    <span>{item.d}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">In Focus</span>
+              <h2>Support, recognition, and strategic collaboration.</h2>
+
+              <div className="press-gallery">
+                {CSF_GALLERY.map((item) => (
+                  <div key={item.src}>
+                    <div className="press-gallery-image">
+                      <img src={item.src} alt={item.label} />
+                    </div>
+                    <span>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </section>
         </div>
 
         <aside className="press-sidebar">
           <article className="press-card">
-            <span className="press-eyebrow">At a Glance</span>
+            <span className="press-eyebrow">Latest At a Glance</span>
 
             <div className="press-stat-grid">
-              {STATS.map((item) => (
+              {LATEST_STATS.map((item) => (
                 <div key={item.label}>
                   <strong>{item.value}</strong>
                   <span>{item.label}</span>
@@ -246,12 +343,28 @@ export default function PressPage() {
 
             <div className="press-related">
               {RELATED.map((item) => (
-                <a key={item.title} href={item.href}>
+                <a
+                  key={item.title}
+                  href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                >
                   <strong>{item.title}</strong>
                   <span>{item.desc}</span>
                 </a>
               ))}
             </div>
+          </article>
+
+          <article className="press-card">
+            <span className="press-eyebrow">Press Archive</span>
+            <h3>Official announcements remain preserved.</h3>
+
+            <p>
+              Gastronomist International’s press page now highlights the latest
+              honorary partnership while keeping previous official announcements
+              visible as part of the organization’s public archive.
+            </p>
           </article>
 
           <article className="press-card">
@@ -286,7 +399,8 @@ export default function PressPage() {
 
         .press-hero-copy h1,
         .press-card h2,
-        .press-card h3 {
+        .press-card h3,
+        .press-archive-head h2 {
           font-family: Georgia, "Times New Roman", serif;
           color: #fff;
           font-weight: 500;
@@ -342,7 +456,8 @@ export default function PressPage() {
         .press-hero-copy p,
         .press-card p,
         .press-related span,
-        .press-timeline span {
+        .press-timeline span,
+        .press-archive-head p {
           color: rgba(247, 240, 223, 0.76);
           line-height: 1.72;
         }
@@ -419,7 +534,8 @@ export default function PressPage() {
         }
 
         .press-facts article,
-        .press-card {
+        .press-card,
+        .press-archive-section {
           border: 1px solid rgba(217, 163, 49, 0.26);
           background:
             radial-gradient(700px 260px at 20% 0%, rgba(217, 163, 49, 0.12), transparent 64%),
@@ -651,6 +767,31 @@ export default function PressPage() {
           font-size: 13px;
         }
 
+        .press-archive-section {
+          display: grid;
+          gap: 22px;
+          padding: 28px;
+          margin-top: 10px;
+        }
+
+        .press-archive-head {
+          max-width: 860px;
+        }
+
+        .press-archive-head h2 {
+          font-size: clamp(34px, 4vw, 58px);
+          line-height: 1.04;
+          margin-bottom: 16px;
+        }
+
+        .press-facts-archive {
+          margin-bottom: 0;
+        }
+
+        .press-archive-section .press-card {
+          box-shadow: none;
+        }
+
         @keyframes pressFocusFall {
           0% {
             opacity: 0;
@@ -831,6 +972,10 @@ export default function PressPage() {
           .press-hero-visual,
           .press-hero-visual img {
             min-height: 380px;
+          }
+
+          .press-archive-section {
+            padding: 22px;
           }
         }
 
