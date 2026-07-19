@@ -128,7 +128,7 @@ export default function Footer() {
           <div className="mt-12 border-t border-yellow-400/10 pt-6">
             <div className="flex flex-col gap-4 text-sm text-neutral-500 md:flex-row md:items-center md:justify-between">
               <div>
-                © {new Date().getFullYear()} Gastronomist International. All rights reserved.
+                © 2023 Gastronomist International. All rights reserved.
               </div>
 
               <div>
