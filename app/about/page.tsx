@@ -77,7 +77,7 @@ const heroGalleryImages = [
   "/images/collab.png",
   "/images/medal.png",
   "/images/yulia.png",
-  "/images/chefalex.png?v=2",
+  "/images/president.png?v=2",
   "/images/chefhamid.png?v=2",
 ]
 
