@@ -72,6 +72,15 @@ const leaders = [
   },
 ]
 
+const heroGalleryImages = [
+  "/images/recognition.png",
+  "/images/collab.png",
+  "/images/medal.png",
+  "/images/yulia.png",
+  "/images/chefalex.png?v=2",
+  "/images/chefhamid.png?v=2",
+]
+
 export default function AboutPage() {
   const [selectedLeader, setSelectedLeader] = useState<(typeof leaders)[number] | null>(null)
 
@@ -97,7 +106,19 @@ export default function AboutPage() {
         </div>
 
         <div className="about-hero-visual">
-          <img src="/images/recognition.png" alt="Gastronomist International recognition" />
+          <div className="about-visual-gallery" aria-hidden="true">
+            {heroGalleryImages.map((image, index) => (
+              <div
+                key={`${image}-${index}`}
+                className={`about-visual-fall-card about-visual-fall-card-${index + 1}`}
+              >
+                <img src={image} alt="" />
+              </div>
+            ))}
+          </div>
+
+          <div className="about-visual-orb about-visual-orb-one" />
+          <div className="about-visual-orb about-visual-orb-two" />
           <div className="about-visual-overlay" />
           <div className="about-visual-card">
             <strong>Global Culinary Community</strong>
@@ -331,29 +352,184 @@ export default function AboutPage() {
           overflow: hidden;
           border: 1px solid rgba(217, 163, 49, 0.26);
           border-radius: 28px;
-          background: rgba(255, 255, 255, 0.03);
+          background:
+            radial-gradient(520px 240px at 70% 20%, rgba(217, 163, 49, 0.14), transparent 58%),
+            rgba(255, 255, 255, 0.03);
           box-shadow: 0 34px 110px rgba(0, 0, 0, 0.55);
+          perspective: 1200px;
+          isolation: isolate;
         }
 
-        .about-hero-visual img {
+        .about-visual-gallery {
+          position: absolute;
+          inset: -120px 0 -130px;
+          z-index: 1;
+          transform-style: preserve-3d;
+          pointer-events: none;
+        }
+
+        .about-visual-fall-card {
+          --depth: 90px;
+          --drift: 24px;
+          --rotate-start: -20deg;
+          --rotate-mid: 8deg;
+          --rotate-end: 18deg;
+          --tilt-start: -8deg;
+          --tilt-end: 7deg;
+          position: absolute;
+          top: -38%;
+          width: clamp(132px, 16vw, 210px);
+          height: clamp(170px, 22vw, 276px);
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.32);
+          border-radius: 22px;
+          background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025)),
+            rgba(0, 0, 0, 0.35);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 26px 70px rgba(0, 0, 0, 0.55);
+          backdrop-filter: blur(14px);
+          transform-style: preserve-3d;
+          animation: aboutVisualCardFall 18s linear infinite;
+        }
+
+        .about-visual-fall-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            135deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.16) 42%,
+            transparent 66%
+          );
+          opacity: 0.55;
+          pointer-events: none;
+        }
+
+        .about-visual-fall-card img {
           width: 100%;
           height: 100%;
-          min-height: 520px;
           object-fit: contain;
-          opacity: 0.9;
-          padding: 18px;
+          padding: 14px;
+          opacity: 0.94;
+          filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.34));
+        }
+
+        .about-visual-fall-card-1 {
+          left: 7%;
+          animation-duration: 17s;
+          animation-delay: -12s;
+        }
+
+        .about-visual-fall-card-2 {
+          left: 29%;
+          width: clamp(146px, 18vw, 238px);
+          height: clamp(178px, 23vw, 292px);
+          --depth: 40px;
+          --drift: -26px;
+          --rotate-start: 22deg;
+          --rotate-mid: -6deg;
+          --rotate-end: -18deg;
+          --tilt-start: 9deg;
+          --tilt-end: -6deg;
+          animation-duration: 20s;
+          animation-delay: -6s;
+        }
+
+        .about-visual-fall-card-3 {
+          left: 55%;
+          --depth: 130px;
+          --drift: 30px;
+          --rotate-start: -28deg;
+          --rotate-mid: 10deg;
+          --rotate-end: 22deg;
+          --tilt-start: -10deg;
+          --tilt-end: 9deg;
+          animation-duration: 19s;
+          animation-delay: -15s;
+        }
+
+        .about-visual-fall-card-4 {
+          left: 74%;
+          width: clamp(128px, 15vw, 196px);
+          height: clamp(168px, 21vw, 260px);
+          --depth: 20px;
+          --drift: -22px;
+          --rotate-start: 18deg;
+          --rotate-mid: -10deg;
+          --rotate-end: -22deg;
+          --tilt-start: 7deg;
+          --tilt-end: -8deg;
+          animation-duration: 22s;
+          animation-delay: -9s;
+        }
+
+        .about-visual-fall-card-5 {
+          left: 15%;
+          width: clamp(118px, 14vw, 178px);
+          height: clamp(154px, 19vw, 236px);
+          --depth: 150px;
+          --drift: 20px;
+          animation-duration: 24s;
+          animation-delay: -3s;
+        }
+
+        .about-visual-fall-card-6 {
+          left: 47%;
+          width: clamp(120px, 14vw, 186px);
+          height: clamp(158px, 20vw, 248px);
+          --depth: 70px;
+          --drift: -30px;
+          --rotate-start: 26deg;
+          --rotate-mid: -8deg;
+          --rotate-end: -18deg;
+          --tilt-start: 8deg;
+          --tilt-end: -9deg;
+          animation-duration: 21s;
+          animation-delay: -18s;
+        }
+
+        .about-visual-orb {
+          position: absolute;
+          z-index: 2;
+          border-radius: 999px;
+          pointer-events: none;
+          filter: blur(1px);
+        }
+
+        .about-visual-orb-one {
+          width: 170px;
+          height: 170px;
+          right: 12%;
+          top: 14%;
+          background: rgba(217, 163, 49, 0.13);
+          animation: aboutVisualOrbFloat 7s ease-in-out infinite;
+        }
+
+        .about-visual-orb-two {
+          width: 92px;
+          height: 92px;
+          left: 12%;
+          bottom: 25%;
+          background: rgba(244, 217, 138, 0.08);
+          animation: aboutVisualOrbFloat 8.5s ease-in-out infinite reverse;
         }
 
         .about-visual-overlay {
           position: absolute;
           inset: 0;
+          z-index: 3;
           background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 55%),
-            linear-gradient(0deg, rgba(0, 0, 0, 0.72), transparent 55%);
+            linear-gradient(90deg, rgba(0, 0, 0, 0.76), transparent 55%),
+            linear-gradient(0deg, rgba(0, 0, 0, 0.76), transparent 55%),
+            radial-gradient(circle at 70% 32%, transparent 0%, rgba(0, 0, 0, 0.18) 48%, rgba(0, 0, 0, 0.54) 100%);
         }
 
         .about-visual-card {
           position: absolute;
+          z-index: 4;
           left: 24px;
           right: 24px;
           bottom: 24px;
@@ -535,6 +711,58 @@ export default function AboutPage() {
           color: #d9a331;
         }
 
+        @keyframes aboutVisualCardFall {
+          0% {
+            opacity: 0;
+            transform:
+              translate3d(0, -118%, var(--depth))
+              rotateX(58deg)
+              rotateY(var(--rotate-start))
+              rotateZ(var(--tilt-start))
+              scale(0.92);
+          }
+
+          11% {
+            opacity: 0.9;
+          }
+
+          48% {
+            opacity: 0.86;
+            transform:
+              translate3d(var(--drift), 52%, 0)
+              rotateX(8deg)
+              rotateY(var(--rotate-mid))
+              rotateZ(0deg)
+              scale(1);
+          }
+
+          88% {
+            opacity: 0.86;
+          }
+
+          100% {
+            opacity: 0;
+            transform:
+              translate3d(calc(var(--drift) * -1), 168%, var(--depth))
+              rotateX(-30deg)
+              rotateY(var(--rotate-end))
+              rotateZ(var(--tilt-end))
+              scale(0.96);
+          }
+        }
+
+        @keyframes aboutVisualOrbFloat {
+          0%, 100% {
+            transform: translate3d(0, 0, 0) scale(1);
+            opacity: 0.62;
+          }
+
+          50% {
+            transform: translate3d(18px, -18px, 0) scale(1.08);
+            opacity: 0.95;
+          }
+        }
+
         @media (max-width: 1180px) {
           .about-hero,
           .about-grid,
@@ -558,13 +786,34 @@ export default function AboutPage() {
             grid-template-columns: 1fr;
           }
 
-          .about-hero-visual,
-          .about-hero-visual img {
+          .about-hero-visual {
             min-height: 380px;
+          }
+
+          .about-visual-fall-card {
+            width: 118px;
+            height: 164px;
+            border-radius: 18px;
+          }
+
+          .about-visual-fall-card img {
+            padding: 10px;
           }
 
           .leader-image {
             height: 300px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .about-visual-fall-card,
+          .about-visual-orb {
+            animation: none !important;
+          }
+
+          .about-visual-fall-card {
+            opacity: 0.72;
+            transform: translate3d(0, 42%, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;
           }
         }
 
