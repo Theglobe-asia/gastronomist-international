@@ -90,7 +90,7 @@ export default function ShopPage() {
     setItems((prev) => prev.filter((x) => x.productId !== productId))
   }
 
-  const youtubeEmbedSrc = "https://www.youtube.com/embed/f6BOYilUJaY"
+  const youtubeEmbedSrc = "https://www.youtube.com/embed/jfeTXzZmIRU"
 
   return (
     <main className="container py-12 sm:py-16 space-y-8">
@@ -387,7 +387,7 @@ export default function ShopPage() {
 
             <div className="mt-4">
               <a
-                href="https://youtu.be/f6BOYilUJaY?si=fyCJl7ObZx4Qf1Ga"
+                href="https://youtu.be/jfeTXzZmIRU"
                 target="_blank"
                 rel="noreferrer"
                 className="block"
