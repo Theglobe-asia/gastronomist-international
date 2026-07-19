@@ -11,6 +11,7 @@ import {
   HiOutlineUserGroup,
   HiOutlineTrophy,
 } from "react-icons/hi2"
+import { activeMembersTotal, chefDirectoryMembers } from "@/components/data/gastronomist-members"
 
 type DivMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
@@ -31,73 +32,7 @@ const MotionDiv = motion.div as DivMotion
 const MotionSection = motion.section as SectionMotion
 const MotionArticle = motion.article as ArticleMotion
 
-const chefs = [
-  {
-    name: "Chef Noor",
-    role: "International Member",
-    blurb:
-      "Representing the new wave of modern Middle Eastern gastronomy from the GCC, with a focus on culinary excellence, cultural identity, and professional recognition.",
-    img: "/images/gcc_noor.png",
-    region: "GCC — Middle East",
-    specialty: "Modern Gastronomy",
-  },
-  {
-    name: "Chef Mar",
-    role: "International Member",
-    blurb: "Specializes in modernizing traditional recipes with innovative techniques.",
-    img: "/images/chefmar.png",
-    region: "Asia",
-    specialty: "Modern Heritage",
-  },
-  {
-    name: "Chef Arman",
-    role: "International Member",
-    blurb: "Passionate about sustainable cooking and seasonal ingredients.",
-    img: "/images/chefarman.png",
-    region: "Europe",
-    specialty: "Sustainability",
-  },
-  {
-    name: "Chef Sandar",
-    role: "International Member",
-    blurb: "Renowned for artistic pastry creations blending flavor and design.",
-    img: "/images/chefsandar.png",
-    region: "Asia",
-    specialty: "Pastry Arts",
-  },
-  {
-    name: "Chef Deric",
-    role: "International Member",
-    blurb: "Expert in precision cooking and creative plating aesthetics.",
-    img: "/images/chefderic.png",
-    region: "Americas",
-    specialty: "Modern Plating",
-  },
-  {
-    name: "Chef Francis",
-    role: "International Member",
-    blurb: "Known for curating immersive dining experiences worldwide.",
-    img: "/images/cheffrancis.png",
-    region: "Europe",
-    specialty: "Fine Dining",
-  },
-  {
-    name: "Chef Rommel",
-    role: "International Member",
-    blurb: "Dedicated to training and mentoring the next generation of chefs.",
-    img: "/images/chefrommel.png",
-    region: "Asia",
-    specialty: "Mentorship",
-  },
-  {
-    name: "Chef Kono",
-    role: "International Member",
-    blurb: "Blends global culinary heritage with modern techniques.",
-    img: "/images/chefkono.png",
-    region: "Oceania",
-    specialty: "Fusion",
-  },
-]
+const chefs = chefDirectoryMembers
 
 const regions = ["All", "Asia", "Europe", "Americas", "Oceania", "GCC — Middle East"] as const
 type Region = (typeof regions)[number]
@@ -107,7 +42,7 @@ const stats: {
   value: string
   icon: IconType
 }[] = [
-  { label: "Active Members", value: `${chefs.length}`, icon: HiOutlineUserGroup },
+  { label: "Active Members", value: `${activeMembersTotal}`, icon: HiOutlineUserGroup },
   { label: "Global Coverage", value: "Worldwide", icon: HiOutlineGlobeAlt },
   { label: "Recognition", value: "Official", icon: HiOutlineTrophy },
   { label: "Modern Gastronomy", value: "Innovation", icon: HiOutlineSparkles },
