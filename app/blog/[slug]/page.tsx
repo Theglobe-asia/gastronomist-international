@@ -1,8 +1,12 @@
 // app/blog/[slug]/page.tsx
 
+import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { BLOG_POSTS, getSortedPosts } from "@/components/blog/posts"
+
+const SITE_URL = "https://www.gastronomistinternational.com"
+const SITE_NAME = "Gastronomist International"
 
 type BlogArticlePageProps = {
   params: {
@@ -10,10 +14,65 @@ type BlogArticlePageProps = {
   }
 }
 
+function getAbsoluteUrl(path: string) {
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path
+  }
+
+  return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`
+}
+
 export function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({
     slug: post.slug,
   }))
+}
+
+export function generateMetadata({ params }: BlogArticlePageProps): Metadata {
+  const posts = getSortedPosts()
+  const post = posts.find((item) => item.slug === params.slug)
+
+  if (!post) {
+    return {
+      title: `Journal Feature Not Found | ${SITE_NAME}`,
+      description: "The requested Gastronomist International journal feature could not be found.",
+    }
+  }
+
+  const articleUrl = getAbsoluteUrl(`/blog/${post.slug}`)
+  const imageUrl = getAbsoluteUrl(post.banner)
+
+  return {
+    title: `${post.title} | ${SITE_NAME}`,
+    description: post.description,
+    alternates: {
+      canonical: articleUrl,
+    },
+    openGraph: {
+      type: "article",
+      siteName: SITE_NAME,
+      title: post.title,
+      description: post.description,
+      url: articleUrl,
+      images: [
+        {
+          url: imageUrl,
+          width: 1080,
+          height: 566,
+          alt: post.title,
+        },
+      ],
+      publishedTime: post.date,
+      authors: [post.author],
+      tags: post.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: [imageUrl],
+    },
+  }
 }
 
 export default function BlogArticlePage({ params }: BlogArticlePageProps) {
