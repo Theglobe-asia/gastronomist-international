@@ -33,6 +33,15 @@ const MotionArticle = motion.article as ArticleMotion
 
 const chefs = [
   {
+    name: "Chef Noor",
+    role: "International Member",
+    blurb:
+      "Representing the new wave of modern Middle Eastern gastronomy from the GCC, with a focus on culinary excellence, cultural identity, and professional recognition.",
+    img: "/images/gcc_noor.png",
+    region: "GCC — Middle East",
+    specialty: "Modern Gastronomy",
+  },
+  {
     name: "Chef Mar",
     role: "International Member",
     blurb: "Specializes in modernizing traditional recipes with innovative techniques.",
@@ -90,7 +99,7 @@ const chefs = [
   },
 ]
 
-const regions = ["All", "Asia", "Europe", "Americas", "Oceania"] as const
+const regions = ["All", "Asia", "Europe", "Americas", "Oceania", "GCC — Middle East"] as const
 type Region = (typeof regions)[number]
 
 const stats: {
