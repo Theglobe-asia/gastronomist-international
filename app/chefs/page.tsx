@@ -88,7 +88,20 @@ export default function ChefsPage() {
         </div>
 
         <div className="chefs-hero-visual">
-          <img src="/images/partnership.png" alt="Global Culinary Network" />
+          <div className="chefs-intro-glow" aria-hidden="true" />
+
+          <div className="chefs-intro-stage" aria-hidden="true">
+            {chefs.slice(0, 6).map((chef, index) => (
+              <div
+                key={`chef-intro-${chef.name}`}
+                className={`chefs-intro-card chefs-intro-card-${index + 1}`}
+              >
+                <img src={chef.img} alt="" />
+                <span>{chef.region}</span>
+              </div>
+            ))}
+          </div>
+
           <div className="chefs-hero-overlay" />
           <div className="chefs-hero-card">
             <strong>International Culinary Directory</strong>
@@ -395,31 +408,140 @@ export default function ChefsPage() {
           border: 1px solid rgba(217, 163, 49, 0.26);
           border-radius: 28px;
           background:
-            radial-gradient(700px 260px at 20% 0%, rgba(217, 163, 49, 0.12), transparent 64%),
+            radial-gradient(680px 280px at 72% 18%, rgba(217, 163, 49, 0.15), transparent 62%),
+            radial-gradient(520px 220px at 20% 78%, rgba(244, 217, 138, 0.08), transparent 64%),
             rgba(255, 255, 255, 0.03);
           box-shadow: 0 34px 110px rgba(0, 0, 0, 0.55);
+          isolation: isolate;
         }
 
-        .chefs-hero-visual img {
+        .chefs-intro-glow {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background:
+            linear-gradient(115deg, transparent 8%, rgba(244, 217, 138, 0.09) 42%, transparent 72%),
+            radial-gradient(circle at 52% 36%, rgba(217, 163, 49, 0.16), transparent 34%);
+          animation: chefsIntroGlow 6.8s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .chefs-intro-stage {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .chefs-intro-card {
+          position: absolute;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.3);
+          border-radius: 22px;
+          background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.024)),
+            rgba(0, 0, 0, 0.34);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 24px 70px rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(14px);
+          animation: chefsIntroFloat 7.5s ease-in-out infinite;
+          will-change: transform;
+        }
+
+        .chefs-intro-card img {
           width: 100%;
           height: 100%;
-          min-height: 520px;
           object-fit: contain;
-          padding: 18px;
-          opacity: 0.92;
+          padding: 12px 12px 34px;
+          opacity: 0.95;
+          filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.34));
+        }
+
+        .chefs-intro-card span {
+          position: absolute;
+          left: 10px;
+          right: 10px;
+          bottom: 10px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          border: 1px solid rgba(217, 163, 49, 0.22);
+          border-radius: 999px;
+          padding: 6px 8px;
+          color: #f4d98a;
+          background: rgba(0, 0, 0, 0.56);
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-align: center;
+          text-transform: uppercase;
+        }
+
+        .chefs-intro-card-1 {
+          left: 7%;
+          top: 8%;
+          width: 31%;
+          height: 43%;
+          animation-delay: -1s;
+        }
+
+        .chefs-intro-card-2 {
+          right: 8%;
+          top: 9%;
+          width: 29%;
+          height: 40%;
+          animation-delay: -2.6s;
+        }
+
+        .chefs-intro-card-3 {
+          left: 34%;
+          top: 27%;
+          width: 34%;
+          height: 47%;
+          z-index: 3;
+          animation-delay: -4.4s;
+        }
+
+        .chefs-intro-card-4 {
+          left: 9%;
+          bottom: 21%;
+          width: 25%;
+          height: 34%;
+          animation-delay: -5.7s;
+        }
+
+        .chefs-intro-card-5 {
+          right: 7%;
+          bottom: 21%;
+          width: 25%;
+          height: 34%;
+          animation-delay: -3.2s;
+        }
+
+        .chefs-intro-card-6 {
+          left: 57%;
+          top: 39%;
+          width: 23%;
+          height: 31%;
+          opacity: 0.88;
+          animation-delay: -6.5s;
         }
 
         .chefs-hero-overlay {
           position: absolute;
           inset: 0;
+          z-index: 4;
           pointer-events: none;
           background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 56%),
-            linear-gradient(0deg, rgba(0, 0, 0, 0.72), transparent 56%);
+            linear-gradient(90deg, rgba(0, 0, 0, 0.76), transparent 56%),
+            linear-gradient(0deg, rgba(0, 0, 0, 0.78), transparent 58%),
+            radial-gradient(circle at 72% 34%, transparent 0%, rgba(0, 0, 0, 0.2) 45%, rgba(0, 0, 0, 0.55) 100%);
         }
 
         .chefs-hero-card {
           position: absolute;
+          z-index: 5;
           left: 24px;
           right: 24px;
           bottom: 24px;
@@ -766,6 +888,28 @@ export default function ChefsPage() {
           color: #fff;
         }
 
+        @keyframes chefsIntroFloat {
+          0%, 100% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+
+          50% {
+            transform: translate3d(0, -10px, 0) scale(1.018);
+          }
+        }
+
+        @keyframes chefsIntroGlow {
+          0%, 100% {
+            opacity: 0.55;
+            transform: translate3d(-10px, 0, 0) scale(1);
+          }
+
+          50% {
+            opacity: 1;
+            transform: translate3d(10px, -8px, 0) scale(1.04);
+          }
+        }
+
         @media (max-width: 1180px) {
           .chefs-hero,
           .chefs-dashboard,
@@ -791,9 +935,43 @@ export default function ChefsPage() {
             grid-template-columns: 1fr;
           }
 
-          .chefs-hero-visual,
-          .chefs-hero-visual img {
-            min-height: 380px;
+          .chefs-hero-visual {
+            min-height: 420px;
+          }
+
+          .chefs-intro-card {
+            border-radius: 18px;
+          }
+
+          .chefs-intro-card img {
+            padding: 10px 10px 32px;
+          }
+
+          .chefs-intro-card-1 {
+            left: 5%;
+            top: 8%;
+            width: 43%;
+            height: 38%;
+          }
+
+          .chefs-intro-card-2 {
+            right: 5%;
+            top: 12%;
+            width: 41%;
+            height: 37%;
+          }
+
+          .chefs-intro-card-3 {
+            left: 23%;
+            top: 37%;
+            width: 54%;
+            height: 40%;
+          }
+
+          .chefs-intro-card-4,
+          .chefs-intro-card-5,
+          .chefs-intro-card-6 {
+            display: none;
           }
 
           .chef-image {
@@ -808,6 +986,13 @@ export default function ChefsPage() {
             grid-template-columns: 1fr;
           }
         }
+        @media (prefers-reduced-motion: reduce) {
+          .chefs-intro-glow,
+          .chefs-intro-card {
+            animation: none !important;
+          }
+        }
+
       `}</style>
     </main>
   )
