@@ -31,10 +31,9 @@ export default function LatestStory() {
         </div>
 
         <div className="mt-6 grid lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-6">
             <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02]">
-              {/* Full-image friendly banner frame (no crop) */}
-              <div className="relative w-full overflow-hidden aspect-[16/9] sm:aspect-[21/9] bg-neutral-950">
+              <div className="relative mx-auto w-full max-w-[680px] overflow-hidden aspect-[4/3] bg-neutral-950">
                 <img
                   src={latest.banner}
                   alt={latest.title}
@@ -45,12 +44,14 @@ export default function LatestStory() {
 
               <div className="p-5">
                 <div className="text-xs text-neutral-400">{latest.date}</div>
-                <div className="mt-2 text-base font-medium text-white">{latest.title}</div>
+                <div className="mt-2 text-base font-medium text-white">
+                  {latest.title}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-6">
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
               <div className="text-xs text-neutral-400">Quick links</div>
 
@@ -59,7 +60,9 @@ export default function LatestStory() {
                   <Button className="glass-btn glass-shine">Read Story</Button>
                 </Link>
                 <Link href="/blog">
-                  <Button className="glass-btn glass-btn-muted glass-shine">View Blog</Button>
+                  <Button className="glass-btn glass-btn-muted glass-shine">
+                    View Blog
+                  </Button>
                 </Link>
               </div>
 
