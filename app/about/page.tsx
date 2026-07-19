@@ -61,6 +61,15 @@ const leaders = [
     region: "Saudi Arabia",
     focus: "Representation",
   },
+  {
+    name: "Yulia Antonova — Mystic Mask",
+    role: "Russia Representative — Honorary Cultural Partner",
+    blurb:
+      "Representing Gastronomist International in Russia through cultural leadership, artistic exchange, international collaboration, and professional recognition.",
+    img: "/images/yulia.png",
+    region: "Russia",
+    focus: "Cultural Representation",
+  },
 ]
 
 export default function AboutPage() {
