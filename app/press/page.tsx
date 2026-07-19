@@ -18,21 +18,21 @@ type DivMotion = React.ForwardRefExoticComponent<
 const MotionH1 = motion.h1 as H1Motion
 const MotionDiv = motion.div as DivMotion
 
-const LATEST_FACTS = [
+const YULIA_FACTS = [
   { label: "Category", value: "Honorary Cultural Partnership" },
   { label: "Representative", value: "Yulia Antonova — Mystic Mask" },
   { label: "Representation", value: "Gastronomist International in Russia" },
   { label: "Focus", value: "Culture • Art • Literature • Global Exchange" },
 ]
 
-const LATEST_STATS = [
+const YULIA_STATS = [
   { label: "Country", value: "Russia" },
   { label: "Role", value: "Honorary Partner" },
   { label: "Creative Field", value: "Arts + Literature" },
   { label: "Mission", value: "Cultural Exchange" },
 ]
 
-const LATEST_TIMELINE = [
+const YULIA_TIMELINE = [
   {
     t: "Official Announcement",
     d: "Gastronomist International announces an honorary cultural partnership with Yulia Antonova, known by her stage name Mystic Mask.",
@@ -47,20 +47,45 @@ const LATEST_TIMELINE = [
   },
 ]
 
-const LATEST_GALLERY = [
+const YULIA_GALLERY = [
   { src: "/images/yulia-antonova-mystic-mask.png", label: "Mystic Mask" },
   { src: "/images/recognition.png", label: "Honorary Recognition" },
   { src: "/images/medal.png", label: "Global Partnership" },
 ]
 
-const CSF_FACTS = [
+const YULIA_RELATED = [
+  {
+    title: "Read Journal Feature",
+    href: "/blog/honorary-partnership-yulia-antonova-mystic-mask-russia",
+    desc: "View the official Gastronomist Journal article about the Yulia Antonova honorary partnership.",
+  },
+  {
+    title: "About Gastronomist",
+    href: "/about",
+    desc: "Our mission, vision, and leadership network.",
+  },
+  {
+    title: "Explore Our Chefs",
+    href: "/chefs",
+    desc: "Meet members representing Gastronomist International worldwide.",
+  },
+]
+
+const FACTS = [
   { label: "Category", value: "Strategic Collaboration" },
   { label: "Partners", value: "Gastronomist International × CSF International" },
   { label: "Focus", value: "Support chefs • Empower communities • Preserve artisan traditions" },
   { label: "Reach", value: "Worldwide" },
 ]
 
-const CSF_TIMELINE = [
+const STATS = [
+  { label: "Global Members", value: "Worldwide" },
+  { label: "Community", value: "Culinary Professionals" },
+  { label: "Mission", value: "Support + Recognition" },
+  { label: "Standard", value: "Excellence" },
+]
+
+const TIMELINE = [
   {
     t: "Announcement",
     d: "Gastronomist International confirms strategic collaboration with CSF International.",
@@ -75,7 +100,7 @@ const CSF_TIMELINE = [
   },
 ]
 
-const CSF_GALLERY = [
+const GALLERY = [
   { src: "/images/medal.png", label: "Recognition" },
   { src: "/images/recognition.png", label: "Global Acknowledgment" },
   { src: "/images/partnership.png", label: "Strategic Partnership" },
@@ -83,14 +108,14 @@ const CSF_GALLERY = [
 
 const RELATED = [
   {
-    title: "Read Journal Feature",
-    href: "/blog/honorary-partnership-yulia-antonova-mystic-mask-russia",
-    desc: "View the official Gastronomist Journal article about the Yulia Antonova honorary partnership.",
+    title: "Explore Our Chefs",
+    href: "/chefs",
+    desc: "Meet members representing Gastronomist International worldwide.",
   },
   {
     title: "About Gastronomist",
     href: "/about",
-    desc: "Learn more about the mission, vision, and international network of Gastronomist International.",
+    desc: "Our mission, vision, and leadership network.",
   },
   {
     title: "Visit CSF Intl",
@@ -103,201 +128,115 @@ const RELATED = [
 export default function PressPage() {
   return (
     <main className="press-page">
-      <section className="press-hero">
-        <div className="press-hero-visual">
-          <img
-            src="/images/yulia-antonova-mystic-mask.png"
-            alt="Yulia Antonova Mystic Mask honorary partnership with Gastronomist International"
-          />
-          <div className="press-hero-overlay" />
-          <div className="press-hero-card">
-            <strong>Latest Official Press Release</strong>
-            <span>
-              Honorary cultural partnership recognizing Yulia Antonova — Mystic Mask
-              as the representative of Gastronomist International in Russia.
-            </span>
+      <section className="press-release-block">
+        <section className="press-hero">
+          <div className="press-hero-visual">
+            <img
+              src="/images/yulia-antonova-mystic-mask.png"
+              alt="Yulia Antonova Mystic Mask honorary partnership with Gastronomist International"
+            />
+            <div className="press-hero-overlay" />
+            <div className="press-hero-card">
+              <strong>Latest Official Announcement</strong>
+              <span>
+                Honorary cultural partnership recognizing Yulia Antonova — Mystic Mask
+                as the representative of Gastronomist International in Russia.
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div className="press-hero-copy">
-          <span className="press-eyebrow">Official Announcement • Editorial Release</span>
+          <div className="press-hero-copy">
+            <span className="press-eyebrow">Latest Press Release • Editorial Release</span>
 
-          <MotionH1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            Press <span>Release</span>
-          </MotionH1>
+            <MotionH1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              Press <span>Release</span>
+            </MotionH1>
 
-          <div className="press-divider" />
+            <div className="press-divider" />
 
-          <MotionDiv
-            className="press-hero-lead"
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            Gastronomist International Announces Honorary Partnership with Yulia
-            Antonova, “Mystic Mask.”
-          </MotionDiv>
-
-          <p>
-            Gastronomist International is honored to welcome Yulia Antonova,
-            known by her stage name Mystic Mask, into an honorary cultural
-            partnership that will represent the organization in Russia and support
-            meaningful international cultural exchange.
-          </p>
-        </div>
-      </section>
-
-      <section className="press-facts">
-        {LATEST_FACTS.map((item) => (
-          <article key={item.label}>
-            <span>{item.label}</span>
-            <strong>{item.value}</strong>
-          </article>
-        ))}
-      </section>
-
-      <section className="press-layout">
-        <div className="press-main">
-          <article className="press-card">
-            <span className="press-eyebrow">Latest Release</span>
-            <h2>Honorary partnership with cultural purpose.</h2>
+            <MotionDiv
+              className="press-hero-lead"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              Gastronomist International Announces Honorary Partnership with Yulia
+              Antonova, “Mystic Mask.”
+            </MotionDiv>
 
             <p>
-              Gastronomist International is honored to announce an honorary
-              cultural partnership with Yulia Antonova, known by her stage name
-              Mystic Mask, a distinguished abstract artist, author, poet,
-              songwriter, and respected cultural figure.
+              Gastronomist International is honored to welcome Yulia Antonova,
+              known by her stage name Mystic Mask, into an honorary cultural
+              partnership that will represent the organization in Russia and support
+              meaningful international cultural exchange.
             </p>
+          </div>
+        </section>
 
-            <p>
-              Yulia Antonova serves as the Vice President of the Union of Abstract
-              Artists of Russia and is an Honorary Member of the I.K. Aivazovsky
-              Academy of Arts. She is also a valued member of the Union of Writers
-              of Russia, with creative works that reflect artistic excellence,
-              cultural heritage, emotional depth, and meaningful human expression.
-            </p>
+        <section className="press-facts">
+          {YULIA_FACTS.map((item) => (
+            <article key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </article>
+          ))}
+        </section>
 
-            <p>
-              Beyond her artistic achievements, Yulia holds a Law Degree, bringing
-              together creativity, intellectual insight, leadership, and cultural
-              advocacy. Her diverse background represents the powerful connection
-              between art, knowledge, identity, and international collaboration.
-            </p>
-          </article>
-
-          <article className="press-card">
-            <span className="press-eyebrow">Russia Representation</span>
-            <h2>Representing Gastronomist International in Russia.</h2>
-
-            <p>
-              Through this honorary partnership, Yulia Antonova will represent
-              Gastronomist International in Russia, serving as a cultural bridge
-              for meaningful collaboration, artistic exchange, and international
-              community engagement.
-            </p>
-
-            <p>
-              Her role reflects Gastronomist International’s commitment to
-              expanding its presence through respected leaders who embody
-              creativity, culture, global connection, and professional recognition.
-            </p>
-          </article>
-
-          <article className="press-card">
-            <span className="press-eyebrow">Latest Release Timeline</span>
-            <h2>Key points of the honorary partnership.</h2>
-
-            <div className="press-timeline">
-              {LATEST_TIMELINE.map((item) => (
-                <div key={item.t}>
-                  <strong>{item.t}</strong>
-                  <span>{item.d}</span>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="press-card">
-            <span className="press-eyebrow">In Focus</span>
-            <h2>Recognition, partnership, and shared purpose.</h2>
-
-            <div className="press-gallery press-falling-gallery" aria-label="Latest press release focus gallery">
-              {LATEST_GALLERY.map((item, index) => (
-                <div
-                  className="press-falling-card"
-                  key={item.src}
-                  style={
-                    {
-                      "--fallDelay": `${index * 1.25}s`,
-                      "--fallX": `${(index - 1) * 108}%`,
-                      "--fallMobileX": `${(index - 1) * 76}%`,
-                    } as React.CSSProperties
-                  }
-                >
-                  <div className="press-gallery-image">
-                    <img src={item.src} alt={item.label} />
-                  </div>
-                  <span>{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="press-card">
-            <span className="press-eyebrow">Welcome Statement</span>
-            <h2>Welcome to Gastronomist International, Yulia Antonova — Mystic Mask.</h2>
-
-            <p>
-              Your artistry, cultural dedication, and international creative
-              presence are a meaningful addition to our global community.
-            </p>
-          </article>
-
-          <section className="press-archive-section" aria-label="Previous press release">
-            <div className="press-archive-head">
-              <span className="press-eyebrow">Previous Press Release</span>
-              <h2>Strategic collaboration with CSF International.</h2>
-              <p>
-                The previous Gastronomist International press release remains part
-                of the official press archive and continues to represent the
-                organization’s shared mission with CSF International.
-              </p>
-            </div>
-
-            <div className="press-facts press-facts-archive">
-              {CSF_FACTS.map((item) => (
-                <article key={item.label}>
-                  <span>{item.label}</span>
-                  <strong>{item.value}</strong>
-                </article>
-              ))}
-            </div>
-
+        <section className="press-layout">
+          <div className="press-main">
             <article className="press-card">
               <span className="press-eyebrow">Editorial Story</span>
-              <h2>Partnership with purpose.</h2>
+              <h2>Honorary partnership with cultural purpose.</h2>
 
               <p>
-                Gastronomist International has officially partnered with CSF
-                International in a shared mission to support chefs, empower
-                communities in need, and preserve artisan traditions.
+                Gastronomist International is honored to announce an honorary
+                cultural partnership with Yulia Antonova, known by her stage name
+                Mystic Mask, a distinguished abstract artist, author, poet,
+                songwriter, and respected cultural figure.
               </p>
 
               <p>
-                The collaboration reflects a commitment to meaningful action,
-                professional recognition, cultural preservation, and sustainable
-                support within the global culinary community.
+                Yulia Antonova serves as the Vice President of the Union of Abstract
+                Artists of Russia and is an Honorary Member of the I.K. Aivazovsky
+                Academy of Arts. She is also a valued member of the Union of Writers
+                of Russia, with creative works that reflect artistic excellence,
+                cultural heritage, emotional depth, and meaningful human expression.
+              </p>
+
+              <p>
+                Beyond her artistic achievements, Yulia holds a Law Degree, bringing
+                together creativity, intellectual insight, leadership, and cultural
+                advocacy. Her diverse background represents the powerful connection
+                between art, knowledge, identity, and international collaboration.
+              </p>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">Russia Representation</span>
+              <h2>Representing Gastronomist International in Russia.</h2>
+
+              <p>
+                Through this honorary partnership, Yulia Antonova will represent
+                Gastronomist International in Russia, serving as a cultural bridge
+                for meaningful collaboration, artistic exchange, and international
+                community engagement.
+              </p>
+
+              <p>
+                Her role reflects Gastronomist International’s commitment to
+                expanding its presence through respected leaders who embody
+                creativity, culture, global connection, and professional recognition.
               </p>
             </article>
 
             <article className="press-card">
               <span className="press-eyebrow">Release Timeline</span>
-              <h2>Key points of the CSF International announcement.</h2>
+              <h2>Key points of the announcement.</h2>
 
               <div className="press-timeline">
-                {CSF_TIMELINE.map((item) => (
+                {YULIA_TIMELINE.map((item) => (
                   <div key={item.t}>
                     <strong>{item.t}</strong>
                     <span>{item.d}</span>
@@ -308,11 +247,21 @@ export default function PressPage() {
 
             <article className="press-card">
               <span className="press-eyebrow">In Focus</span>
-              <h2>Support, recognition, and strategic collaboration.</h2>
+              <h2>Recognition, partnership, and shared purpose.</h2>
 
-              <div className="press-gallery">
-                {CSF_GALLERY.map((item) => (
-                  <div key={item.src}>
+              <div className="press-gallery press-falling-gallery" aria-label="Yulia Antonova press release focus gallery">
+                {YULIA_GALLERY.map((item, index) => (
+                  <div
+                    className="press-falling-card"
+                    key={item.src}
+                    style={
+                      {
+                        "--fallDelay": `${index * 1.25}s`,
+                        "--fallX": `${(index - 1) * 108}%`,
+                        "--fallMobileX": `${(index - 1) * 76}%`,
+                      } as React.CSSProperties
+                    }
+                  >
                     <div className="press-gallery-image">
                       <img src={item.src} alt={item.label} />
                     </div>
@@ -321,64 +270,221 @@ export default function PressPage() {
                 ))}
               </div>
             </article>
-          </section>
-        </div>
 
-        <aside className="press-sidebar">
-          <article className="press-card">
-            <span className="press-eyebrow">Latest At a Glance</span>
+            <article className="press-card">
+              <span className="press-eyebrow">Welcome Statement</span>
+              <h2>Welcome to Gastronomist International, Yulia Antonova — Mystic Mask.</h2>
 
-            <div className="press-stat-grid">
-              {LATEST_STATS.map((item) => (
-                <div key={item.label}>
-                  <strong>{item.value}</strong>
-                  <span>{item.label}</span>
-                </div>
-              ))}
+              <p>
+                Your artistry, cultural dedication, and international creative
+                presence are a meaningful addition to our global community.
+              </p>
+            </article>
+          </div>
+
+          <aside className="press-sidebar">
+            <article className="press-card">
+              <span className="press-eyebrow">At a Glance</span>
+
+              <div className="press-stat-grid">
+                {YULIA_STATS.map((item) => (
+                  <div key={item.label}>
+                    <strong>{item.value}</strong>
+                    <span>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">Related</span>
+
+              <div className="press-related">
+                {YULIA_RELATED.map((item) => (
+                  <a key={item.title} href={item.href}>
+                    <strong>{item.title}</strong>
+                    <span>{item.desc}</span>
+                  </a>
+                ))}
+              </div>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">Global Network</span>
+              <h3>Culture, gastronomy, and international recognition.</h3>
+
+              <p>
+                Gastronomist International continues to build a global platform that
+                connects chefs, creative leaders, hospitality professionals, and
+                cultural advocates through recognition, storytelling, and meaningful
+                collaboration.
+              </p>
+            </article>
+          </aside>
+        </section>
+      </section>
+
+      <section className="press-release-separator" aria-label="Previous press release">
+        <span className="press-eyebrow">Previous Official Press Release</span>
+        <h2>Strategic Collaboration with CSF International</h2>
+        <p>
+          The original CSF International announcement remains fully preserved below,
+          including its original image, facts, editorial story, timeline, gallery,
+          related details, and global network section.
+        </p>
+      </section>
+
+      <section className="press-release-block">
+        <section className="press-hero">
+          <div className="press-hero-visual">
+            <img
+              src="/images/collab.png"
+              alt="Gastronomist International and CSF International collaboration"
+            />
+            <div className="press-hero-overlay" />
+            <div className="press-hero-card">
+              <strong>Official Announcement</strong>
+              <span>Strategic collaboration supporting chefs, communities, and artisan traditions.</span>
             </div>
-          </article>
+          </div>
 
-          <article className="press-card">
-            <span className="press-eyebrow">Related</span>
+          <div className="press-hero-copy">
+            <span className="press-eyebrow">Official Announcement • Editorial Release</span>
 
-            <div className="press-related">
-              {RELATED.map((item) => (
-                <a
-                  key={item.title}
-                  href={item.href}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
-                >
-                  <strong>{item.title}</strong>
-                  <span>{item.desc}</span>
-                </a>
-              ))}
-            </div>
-          </article>
+            <MotionH1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              Press <span>Release</span>
+            </MotionH1>
 
-          <article className="press-card">
-            <span className="press-eyebrow">Press Archive</span>
-            <h3>Official announcements remain preserved.</h3>
+            <div className="press-divider" />
+
+            <MotionDiv
+              className="press-hero-lead"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              Gastronomist International Announces Strategic Collaboration with CSF International.
+            </MotionDiv>
 
             <p>
-              Gastronomist International’s press page now highlights the latest
-              honorary partnership while keeping previous official announcements
-              visible as part of the organization’s public archive.
+              This collaboration aligns culinary leadership with community-driven action,
+              connecting influence to initiatives that support chefs, empower communities,
+              and preserve artisan traditions.
             </p>
-          </article>
+          </div>
+        </section>
 
-          <article className="press-card">
-            <span className="press-eyebrow">Global Network</span>
-            <h3>Culture, gastronomy, and international recognition.</h3>
+        <section className="press-facts">
+          {FACTS.map((item) => (
+            <article key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </article>
+          ))}
+        </section>
 
-            <p>
-              Gastronomist International continues to build a global platform that
-              connects chefs, creative leaders, hospitality professionals, and
-              cultural advocates through recognition, storytelling, and meaningful
-              collaboration.
-            </p>
-          </article>
-        </aside>
+        <section className="press-layout">
+          <div className="press-main">
+            <article className="press-card">
+              <span className="press-eyebrow">Editorial Story</span>
+              <h2>Partnership with purpose.</h2>
+              <p>
+                Gastronomist International has officially partnered with CSF International
+                in a shared mission to support chefs, empower communities in need, and
+                preserve artisan traditions.
+              </p>
+              <p>
+                The collaboration reflects a commitment to meaningful action, professional
+                recognition, cultural preservation, and sustainable support within the global
+                culinary community.
+              </p>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">Release Timeline</span>
+              <h2>Key points of the announcement.</h2>
+
+              <div className="press-timeline">
+                {TIMELINE.map((item) => (
+                  <div key={item.t}>
+                    <strong>{item.t}</strong>
+                    <span>{item.d}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">In Focus</span>
+              <h2>Recognition, partnership, and shared purpose.</h2>
+
+              <div className="press-gallery press-falling-gallery" aria-label="In Focus falling gallery">
+                {GALLERY.map((item, index) => (
+                  <div
+                    className="press-falling-card"
+                    key={item.src}
+                    style={
+                      {
+                        "--fallDelay": `${index * 1.25}s`,
+                        "--fallX": `${(index - 1) * 108}%`,
+                        "--fallMobileX": `${(index - 1) * 76}%`,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <div className="press-gallery-image">
+                      <img src={item.src} alt={item.label} />
+                    </div>
+                    <span>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+
+          <aside className="press-sidebar">
+            <article className="press-card">
+              <span className="press-eyebrow">At a Glance</span>
+
+              <div className="press-stat-grid">
+                {STATS.map((item) => (
+                  <div key={item.label}>
+                    <strong>{item.value}</strong>
+                    <span>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">Related</span>
+
+              <div className="press-related">
+                {RELATED.map((item) => (
+                  <a
+                    key={item.title}
+                    href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                  >
+                    <strong>{item.title}</strong>
+                    <span>{item.desc}</span>
+                  </a>
+                ))}
+              </div>
+            </article>
+
+            <article className="press-card">
+              <span className="press-eyebrow">Global Network</span>
+              <h3>Professional culinary recognition worldwide.</h3>
+              <p>
+                Gastronomist International continues to build a platform for chefs,
+                hospitality professionals, and culinary leaders across regions.
+              </p>
+            </article>
+          </aside>
+        </section>
       </section>
 
       <style jsx global>{`
@@ -387,6 +493,44 @@ export default function PressPage() {
           margin: 0 auto;
           padding: 70px 0 40px;
           color: #f7f0df;
+        }
+
+        .press-release-block {
+          display: block;
+        }
+
+        .press-release-block + .press-release-separator {
+          margin-top: 58px;
+        }
+
+        .press-release-separator {
+          border: 1px solid rgba(217, 163, 49, 0.26);
+          border-radius: 26px;
+          padding: 34px;
+          margin-bottom: 34px;
+          background:
+            radial-gradient(700px 260px at 20% 0%, rgba(217, 163, 49, 0.12), transparent 64%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 30px 100px rgba(0, 0, 0, 0.48);
+          backdrop-filter: blur(18px);
+        }
+
+        .press-release-separator h2 {
+          font-family: Georgia, "Times New Roman", serif;
+          color: #fff;
+          font-weight: 500;
+          letter-spacing: -0.045em;
+          font-size: clamp(34px, 4vw, 58px);
+          line-height: 1.04;
+          margin-bottom: 16px;
+        }
+
+        .press-release-separator p {
+          max-width: 860px;
+          color: rgba(247, 240, 223, 0.76);
+          line-height: 1.72;
         }
 
         .press-hero {
@@ -399,8 +543,7 @@ export default function PressPage() {
 
         .press-hero-copy h1,
         .press-card h2,
-        .press-card h3,
-        .press-archive-head h2 {
+        .press-card h3 {
           font-family: Georgia, "Times New Roman", serif;
           color: #fff;
           font-weight: 500;
@@ -456,8 +599,7 @@ export default function PressPage() {
         .press-hero-copy p,
         .press-card p,
         .press-related span,
-        .press-timeline span,
-        .press-archive-head p {
+        .press-timeline span {
           color: rgba(247, 240, 223, 0.76);
           line-height: 1.72;
         }
@@ -485,7 +627,7 @@ export default function PressPage() {
           min-height: 520px;
           object-fit: contain;
           padding: 18px;
-          opacity: 0.96;
+          opacity: 0.94;
         }
 
         .press-hero-overlay {
@@ -493,8 +635,8 @@ export default function PressPage() {
           inset: 0;
           pointer-events: none;
           background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.58), transparent 58%),
-            linear-gradient(0deg, rgba(0, 0, 0, 0.62), transparent 56%);
+            linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 56%),
+            linear-gradient(0deg, rgba(0, 0, 0, 0.72), transparent 56%);
         }
 
         .press-hero-card {
@@ -534,8 +676,7 @@ export default function PressPage() {
         }
 
         .press-facts article,
-        .press-card,
-        .press-archive-section {
+        .press-card {
           border: 1px solid rgba(217, 163, 49, 0.26);
           background:
             radial-gradient(700px 260px at 20% 0%, rgba(217, 163, 49, 0.12), transparent 64%),
@@ -767,31 +908,6 @@ export default function PressPage() {
           font-size: 13px;
         }
 
-        .press-archive-section {
-          display: grid;
-          gap: 22px;
-          padding: 28px;
-          margin-top: 10px;
-        }
-
-        .press-archive-head {
-          max-width: 860px;
-        }
-
-        .press-archive-head h2 {
-          font-size: clamp(34px, 4vw, 58px);
-          line-height: 1.04;
-          margin-bottom: 16px;
-        }
-
-        .press-facts-archive {
-          margin-bottom: 0;
-        }
-
-        .press-archive-section .press-card {
-          box-shadow: none;
-        }
-
         @keyframes pressFocusFall {
           0% {
             opacity: 0;
@@ -974,8 +1090,8 @@ export default function PressPage() {
             min-height: 380px;
           }
 
-          .press-archive-section {
-            padding: 22px;
+          .press-release-separator {
+            padding: 24px;
           }
         }
 
