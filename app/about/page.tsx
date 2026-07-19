@@ -106,19 +106,17 @@ export default function AboutPage() {
         </div>
 
         <div className="about-hero-visual">
-          <div className="about-visual-gallery" aria-hidden="true">
+          <div className="about-visual-stage" aria-hidden="true">
             {heroGalleryImages.map((image, index) => (
               <div
                 key={`${image}-${index}`}
-                className={`about-visual-fall-card about-visual-fall-card-${index + 1}`}
+                className={`about-visual-stage-card about-visual-stage-card-${index + 1}`}
               >
                 <img src={image} alt="" />
               </div>
             ))}
           </div>
 
-          <div className="about-visual-orb about-visual-orb-one" />
-          <div className="about-visual-orb about-visual-orb-two" />
           <div className="about-visual-overlay" />
           <div className="about-visual-card">
             <strong>Global Culinary Community</strong>
@@ -353,168 +351,92 @@ export default function AboutPage() {
           border: 1px solid rgba(217, 163, 49, 0.26);
           border-radius: 28px;
           background:
-            radial-gradient(520px 240px at 70% 20%, rgba(217, 163, 49, 0.14), transparent 58%),
+            radial-gradient(520px 240px at 70% 20%, rgba(217, 163, 49, 0.13), transparent 58%),
             rgba(255, 255, 255, 0.03);
           box-shadow: 0 34px 110px rgba(0, 0, 0, 0.55);
-          perspective: 1200px;
           isolation: isolate;
         }
 
-        .about-visual-gallery {
-          position: absolute;
-          inset: -120px 0 -130px;
-          z-index: 1;
-          transform-style: preserve-3d;
-          pointer-events: none;
-        }
-
-        .about-visual-fall-card {
-          --depth: 90px;
-          --drift: 24px;
-          --rotate-start: -20deg;
-          --rotate-mid: 8deg;
-          --rotate-end: 18deg;
-          --tilt-start: -8deg;
-          --tilt-end: 7deg;
-          position: absolute;
-          top: -38%;
-          width: clamp(132px, 16vw, 210px);
-          height: clamp(170px, 22vw, 276px);
-          overflow: hidden;
-          border: 1px solid rgba(217, 163, 49, 0.32);
-          border-radius: 22px;
-          background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025)),
-            rgba(0, 0, 0, 0.35);
-          box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.12),
-            0 26px 70px rgba(0, 0, 0, 0.55);
-          backdrop-filter: blur(14px);
-          transform-style: preserve-3d;
-          animation: aboutVisualCardFall 18s linear infinite;
-        }
-
-        .about-visual-fall-card::after {
-          content: "";
+        .about-visual-stage {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            135deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.16) 42%,
-            transparent 66%
-          );
-          opacity: 0.55;
+          z-index: 1;
           pointer-events: none;
         }
 
-        .about-visual-fall-card img {
+        .about-visual-stage-card {
+          position: absolute;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.28);
+          border-radius: 22px;
+          background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
+            rgba(0, 0, 0, 0.32);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 22px 60px rgba(0, 0, 0, 0.48);
+          backdrop-filter: blur(12px);
+          animation: aboutVisualSoftFloat 7.5s ease-in-out infinite;
+          will-change: transform;
+        }
+
+        .about-visual-stage-card img {
           width: 100%;
           height: 100%;
           object-fit: contain;
-          padding: 14px;
+          padding: 12px;
           opacity: 0.94;
-          filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.34));
+          filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.34));
         }
 
-        .about-visual-fall-card-1 {
-          left: 7%;
-          animation-duration: 17s;
-          animation-delay: -12s;
+        .about-visual-stage-card-1 {
+          left: 8%;
+          top: 8%;
+          width: 34%;
+          height: 45%;
+          animation-delay: -1s;
         }
 
-        .about-visual-fall-card-2 {
-          left: 29%;
-          width: clamp(146px, 18vw, 238px);
-          height: clamp(178px, 23vw, 292px);
-          --depth: 40px;
-          --drift: -26px;
-          --rotate-start: 22deg;
-          --rotate-mid: -6deg;
-          --rotate-end: -18deg;
-          --tilt-start: 9deg;
-          --tilt-end: -6deg;
-          animation-duration: 20s;
-          animation-delay: -6s;
-        }
-
-        .about-visual-fall-card-3 {
-          left: 55%;
-          --depth: 130px;
-          --drift: 30px;
-          --rotate-start: -28deg;
-          --rotate-mid: 10deg;
-          --rotate-end: 22deg;
-          --tilt-start: -10deg;
-          --tilt-end: 9deg;
-          animation-duration: 19s;
-          animation-delay: -15s;
-        }
-
-        .about-visual-fall-card-4 {
-          left: 74%;
-          width: clamp(128px, 15vw, 196px);
-          height: clamp(168px, 21vw, 260px);
-          --depth: 20px;
-          --drift: -22px;
-          --rotate-start: 18deg;
-          --rotate-mid: -10deg;
-          --rotate-end: -22deg;
-          --tilt-start: 7deg;
-          --tilt-end: -8deg;
-          animation-duration: 22s;
-          animation-delay: -9s;
-        }
-
-        .about-visual-fall-card-5 {
-          left: 15%;
-          width: clamp(118px, 14vw, 178px);
-          height: clamp(154px, 19vw, 236px);
-          --depth: 150px;
-          --drift: 20px;
-          animation-duration: 24s;
+        .about-visual-stage-card-2 {
+          right: 9%;
+          top: 10%;
+          width: 31%;
+          height: 42%;
           animation-delay: -3s;
         }
 
-        .about-visual-fall-card-6 {
-          left: 47%;
-          width: clamp(120px, 14vw, 186px);
-          height: clamp(158px, 20vw, 248px);
-          --depth: 70px;
-          --drift: -30px;
-          --rotate-start: 26deg;
-          --rotate-mid: -8deg;
-          --rotate-end: -18deg;
-          --tilt-start: 8deg;
-          --tilt-end: -9deg;
-          animation-duration: 21s;
-          animation-delay: -18s;
-        }
-
-        .about-visual-orb {
-          position: absolute;
+        .about-visual-stage-card-3 {
+          left: 30%;
+          top: 29%;
+          width: 38%;
+          height: 48%;
           z-index: 2;
-          border-radius: 999px;
-          pointer-events: none;
-          filter: blur(1px);
+          animation-delay: -5s;
         }
 
-        .about-visual-orb-one {
-          width: 170px;
-          height: 170px;
-          right: 12%;
-          top: 14%;
-          background: rgba(217, 163, 49, 0.13);
-          animation: aboutVisualOrbFloat 7s ease-in-out infinite;
+        .about-visual-stage-card-4 {
+          right: 6%;
+          bottom: 23%;
+          width: 27%;
+          height: 36%;
+          animation-delay: -2s;
         }
 
-        .about-visual-orb-two {
-          width: 92px;
-          height: 92px;
-          left: 12%;
-          bottom: 25%;
-          background: rgba(244, 217, 138, 0.08);
-          animation: aboutVisualOrbFloat 8.5s ease-in-out infinite reverse;
+        .about-visual-stage-card-5 {
+          left: 9%;
+          bottom: 22%;
+          width: 26%;
+          height: 35%;
+          animation-delay: -4s;
+        }
+
+        .about-visual-stage-card-6 {
+          left: 56%;
+          top: 40%;
+          width: 24%;
+          height: 32%;
+          opacity: 0.9;
+          animation-delay: -6s;
         }
 
         .about-visual-overlay {
@@ -522,8 +444,8 @@ export default function AboutPage() {
           inset: 0;
           z-index: 3;
           background:
-            linear-gradient(90deg, rgba(0, 0, 0, 0.76), transparent 55%),
-            linear-gradient(0deg, rgba(0, 0, 0, 0.76), transparent 55%),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.78), transparent 55%),
+            linear-gradient(0deg, rgba(0, 0, 0, 0.78), transparent 58%),
             radial-gradient(circle at 70% 32%, transparent 0%, rgba(0, 0, 0, 0.18) 48%, rgba(0, 0, 0, 0.54) 100%);
         }
 
@@ -711,55 +633,13 @@ export default function AboutPage() {
           color: #d9a331;
         }
 
-        @keyframes aboutVisualCardFall {
-          0% {
-            opacity: 0;
-            transform:
-              translate3d(0, -118%, var(--depth))
-              rotateX(58deg)
-              rotateY(var(--rotate-start))
-              rotateZ(var(--tilt-start))
-              scale(0.92);
-          }
-
-          11% {
-            opacity: 0.9;
-          }
-
-          48% {
-            opacity: 0.86;
-            transform:
-              translate3d(var(--drift), 52%, 0)
-              rotateX(8deg)
-              rotateY(var(--rotate-mid))
-              rotateZ(0deg)
-              scale(1);
-          }
-
-          88% {
-            opacity: 0.86;
-          }
-
-          100% {
-            opacity: 0;
-            transform:
-              translate3d(calc(var(--drift) * -1), 168%, var(--depth))
-              rotateX(-30deg)
-              rotateY(var(--rotate-end))
-              rotateZ(var(--tilt-end))
-              scale(0.96);
-          }
-        }
-
-        @keyframes aboutVisualOrbFloat {
+        @keyframes aboutVisualSoftFloat {
           0%, 100% {
             transform: translate3d(0, 0, 0) scale(1);
-            opacity: 0.62;
           }
 
           50% {
-            transform: translate3d(18px, -18px, 0) scale(1.08);
-            opacity: 0.95;
+            transform: translate3d(0, -10px, 0) scale(1.015);
           }
         }
 
@@ -787,17 +667,42 @@ export default function AboutPage() {
           }
 
           .about-hero-visual {
-            min-height: 380px;
+            min-height: 420px;
           }
 
-          .about-visual-fall-card {
-            width: 118px;
-            height: 164px;
+          .about-visual-stage-card {
             border-radius: 18px;
           }
 
-          .about-visual-fall-card img {
+          .about-visual-stage-card img {
             padding: 10px;
+          }
+
+          .about-visual-stage-card-1 {
+            left: 5%;
+            top: 8%;
+            width: 43%;
+            height: 39%;
+          }
+
+          .about-visual-stage-card-2 {
+            right: 5%;
+            top: 12%;
+            width: 41%;
+            height: 38%;
+          }
+
+          .about-visual-stage-card-3 {
+            left: 23%;
+            top: 36%;
+            width: 54%;
+            height: 42%;
+          }
+
+          .about-visual-stage-card-4,
+          .about-visual-stage-card-5,
+          .about-visual-stage-card-6 {
+            display: none;
           }
 
           .leader-image {
@@ -806,14 +711,8 @@ export default function AboutPage() {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .about-visual-fall-card,
-          .about-visual-orb {
+          .about-visual-stage-card {
             animation: none !important;
-          }
-
-          .about-visual-fall-card {
-            opacity: 0.72;
-            transform: translate3d(0, 42%, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) !important;
           }
         }
 
