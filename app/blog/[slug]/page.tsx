@@ -40,7 +40,7 @@ export function generateMetadata({ params }: BlogArticlePageProps): Metadata {
   }
 
   const articleUrl = getAbsoluteUrl(`/blog/${post.slug}`)
-  const imageUrl = getAbsoluteUrl(post.banner)
+  const imageUrl = getAbsoluteUrl(post.ogImage || post.banner)
 
   return {
     title: `${post.title} | ${SITE_NAME}`,
@@ -57,8 +57,8 @@ export function generateMetadata({ params }: BlogArticlePageProps): Metadata {
       images: [
         {
           url: imageUrl,
-          width: 1080,
-          height: 566,
+          width: 1200,
+          height: 630,
           alt: post.title,
         },
       ],

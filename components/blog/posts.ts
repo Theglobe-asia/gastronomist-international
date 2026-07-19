@@ -6,6 +6,7 @@ export type BlogPost = {
   description: string
   date: string // ISO: YYYY-MM-DD
   banner: string // /images/...
+  ogImage?: string // /images/... dedicated Facebook/Open Graph preview image
   author: string
   tags: string[]
   region?: string
@@ -21,6 +22,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Gastronomist International proudly announces an honorary cultural partnership with Yulia Antonova, known by her stage name Mystic Mask, who will represent the organization in Russia.",
     date: "2026-07-17",
     banner: "/images/yulia-antonova-mystic-mask.png",
+    ogImage: "/images/yulia-antonova-mystic-mask-og.png",
     author: "Gastronomist International",
     tags: [
       "Press Release",
