@@ -12,7 +12,7 @@ const leaders = [
     role: "Founder — Gastronomist International",
     blurb:
       "Founder and visionary behind Gastronomist International, building a global platform for culinary innovation, recognition, and professional connection.",
-    img: "/images/chefalex.png?v=2",
+    img: "/images/president.png?v=2",
     region: "Global",
     focus: "Modern Gastronomy",
   },
