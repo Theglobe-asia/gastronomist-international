@@ -14,6 +14,7 @@ import {
 } from "react-simple-maps"
 import LatestStory from "@/components/blog/latest-story"
 import { getLatestPost } from "@/components/blog/posts"
+import { useLanguage, type Language } from "@/components/LanguageProvider"
 
 const ASSET_V = "2026-01-28-1"
 const img = (path: string) => `${path}?v=${ASSET_V}`
@@ -22,51 +23,191 @@ const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
 const REAL_AIRPLANE_SRC = "/images/real-airplane.png"
 const REAL_CHEF_HAT_SRC = "/images/chef-hat-no-bg.png"
 
-const FEATURES = [
-  ["Global Culinary Network", "Connecting chefs, culinary leaders, educators, and hospitality professionals worldwide."],
-  ["Professional Recognition", "A platform for honoring culinary excellence, leadership, and achievement."],
-  ["Leader Collaboration", "Creating international connections through shared knowledge, programs, and partnerships."],
-  ["Worldwide Community", "A growing global presence across countries, continents, and culinary cultures."],
-]
-
-const BENEFITS = [
-  ["Chef Recognition", "Honoring culinary professionals and their achievements.", img("/images/recognition.png")],
-  ["Excellence Award", "Recognizing outstanding culinary excellence worldwide.", img("/images/cube-logo.png")],
-  ["Membership Medal", "Symbol of honor, dedication, and professional excellence.", img("/images/medal.png")],
-  ["Certificates & Badges", "Authentication of skills, expertise, and achievement.", img("/images/partnership.png")],
-]
-
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "The platform gives chefs a more professional way to present international recognition and connect with serious culinary leaders.",
-    name: "Chef Alessio Romano",
-    role: "Executive Chef & Owner",
-    location: "Rome, Italy",
+const HOME_COPY: Record<Language, Record<string, string>> = {
+  en: {
+    heroEyebrow: "Global Culinary Community",
+    heroTitlePrefix: "Uniting Culinary",
+    heroTitleHighlight: "Excellence",
+    heroTitleSuffix: "Around the World",
+    heroDescription:
+      "Gastronomist International embraces the diversity of talent and expertise within the culinary community, with a focus on modern gastronomy, professional recognition, and global connection.",
+    discoverMore: "Discover More",
+    viewRecognition: "View Recognition",
+    worldwideMembers: "Worldwide Members",
+    networkTitle: "A Global Network of Culinary Excellence",
+    networkDescription:
+      "A refined international platform for chefs, hospitality leaders, educators, and gastronomy professionals connected through recognition, collaboration, and shared standards of excellence.",
+    benefitsEyebrow: "Member Benefits & Recognition",
+    benefitsTitle: "Honoring Excellence. Empowering Chefs.",
+    benefitsCarouselLabel: "Member benefits carousel",
+    benefitsControlsLabel: "Member benefit controls",
+    previousBenefit: "Previous member benefit",
+    nextBenefit: "Next member benefit",
+    viewBenefit: "View",
+    testimonialsEyebrow: "Global Voices",
+    testimonialsTitle: "Professional Recognition Across Borders",
+    testimonialsCarouselLabel: "Global voices carousel",
+    carouselControls: "Carousel controls",
+    previousVoice: "Previous global voice",
+    nextVoice: "Next global voice",
+    viewVoice: "View",
   },
-  {
-    quote:
-      "Recognition from a global culinary community brings credibility, pride, and meaningful visibility to professionals in education and hospitality.",
-    name: "Chef Amina Benali",
-    role: "Culinary Instructor",
-    location: "Marrakech, Morocco",
+  ru: {
+    heroEyebrow: "Глобальное кулинарное сообщество",
+    heroTitlePrefix: "Объединяя кулинарное",
+    heroTitleHighlight: "совершенство",
+    heroTitleSuffix: "по всему миру",
+    heroDescription:
+      "Gastronomist International объединяет разнообразные таланты и профессиональный опыт кулинарного сообщества, уделяя особое внимание современной гастрономии, профессиональному признанию и международным связям.",
+    discoverMore: "Узнать больше",
+    viewRecognition: "Смотреть признание",
+    worldwideMembers: "Участники по всему миру",
+    networkTitle: "Глобальная сеть кулинарного совершенства",
+    networkDescription:
+      "Изысканная международная платформа для шеф-поваров, лидеров индустрии гостеприимства, преподавателей и специалистов гастрономии, объединённых признанием, сотрудничеством и общими стандартами совершенства.",
+    benefitsEyebrow: "Преимущества и признание участников",
+    benefitsTitle: "Отмечаем совершенство. Поддерживаем шеф-поваров.",
+    benefitsCarouselLabel: "Карусель преимуществ участников",
+    benefitsControlsLabel: "Управление преимуществами участников",
+    previousBenefit: "Предыдущее преимущество",
+    nextBenefit: "Следующее преимущество",
+    viewBenefit: "Смотреть",
+    testimonialsEyebrow: "Голоса мира",
+    testimonialsTitle: "Профессиональное признание без границ",
+    testimonialsCarouselLabel: "Карусель отзывов мирового сообщества",
+    carouselControls: "Управление каруселью",
+    previousVoice: "Предыдущий отзыв",
+    nextVoice: "Следующий отзыв",
+    viewVoice: "Смотреть",
   },
-  {
-    quote:
-      "For chefs working across hotels and restaurants, international affiliation matters. This gives the recognition a polished and professional home.",
-    name: "Chef Kenji Watanabe",
-    role: "Hotel Executive Chef",
-    location: "Tokyo, Japan",
-  },
-]
+}
 
-const NETWORK_STATS = [
-  { value: 25, suffix: "K+", label: "Members Worldwide" },
-  { value: 100, suffix: "+", label: "Countries Represented" },
-  { value: 200, suffix: "+", label: "Culinary Associations" },
-  { value: 6, suffix: "", label: "Continents Connected" },
-]
+const POPUP_COPY: Record<Language, Record<string, string>> = {
+  en: {
+    fallbackTitle: "Latest from the Journal",
+    fallbackDescription:
+      "Read the newest chef feature and editorial story from the Gastronomist International Journal.",
+    closeLabel: "Close latest journal feature notification",
+    eyebrow: "Latest Journal Feature",
+    readStory: "Read Story",
+  },
+  ru: {
+    fallbackTitle: "Новое из журнала",
+    fallbackDescription:
+      "Читайте новую публикацию о шеф-поваре и редакционную историю от Gastronomist International Journal.",
+    closeLabel: "Закрыть уведомление о новой публикации журнала",
+    eyebrow: "Новая публикация журнала",
+    readStory: "Читать историю",
+  },
+}
+
+const MAP_COPY: Record<Language, Record<string, string>> = {
+  en: {
+    liveEarth: "Live Global Earth",
+    globalHub: "Global Hub",
+    memberPresenceTitle: "Gastronomist Member Presence",
+  },
+  ru: {
+    liveEarth: "Глобальная карта в реальном времени",
+    globalHub: "Глобальный центр",
+    memberPresenceTitle: "Присутствие участников Gastronomist",
+  },
+}
+
+const FEATURES_BY_LANGUAGE: Record<Language, [string, string][]> = {
+  en: [
+    ["Global Culinary Network", "Connecting chefs, culinary leaders, educators, and hospitality professionals worldwide."],
+    ["Professional Recognition", "A platform for honoring culinary excellence, leadership, and achievement."],
+    ["Leader Collaboration", "Creating international connections through shared knowledge, programs, and partnerships."],
+    ["Worldwide Community", "A growing global presence across countries, continents, and culinary cultures."],
+  ],
+  ru: [
+    ["Глобальная кулинарная сеть", "Объединяем шеф-поваров, кулинарных лидеров, преподавателей и специалистов индустрии гостеприимства по всему миру."],
+    ["Профессиональное признание", "Платформа для признания кулинарного совершенства, лидерства и достижений."],
+    ["Сотрудничество лидеров", "Создаём международные связи через обмен знаниями, программы и партнёрства."],
+    ["Мировое сообщество", "Растущее глобальное присутствие в разных странах, континентах и кулинарных культурах."],
+  ],
+}
+
+const BENEFITS_BY_LANGUAGE: Record<Language, [string, string, string][]> = {
+  en: [
+    ["Chef Recognition", "Honoring culinary professionals and their achievements.", img("/images/recognition.png")],
+    ["Excellence Award", "Recognizing outstanding culinary excellence worldwide.", img("/images/cube-logo.png")],
+    ["Membership Medal", "Symbol of honor, dedication, and professional excellence.", img("/images/medal.png")],
+    ["Certificates & Badges", "Authentication of skills, expertise, and achievement.", img("/images/partnership.png")],
+  ],
+  ru: [
+    ["Признание шеф-поваров", "Отмечаем кулинарных профессионалов и их достижения.", img("/images/recognition.png")],
+    ["Награда за совершенство", "Признание выдающегося кулинарного мастерства по всему миру.", img("/images/cube-logo.png")],
+    ["Медаль участника", "Символ чести, преданности делу и профессионального совершенства.", img("/images/medal.png")],
+    ["Сертификаты и бейджи", "Подтверждение навыков, экспертности и достижений.", img("/images/partnership.png")],
+  ],
+}
+
+const TESTIMONIALS_BY_LANGUAGE = {
+  en: [
+    {
+      quote:
+        "The platform gives chefs a more professional way to present international recognition and connect with serious culinary leaders.",
+      name: "Chef Alessio Romano",
+      role: "Executive Chef & Owner",
+      location: "Rome, Italy",
+    },
+    {
+      quote:
+        "Recognition from a global culinary community brings credibility, pride, and meaningful visibility to professionals in education and hospitality.",
+      name: "Chef Amina Benali",
+      role: "Culinary Instructor",
+      location: "Marrakech, Morocco",
+    },
+    {
+      quote:
+        "For chefs working across hotels and restaurants, international affiliation matters. This gives the recognition a polished and professional home.",
+      name: "Chef Kenji Watanabe",
+      role: "Hotel Executive Chef",
+      location: "Tokyo, Japan",
+    },
+  ],
+  ru: [
+    {
+      quote:
+        "Эта платформа даёт шеф-поварам более профессиональный способ представить международное признание и установить связь с серьёзными кулинарными лидерами.",
+      name: "Chef Alessio Romano",
+      role: "Шеф-повар и владелец",
+      location: "Рим, Италия",
+    },
+    {
+      quote:
+        "Признание от глобального кулинарного сообщества приносит доверие, гордость и значимую видимость специалистам в образовании и гостеприимстве.",
+      name: "Chef Amina Benali",
+      role: "Кулинарный преподаватель",
+      location: "Марракеш, Марокко",
+    },
+    {
+      quote:
+        "Для шеф-поваров, работающих в отелях и ресторанах, международная принадлежность имеет значение. Это создаёт достойное и профессиональное пространство для признания.",
+      name: "Chef Kenji Watanabe",
+      role: "Executive Chef отеля",
+      location: "Токио, Япония",
+    },
+  ],
+}
+
+const NETWORK_STATS_BY_LANGUAGE = {
+  en: [
+    { value: 25, suffix: "K+", label: "Members Worldwide" },
+    { value: 100, suffix: "+", label: "Countries Represented" },
+    { value: 200, suffix: "+", label: "Culinary Associations" },
+    { value: 6, suffix: "", label: "Continents Connected" },
+  ],
+  ru: [
+    { value: 25, suffix: "K+", label: "Участников по всему миру" },
+    { value: 100, suffix: "+", label: "Представленных стран" },
+    { value: 200, suffix: "+", label: "Кулинарных ассоциаций" },
+    { value: 6, suffix: "", label: "Связанных континентов" },
+  ],
+}
+
 
 const HUB = {
   name: "Global Hub",
@@ -276,8 +417,11 @@ function AnimatedStatCard({
 }
 
 function Benefits3DSpinCarousel() {
+  const { language } = useLanguage()
+  const copy = HOME_COPY[language] || HOME_COPY.en
+  const benefits = BENEFITS_BY_LANGUAGE[language] || BENEFITS_BY_LANGUAGE.en
   const [activeIndex, setActiveIndex] = useState(0)
-  const total = BENEFITS.length
+  const total = benefits.length
 
   useEffect(() => {
     const prefersReduced =
@@ -314,12 +458,12 @@ function Benefits3DSpinCarousel() {
 
   return (
     <section id="recognition" className="gi-section gi-benefits-spin-section">
-      <span className="gi-eyebrow gi-center">Member Benefits & Recognition</span>
-      <h2 className="gi-section-title">Honoring Excellence. Empowering Chefs.</h2>
+      <span className="gi-eyebrow gi-center">{copy.benefitsEyebrow}</span>
+      <h2 className="gi-section-title">{copy.benefitsTitle}</h2>
 
-      <div className="gi-benefit-spin-carousel" aria-label="Member benefits carousel">
+      <div className="gi-benefit-spin-carousel" aria-label={copy.benefitsCarouselLabel}>
         <div className="gi-benefit-spin-stage">
-          {BENEFITS.map(([title, desc, image], index) => {
+          {benefits.map(([title, desc, image], index) => {
             const offset = getOffset(index)
             const distance = Math.min(Math.abs(offset), 2)
             const isActive = offset === 0
@@ -355,23 +499,23 @@ function Benefits3DSpinCarousel() {
           })}
         </div>
 
-        <div className="gi-benefit-carousel-controls" aria-label="Member benefit controls">
+        <div className="gi-benefit-carousel-controls" aria-label={copy.benefitsControlsLabel}>
           <button
             type="button"
             onClick={() => moveCarousel(-1)}
-            aria-label="Previous member benefit"
+            aria-label={copy.previousBenefit}
           >
             ‹
           </button>
 
           <div className="gi-benefit-carousel-dots">
-            {BENEFITS.map(([title], index) => (
+            {benefits.map(([title], index) => (
               <button
                 type="button"
                 key={title}
                 className={index === activeIndex ? "active" : ""}
                 onClick={() => setActiveIndex(index)}
-                aria-label={`View ${title}`}
+                aria-label={`${copy.viewBenefit} ${title}`}
                 aria-pressed={index === activeIndex}
               />
             ))}
@@ -380,7 +524,7 @@ function Benefits3DSpinCarousel() {
           <button
             type="button"
             onClick={() => moveCarousel(1)}
-            aria-label="Next member benefit"
+            aria-label={copy.nextBenefit}
           >
             ›
           </button>
@@ -391,8 +535,11 @@ function Benefits3DSpinCarousel() {
 }
 
 function Testimonials3DCarousel() {
+  const { language } = useLanguage()
+  const copy = HOME_COPY[language] || HOME_COPY.en
+  const testimonials = TESTIMONIALS_BY_LANGUAGE[language] || TESTIMONIALS_BY_LANGUAGE.en
   const [activeIndex, setActiveIndex] = useState(0)
-  const total = TESTIMONIALS.length
+  const total = testimonials.length
 
   useEffect(() => {
     const prefersReduced =
@@ -431,14 +578,14 @@ function Testimonials3DCarousel() {
     <section className="gi-testimonials">
       <div className="gi-testimonial-head">
         <div>
-          <span className="gi-eyebrow">Global Voices</span>
-          <h2>Professional Recognition Across Borders</h2>
+          <span className="gi-eyebrow">{copy.testimonialsEyebrow}</span>
+          <h2>{copy.testimonialsTitle}</h2>
         </div>
       </div>
 
-      <div className="gi-testimonial-carousel" aria-label="Global voices carousel">
+      <div className="gi-testimonial-carousel" aria-label={copy.testimonialsCarouselLabel}>
         <div className="gi-testimonial-stage">
-          {TESTIMONIALS.map((item, index) => {
+          {testimonials.map((item, index) => {
             const offset = getOffset(index)
             const distance = Math.min(Math.abs(offset), 2)
             const isActive = offset === 0
@@ -473,23 +620,23 @@ function Testimonials3DCarousel() {
           })}
         </div>
 
-        <div className="gi-carousel-controls" aria-label="Carousel controls">
+        <div className="gi-carousel-controls" aria-label={copy.carouselControls}>
           <button
             type="button"
             onClick={() => moveCarousel(-1)}
-            aria-label="Previous global voice"
+            aria-label={copy.previousVoice}
           >
             ‹
           </button>
 
           <div className="gi-carousel-dots">
-            {TESTIMONIALS.map((item, index) => (
+            {testimonials.map((item, index) => (
               <button
                 type="button"
                 key={item.name}
                 className={index === activeIndex ? "active" : ""}
                 onClick={() => setActiveIndex(index)}
-                aria-label={`View ${item.name}`}
+                aria-label={`${copy.viewVoice} ${item.name}`}
                 aria-pressed={index === activeIndex}
               />
             ))}
@@ -498,7 +645,7 @@ function Testimonials3DCarousel() {
           <button
             type="button"
             onClick={() => moveCarousel(1)}
-            aria-label="Next global voice"
+            aria-label={copy.nextVoice}
           >
             ›
           </button>
@@ -517,13 +664,16 @@ function LatestFeaturePopup({
   onClose: () => void
   latestPost: any
 }) {
+  const { language } = useLanguage()
+  const popupCopy = POPUP_COPY[language] || POPUP_COPY.en
+
   if (!visible || !latestPost) return null
 
   const featureHref = latestPost.slug ? `/blog/${latestPost.slug}` : "/blog"
-  const featureTitle = latestPost.title || "Latest from the Journal"
+  const featureTitle = latestPost.title || popupCopy.fallbackTitle
   const featureDescription =
     latestPost.description ||
-    "Read the newest chef feature and editorial story from the Gastronomist International Journal."
+    popupCopy.fallbackDescription
 
   return (
     <aside className="gi-feature-popup" role="status" aria-live="polite">
@@ -532,7 +682,7 @@ function LatestFeaturePopup({
         type="button"
         className="gi-feature-popup-close"
         onClick={onClose}
-        aria-label="Close latest journal feature notification"
+        aria-label={popupCopy.closeLabel}
       >
         ×
       </button>
@@ -546,14 +696,14 @@ function LatestFeaturePopup({
       </div>
 
       <div className="gi-feature-popup-content">
-        <span>Latest Journal Feature</span>
+        <span>{popupCopy.eyebrow}</span>
         <h3>{featureTitle}</h3>
         <p>{featureDescription}</p>
 
         {latestPost.date ? <small>{latestPost.date}</small> : null}
 
         <a href={featureHref} onClick={onClose}>
-          Read Story
+          {popupCopy.readStory}
         </a>
       </div>
     </aside>
@@ -561,6 +711,10 @@ function LatestFeaturePopup({
 }
 
 export default function Page() {
+  const { language } = useLanguage()
+  const copy = HOME_COPY[language] || HOME_COPY.en
+  const features = FEATURES_BY_LANGUAGE[language] || FEATURES_BY_LANGUAGE.en
+  const networkStats = NETWORK_STATS_BY_LANGUAGE[language] || NETWORK_STATS_BY_LANGUAGE.en
   const latestPost = getLatestPost()
   const [showFeatureNotice, setShowFeatureNotice] = useState(false)
 
@@ -583,20 +737,18 @@ export default function Page() {
       />
       <section className="gi-hero">
         <div className="gi-hero-copy">
-          <span className="gi-eyebrow">Global Culinary Community</span>
+          <span className="gi-eyebrow">{copy.heroEyebrow}</span>
           <h1>
-            Uniting Culinary <span>Excellence</span> Around the World
+            {copy.heroTitlePrefix} <span>{copy.heroTitleHighlight}</span> {copy.heroTitleSuffix}
           </h1>
           <div className="gi-divider" />
           <p>
-            Gastronomist International embraces the diversity of talent and expertise
-            within the culinary community, with a focus on modern gastronomy,
-            professional recognition, and global connection.
+            {copy.heroDescription}
           </p>
 
           <div className="gi-hero-actions">
-            <a href="#global-network">Discover More</a>
-            <a href="#recognition">View Recognition</a>
+            <a href="#global-network">{copy.discoverMore}</a>
+            <a href="#recognition">{copy.viewRecognition}</a>
           </div>
         </div>
 
@@ -606,7 +758,7 @@ export default function Page() {
       </section>
 
       <section className="gi-feature-row">
-        {FEATURES.map(([title, desc]) => (
+        {features.map(([title, desc]) => (
           <article className="gi-feature-card" key={title}>
             <div className="gi-feature-icon">
               <img src={REAL_CHEF_HAT_SRC} alt="" aria-hidden="true" />
@@ -619,16 +771,14 @@ export default function Page() {
 
       <section id="global-network" className="gi-network-panel">
         <div className="gi-network-info">
-          <span className="gi-eyebrow">Worldwide Members</span>
-          <h2>A Global Network of Culinary Excellence</h2>
+          <span className="gi-eyebrow">{copy.worldwideMembers}</span>
+          <h2>{copy.networkTitle}</h2>
           <p>
-            A refined international platform for chefs, hospitality leaders,
-            educators, and gastronomy professionals connected through recognition,
-            collaboration, and shared standards of excellence.
+            {copy.networkDescription}
           </p>
 
           <div className="gi-stat-grid">
-            {NETWORK_STATS.map((stat, index) => (
+            {networkStats.map((stat, index) => (
               <AnimatedStatCard
                 key={stat.label}
                 value={stat.value}
@@ -2188,6 +2338,8 @@ export default function Page() {
 }
 
 function GlobalNetworkMap({ large = false }) {
+  const { language } = useLanguage()
+  const mapCopy = MAP_COPY[language] || MAP_COPY.en
   const [scene, setScene] = useState({
     rotation: -24,
     time: 0,
@@ -2268,7 +2420,7 @@ function GlobalNetworkMap({ large = false }) {
     <div className={`gi-map ${large ? "large" : ""}`}>
       <div className="gi-map-caption">
         <span className="gi-live-dot" />
-        Live Global Earth
+        {mapCopy.liveEarth}
       </div>
 
       <div className="gi-map-glow" />
@@ -2332,7 +2484,7 @@ function GlobalNetworkMap({ large = false }) {
               <circle className="gi-marker-ring" r={markerRadius + 1.5} />
               <circle className="gi-marker-dot" r={markerRadius + 0.75} />
               <text y={-7} className="gi-marker-label">
-                {HUB.name}
+                {mapCopy.globalHub}
               </text>
             </Marker>
 
@@ -2351,7 +2503,7 @@ function GlobalNetworkMap({ large = false }) {
                     "--memberPulseDelay": `${index * 0.16}s`,
                   }}
                 >
-                  <title>{`${location.name} — Gastronomist Member Presence`}</title>
+                  <title>{`${location.name} — ${mapCopy.memberPresenceTitle}`}</title>
                   <circle className="gi-member-pulse-ring gi-member-pulse-ring-one" r={26.4} />
                   <circle className="gi-member-pulse-ring gi-member-pulse-ring-two" r={26.4} />
                   <circle className="gi-member-pulse-ring gi-member-pulse-ring-three" r={26.4} />
