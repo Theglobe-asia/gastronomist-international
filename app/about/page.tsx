@@ -5,10 +5,11 @@
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import Card from "@/components/ui/Card"
-import { aboutLeadershipMembers } from "@/components/data/gastronomist-members"
+import {
+  getLocalizedAboutLeadershipMembers,
+  type AboutLeaderMember,
+} from "@/components/data/gastronomist-members"
 import { useLanguage } from "@/components/LanguageProvider"
-
-const leaders = aboutLeadershipMembers
 
 const heroGalleryImages = [
   "/images/recognition.png",
@@ -115,9 +116,10 @@ const aboutCopy = {
 }
 
 export default function AboutPage() {
-  const [selectedLeader, setSelectedLeader] = useState<(typeof leaders)[number] | null>(null)
+  const [selectedLeader, setSelectedLeader] = useState<AboutLeaderMember | null>(null)
   const { language } = useLanguage()
   const copy = aboutCopy[language]
+  const leaders = getLocalizedAboutLeadershipMembers(language)
 
   return (
     <main className="about-page">
