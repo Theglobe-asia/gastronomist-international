@@ -1,10 +1,57 @@
+// components/ContactWidget.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useLanguage } from '@/components/LanguageProvider'
+
+const contactWidgetCopy = {
+  en: {
+    applyMembership: 'Apply for Membership',
+    organization: 'Gastronomist International',
+    title: 'Membership Application',
+    description:
+      'Submit your professional details first. After submission, you will be redirected to complete the membership fee.',
+    fullName: 'Full name',
+    email: 'Email',
+    address: 'Address',
+    currentPosition: 'Current position',
+    currentCompany: 'Current company',
+    experience: 'Experience (e.g. 1-5 years)',
+    reason: 'Tell us why you want to join',
+    submitting: 'Submitting…',
+    submitApplication: 'Submit Application',
+    cancel: 'Cancel',
+    close: 'Close membership application',
+    success: 'Application submitted ✓ Redirecting to membership fee…',
+    sendFailed: 'Send failed',
+  },
+  ru: {
+    applyMembership: 'Подать заявку на членство',
+    organization: 'Gastronomist International',
+    title: 'Заявка на членство',
+    description:
+      'Сначала отправьте свои профессиональные данные. После отправки вы будете перенаправлены для завершения оплаты членского взноса.',
+    fullName: 'Полное имя',
+    email: 'Электронная почта',
+    address: 'Адрес',
+    currentPosition: 'Текущая должность',
+    currentCompany: 'Текущая компания',
+    experience: 'Опыт работы (например, 1–5 лет)',
+    reason: 'Расскажите, почему вы хотите присоединиться',
+    submitting: 'Отправка…',
+    submitApplication: 'Отправить заявку',
+    cancel: 'Отмена',
+    close: 'Закрыть заявку на членство',
+    success: 'Заявка отправлена ✓ Перенаправление к оплате членского взноса…',
+    sendFailed: 'Не удалось отправить',
+  },
+}
 
 export default function ContactWidget() {
   const router = useRouter()
+  const { language } = useLanguage()
+  const copy = contactWidgetCopy[language]
 
   const [open, setOpen] = useState(false)
   const [sending, setSending] = useState(false)
@@ -62,7 +109,7 @@ export default function ContactWidget() {
 
       form.reset()
 
-      setOk('Application submitted ✓ Redirecting to membership fee…')
+      setOk(copy.success)
 
       setTimeout(() => {
         setOk(null)
@@ -70,7 +117,7 @@ export default function ContactWidget() {
         router.push('/membership-fee')
       }, 700)
     } catch (e: any) {
-      setErr(e?.message || 'Send failed')
+      setErr(e?.message || copy.sendFailed)
     } finally {
       setSending(false)
     }
@@ -84,7 +131,7 @@ export default function ContactWidget() {
           onClick={() => setOpen(true)}
           className="rounded-2xl border border-yellow-400/50 bg-gradient-to-r from-yellow-500 to-yellow-200 px-5 py-3 font-semibold text-black shadow-lg shadow-yellow-500/20 transition hover:scale-[1.03]"
         >
-          Apply for Membership
+          {copy.applyMembership}
         </button>
       </div>
 
@@ -112,22 +159,22 @@ export default function ContactWidget() {
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.22em] text-yellow-300">
-                    Gastronomist International
+                    {copy.organization}
                   </p>
 
                   <h3 className="mt-2 text-2xl font-semibold text-white">
-                    Membership Application
+                    {copy.title}
                   </h3>
 
                   <p className="mt-2 text-sm leading-relaxed text-neutral-300">
-                    Submit your professional details first. After submission,
-                    you will be redirected to complete the membership fee.
+                    {copy.description}
                   </p>
                 </div>
 
                 <button
                   type="button"
                   onClick={closeModal}
+                  aria-label={copy.close}
                   className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-neutral-300 transition hover:border-yellow-400/40 hover:text-white"
                 >
                   ✕
@@ -138,7 +185,7 @@ export default function ContactWidget() {
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input
                     name="name"
-                    placeholder="Full name"
+                    placeholder={copy.fullName}
                     required
                     className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                   />
@@ -146,7 +193,7 @@ export default function ContactWidget() {
                   <input
                     name="email"
                     type="email"
-                    placeholder="Email"
+                    placeholder={copy.email}
                     required
                     className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                   />
@@ -154,33 +201,33 @@ export default function ContactWidget() {
 
                 <input
                   name="address"
-                  placeholder="Address"
+                  placeholder={copy.address}
                   className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                 />
 
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input
                     name="currentPosition"
-                    placeholder="Current position"
+                    placeholder={copy.currentPosition}
                     className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                   />
 
                   <input
                     name="currentCompany"
-                    placeholder="Current company"
+                    placeholder={copy.currentCompany}
                     className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                   />
                 </div>
 
                 <input
                   name="experience"
-                  placeholder="Experience (e.g. 1-5 years)"
+                  placeholder={copy.experience}
                   className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                 />
 
                 <textarea
                   name="reason"
-                  placeholder="Tell us why you want to join"
+                  placeholder={copy.reason}
                   className="min-h-[110px] w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                 />
 
@@ -190,7 +237,7 @@ export default function ContactWidget() {
                     disabled={sending}
                     className="rounded-xl border border-yellow-400/50 bg-gradient-to-r from-yellow-500 to-yellow-200 px-5 py-3 font-semibold text-black transition hover:scale-[1.02] disabled:opacity-60"
                   >
-                    {sending ? 'Submitting…' : 'Submit Application'}
+                    {sending ? copy.submitting : copy.submitApplication}
                   </button>
 
                   <button
@@ -198,7 +245,7 @@ export default function ContactWidget() {
                     onClick={closeModal}
                     className="rounded-xl border border-white/15 px-5 py-3 text-white transition hover:border-yellow-400/40"
                   >
-                    Cancel
+                    {copy.cancel}
                   </button>
 
                   {ok && <span className="text-sm text-green-400">{ok}</span>}
