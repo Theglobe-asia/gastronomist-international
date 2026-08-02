@@ -6,6 +6,7 @@ import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import Card from "@/components/ui/Card"
 import { aboutLeadershipMembers } from "@/components/data/gastronomist-members"
+import { useLanguage } from "@/components/LanguageProvider"
 
 const leaders = aboutLeadershipMembers
 
@@ -18,27 +19,120 @@ const heroGalleryImages = [
   "/images/chefhamid.png?v=2",
 ]
 
+const aboutCopy = {
+  en: {
+    heroEyebrow: "Mission • Leadership • Global Recognition",
+    heroTitle: "About",
+    heroAccent: "Gastronomist International",
+    heroDescription:
+      "Gastronomist International is a global culinary community created to connect, recognize, and elevate chefs, educators, hospitality professionals, innovators, and culinary leaders around the world.",
+    exploreChefs: "Explore Our Chefs",
+    readPress: "Read Press Releases",
+
+    visualCardTitle: "Global Culinary Community",
+    visualCardDescription:
+      "Modern gastronomy, professional recognition, and worldwide connection.",
+
+    missionEyebrow: "Our Mission",
+    missionTitle:
+      "Empower culinary professionals through recognition and connection.",
+    missionDescription:
+      "Our mission is to provide a respected international platform where culinary professionals can be seen, celebrated, and connected. We believe talent deserves visibility, and professional excellence should be recognized beyond borders.",
+
+    visionEyebrow: "Our Vision",
+    visionTitle: "Global excellence in gastronomy.",
+    visionDescription:
+      "We envision a connected culinary world where chefs and hospitality professionals can collaborate, share knowledge, and represent their craft with pride.",
+
+    leadershipEyebrow: "Leadership & Representatives",
+    leadershipTitle:
+      "Professional voices supporting a worldwide culinary network.",
+    leadershipDescription:
+      "Gastronomist International is represented by culinary leaders and professionals who support the organization’s mission across different regions and disciplines.",
+
+    presenceEyebrow: "Worldwide Presence",
+    presenceTitle: "Connecting professionals across continents.",
+    presenceDescription:
+      "Gastronomist International exists for chefs and culinary professionals who want to be part of a respected, visible, and globally connected community. The platform supports recognition, editorial exposure, professional identity, and international collaboration.",
+
+    presenceItems: [
+      "Chefs and executive chefs",
+      "Culinary educators",
+      "Hospitality leaders",
+      "Restaurant professionals",
+      "Gastronomy innovators",
+      "Food media and consultants",
+    ],
+
+    closeModal: "Close profile",
+  },
+  ru: {
+    heroEyebrow: "Миссия • Лидерство • Глобальное признание",
+    heroTitle: "О",
+    heroAccent: "Gastronomist International",
+    heroDescription:
+      "Gastronomist International — это глобальное кулинарное сообщество, созданное для объединения, признания и развития шеф-поваров, преподавателей, специалистов индустрии гостеприимства, новаторов и кулинарных лидеров по всему миру.",
+    exploreChefs: "Наши шеф-повара",
+    readPress: "Читать пресс-релизы",
+
+    visualCardTitle: "Глобальное кулинарное сообщество",
+    visualCardDescription:
+      "Современная гастрономия, профессиональное признание и международные связи.",
+
+    missionEyebrow: "Наша миссия",
+    missionTitle:
+      "Поддерживать кулинарных профессионалов через признание и связи.",
+    missionDescription:
+      "Наша миссия — предоставить уважаемую международную платформу, где кулинарные профессионалы могут быть замечены, отмечены и объединены. Мы верим, что талант заслуживает видимости, а профессиональное мастерство должно получать признание за пределами границ.",
+
+    visionEyebrow: "Наше видение",
+    visionTitle: "Глобальное совершенство в гастрономии.",
+    visionDescription:
+      "Мы видим связанную кулинарную мировую среду, где шеф-повара и специалисты индустрии гостеприимства могут сотрудничать, обмениваться знаниями и с гордостью представлять своё ремесло.",
+
+    leadershipEyebrow: "Лидерство и представители",
+    leadershipTitle:
+      "Профессиональные голоса, поддерживающие мировую кулинарную сеть.",
+    leadershipDescription:
+      "Gastronomist International представляют кулинарные лидеры и профессионалы, которые поддерживают миссию организации в разных регионах и направлениях.",
+
+    presenceEyebrow: "Мировое присутствие",
+    presenceTitle: "Объединение профессионалов на разных континентах.",
+    presenceDescription:
+      "Gastronomist International создан для шеф-поваров и кулинарных профессионалов, которые хотят быть частью уважаемого, заметного и глобально связанного сообщества. Платформа поддерживает признание, редакционную видимость, профессиональную идентичность и международное сотрудничество.",
+
+    presenceItems: [
+      "Шеф-повара и исполнительные шеф-повара",
+      "Кулинарные преподаватели",
+      "Лидеры индустрии гостеприимства",
+      "Ресторанные профессионалы",
+      "Новаторы гастрономии",
+      "Фуд-медиа и консультанты",
+    ],
+
+    closeModal: "Закрыть профиль",
+  },
+}
+
 export default function AboutPage() {
   const [selectedLeader, setSelectedLeader] = useState<(typeof leaders)[number] | null>(null)
+  const { language } = useLanguage()
+  const copy = aboutCopy[language]
 
   return (
     <main className="about-page">
       <section className="about-hero">
         <div className="about-hero-copy">
-          <span className="about-eyebrow">Mission • Leadership • Global Recognition</span>
+          <span className="about-eyebrow">{copy.heroEyebrow}</span>
           <h1>
-            About <span>Gastronomist International</span>
+            {copy.heroTitle} <span>{copy.heroAccent}</span>
           </h1>
           <div className="about-divider" />
-          <p>
-            Gastronomist International is a global culinary community created to connect,
-            recognize, and elevate chefs, educators, hospitality professionals, innovators,
-            and culinary leaders around the world.
-          </p>
+          <p>{copy.heroDescription}</p>
 
           <div className="about-hero-links">
-            <a href="/chefs">Explore Our Chefs</a>
-            <a href="/press">Read Press Releases</a>
+            <a href="/chefs">{copy.exploreChefs}</a>
+            <a href="/press">{copy.readPress}</a>
           </div>
         </div>
 
@@ -56,41 +150,31 @@ export default function AboutPage() {
 
           <div className="about-visual-overlay" />
           <div className="about-visual-card">
-            <strong>Global Culinary Community</strong>
-            <span>Modern gastronomy, professional recognition, and worldwide connection.</span>
+            <strong>{copy.visualCardTitle}</strong>
+            <span>{copy.visualCardDescription}</span>
           </div>
         </div>
       </section>
 
       <section className="about-grid">
         <Card className="about-card about-card-large">
-          <span className="about-eyebrow">Our Mission</span>
-          <h2>Empower culinary professionals through recognition and connection.</h2>
-          <p>
-            Our mission is to provide a respected international platform where culinary
-            professionals can be seen, celebrated, and connected. We believe talent deserves
-            visibility, and professional excellence should be recognized beyond borders.
-          </p>
+          <span className="about-eyebrow">{copy.missionEyebrow}</span>
+          <h2>{copy.missionTitle}</h2>
+          <p>{copy.missionDescription}</p>
         </Card>
 
         <Card className="about-card">
-          <span className="about-eyebrow">Our Vision</span>
-          <h2>Global excellence in gastronomy.</h2>
-          <p>
-            We envision a connected culinary world where chefs and hospitality professionals
-            can collaborate, share knowledge, and represent their craft with pride.
-          </p>
+          <span className="about-eyebrow">{copy.visionEyebrow}</span>
+          <h2>{copy.visionTitle}</h2>
+          <p>{copy.visionDescription}</p>
         </Card>
       </section>
 
       <section className="about-section">
         <div className="about-section-head">
-          <span className="about-eyebrow">Leadership & Representatives</span>
-          <h2>Professional voices supporting a worldwide culinary network.</h2>
-          <p>
-            Gastronomist International is represented by culinary leaders and professionals
-            who support the organization’s mission across different regions and disciplines.
-          </p>
+          <span className="about-eyebrow">{copy.leadershipEyebrow}</span>
+          <h2>{copy.leadershipTitle}</h2>
+          <p>{copy.leadershipDescription}</p>
         </div>
 
         <div className="leader-grid">
@@ -118,25 +202,13 @@ export default function AboutPage() {
 
       <section className="about-presence">
         <div>
-          <span className="about-eyebrow">Worldwide Presence</span>
-          <h2>Connecting professionals across continents.</h2>
-          <p>
-            Gastronomist International exists for chefs and culinary professionals who want
-            to be part of a respected, visible, and globally connected community. The platform
-            supports recognition, editorial exposure, professional identity, and international
-            collaboration.
-          </p>
+          <span className="about-eyebrow">{copy.presenceEyebrow}</span>
+          <h2>{copy.presenceTitle}</h2>
+          <p>{copy.presenceDescription}</p>
         </div>
 
         <div className="presence-list">
-          {[
-            "Chefs and executive chefs",
-            "Culinary educators",
-            "Hospitality leaders",
-            "Restaurant professionals",
-            "Gastronomy innovators",
-            "Food media and consultants",
-          ].map((item) => (
+          {copy.presenceItems.map((item) => (
             <div key={item}>{item}</div>
           ))}
         </div>
@@ -158,7 +230,12 @@ export default function AboutPage() {
               exit={{ scale: 0.94, y: 20 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button onClick={() => setSelectedLeader(null)}>✕</button>
+              <button
+                onClick={() => setSelectedLeader(null)}
+                aria-label={copy.closeModal}
+              >
+                ✕
+              </button>
               <img src={selectedLeader.img} alt={selectedLeader.name} />
               <span>{selectedLeader.region}</span>
               <h3>{selectedLeader.name}</h3>
