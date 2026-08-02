@@ -14,6 +14,50 @@ type BlogArticlePageProps = {
   }
 }
 
+const articleCopy = {
+  en: {
+    journalFeature: "Journal Feature",
+    region: "Region",
+    backToJournal: "Back to Journal",
+    backToHome: "Back to Home",
+    officialRelease: "Official Editorial Release",
+    atAGlance: "At a Glance",
+    publisher: "Publisher",
+    releaseDate: "Release Date",
+    category: "Category",
+    moreStories: "More Stories",
+    journal: "Journal",
+  },
+  ru: {
+    journalFeature: "Журнальная публикация",
+    region: "Регион",
+    backToJournal: "Назад к журналу",
+    backToHome: "Назад на главную",
+    officialRelease: "Официальная редакционная публикация",
+    atAGlance: "Краткий обзор",
+    publisher: "Издатель",
+    releaseDate: "Дата публикации",
+    category: "Категория",
+    moreStories: "Другие истории",
+    journal: "Журнал",
+  },
+}
+
+function LocalizedInline({
+  en,
+  ru,
+}: {
+  en: string
+  ru?: string
+}) {
+  return (
+    <>
+      <span className="blog-lang-en">{en}</span>
+      <span className="blog-lang-ru">{ru || en}</span>
+    </>
+  )
+}
+
 function getAbsoluteUrl(path: string) {
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path
@@ -29,13 +73,14 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: BlogArticlePageProps): Metadata {
-  const posts = getSortedPosts()
+  const posts = getSortedPosts("en")
   const post = posts.find((item) => item.slug === params.slug)
 
   if (!post) {
     return {
       title: `Journal Feature Not Found | ${SITE_NAME}`,
-      description: "The requested Gastronomist International journal feature could not be found.",
+      description:
+        "The requested Gastronomist International journal feature could not be found.",
     }
   }
 
@@ -76,16 +121,32 @@ export function generateMetadata({ params }: BlogArticlePageProps): Metadata {
 }
 
 export default function BlogArticlePage({ params }: BlogArticlePageProps) {
-  const posts = getSortedPosts()
-  const post = posts.find((item) => item.slug === params.slug)
+  const englishPosts = getSortedPosts("en")
+  const russianPosts = getSortedPosts("ru")
+  const post = englishPosts.find((item) => item.slug === params.slug)
 
   if (!post) {
     notFound()
   }
 
-  const relatedPosts = posts.filter((item) => item.slug !== post.slug).slice(0, 3)
+  const localizedPost =
+    russianPosts.find((item) => item.slug === params.slug) || post
+
+  const relatedPosts = englishPosts
+    .filter((item) => item.slug !== post.slug)
+    .slice(0, 3)
+    .map((item) => ({
+      en: item,
+      ru: russianPosts.find((localizedItem) => localizedItem.slug === item.slug) || item,
+    }))
+
   const articleContent =
     post.content && post.content.length > 0 ? post.content : [post.description]
+
+  const localizedArticleContent =
+    localizedPost.content && localizedPost.content.length > 0
+      ? localizedPost.content
+      : [localizedPost.description]
 
   return (
     <main className="blog-article-page">
@@ -95,90 +156,190 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
 
           <div className="blog-article-badge">
             <span />
-            Journal Feature
+            <LocalizedInline
+              en={articleCopy.en.journalFeature}
+              ru={articleCopy.ru.journalFeature}
+            />
           </div>
         </div>
 
         <div className="blog-article-copy">
           <span className="blog-article-eyebrow">
-            {post.date} • {post.author}
+            {post.date} • 
+            <LocalizedInline en={post.author} ru={localizedPost.author} />
           </span>
 
-          <h1>{post.title}</h1>
+          <h1>
+            <LocalizedInline en={post.title} ru={localizedPost.title} />
+          </h1>
 
           <div className="blog-article-divider" />
 
-          <p>{post.description}</p>
+          <p>
+            <LocalizedInline
+              en={post.description}
+              ru={localizedPost.description}
+            />
+          </p>
 
           {post.region ? (
             <div className="blog-article-region">
-              <strong>Region</strong>
-              <span>{post.region}</span>
+              <strong>
+                <LocalizedInline
+                  en={articleCopy.en.region}
+                  ru={articleCopy.ru.region}
+                />
+              </strong>
+              <span>
+                <LocalizedInline en={post.region} ru={localizedPost.region} />
+              </span>
             </div>
           ) : null}
 
           <div className="blog-article-actions">
-            <Link href="/blog">Back to Journal</Link>
-            <Link href="/">Back to Home</Link>
+            <Link href="/blog">
+              <LocalizedInline
+                en={articleCopy.en.backToJournal}
+                ru={articleCopy.ru.backToJournal}
+              />
+            </Link>
+            <Link href="/">
+              <LocalizedInline
+                en={articleCopy.en.backToHome}
+                ru={articleCopy.ru.backToHome}
+              />
+            </Link>
           </div>
         </div>
       </section>
 
       <section className="blog-article-layout">
         <article className="blog-article-main">
-          <span className="blog-article-eyebrow">Official Editorial Release</span>
+          <span className="blog-article-eyebrow">
+            <LocalizedInline
+              en={articleCopy.en.officialRelease}
+              ru={articleCopy.ru.officialRelease}
+            />
+          </span>
 
           <div className="blog-article-body">
-            {articleContent.map((paragraph, index) => (
-              <p key={`${post.slug}-paragraph-${index}`}>{paragraph}</p>
-            ))}
+            <div className="blog-language-body blog-lang-en">
+              {articleContent.map((paragraph, index) => (
+                <p key={`${post.slug}-paragraph-en-${index}`}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            <div className="blog-language-body blog-lang-ru">
+              {localizedArticleContent.map((paragraph, index) => (
+                <p key={`${post.slug}-paragraph-ru-${index}`}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
 
           <div className="blog-article-tags">
-            {post.tags.map((tag) => (
-              <span key={tag}>{tag}</span>
-            ))}
+            <div className="blog-tags-row blog-lang-en">
+              {post.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
+
+            <div className="blog-tags-row blog-lang-ru">
+              {localizedPost.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
           </div>
         </article>
 
         <aside className="blog-article-sidebar">
           <article className="blog-article-side-card">
-            <span className="blog-article-eyebrow">At a Glance</span>
+            <span className="blog-article-eyebrow">
+              <LocalizedInline
+                en={articleCopy.en.atAGlance}
+                ru={articleCopy.ru.atAGlance}
+              />
+            </span>
 
             <div className="blog-article-facts">
               <div>
-                <strong>{post.author}</strong>
-                <span>Publisher</span>
+                <strong>
+                  <LocalizedInline en={post.author} ru={localizedPost.author} />
+                </strong>
+                <span>
+                  <LocalizedInline
+                    en={articleCopy.en.publisher}
+                    ru={articleCopy.ru.publisher}
+                  />
+                </span>
               </div>
 
               <div>
                 <strong>{post.date}</strong>
-                <span>Release Date</span>
+                <span>
+                  <LocalizedInline
+                    en={articleCopy.en.releaseDate}
+                    ru={articleCopy.ru.releaseDate}
+                  />
+                </span>
               </div>
 
               {post.region ? (
                 <div>
-                  <strong>{post.region}</strong>
-                  <span>Region</span>
+                  <strong>
+                    <LocalizedInline
+                      en={post.region}
+                      ru={localizedPost.region}
+                    />
+                  </strong>
+                  <span>
+                    <LocalizedInline
+                      en={articleCopy.en.region}
+                      ru={articleCopy.ru.region}
+                    />
+                  </span>
                 </div>
               ) : null}
 
               <div>
-                <strong>{post.tags[0] || "Journal"}</strong>
-                <span>Category</span>
+                <strong>
+                  <LocalizedInline
+                    en={post.tags[0] || articleCopy.en.journal}
+                    ru={localizedPost.tags[0] || articleCopy.ru.journal}
+                  />
+                </strong>
+                <span>
+                  <LocalizedInline
+                    en={articleCopy.en.category}
+                    ru={articleCopy.ru.category}
+                  />
+                </span>
               </div>
             </div>
           </article>
 
           {relatedPosts.length > 0 ? (
             <article className="blog-article-side-card">
-              <span className="blog-article-eyebrow">More Stories</span>
+              <span className="blog-article-eyebrow">
+                <LocalizedInline
+                  en={articleCopy.en.moreStories}
+                  ru={articleCopy.ru.moreStories}
+                />
+              </span>
 
               <div className="blog-article-related">
                 {relatedPosts.map((item) => (
-                  <Link key={item.slug} href={`/blog/${item.slug}`}>
-                    <strong>{item.title}</strong>
-                    <span>{item.date}</span>
+                  <Link key={item.en.slug} href={`/blog/${item.en.slug}`}>
+                    <strong>
+                      <LocalizedInline
+                        en={item.en.title}
+                        ru={item.ru.title}
+                      />
+                    </strong>
+                    <span>{item.en.date}</span>
                   </Link>
                 ))}
               </div>
@@ -190,6 +351,58 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
       <style
         dangerouslySetInnerHTML={{
           __html: `
+
+            .blog-lang-ru {
+              display: none;
+            }
+
+            html[lang="ru"] .blog-lang-en {
+              display: none;
+            }
+
+            html[lang="ru"] .blog-lang-ru {
+              display: inline;
+            }
+
+            .blog-language-body.blog-lang-en {
+              display: grid;
+              gap: 18px;
+            }
+
+            .blog-language-body.blog-lang-ru {
+              display: none;
+              gap: 18px;
+            }
+
+            html[lang="ru"] .blog-language-body.blog-lang-en {
+              display: none;
+            }
+
+            html[lang="ru"] .blog-language-body.blog-lang-ru {
+              display: grid;
+            }
+
+            .blog-tags-row {
+              flex-wrap: wrap;
+              gap: 10px;
+            }
+
+            .blog-tags-row.blog-lang-en {
+              display: flex;
+            }
+
+            .blog-tags-row.blog-lang-ru {
+              display: none;
+            }
+
+            html[lang="ru"] .blog-tags-row.blog-lang-en {
+              display: none;
+            }
+
+            html[lang="ru"] .blog-tags-row.blog-lang-ru {
+              display: flex;
+            }
+
             .blog-article-page {
               width: min(1440px, calc(100% - 40px));
               margin: 0 auto;
