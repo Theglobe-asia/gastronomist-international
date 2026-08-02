@@ -11,7 +11,12 @@ import {
   HiOutlineUserGroup,
   HiOutlineTrophy,
 } from "react-icons/hi2"
-import { activeMembersTotal, chefDirectoryMembers } from "@/components/data/gastronomist-members"
+import {
+  activeMembersTotal,
+  getLocalizedChefDirectoryMembers,
+  type ChefDirectoryMember,
+} from "@/components/data/gastronomist-members"
+import { useLanguage } from "@/components/LanguageProvider"
 
 type DivMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
@@ -32,21 +37,121 @@ const MotionDiv = motion.div as DivMotion
 const MotionSection = motion.section as SectionMotion
 const MotionArticle = motion.article as ArticleMotion
 
-const chefs = chefDirectoryMembers
+const regionOptions = [
+  { value: "All", en: "All", ru: "Все" },
+  { value: "Asia", en: "Asia", ru: "Азия" },
+  { value: "Europe", en: "Europe", ru: "Европа" },
+  { value: "Americas", en: "Americas", ru: "Америка" },
+  { value: "Oceania", en: "Oceania", ru: "Океания" },
+  { value: "GCC — Middle East", en: "GCC — Middle East", ru: "GCC — Ближний Восток" },
+] as const
 
-const regions = ["All", "Asia", "Europe", "Americas", "Oceania", "GCC — Middle East"] as const
-type Region = (typeof regions)[number]
+type Region = (typeof regionOptions)[number]["value"]
 
-const stats: {
-  label: string
-  value: string
-  icon: IconType
-}[] = [
-  { label: "Active Members", value: `${activeMembersTotal}`, icon: HiOutlineUserGroup },
-  { label: "Global Coverage", value: "Worldwide", icon: HiOutlineGlobeAlt },
-  { label: "Recognition", value: "Official", icon: HiOutlineTrophy },
-  { label: "Modern Gastronomy", value: "Innovation", icon: HiOutlineSparkles },
-]
+const chefsPageCopy = {
+  en: {
+    heroEyebrow: "Global Members • Editorial Directory",
+    heroTitle: "Our",
+    heroAccent: "Chefs",
+    heroDescription:
+      "Meet culinary professionals worldwide — connected through recognition, collaboration, and modern gastronomy.",
+    aboutLink: "About Gastronomist",
+    pressLink: "Press Release",
+
+    heroCardTitle: "International Culinary Directory",
+    heroCardDescription:
+      "A curated platform for chefs, leaders, educators, and gastronomy professionals across regions.",
+
+    dashboardEyebrow: "Member Dashboard",
+    dashboardTitle: "Browse chefs by region.",
+    dashboardDescription:
+      "Presented in a premium editorial format, each profile reflects professional recognition, global visibility, and culinary contribution.",
+
+    statsActiveMembers: "Active Members",
+    statsGlobalCoverage: "Global Coverage",
+    statsRecognition: "Recognition",
+    statsModernGastronomy: "Modern Gastronomy",
+    statsWorldwide: "Worldwide",
+    statsOfficial: "Official",
+    statsInnovation: "Innovation",
+
+    filterEyebrow: "Filter by Region",
+    filterDescription: "A quick editorial filter for the global member directory.",
+
+    sectionEyebrow: "Leadership & Ambassadors",
+    sectionTitle: "Professional members across the global culinary community.",
+    sectionDescription:
+      "Click a profile to view the full editorial card. All images are shown in full view without cropping.",
+
+    missionEyebrow: "Editorial Mission",
+    missionTitle: "Recognition, connection, and global professionalism.",
+    missionQuote:
+      "“We embrace the diversity of talent and expertise within the culinary community — modern techniques, global recognition, and real collaboration.”",
+
+    standardsTitle: "Standards",
+    standardsText: "A consistent platform for recognition and global professionalism.",
+    communityTitle: "Community",
+    communityText: "Members worldwide connected through shared purpose and craft.",
+    innovationTitle: "Innovation",
+    innovationText: "Modern gastronomy techniques and education presented with clarity.",
+
+    close: "Close",
+    leaderProfile: "Leader Profile",
+    regionLabel: "Region",
+    focusLabel: "Focus",
+  },
+  ru: {
+    heroEyebrow: "Глобальные участники • редакционный каталог",
+    heroTitle: "Наши",
+    heroAccent: "Шеф-повара",
+    heroDescription:
+      "Познакомьтесь с кулинарными профессионалами со всего мира, объединёнными признанием, сотрудничеством и современной гастрономией.",
+    aboutLink: "О Gastronomist",
+    pressLink: "Пресс-релизы",
+
+    heroCardTitle: "Международный кулинарный каталог",
+    heroCardDescription:
+      "Отобранная платформа для шеф-поваров, лидеров, преподавателей и специалистов гастрономии из разных регионов.",
+
+    dashboardEyebrow: "Панель участников",
+    dashboardTitle: "Просматривайте шеф-поваров по регионам.",
+    dashboardDescription:
+      "Каждый профиль представлен в премиальном редакционном формате и отражает профессиональное признание, глобальную видимость и кулинарный вклад.",
+
+    statsActiveMembers: "Активные участники",
+    statsGlobalCoverage: "Глобальный охват",
+    statsRecognition: "Признание",
+    statsModernGastronomy: "Современная гастрономия",
+    statsWorldwide: "Весь мир",
+    statsOfficial: "Официально",
+    statsInnovation: "Инновации",
+
+    filterEyebrow: "Фильтр по региону",
+    filterDescription: "Быстрый редакционный фильтр для глобального каталога участников.",
+
+    sectionEyebrow: "Лидерство и амбассадоры",
+    sectionTitle: "Профессиональные участники мирового кулинарного сообщества.",
+    sectionDescription:
+      "Нажмите на профиль, чтобы открыть полную редакционную карточку. Все изображения показаны полностью, без обрезки.",
+
+    missionEyebrow: "Редакционная миссия",
+    missionTitle: "Признание, связи и глобальный профессионализм.",
+    missionQuote:
+      "«Мы ценим разнообразие талантов и опыта в кулинарном сообществе — современные техники, глобальное признание и настоящее сотрудничество».",
+
+    standardsTitle: "Стандарты",
+    standardsText: "Единая платформа для признания и глобального профессионализма.",
+    communityTitle: "Сообщество",
+    communityText: "Участники по всему миру, объединённые общей целью и ремеслом.",
+    innovationTitle: "Инновации",
+    innovationText: "Современные гастрономические техники и обучение, представленные ясно и профессионально.",
+
+    close: "Закрыть",
+    leaderProfile: "Профиль лидера",
+    regionLabel: "Регион",
+    focusLabel: "Направление",
+  },
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -59,31 +164,49 @@ const cardVariants = {
 }
 
 export default function ChefsPage() {
-  const [selectedChef, setSelectedChef] = useState<(typeof chefs)[number] | null>(null)
+  const [selectedChef, setSelectedChef] = useState<ChefDirectoryMember | null>(null)
   const [region, setRegion] = useState<Region>("All")
+  const { language } = useLanguage()
+  const copy = chefsPageCopy[language]
+
+  const chefs = useMemo(() => getLocalizedChefDirectoryMembers(language), [language])
+
+  const stats: {
+    label: string
+    value: string
+    icon: IconType
+  }[] = [
+    { label: copy.statsActiveMembers, value: `${activeMembersTotal}`, icon: HiOutlineUserGroup },
+    { label: copy.statsGlobalCoverage, value: copy.statsWorldwide, icon: HiOutlineGlobeAlt },
+    { label: copy.statsRecognition, value: copy.statsOfficial, icon: HiOutlineTrophy },
+    { label: copy.statsModernGastronomy, value: copy.statsInnovation, icon: HiOutlineSparkles },
+  ]
 
   const filtered = useMemo(() => {
     if (region === "All") return chefs
-    return chefs.filter((chef) => chef.region === region)
-  }, [region])
+
+    const selectedRegion = regionOptions.find((item) => item.value === region)
+    const selectedRegionLabel = selectedRegion
+      ? selectedRegion[language]
+      : region
+
+    return chefs.filter((chef) => chef.region === selectedRegionLabel)
+  }, [chefs, language, region])
 
   return (
     <main className="chefs-page">
       <section className="chefs-hero">
         <div className="chefs-hero-copy">
-          <span className="chefs-eyebrow">Global Members • Editorial Directory</span>
+          <span className="chefs-eyebrow">{copy.heroEyebrow}</span>
           <h1>
-            Our <span>Chefs</span>
+            {copy.heroTitle} <span>{copy.heroAccent}</span>
           </h1>
           <div className="chefs-divider" />
-          <p>
-            Meet culinary professionals worldwide — connected through recognition,
-            collaboration, and modern gastronomy.
-          </p>
+          <p>{copy.heroDescription}</p>
 
           <div className="chefs-hero-links">
-            <a href="/about">About Gastronomist</a>
-            <a href="/press">Press Release</a>
+            <a href="/about">{copy.aboutLink}</a>
+            <a href="/press">{copy.pressLink}</a>
           </div>
         </div>
 
@@ -104,23 +227,17 @@ export default function ChefsPage() {
 
           <div className="chefs-hero-overlay" />
           <div className="chefs-hero-card">
-            <strong>International Culinary Directory</strong>
-            <span>
-              A curated platform for chefs, leaders, educators, and gastronomy
-              professionals across regions.
-            </span>
+            <strong>{copy.heroCardTitle}</strong>
+            <span>{copy.heroCardDescription}</span>
           </div>
         </div>
       </section>
 
       <section className="chefs-dashboard">
         <div className="chefs-dashboard-main">
-          <span className="chefs-eyebrow">Member Dashboard</span>
-          <h2>Browse chefs by region.</h2>
-          <p>
-            Presented in a premium editorial format, each profile reflects professional
-            recognition, global visibility, and culinary contribution.
-          </p>
+          <span className="chefs-eyebrow">{copy.dashboardEyebrow}</span>
+          <h2>{copy.dashboardTitle}</h2>
+          <p>{copy.dashboardDescription}</p>
 
           <div className="chefs-stats">
             {stats.map((item) => {
@@ -138,21 +255,21 @@ export default function ChefsPage() {
         </div>
 
         <div className="chefs-filter-card">
-          <span className="chefs-eyebrow">Filter by Region</span>
-          <p>A quick editorial filter for the global member directory.</p>
+          <span className="chefs-eyebrow">{copy.filterEyebrow}</span>
+          <p>{copy.filterDescription}</p>
 
           <div className="chefs-filter-list">
-            {regions.map((item) => {
-              const active = region === item
+            {regionOptions.map((item) => {
+              const active = region === item.value
 
               return (
                 <button
-                  key={item}
+                  key={item.value}
                   type="button"
-                  onClick={() => setRegion(item)}
+                  onClick={() => setRegion(item.value)}
                   className={active ? "active" : ""}
                 >
-                  {item}
+                  {item[language]}
                 </button>
               )
             })}
@@ -162,12 +279,9 @@ export default function ChefsPage() {
 
       <section className="chefs-section">
         <div className="chefs-section-head">
-          <span className="chefs-eyebrow">Leadership & Ambassadors</span>
-          <h2>Professional members across the global culinary community.</h2>
-          <p>
-            Click a profile to view the full editorial card. All images are shown in
-            full view without cropping.
-          </p>
+          <span className="chefs-eyebrow">{copy.sectionEyebrow}</span>
+          <h2>{copy.sectionTitle}</h2>
+          <p>{copy.sectionDescription}</p>
         </div>
 
         <MotionSection
@@ -205,28 +319,25 @@ export default function ChefsPage() {
 
       <section className="chefs-notes">
         <article>
-          <span className="chefs-eyebrow">Editorial Mission</span>
-          <h2>Recognition, connection, and global professionalism.</h2>
-          <p>
-            “We embrace the diversity of talent and expertise within the culinary
-            community — modern techniques, global recognition, and real collaboration.”
-          </p>
+          <span className="chefs-eyebrow">{copy.missionEyebrow}</span>
+          <h2>{copy.missionTitle}</h2>
+          <p>{copy.missionQuote}</p>
         </article>
 
         <div className="chefs-note-list">
           <div>
-            <strong>Standards</strong>
-            <span>A consistent platform for recognition and global professionalism.</span>
+            <strong>{copy.standardsTitle}</strong>
+            <span>{copy.standardsText}</span>
           </div>
 
           <div>
-            <strong>Community</strong>
-            <span>Members worldwide connected through shared purpose and craft.</span>
+            <strong>{copy.communityTitle}</strong>
+            <span>{copy.communityText}</span>
           </div>
 
           <div>
-            <strong>Innovation</strong>
-            <span>Modern gastronomy techniques and education presented with clarity.</span>
+            <strong>{copy.innovationTitle}</strong>
+            <span>{copy.innovationText}</span>
           </div>
         </div>
       </section>
@@ -253,7 +364,7 @@ export default function ChefsPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedChef(null)}
-                  aria-label="Close"
+                  aria-label={copy.close}
                   className="chef-modal-close"
                 >
                   ✕
@@ -264,19 +375,21 @@ export default function ChefsPage() {
                 </div>
 
                 <div className="chef-modal-content">
-                  <span className="chefs-eyebrow">Leader Profile • {selectedChef.region}</span>
+                  <span className="chefs-eyebrow">
+                    {copy.leaderProfile} • {selectedChef.region}
+                  </span>
                   <h2>{selectedChef.name}</h2>
                   <p className="chef-modal-role">{selectedChef.role}</p>
                   <p>{selectedChef.blurb}</p>
 
                   <div className="chef-modal-grid">
                     <div>
-                      <small>Region</small>
+                      <small>{copy.regionLabel}</small>
                       <strong>{selectedChef.region}</strong>
                     </div>
 
                     <div>
-                      <small>Focus</small>
+                      <small>{copy.focusLabel}</small>
                       <strong>{selectedChef.specialty}</strong>
                     </div>
                   </div>
@@ -992,7 +1105,6 @@ export default function ChefsPage() {
             animation: none !important;
           }
         }
-
       `}</style>
     </main>
   )
