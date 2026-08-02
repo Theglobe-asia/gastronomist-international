@@ -4,6 +4,7 @@
 import React from "react"
 import { motion } from "framer-motion"
 import type { MotionProps } from "framer-motion"
+import { useLanguage } from "@/components/LanguageProvider"
 
 type H1Motion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"h1"> & MotionProps> &
@@ -15,117 +16,409 @@ type DivMotion = React.ForwardRefExoticComponent<
     React.RefAttributes<HTMLDivElement>
 >
 
+type PressFact = {
+  label: string
+  value: string
+}
+
+type PressTimelineItem = {
+  t: string
+  d: string
+}
+
+type PressGalleryItem = {
+  src: string
+  label: string
+}
+
+type PressRelatedItem = {
+  title: string
+  href: string
+  desc: string
+  external?: boolean
+}
+
 const MotionH1 = motion.h1 as H1Motion
 const MotionDiv = motion.div as DivMotion
 
-const YULIA_FACTS = [
-  { label: "Category", value: "Honorary Cultural Partnership" },
-  { label: "Representative", value: "Yulia Antonova — Mystic Mask" },
-  { label: "Representation", value: "Gastronomist International in Russia" },
-  { label: "Focus", value: "Culture • Art • Literature • Global Exchange" },
-]
+const pressCopy = {
+  en: {
+    pressTitle: "Press",
+    pressAccent: "Release",
 
-const YULIA_STATS = [
-  { label: "Country", value: "Russia" },
-  { label: "Role", value: "Honorary Partner" },
-  { label: "Creative Field", value: "Arts + Literature" },
-  { label: "Mission", value: "Cultural Exchange" },
-]
+    yuliaHeroAlt:
+      "Yulia Antonova Mystic Mask honorary partnership with Gastronomist International",
+    yuliaHeroCardTitle: "Latest Official Announcement",
+    yuliaHeroCardDescription:
+      "Honorary cultural partnership recognizing Yulia Antonova — Mystic Mask as the representative of Gastronomist International in Russia.",
+    yuliaHeroEyebrow: "Latest Press Release • Editorial Release",
+    yuliaHeroLead:
+      "Gastronomist International Announces Honorary Partnership with Yulia Antonova, “Mystic Mask.”",
+    yuliaHeroDescription:
+      "Gastronomist International is honored to welcome Yulia Antonova, known by her stage name Mystic Mask, into an honorary cultural partnership that will represent the organization in Russia and support meaningful international cultural exchange.",
 
-const YULIA_TIMELINE = [
-  {
-    t: "Official Announcement",
-    d: "Gastronomist International announces an honorary cultural partnership with Yulia Antonova, known by her stage name Mystic Mask.",
-  },
-  {
-    t: "Representation in Russia",
-    d: "Yulia Antonova will represent Gastronomist International in Russia, strengthening international cultural connection and community engagement.",
-  },
-  {
-    t: "Shared Purpose",
-    d: "The partnership builds bridges between gastronomy, culture, art, literature, and meaningful human expression.",
-  },
-]
+    yuliaFacts: [
+      { label: "Category", value: "Honorary Cultural Partnership" },
+      { label: "Representative", value: "Yulia Antonova — Mystic Mask" },
+      { label: "Representation", value: "Gastronomist International in Russia" },
+      { label: "Focus", value: "Culture • Art • Literature • Global Exchange" },
+    ] as PressFact[],
 
-const YULIA_GALLERY = [
-  { src: "/images/yulia-antonova-mystic-mask.png", label: "Mystic Mask" },
-  { src: "/images/recognition.png", label: "Honorary Recognition" },
-  { src: "/images/medal.png", label: "Global Partnership" },
-]
+    yuliaStats: [
+      { label: "Country", value: "Russia" },
+      { label: "Role", value: "Honorary Partner" },
+      { label: "Creative Field", value: "Arts + Literature" },
+      { label: "Mission", value: "Cultural Exchange" },
+    ] as PressFact[],
 
-const YULIA_RELATED = [
-  {
-    title: "Read Journal Feature",
-    href: "/blog/honorary-partnership-yulia-antonova-mystic-mask-russia",
-    desc: "View the official Gastronomist Journal article about the Yulia Antonova honorary partnership.",
-  },
-  {
-    title: "About Gastronomist",
-    href: "/about",
-    desc: "Our mission, vision, and leadership network.",
-  },
-  {
-    title: "Explore Our Chefs",
-    href: "/chefs",
-    desc: "Meet members representing Gastronomist International worldwide.",
-  },
-]
+    yuliaTimeline: [
+      {
+        t: "Official Announcement",
+        d: "Gastronomist International announces an honorary cultural partnership with Yulia Antonova, known by her stage name Mystic Mask.",
+      },
+      {
+        t: "Representation in Russia",
+        d: "Yulia Antonova will represent Gastronomist International in Russia, strengthening international cultural connection and community engagement.",
+      },
+      {
+        t: "Shared Purpose",
+        d: "The partnership builds bridges between gastronomy, culture, art, literature, and meaningful human expression.",
+      },
+    ] as PressTimelineItem[],
 
-const FACTS = [
-  { label: "Category", value: "Strategic Collaboration" },
-  { label: "Partners", value: "Gastronomist International × CSF International" },
-  { label: "Focus", value: "Support chefs • Empower communities • Preserve artisan traditions" },
-  { label: "Reach", value: "Worldwide" },
-]
+    yuliaGallery: [
+      { src: "/images/yulia-antonova-mystic-mask.png", label: "Mystic Mask" },
+      { src: "/images/recognition.png", label: "Honorary Recognition" },
+      { src: "/images/medal.png", label: "Global Partnership" },
+    ] as PressGalleryItem[],
 
-const STATS = [
-  { label: "Global Members", value: "Worldwide" },
-  { label: "Community", value: "Culinary Professionals" },
-  { label: "Mission", value: "Support + Recognition" },
-  { label: "Standard", value: "Excellence" },
-]
+    yuliaRelated: [
+      {
+        title: "Read Journal Feature",
+        href: "/blog/honorary-partnership-yulia-antonova-mystic-mask-russia",
+        desc: "View the official Gastronomist Journal article about the Yulia Antonova honorary partnership.",
+      },
+      {
+        title: "About Gastronomist",
+        href: "/about",
+        desc: "Our mission, vision, and leadership network.",
+      },
+      {
+        title: "Explore Our Chefs",
+        href: "/chefs",
+        desc: "Meet members representing Gastronomist International worldwide.",
+      },
+    ] as PressRelatedItem[],
 
-const TIMELINE = [
-  {
-    t: "Announcement",
-    d: "Gastronomist International confirms strategic collaboration with CSF International.",
-  },
-  {
-    t: "Shared Mission",
-    d: "Supporting chefs, empowering communities in need, and preserving artisan traditions.",
-  },
-  {
-    t: "Sustainable Action",
-    d: "Creating practical opportunities and meaningful assistance where it matters most.",
-  },
-]
+    editorialStoryEyebrow: "Editorial Story",
+    yuliaStoryTitle: "Honorary partnership with cultural purpose.",
+    yuliaStoryParagraphs: [
+      "Gastronomist International is honored to announce an honorary cultural partnership with Yulia Antonova, known by her stage name Mystic Mask, a distinguished abstract artist, author, poet, songwriter, and respected cultural figure.",
+      "Yulia Antonova serves as the Vice President of the Union of Abstract Artists of Russia and is an Honorary Member of the I.K. Aivazovsky Academy of Arts. She is also a valued member of the Union of Writers of Russia, with creative works that reflect artistic excellence, cultural heritage, emotional depth, and meaningful human expression.",
+      "Beyond her artistic achievements, Yulia holds a Law Degree, bringing together creativity, intellectual insight, leadership, and cultural advocacy. Her diverse background represents the powerful connection between art, knowledge, identity, and international collaboration.",
+    ],
+    yuliaRepresentationEyebrow: "Russia Representation",
+    yuliaRepresentationTitle:
+      "Representing Gastronomist International in Russia.",
+    yuliaRepresentationParagraphs: [
+      "Through this honorary partnership, Yulia Antonova will represent Gastronomist International in Russia, serving as a cultural bridge for meaningful collaboration, artistic exchange, and international community engagement.",
+      "Her role reflects Gastronomist International’s commitment to expanding its presence through respected leaders who embody creativity, culture, global connection, and professional recognition.",
+    ],
 
-const GALLERY = [
-  { src: "/images/medal.png", label: "Recognition" },
-  { src: "/images/recognition.png", label: "Global Acknowledgment" },
-  { src: "/images/partnership.png", label: "Strategic Partnership" },
-]
+    releaseTimelineEyebrow: "Release Timeline",
+    releaseTimelineTitle: "Key points of the announcement.",
+    inFocusEyebrow: "In Focus",
+    inFocusTitle: "Recognition, partnership, and shared purpose.",
+    yuliaGalleryAria: "Yulia Antonova press release focus gallery",
+    welcomeEyebrow: "Welcome Statement",
+    welcomeTitle:
+      "Welcome to Gastronomist International, Yulia Antonova — Mystic Mask.",
+    welcomeParagraph:
+      "Your artistry, cultural dedication, and international creative presence are a meaningful addition to our global community.",
 
-const RELATED = [
-  {
-    title: "Explore Our Chefs",
-    href: "/chefs",
-    desc: "Meet members representing Gastronomist International worldwide.",
+    atAGlance: "At a Glance",
+    related: "Related",
+    globalNetwork: "Global Network",
+    yuliaGlobalTitle:
+      "Culture, gastronomy, and international recognition.",
+    yuliaGlobalParagraph:
+      "Gastronomist International continues to build a global platform that connects chefs, creative leaders, hospitality professionals, and cultural advocates through recognition, storytelling, and meaningful collaboration.",
+
+    previousPressAria: "Previous press release",
+    previousPressEyebrow: "Previous Official Press Release",
+    previousPressTitle: "Strategic Collaboration with CSF International",
+    previousPressParagraph:
+      "The original CSF International announcement remains fully preserved below, including its original image, facts, editorial story, timeline, gallery, related details, and global network section.",
+
+    csfHeroAlt: "Gastronomist International and CSF International collaboration",
+    csfHeroCardTitle: "Official Announcement",
+    csfHeroCardDescription:
+      "Strategic collaboration supporting chefs, communities, and artisan traditions.",
+    csfHeroEyebrow: "Official Announcement • Editorial Release",
+    csfHeroLead:
+      "Gastronomist International Announces Strategic Collaboration with CSF International.",
+    csfHeroDescription:
+      "This collaboration aligns culinary leadership with community-driven action, connecting influence to initiatives that support chefs, empower communities, and preserve artisan traditions.",
+
+    csfFacts: [
+      { label: "Category", value: "Strategic Collaboration" },
+      { label: "Partners", value: "Gastronomist International × CSF International" },
+      {
+        label: "Focus",
+        value: "Support chefs • Empower communities • Preserve artisan traditions",
+      },
+      { label: "Reach", value: "Worldwide" },
+    ] as PressFact[],
+
+    csfStats: [
+      { label: "Global Members", value: "Worldwide" },
+      { label: "Community", value: "Culinary Professionals" },
+      { label: "Mission", value: "Support + Recognition" },
+      { label: "Standard", value: "Excellence" },
+    ] as PressFact[],
+
+    csfTimeline: [
+      {
+        t: "Announcement",
+        d: "Gastronomist International confirms strategic collaboration with CSF International.",
+      },
+      {
+        t: "Shared Mission",
+        d: "Supporting chefs, empowering communities in need, and preserving artisan traditions.",
+      },
+      {
+        t: "Sustainable Action",
+        d: "Creating practical opportunities and meaningful assistance where it matters most.",
+      },
+    ] as PressTimelineItem[],
+
+    csfGallery: [
+      { src: "/images/medal.png", label: "Recognition" },
+      { src: "/images/recognition.png", label: "Global Acknowledgment" },
+      { src: "/images/partnership.png", label: "Strategic Partnership" },
+    ] as PressGalleryItem[],
+
+    csfRelated: [
+      {
+        title: "Explore Our Chefs",
+        href: "/chefs",
+        desc: "Meet members representing Gastronomist International worldwide.",
+      },
+      {
+        title: "About Gastronomist",
+        href: "/about",
+        desc: "Our mission, vision, and leadership network.",
+      },
+      {
+        title: "Visit CSF Intl",
+        href: "https://www.csfint.com/",
+        desc: "Learn more about CSF International’s work and impact.",
+        external: true,
+      },
+    ] as PressRelatedItem[],
+
+    csfStoryTitle: "Partnership with purpose.",
+    csfStoryParagraphs: [
+      "Gastronomist International has officially partnered with CSF International in a shared mission to support chefs, empower communities in need, and preserve artisan traditions.",
+      "The collaboration reflects a commitment to meaningful action, professional recognition, cultural preservation, and sustainable support within the global culinary community.",
+    ],
+    csfGalleryAria: "In Focus falling gallery",
+    csfGlobalTitle: "Professional culinary recognition worldwide.",
+    csfGlobalParagraph:
+      "Gastronomist International continues to build a platform for chefs, hospitality professionals, and culinary leaders across regions.",
   },
-  {
-    title: "About Gastronomist",
-    href: "/about",
-    desc: "Our mission, vision, and leadership network.",
+
+  ru: {
+    pressTitle: "Пресс",
+    pressAccent: "Релиз",
+
+    yuliaHeroAlt:
+      "Юлия Антонова Mystic Mask почётное партнёрство с Gastronomist International",
+    yuliaHeroCardTitle: "Последнее официальное объявление",
+    yuliaHeroCardDescription:
+      "Почётное культурное партнёрство с признанием Юлии Антоновой — Mystic Mask как представителя Gastronomist International в России.",
+    yuliaHeroEyebrow: "Последний пресс-релиз • редакционная публикация",
+    yuliaHeroLead:
+      "Gastronomist International объявляет о почётном партнёрстве с Юлией Антоновой, «Mystic Mask».",
+    yuliaHeroDescription:
+      "Gastronomist International с честью приветствует Юлию Антонову, известную под творческим именем Mystic Mask, в рамках почётного культурного партнёрства, через которое она будет представлять организацию в России и поддерживать значимый международный культурный обмен.",
+
+    yuliaFacts: [
+      { label: "Категория", value: "Почётное культурное партнёрство" },
+      { label: "Представитель", value: "Юлия Антонова — Mystic Mask" },
+      { label: "Представительство", value: "Gastronomist International в России" },
+      { label: "Фокус", value: "Культура • Искусство • Литература • Глобальный обмен" },
+    ] as PressFact[],
+
+    yuliaStats: [
+      { label: "Страна", value: "Россия" },
+      { label: "Роль", value: "Почётный партнёр" },
+      { label: "Творческая сфера", value: "Искусство + литература" },
+      { label: "Миссия", value: "Культурный обмен" },
+    ] as PressFact[],
+
+    yuliaTimeline: [
+      {
+        t: "Официальное объявление",
+        d: "Gastronomist International объявляет о почётном культурном партнёрстве с Юлией Антоновой, известной под творческим именем Mystic Mask.",
+      },
+      {
+        t: "Представительство в России",
+        d: "Юлия Антонова будет представлять Gastronomist International в России, укрепляя международные культурные связи и взаимодействие с сообществом.",
+      },
+      {
+        t: "Общая цель",
+        d: "Партнёрство создаёт мосты между гастрономией, культурой, искусством, литературой и значимым человеческим самовыражением.",
+      },
+    ] as PressTimelineItem[],
+
+    yuliaGallery: [
+      { src: "/images/yulia-antonova-mystic-mask.png", label: "Mystic Mask" },
+      { src: "/images/recognition.png", label: "Почётное признание" },
+      { src: "/images/medal.png", label: "Глобальное партнёрство" },
+    ] as PressGalleryItem[],
+
+    yuliaRelated: [
+      {
+        title: "Читать публикацию журнала",
+        href: "/blog/honorary-partnership-yulia-antonova-mystic-mask-russia",
+        desc: "Откройте официальную статью Gastronomist Journal о почётном партнёрстве с Юлией Антоновой.",
+      },
+      {
+        title: "О Gastronomist",
+        href: "/about",
+        desc: "Наша миссия, видение и лидерская сеть.",
+      },
+      {
+        title: "Наши шеф-повара",
+        href: "/chefs",
+        desc: "Познакомьтесь с участниками, представляющими Gastronomist International по всему миру.",
+      },
+    ] as PressRelatedItem[],
+
+    editorialStoryEyebrow: "Редакционная история",
+    yuliaStoryTitle: "Почётное партнёрство с культурной целью.",
+    yuliaStoryParagraphs: [
+      "Gastronomist International с честью объявляет о почётном культурном партнёрстве с Юлией Антоновой, известной под творческим именем Mystic Mask, выдающейся абстрактной художницей, автором, поэтом, автором песен и уважаемой культурной фигурой.",
+      "Юлия Антонова является вице-президентом Союза абстрактных художников России и почётным членом Академии художеств имени И. К. Айвазовского. Она также является ценным членом Союза писателей России, а её творческие работы отражают художественное мастерство, культурное наследие, эмоциональную глубину и значимое человеческое выражение.",
+      "Помимо художественных достижений, Юлия имеет юридическое образование, объединяя творчество, интеллектуальное видение, лидерство и культурную деятельность. Её многогранный путь отражает сильную связь между искусством, знаниями, идентичностью и международным сотрудничеством.",
+    ],
+    yuliaRepresentationEyebrow: "Представительство в России",
+    yuliaRepresentationTitle:
+      "Представляет Gastronomist International в России.",
+    yuliaRepresentationParagraphs: [
+      "В рамках этого почётного партнёрства Юлия Антонова будет представлять Gastronomist International в России, выступая культурным мостом для значимого сотрудничества, художественного обмена и международного взаимодействия с сообществом.",
+      "Её роль отражает стремление Gastronomist International расширять своё присутствие через уважаемых лидеров, которые воплощают творчество, культуру, глобальные связи и профессиональное признание.",
+    ],
+
+    releaseTimelineEyebrow: "Хронология релиза",
+    releaseTimelineTitle: "Ключевые пункты объявления.",
+    inFocusEyebrow: "В фокусе",
+    inFocusTitle: "Признание, партнёрство и общая цель.",
+    yuliaGalleryAria: "Галерея фокуса пресс-релиза Юлии Антоновой",
+    welcomeEyebrow: "Приветственное заявление",
+    welcomeTitle:
+      "Добро пожаловать в Gastronomist International, Юлия Антонова — Mystic Mask.",
+    welcomeParagraph:
+      "Ваше искусство, культурная преданность и международное творческое присутствие являются значимым дополнением к нашему глобальному сообществу.",
+
+    atAGlance: "Краткий обзор",
+    related: "Связанные материалы",
+    globalNetwork: "Глобальная сеть",
+    yuliaGlobalTitle:
+      "Культура, гастрономия и международное признание.",
+    yuliaGlobalParagraph:
+      "Gastronomist International продолжает создавать глобальную платформу, которая объединяет шеф-поваров, творческих лидеров, специалистов индустрии гостеприимства и культурных представителей через признание, сторителлинг и значимое сотрудничество.",
+
+    previousPressAria: "Предыдущий пресс-релиз",
+    previousPressEyebrow: "Предыдущий официальный пресс-релиз",
+    previousPressTitle: "Стратегическое сотрудничество с CSF International",
+    previousPressParagraph:
+      "Оригинальное объявление CSF International полностью сохранено ниже, включая исходное изображение, факты, редакционную историю, хронологию, галерею, связанные материалы и раздел глобальной сети.",
+
+    csfHeroAlt: "Сотрудничество Gastronomist International и CSF International",
+    csfHeroCardTitle: "Официальное объявление",
+    csfHeroCardDescription:
+      "Стратегическое сотрудничество в поддержку шеф-поваров, сообществ и ремесленных традиций.",
+    csfHeroEyebrow: "Официальное объявление • редакционная публикация",
+    csfHeroLead:
+      "Gastronomist International объявляет о стратегическом сотрудничестве с CSF International.",
+    csfHeroDescription:
+      "Это сотрудничество объединяет кулинарное лидерство с общественно ориентированными инициативами, направленными на поддержку шеф-поваров, расширение возможностей сообществ и сохранение ремесленных традиций.",
+
+    csfFacts: [
+      { label: "Категория", value: "Стратегическое сотрудничество" },
+      { label: "Партнёры", value: "Gastronomist International × CSF International" },
+      {
+        label: "Фокус",
+        value: "Поддержка шеф-поваров • Развитие сообществ • Сохранение ремесленных традиций",
+      },
+      { label: "Охват", value: "Весь мир" },
+    ] as PressFact[],
+
+    csfStats: [
+      { label: "Глобальные участники", value: "Весь мир" },
+      { label: "Сообщество", value: "Кулинарные профессионалы" },
+      { label: "Миссия", value: "Поддержка + признание" },
+      { label: "Стандарт", value: "Совершенство" },
+    ] as PressFact[],
+
+    csfTimeline: [
+      {
+        t: "Объявление",
+        d: "Gastronomist International подтверждает стратегическое сотрудничество с CSF International.",
+      },
+      {
+        t: "Общая миссия",
+        d: "Поддержка шеф-поваров, расширение возможностей нуждающихся сообществ и сохранение ремесленных традиций.",
+      },
+      {
+        t: "Устойчивые действия",
+        d: "Создание практических возможностей и значимой помощи там, где это особенно важно.",
+      },
+    ] as PressTimelineItem[],
+
+    csfGallery: [
+      { src: "/images/medal.png", label: "Признание" },
+      { src: "/images/recognition.png", label: "Глобальное признание" },
+      { src: "/images/partnership.png", label: "Стратегическое партнёрство" },
+    ] as PressGalleryItem[],
+
+    csfRelated: [
+      {
+        title: "Наши шеф-повара",
+        href: "/chefs",
+        desc: "Познакомьтесь с участниками, представляющими Gastronomist International по всему миру.",
+      },
+      {
+        title: "О Gastronomist",
+        href: "/about",
+        desc: "Наша миссия, видение и лидерская сеть.",
+      },
+      {
+        title: "Посетить CSF Intl",
+        href: "https://www.csfint.com/",
+        desc: "Узнайте больше о работе и влиянии CSF International.",
+        external: true,
+      },
+    ] as PressRelatedItem[],
+
+    csfStoryTitle: "Партнёрство с целью.",
+    csfStoryParagraphs: [
+      "Gastronomist International официально вступила в партнёрство с CSF International в рамках общей миссии по поддержке шеф-поваров, расширению возможностей нуждающихся сообществ и сохранению ремесленных традиций.",
+      "Сотрудничество отражает приверженность значимым действиям, профессиональному признанию, культурному сохранению и устойчивой поддержке в глобальном кулинарном сообществе.",
+    ],
+    csfGalleryAria: "Галерея в фокусе",
+    csfGlobalTitle: "Профессиональное кулинарное признание во всём мире.",
+    csfGlobalParagraph:
+      "Gastronomist International продолжает строить платформу для шеф-поваров, специалистов индустрии гостеприимства и кулинарных лидеров из разных регионов.",
   },
-  {
-    title: "Visit CSF Intl",
-    href: "https://www.csfint.com/",
-    desc: "Learn more about CSF International’s work and impact.",
-    external: true,
-  },
-]
+}
 
 export default function PressPage() {
+  const { language } = useLanguage()
+  const copy = pressCopy[language]
+
   return (
     <main className="press-page">
       <section className="press-release-block">
@@ -133,26 +426,23 @@ export default function PressPage() {
           <div className="press-hero-visual">
             <img
               src="/images/yulia-antonova-mystic-mask.png"
-              alt="Yulia Antonova Mystic Mask honorary partnership with Gastronomist International"
+              alt={copy.yuliaHeroAlt}
             />
             <div className="press-hero-overlay" />
             <div className="press-hero-card">
-              <strong>Latest Official Announcement</strong>
-              <span>
-                Honorary cultural partnership recognizing Yulia Antonova — Mystic Mask
-                as the representative of Gastronomist International in Russia.
-              </span>
+              <strong>{copy.yuliaHeroCardTitle}</strong>
+              <span>{copy.yuliaHeroCardDescription}</span>
             </div>
           </div>
 
           <div className="press-hero-copy">
-            <span className="press-eyebrow">Latest Press Release • Editorial Release</span>
+            <span className="press-eyebrow">{copy.yuliaHeroEyebrow}</span>
 
             <MotionH1
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              Press <span>Release</span>
+              {copy.pressTitle} <span>{copy.pressAccent}</span>
             </MotionH1>
 
             <div className="press-divider" />
@@ -162,21 +452,15 @@ export default function PressPage() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              Gastronomist International Announces Honorary Partnership with Yulia
-              Antonova, “Mystic Mask.”
+              {copy.yuliaHeroLead}
             </MotionDiv>
 
-            <p>
-              Gastronomist International is honored to welcome Yulia Antonova,
-              known by her stage name Mystic Mask, into an honorary cultural
-              partnership that will represent the organization in Russia and support
-              meaningful international cultural exchange.
-            </p>
+            <p>{copy.yuliaHeroDescription}</p>
           </div>
         </section>
 
         <section className="press-facts">
-          {YULIA_FACTS.map((item) => (
+          {copy.yuliaFacts.map((item) => (
             <article key={item.label}>
               <span>{item.label}</span>
               <strong>{item.value}</strong>
@@ -187,56 +471,29 @@ export default function PressPage() {
         <section className="press-layout">
           <div className="press-main">
             <article className="press-card">
-              <span className="press-eyebrow">Editorial Story</span>
-              <h2>Honorary partnership with cultural purpose.</h2>
+              <span className="press-eyebrow">{copy.editorialStoryEyebrow}</span>
+              <h2>{copy.yuliaStoryTitle}</h2>
 
-              <p>
-                Gastronomist International is honored to announce an honorary
-                cultural partnership with Yulia Antonova, known by her stage name
-                Mystic Mask, a distinguished abstract artist, author, poet,
-                songwriter, and respected cultural figure.
-              </p>
-
-              <p>
-                Yulia Antonova serves as the Vice President of the Union of Abstract
-                Artists of Russia and is an Honorary Member of the I.K. Aivazovsky
-                Academy of Arts. She is also a valued member of the Union of Writers
-                of Russia, with creative works that reflect artistic excellence,
-                cultural heritage, emotional depth, and meaningful human expression.
-              </p>
-
-              <p>
-                Beyond her artistic achievements, Yulia holds a Law Degree, bringing
-                together creativity, intellectual insight, leadership, and cultural
-                advocacy. Her diverse background represents the powerful connection
-                between art, knowledge, identity, and international collaboration.
-              </p>
+              {copy.yuliaStoryParagraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">Russia Representation</span>
-              <h2>Representing Gastronomist International in Russia.</h2>
+              <span className="press-eyebrow">{copy.yuliaRepresentationEyebrow}</span>
+              <h2>{copy.yuliaRepresentationTitle}</h2>
 
-              <p>
-                Through this honorary partnership, Yulia Antonova will represent
-                Gastronomist International in Russia, serving as a cultural bridge
-                for meaningful collaboration, artistic exchange, and international
-                community engagement.
-              </p>
-
-              <p>
-                Her role reflects Gastronomist International’s commitment to
-                expanding its presence through respected leaders who embody
-                creativity, culture, global connection, and professional recognition.
-              </p>
+              {copy.yuliaRepresentationParagraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">Release Timeline</span>
-              <h2>Key points of the announcement.</h2>
+              <span className="press-eyebrow">{copy.releaseTimelineEyebrow}</span>
+              <h2>{copy.releaseTimelineTitle}</h2>
 
               <div className="press-timeline">
-                {YULIA_TIMELINE.map((item) => (
+                {copy.yuliaTimeline.map((item) => (
                   <div key={item.t}>
                     <strong>{item.t}</strong>
                     <span>{item.d}</span>
@@ -246,11 +503,14 @@ export default function PressPage() {
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">In Focus</span>
-              <h2>Recognition, partnership, and shared purpose.</h2>
+              <span className="press-eyebrow">{copy.inFocusEyebrow}</span>
+              <h2>{copy.inFocusTitle}</h2>
 
-              <div className="press-gallery press-falling-gallery" aria-label="Yulia Antonova press release focus gallery">
-                {YULIA_GALLERY.map((item, index) => (
+              <div
+                className="press-gallery press-falling-gallery"
+                aria-label={copy.yuliaGalleryAria}
+              >
+                {copy.yuliaGallery.map((item, index) => (
                   <div
                     className="press-falling-card"
                     key={item.src}
@@ -272,22 +532,19 @@ export default function PressPage() {
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">Welcome Statement</span>
-              <h2>Welcome to Gastronomist International, Yulia Antonova — Mystic Mask.</h2>
+              <span className="press-eyebrow">{copy.welcomeEyebrow}</span>
+              <h2>{copy.welcomeTitle}</h2>
 
-              <p>
-                Your artistry, cultural dedication, and international creative
-                presence are a meaningful addition to our global community.
-              </p>
+              <p>{copy.welcomeParagraph}</p>
             </article>
           </div>
 
           <aside className="press-sidebar">
             <article className="press-card">
-              <span className="press-eyebrow">At a Glance</span>
+              <span className="press-eyebrow">{copy.atAGlance}</span>
 
               <div className="press-stat-grid">
-                {YULIA_STATS.map((item) => (
+                {copy.yuliaStats.map((item) => (
                   <div key={item.label}>
                     <strong>{item.value}</strong>
                     <span>{item.label}</span>
@@ -297,10 +554,10 @@ export default function PressPage() {
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">Related</span>
+              <span className="press-eyebrow">{copy.related}</span>
 
               <div className="press-related">
-                {YULIA_RELATED.map((item) => (
+                {copy.yuliaRelated.map((item) => (
                   <a key={item.title} href={item.href}>
                     <strong>{item.title}</strong>
                     <span>{item.desc}</span>
@@ -310,28 +567,22 @@ export default function PressPage() {
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">Global Network</span>
-              <h3>Culture, gastronomy, and international recognition.</h3>
+              <span className="press-eyebrow">{copy.globalNetwork}</span>
+              <h3>{copy.yuliaGlobalTitle}</h3>
 
-              <p>
-                Gastronomist International continues to build a global platform that
-                connects chefs, creative leaders, hospitality professionals, and
-                cultural advocates through recognition, storytelling, and meaningful
-                collaboration.
-              </p>
+              <p>{copy.yuliaGlobalParagraph}</p>
             </article>
           </aside>
         </section>
       </section>
 
-      <section className="press-release-separator" aria-label="Previous press release">
-        <span className="press-eyebrow">Previous Official Press Release</span>
-        <h2>Strategic Collaboration with CSF International</h2>
-        <p>
-          The original CSF International announcement remains fully preserved below,
-          including its original image, facts, editorial story, timeline, gallery,
-          related details, and global network section.
-        </p>
+      <section
+        className="press-release-separator"
+        aria-label={copy.previousPressAria}
+      >
+        <span className="press-eyebrow">{copy.previousPressEyebrow}</span>
+        <h2>{copy.previousPressTitle}</h2>
+        <p>{copy.previousPressParagraph}</p>
       </section>
 
       <section className="press-release-block">
@@ -339,23 +590,23 @@ export default function PressPage() {
           <div className="press-hero-visual">
             <img
               src="/images/collab.png"
-              alt="Gastronomist International and CSF International collaboration"
+              alt={copy.csfHeroAlt}
             />
             <div className="press-hero-overlay" />
             <div className="press-hero-card">
-              <strong>Official Announcement</strong>
-              <span>Strategic collaboration supporting chefs, communities, and artisan traditions.</span>
+              <strong>{copy.csfHeroCardTitle}</strong>
+              <span>{copy.csfHeroCardDescription}</span>
             </div>
           </div>
 
           <div className="press-hero-copy">
-            <span className="press-eyebrow">Official Announcement • Editorial Release</span>
+            <span className="press-eyebrow">{copy.csfHeroEyebrow}</span>
 
             <MotionH1
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              Press <span>Release</span>
+              {copy.pressTitle} <span>{copy.pressAccent}</span>
             </MotionH1>
 
             <div className="press-divider" />
@@ -365,19 +616,15 @@ export default function PressPage() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              Gastronomist International Announces Strategic Collaboration with CSF International.
+              {copy.csfHeroLead}
             </MotionDiv>
 
-            <p>
-              This collaboration aligns culinary leadership with community-driven action,
-              connecting influence to initiatives that support chefs, empower communities,
-              and preserve artisan traditions.
-            </p>
+            <p>{copy.csfHeroDescription}</p>
           </div>
         </section>
 
         <section className="press-facts">
-          {FACTS.map((item) => (
+          {copy.csfFacts.map((item) => (
             <article key={item.label}>
               <span>{item.label}</span>
               <strong>{item.value}</strong>
@@ -388,26 +635,20 @@ export default function PressPage() {
         <section className="press-layout">
           <div className="press-main">
             <article className="press-card">
-              <span className="press-eyebrow">Editorial Story</span>
-              <h2>Partnership with purpose.</h2>
-              <p>
-                Gastronomist International has officially partnered with CSF International
-                in a shared mission to support chefs, empower communities in need, and
-                preserve artisan traditions.
-              </p>
-              <p>
-                The collaboration reflects a commitment to meaningful action, professional
-                recognition, cultural preservation, and sustainable support within the global
-                culinary community.
-              </p>
+              <span className="press-eyebrow">{copy.editorialStoryEyebrow}</span>
+              <h2>{copy.csfStoryTitle}</h2>
+
+              {copy.csfStoryParagraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">Release Timeline</span>
-              <h2>Key points of the announcement.</h2>
+              <span className="press-eyebrow">{copy.releaseTimelineEyebrow}</span>
+              <h2>{copy.releaseTimelineTitle}</h2>
 
               <div className="press-timeline">
-                {TIMELINE.map((item) => (
+                {copy.csfTimeline.map((item) => (
                   <div key={item.t}>
                     <strong>{item.t}</strong>
                     <span>{item.d}</span>
@@ -417,11 +658,14 @@ export default function PressPage() {
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">In Focus</span>
-              <h2>Recognition, partnership, and shared purpose.</h2>
+              <span className="press-eyebrow">{copy.inFocusEyebrow}</span>
+              <h2>{copy.inFocusTitle}</h2>
 
-              <div className="press-gallery press-falling-gallery" aria-label="In Focus falling gallery">
-                {GALLERY.map((item, index) => (
+              <div
+                className="press-gallery press-falling-gallery"
+                aria-label={copy.csfGalleryAria}
+              >
+                {copy.csfGallery.map((item, index) => (
                   <div
                     className="press-falling-card"
                     key={item.src}
@@ -445,10 +689,10 @@ export default function PressPage() {
 
           <aside className="press-sidebar">
             <article className="press-card">
-              <span className="press-eyebrow">At a Glance</span>
+              <span className="press-eyebrow">{copy.atAGlance}</span>
 
               <div className="press-stat-grid">
-                {STATS.map((item) => (
+                {copy.csfStats.map((item) => (
                   <div key={item.label}>
                     <strong>{item.value}</strong>
                     <span>{item.label}</span>
@@ -458,10 +702,10 @@ export default function PressPage() {
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">Related</span>
+              <span className="press-eyebrow">{copy.related}</span>
 
               <div className="press-related">
-                {RELATED.map((item) => (
+                {copy.csfRelated.map((item) => (
                   <a
                     key={item.title}
                     href={item.href}
@@ -476,12 +720,9 @@ export default function PressPage() {
             </article>
 
             <article className="press-card">
-              <span className="press-eyebrow">Global Network</span>
-              <h3>Professional culinary recognition worldwide.</h3>
-              <p>
-                Gastronomist International continues to build a platform for chefs,
-                hospitality professionals, and culinary leaders across regions.
-              </p>
+              <span className="press-eyebrow">{copy.globalNetwork}</span>
+              <h3>{copy.csfGlobalTitle}</h3>
+              <p>{copy.csfGlobalParagraph}</p>
             </article>
           </aside>
         </section>
