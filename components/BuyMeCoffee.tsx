@@ -1,8 +1,21 @@
 "use client"
 
 import { useEffect } from "react"
+import { useLanguage } from "@/components/LanguageProvider"
+
+const buyMeCoffeeCopy = {
+  en: {
+    description: "Support me on Buy me a coffee!",
+  },
+  ru: {
+    description: "Поддержите меня через Buy Me a Coffee!",
+  },
+}
 
 export default function BuyMeCoffee() {
+  const { language } = useLanguage()
+  const copy = buyMeCoffeeCopy[language]
+
   useEffect(() => {
     const STYLE_ID = "bmc-widget-force-style"
     const SCRIPT_SELECTOR = 'script[data-name="BMC-Widget"]'
@@ -60,10 +73,27 @@ export default function BuyMeCoffee() {
       document.head.appendChild(style)
     }
 
+    const removeExistingWidget = () => {
+      const existingScript = document.querySelector(SCRIPT_SELECTOR)
+
+      if (existingScript) {
+        existingScript.remove()
+      }
+
+      const existingButton = document.getElementById("bmc-wbtn")
+
+      if (existingButton) {
+        existingButton.remove()
+      }
+
+      document.querySelectorAll(".bmc-btn-container").forEach((element) => {
+        element.remove()
+      })
+    }
+
     const injectScript = () => {
-      // Remove existing script if present (prevents half-initialized state)
-      const existing = document.querySelector(SCRIPT_SELECTOR)
-      if (existing) existing.remove()
+      // Remove existing script/widget first so language changes refresh the widget text.
+      removeExistingWidget()
 
       const s = document.createElement("script")
       s.setAttribute("data-name", "BMC-Widget")
@@ -71,7 +101,7 @@ export default function BuyMeCoffee() {
       s.src = LOCAL_SRC
 
       s.setAttribute("data-id", "chefalex")
-      s.setAttribute("data-description", "Support me on Buy me a coffee!")
+      s.setAttribute("data-description", copy.description)
       s.setAttribute("data-message", "")
 
       // keep your current color
@@ -96,11 +126,16 @@ export default function BuyMeCoffee() {
       document.body.appendChild(s)
     }
 
-    // If widget DOM isn't present, inject (even if script exists)
-    if (!hasWidgetDom()) injectScript()
+    // If widget DOM isn't present, inject. Also refresh when language changes.
+    if (!hasWidgetDom()) {
+      injectScript()
+      return
+    }
+
+    injectScript()
 
     // Intentionally persistent (do not cleanup/remove)
-  }, [])
+  }, [copy.description])
 
   return null
 }
