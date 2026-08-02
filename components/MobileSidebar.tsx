@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 import type { MotionProps } from "framer-motion"
 import type { IconType } from "react-icons"
+import { useLanguage } from "@/components/LanguageProvider"
 
 type DivMotion = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<React.ComponentPropsWithoutRef<"div"> & MotionProps> &
@@ -31,6 +32,7 @@ export default function MobileSidebar({
 }) {
   const pathname = usePathname()
   const panelRef = useRef<HTMLDivElement>(null)
+  const { t } = useLanguage()
 
   useEffect(() => {
     if (!open) return
@@ -69,7 +71,7 @@ export default function MobileSidebar({
             ref={panelRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Mobile Menu"
+            aria-label={t("common.menu")}
             className="
               fixed right-0 top-0 z-[99]
               h-full w-[88%] max-w-sm
@@ -115,7 +117,7 @@ export default function MobileSidebar({
 
                   <button
                     onClick={() => setOpen(false)}
-                    aria-label="Close menu"
+                    aria-label={t("common.menu")}
                     className="
                       rounded-xl
                       border border-yellow-400/20
@@ -175,16 +177,15 @@ export default function MobileSidebar({
 
               <div className="mt-auto border-t border-yellow-400/10 p-5">
                 <div className="text-xs uppercase tracking-[0.2em] text-yellow-300">
-                  Global Culinary Community
+                  {t("footer.tagline")}
                 </div>
 
                 <p className="mt-2 text-sm leading-relaxed text-neutral-400">
-                  Connecting culinary professionals, leaders, educators, and
-                  innovators through a worldwide network dedicated to excellence.
+                  {t("footer.description")}
                 </p>
 
                 <div className="mt-4 text-xs text-neutral-500">
-                  © {new Date().getFullYear()} Gastronomist International
+                  {t("footer.rights")}
                 </div>
               </div>
             </div>
