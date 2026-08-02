@@ -27,8 +27,8 @@ const latestStoryCopy = {
 }
 
 export default function LatestStory() {
-  const latest = getLatestPost()
   const { language } = useLanguage()
+  const latest = getLatestPost(language)
   const copy = latestStoryCopy[language]
 
   if (!latest) return null
