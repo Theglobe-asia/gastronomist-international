@@ -1,5 +1,16 @@
 // components/blog/posts.ts
 
+export type BlogLanguage = "en" | "ru"
+
+export type BlogPostTranslation = {
+  title?: string
+  description?: string
+  author?: string
+  tags?: string[]
+  region?: string
+  content?: string[]
+}
+
 export type BlogPost = {
   slug: string
   title: string
@@ -11,6 +22,7 @@ export type BlogPost = {
   tags: string[]
   region?: string
   content?: string[]
+  translations?: Partial<Record<BlogLanguage, BlogPostTranslation>>
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -40,6 +52,31 @@ export const BLOG_POSTS: BlogPost[] = [
       "This collaboration reflects the shared mission of building bridges between gastronomy, culture, art, literature, and human expression. Gastronomist International continues to recognize individuals whose talent, leadership, and creative vision contribute to a more connected and culturally enriched world.",
       "Welcome to Gastronomist International, Yulia Antonova — Mystic Mask. Your artistry, cultural dedication, and international creative presence are a meaningful addition to our global community.",
     ],
+    translations: {
+      ru: {
+        title:
+          "Gastronomist International объявляет о почётном партнёрстве с Юлией Антоновой, «Mystic Mask»",
+        description:
+          "Gastronomist International с гордостью объявляет о почётном культурном партнёрстве с Юлией Антоновой, известной под творческим именем Mystic Mask, которая будет представлять организацию в России.",
+        author: "Gastronomist International",
+        tags: [
+          "Пресс-релиз",
+          "Почётное партнёрство",
+          "Культурный представитель",
+          "Россия",
+          "Gastronomist International",
+        ],
+        region: "Россия",
+        content: [
+          "Gastronomist International с честью объявляет о почётном культурном партнёрстве с Юлией Антоновой, известной под творческим именем Mystic Mask, выдающейся абстрактной художницей, автором, поэтом, автором песен и уважаемой культурной фигурой.",
+          "Юлия Антонова является вице-президентом Союза абстрактных художников России и почётным членом Академии художеств имени И. К. Айвазовского. Она также является ценным членом Союза писателей России, а её творческие работы отражают художественное мастерство, культурное наследие, эмоциональную глубину и значимое человеческое выражение.",
+          "Помимо художественных достижений, Юлия имеет юридическое образование, объединяя творчество, интеллектуальное видение, лидерство и культурную деятельность. Её многогранный путь отражает сильную связь между искусством, знаниями, идентичностью и международным сотрудничеством.",
+          "В рамках этого почётного партнёрства Юлия Антонова будет представлять Gastronomist International в России, выступая культурным мостом для meaningful collaboration, artistic exchange, and international community engagement.",
+          "Это сотрудничество отражает общую миссию — выстраивать мосты между гастрономией, культурой, искусством, литературой и человеческим самовыражением. Gastronomist International продолжает признавать людей, чей талант, лидерство и творческое видение способствуют более связанному и культурно обогащённому миру.",
+          "Добро пожаловать в Gastronomist International, Юлия Антонова — Mystic Mask. Ваше искусство, культурная преданность и международное творческое присутствие являются значимым дополнением к нашему глобальному сообществу.",
+        ],
+      },
+    },
   },
   {
     slug: "welcoming-chef-noor",
@@ -51,13 +88,53 @@ export const BLOG_POSTS: BlogPost[] = [
     author: "Gastronomist International",
     tags: ["GCC", "Modern Gastronomy", "Membership", "Middle East"],
     region: "GCC — Middle East",
+    translations: {
+      ru: {
+        title:
+          "Добро пожаловать, Chef Noor — новая кулинарная глава из стран GCC",
+        description:
+          "Gastronomist International приветствует Chef Noor, представляющую новую волну современной ближневосточной гастрономии из региона GCC.",
+        author: "Gastronomist International",
+        tags: [
+          "GCC",
+          "Современная гастрономия",
+          "Членство",
+          "Ближний Восток",
+        ],
+        region: "GCC — Ближний Восток",
+      },
+    },
   },
 ]
 
-export function getSortedPosts() {
-  return [...BLOG_POSTS].sort((a, b) => (a.date < b.date ? 1 : -1))
+export function getLocalizedPost(post: BlogPost, language: BlogLanguage = "en"): BlogPost {
+  if (language === "en") {
+    return post
+  }
+
+  const translation = post.translations?.[language]
+
+  if (!translation) {
+    return post
+  }
+
+  return {
+    ...post,
+    title: translation.title || post.title,
+    description: translation.description || post.description,
+    author: translation.author || post.author,
+    tags: translation.tags || post.tags,
+    region: translation.region || post.region,
+    content: translation.content || post.content,
+  }
 }
 
-export function getLatestPost() {
-  return getSortedPosts()[0]
+export function getSortedPosts(language: BlogLanguage = "en") {
+  return [...BLOG_POSTS]
+    .sort((a, b) => (a.date < b.date ? 1 : -1))
+    .map((post) => getLocalizedPost(post, language))
+}
+
+export function getLatestPost(language: BlogLanguage = "en") {
+  return getSortedPosts(language)[0]
 }
