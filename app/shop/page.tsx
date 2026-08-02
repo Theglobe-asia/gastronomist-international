@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Card from "@/components/ui/Card"
 import Button from "@/components/ui/Button"
+import { useLanguage } from "@/components/LanguageProvider"
 
 type Product = {
   id: string
@@ -36,14 +37,210 @@ const PRODUCTS: Product[] = [
   },
 ]
 
+const shopCopy = {
+  en: {
+    products: {
+      "track-me": {
+        name: "Track Me Solutions",
+        tag: "Hospitality SaaS Platform",
+        title: "Cost • Recipes • Inventory",
+        copy: "A hospitality SaaS platform answered to the cost, recipe, inventory challenges of every chefs, operators, of hotel, restaurant and bar.",
+      },
+    },
+
+    topEyebrow: "Shop Dashboard • Products & Solutions",
+    pageTitle: "Shop",
+    pageAccent: "Gastronomist",
+    pageDescription:
+      "Handpicked tools and platforms recommended for chefs, operators, hotels, restaurants, and bars — presented as a modern editorial dashboard.",
+    backHome: "Back to Home",
+    visitPrefix: "Visit",
+
+    cart: "Cart",
+    items: "Items",
+    open: "Open →",
+    openCart: "Open cart",
+    closeCart: "Close cart",
+    subtotal: "Subtotal",
+    billing: "Billing",
+    yearly: "Yearly",
+    year: "year",
+    yearlyLower: "yearly",
+    usdYearly: "USD / yearly",
+
+    featured: "Featured",
+    price: "Price",
+    addToCart: "Add to Cart",
+    learnMore: "Learn More",
+    add: "Add",
+    openProduct: "Open",
+
+    productMetrics: [
+      { label: "Designed for", value: "Hotels • Restaurants • Bars" },
+      { label: "Best for", value: "Chef Ops • Cost Control • Stock" },
+      { label: "Billing", value: "USD / year" },
+      { label: "Link", value: "trackme.solutions" },
+    ],
+
+    moreProducts: "More Products",
+    moreProductsDescription: "Additional modules (future-ready).",
+
+    whatYouGet: "What you get",
+    whatYouGetDescription:
+      "A clear path to tighter control and cleaner operations.",
+    verified: "Verified",
+    benefits: [
+      "Recipe costing and margin visibility",
+      "Inventory tracking and movement discipline",
+      "Operational clarity for teams and owners",
+      "Scales from single venue to multi-site",
+    ],
+
+    recommendedFor: "Recommended for",
+    recommendedDescription: "Roles that need fast, accurate numbers.",
+    recommendedRoles: [
+      "Executive Chefs",
+      "Sous Chefs",
+      "Restaurant Owners",
+      "Bar Managers",
+      "Hotel Operators",
+      "Cost Controllers",
+    ],
+
+    readyTitle: "Ready to explore?",
+    readyTextBefore: "Add items to your cart, then continue to the platform:",
+    reviewCart: "Review Cart",
+    cartNotice: "This cart is a UI experience (no payment processing on this page).",
+
+    verifyProduct: "Verify the product",
+    verifyDescription: "Watch a quick overview before you decide.",
+    youtubeTitle: "Track Me Solutions demo",
+    watchYoutube: "Watch on YouTube",
+
+    shoppingCart: "Shopping Cart",
+    emptyTitle: "Your cart is empty",
+    emptyDescription: "Add a product to see it here.",
+    tba: "TBA",
+    remove: "Remove",
+    decreaseQuantity: "Decrease quantity",
+    increaseQuantity: "Increase quantity",
+    quantity: "Quantity",
+    continue: "Continue",
+    continuePlatform: "Continue to platform",
+  },
+
+  ru: {
+    products: {
+      "track-me": {
+        name: "Track Me Solutions",
+        tag: "SaaS-платформа для индустрии гостеприимства",
+        title: "Себестоимость • Рецепты • Инвентарь",
+        copy: "SaaS-платформа для индустрии гостеприимства, созданная для решения задач себестоимости, рецептур и складского контроля для шеф-поваров, операторов, отелей, ресторанов и баров.",
+      },
+    },
+
+    topEyebrow: "Панель магазина • продукты и решения",
+    pageTitle: "Магазин",
+    pageAccent: "Gastronomist",
+    pageDescription:
+      "Отобранные инструменты и платформы, рекомендованные для шеф-поваров, операторов, отелей, ресторанов и баров — представлены как современная редакционная панель.",
+    backHome: "Назад на главную",
+    visitPrefix: "Посетить",
+
+    cart: "Корзина",
+    items: "Товары",
+    open: "Открыть →",
+    openCart: "Открыть корзину",
+    closeCart: "Закрыть корзину",
+    subtotal: "Итого",
+    billing: "Оплата",
+    yearly: "Ежегодно",
+    year: "год",
+    yearlyLower: "ежегодно",
+    usdYearly: "USD / ежегодно",
+
+    featured: "Рекомендуемое",
+    price: "Цена",
+    addToCart: "Добавить в корзину",
+    learnMore: "Подробнее",
+    add: "Добавить",
+    openProduct: "Открыть",
+
+    productMetrics: [
+      { label: "Создано для", value: "Отели • Рестораны • Бары" },
+      { label: "Лучше всего для", value: "Chef Ops • Контроль затрат • Склад" },
+      { label: "Оплата", value: "USD / год" },
+      { label: "Ссылка", value: "trackme.solutions" },
+    ],
+
+    moreProducts: "Больше продуктов",
+    moreProductsDescription: "Дополнительные модули, готовые для будущего.",
+
+    whatYouGet: "Что вы получаете",
+    whatYouGetDescription:
+      "Понятный путь к более строгому контролю и более чистым операционным процессам.",
+    verified: "Проверено",
+    benefits: [
+      "Калькуляция рецептов и видимость маржи",
+      "Отслеживание склада и дисциплина движения запасов",
+      "Операционная ясность для команд и владельцев",
+      "Подходит для одной точки и для сети объектов",
+    ],
+
+    recommendedFor: "Рекомендуется для",
+    recommendedDescription: "Роли, которым нужны быстрые и точные цифры.",
+    recommendedRoles: [
+      "Executive Chefs",
+      "Sous Chefs",
+      "Владельцы ресторанов",
+      "Бар-менеджеры",
+      "Операторы отелей",
+      "Контролёры затрат",
+    ],
+
+    readyTitle: "Готовы изучить?",
+    readyTextBefore: "Добавьте товары в корзину, затем перейдите на платформу:",
+    reviewCart: "Проверить корзину",
+    cartNotice: "Эта корзина является UI-опытом — обработка платежей на этой странице не выполняется.",
+
+    verifyProduct: "Проверить продукт",
+    verifyDescription: "Посмотрите краткий обзор перед принятием решения.",
+    youtubeTitle: "Демо Track Me Solutions",
+    watchYoutube: "Смотреть на YouTube",
+
+    shoppingCart: "Корзина покупок",
+    emptyTitle: "Ваша корзина пуста",
+    emptyDescription: "Добавьте продукт, чтобы увидеть его здесь.",
+    tba: "Будет объявлено",
+    remove: "Удалить",
+    decreaseQuantity: "Уменьшить количество",
+    increaseQuantity: "Увеличить количество",
+    quantity: "Количество",
+    continue: "Продолжить",
+    continuePlatform: "Перейти на платформу",
+  },
+}
+
 function usd(n: number) {
   if (!n) return "$0"
   return `$${n.toLocaleString("en-US")}`
 }
 
 export default function ShopPage() {
-  const featured = useMemo(() => PRODUCTS.find((p) => p.featured) ?? PRODUCTS[0], [])
-  const others = useMemo(() => PRODUCTS.filter((p) => p.id !== featured.id), [featured.id])
+  const { language } = useLanguage()
+  const copy = shopCopy[language]
+
+  const products = useMemo(
+    () =>
+      PRODUCTS.map((product) => ({
+        ...product,
+        ...(copy.products[product.id] || {}),
+      })),
+    [copy.products],
+  )
+
+  const featured = useMemo(() => products.find((p) => p.featured) ?? products[0], [products])
+  const others = useMemo(() => products.filter((p) => p.id !== featured.id), [products, featured.id])
   const visibleOthers = useMemo(() => others.filter((p) => p.priceUsdYearly > 0), [others])
 
   const [cartOpen, setCartOpen] = useState(false)
@@ -54,12 +251,12 @@ export default function ShopPage() {
   const cartLines = useMemo(() => {
     return items
       .map((it) => {
-        const p = PRODUCTS.find((x) => x.id === it.productId)
+        const p = products.find((x) => x.id === it.productId)
         if (!p) return null
         return { product: p, qty: it.qty, lineTotal: p.priceUsdYearly * it.qty }
       })
       .filter(Boolean) as { product: Product; qty: number; lineTotal: number }[]
-  }, [items])
+  }, [items, products])
 
   const subtotal = useMemo(() => cartLines.reduce((sum, l) => sum + l.lineTotal, 0), [cartLines])
 
@@ -113,27 +310,27 @@ export default function ShopPage() {
           <div className="lg:col-span-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
               <span className="h-2 w-2 rounded-full bg-white/70" />
-              Shop Dashboard • Products & Solutions
+              {copy.topEyebrow}
             </div>
 
             <h1 className="mt-5 text-4xl sm:text-5xl font-bold text-white leading-tight">
-              Shop{" "}
+              {copy.pageTitle}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
-                Gastronomist
+                {copy.pageAccent}
               </span>
             </h1>
 
             <p className="mt-3 text-neutral-300 max-w-3xl leading-relaxed">
-              Handpicked tools and platforms recommended for chefs, operators, hotels, restaurants, and bars — presented as a modern editorial dashboard.
+              {copy.pageDescription}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href="/">
-                <Button className="glass-btn glass-btn-muted glass-shine">Back to Home</Button>
+                <Button className="glass-btn glass-btn-muted glass-shine">{copy.backHome}</Button>
               </Link>
 
               <a href={featured.href} target="_blank" rel="noreferrer">
-                <Button className="glass-btn glass-shine">Visit {featured.name}</Button>
+                <Button className="glass-btn glass-shine">{copy.visitPrefix} {featured.name}</Button>
               </a>
             </div>
           </div>
@@ -142,9 +339,9 @@ export default function ShopPage() {
             <Card className="p-5">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <div className="text-xs text-neutral-400">Cart</div>
+                  <div className="text-xs text-neutral-400">{copy.cart}</div>
                   <div className="mt-1 text-sm text-white">
-                    Items{" "}
+                    {copy.items}{" "}
                     <span className="ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-2 text-xs text-neutral-200">
                       {cartCount}
                     </span>
@@ -155,20 +352,20 @@ export default function ShopPage() {
                   type="button"
                   onClick={() => setCartOpen(true)}
                   className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-white hover:border-white/20 hover:bg-white/[0.07] transition"
-                  aria-label="Open cart"
+                  aria-label={copy.openCart}
                 >
-                  Open →
+                  {copy.open}
                 </button>
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-3">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  <div className="text-[11px] text-neutral-400">Subtotal</div>
+                  <div className="text-[11px] text-neutral-400">{copy.subtotal}</div>
                   <div className="mt-1 text-sm text-white">{usd(subtotal)}</div>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  <div className="text-[11px] text-neutral-400">Billing</div>
-                  <div className="mt-1 text-sm text-white">Yearly</div>
+                  <div className="text-[11px] text-neutral-400">{copy.billing}</div>
+                  <div className="mt-1 text-sm text-white">{copy.yearly}</div>
                 </div>
               </div>
             </Card>
@@ -196,7 +393,7 @@ export default function ShopPage() {
 
               <div className="absolute left-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs text-neutral-200">
                 <span className="h-2 w-2 rounded-full bg-yellow-400/90" />
-                Featured
+                {copy.featured}
               </div>
 
               <div className="h-full w-full flex items-center justify-center p-6">
@@ -220,9 +417,9 @@ export default function ShopPage() {
                 </div>
 
                 <div className="text-right">
-                  <div className="text-xs text-neutral-400">Price</div>
+                  <div className="text-xs text-neutral-400">{copy.price}</div>
                   <div className="mt-2 text-2xl font-bold text-white">{usd(featured.priceUsdYearly)}</div>
-                  <div className="mt-1 text-xs text-neutral-400">USD / yearly</div>
+                  <div className="mt-1 text-xs text-neutral-400">{copy.usdYearly}</div>
                 </div>
               </div>
 
@@ -232,26 +429,28 @@ export default function ShopPage() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <button onClick={() => addToCart(featured.id)}>
-                  <Button className="glass-btn glass-shine">Add to Cart</Button>
+                  <Button className="glass-btn glass-shine">{copy.addToCart}</Button>
                 </button>
 
                 <a href={featured.href} target="_blank" rel="noreferrer">
-                  <Button className="glass-btn glass-btn-muted glass-shine">Learn More</Button>
+                  <Button className="glass-btn glass-btn-muted glass-shine">{copy.learnMore}</Button>
                 </a>
               </div>
 
               <div className="mt-7 grid sm:grid-cols-2 gap-4">
-                {[
-                  { label: "Designed for", value: "Hotels • Restaurants • Bars" },
-                  { label: "Best for", value: "Chef Ops • Cost Control • Stock" },
-                  { label: "Billing", value: `${usd(featured.priceUsdYearly)} USD / year` },
-                  { label: "Link", value: "trackme.solutions" },
-                ].map((m) => (
-                  <div key={m.label} className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
-                    <div className="text-[11px] text-neutral-400">{m.label}</div>
-                    <div className="mt-2 text-sm text-white">{m.value}</div>
-                  </div>
-                ))}
+                {copy.productMetrics.map((m) => {
+                  const value =
+                    m.label === copy.billing
+                      ? `${usd(featured.priceUsdYearly)} ${m.value}`
+                      : m.value
+
+                  return (
+                    <div key={m.label} className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
+                      <div className="text-[11px] text-neutral-400">{m.label}</div>
+                      <div className="mt-2 text-sm text-white">{value}</div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </Card>
@@ -261,8 +460,8 @@ export default function ShopPage() {
             <Card className="p-6 sm:p-7">
               <div className="flex items-end justify-between gap-4">
                 <div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-white">More Products</h3>
-                  <p className="mt-1 text-sm text-neutral-400">Additional modules (future-ready).</p>
+                  <h3 className="text-lg sm:text-xl font-semibold text-white">{copy.moreProducts}</h3>
+                  <p className="mt-1 text-sm text-neutral-400">{copy.moreProductsDescription}</p>
                 </div>
               </div>
 
@@ -279,7 +478,7 @@ export default function ShopPage() {
                           <div className="mt-1 text-xs text-neutral-400">{p.tag}</div>
                         </div>
                         <div className="text-right">
-                          <div className="text-xs text-neutral-400">Yearly</div>
+                          <div className="text-xs text-neutral-400">{copy.yearly}</div>
                           <div className="mt-1 text-sm text-white">{usd(p.priceUsdYearly)}</div>
                         </div>
                       </div>
@@ -289,10 +488,10 @@ export default function ShopPage() {
 
                       <div className="mt-4 flex gap-3">
                         <button onClick={() => addToCart(p.id)}>
-                          <Button className="glass-btn glass-shine">Add</Button>
+                          <Button className="glass-btn glass-shine">{copy.add}</Button>
                         </button>
                         <a href={p.href} target="_blank" rel="noreferrer">
-                          <Button className="glass-btn glass-btn-muted glass-shine">Open</Button>
+                          <Button className="glass-btn glass-btn-muted glass-shine">{copy.openProduct}</Button>
                         </a>
                       </div>
                     </div>
@@ -308,38 +507,30 @@ export default function ShopPage() {
           <Card className="p-6 sm:p-7">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <h3 className="text-lg font-semibold text-white">What you get</h3>
+                <h3 className="text-lg font-semibold text-white">{copy.whatYouGet}</h3>
                 <p className="mt-1 text-sm text-neutral-400">
-                  A clear path to tighter control and cleaner operations.
+                  {copy.whatYouGetDescription}
                 </p>
               </div>
               <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-400">
                 <span className="h-2 w-2 rounded-full bg-white/60" />
-                Verified
+                {copy.verified}
               </div>
             </div>
 
             <ul className="mt-5 space-y-2 text-sm text-neutral-300 leading-relaxed list-disc pl-5">
-              <li>Recipe costing and margin visibility</li>
-              <li>Inventory tracking and movement discipline</li>
-              <li>Operational clarity for teams and owners</li>
-              <li>Scales from single venue to multi-site</li>
+              {copy.benefits.map((benefit) => (
+                <li key={benefit}>{benefit}</li>
+              ))}
             </ul>
           </Card>
 
           <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Recommended for</h3>
-            <p className="mt-1 text-sm text-neutral-400">Roles that need fast, accurate numbers.</p>
+            <h3 className="text-lg font-semibold text-white">{copy.recommendedFor}</h3>
+            <p className="mt-1 text-sm text-neutral-400">{copy.recommendedDescription}</p>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              {[
-                "Executive Chefs",
-                "Sous Chefs",
-                "Restaurant Owners",
-                "Bar Managers",
-                "Hotel Operators",
-                "Cost Controllers",
-              ].map((c) => (
+              {copy.recommendedRoles.map((c) => (
                 <span
                   key={c}
                   className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-neutral-200"
@@ -351,32 +542,32 @@ export default function ShopPage() {
           </Card>
 
           <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Ready to explore?</h3>
+            <h3 className="text-lg font-semibold text-white">{copy.readyTitle}</h3>
             <p className="mt-2 text-sm text-neutral-300 leading-relaxed">
-              Add items to your cart, then continue to the platform:{" "}
-              <span className="text-white font-medium">{usd(featured.priceUsdYearly)} USD yearly</span>.
+              {copy.readyTextBefore}{" "}
+              <span className="text-white font-medium">{usd(featured.priceUsdYearly)} USD {copy.yearlyLower}</span>.
             </p>
 
             <div className="mt-5">
               <button onClick={() => setCartOpen(true)} className="w-full">
-                <Button className="glass-btn glass-shine w-full">Review Cart</Button>
+                <Button className="glass-btn glass-shine w-full">{copy.reviewCart}</Button>
               </button>
             </div>
 
             <p className="mt-3 text-xs text-neutral-400">
-              This cart is a UI experience (no payment processing on this page).
+              {copy.cartNotice}
             </p>
           </Card>
 
           <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Verify the product</h3>
-            <p className="mt-1 text-sm text-neutral-400">Watch a quick overview before you decide.</p>
+            <h3 className="text-lg font-semibold text-white">{copy.verifyProduct}</h3>
+            <p className="mt-1 text-sm text-neutral-400">{copy.verifyDescription}</p>
 
             <div className="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
               <div className="relative w-full pt-[56.25%]">
                 <iframe
                   src={youtubeEmbedSrc}
-                  title="Track Me Solutions demo"
+                  title={copy.youtubeTitle}
                   loading="lazy"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
@@ -393,7 +584,7 @@ export default function ShopPage() {
                 className="block"
               >
                 <Button className="glass-btn glass-btn-muted glass-shine w-full">
-                  Watch on YouTube
+                  {copy.watchYoutube}
                 </Button>
               </a>
             </div>
@@ -412,10 +603,10 @@ export default function ShopPage() {
           "flex items-center gap-3",
         ].join(" ")}
         style={{ bottom: 170 }} // keep above BMC and Register Today
-        aria-label="Open cart"
+        aria-label={copy.openCart}
       >
         <span aria-hidden className="text-base">🛒</span>
-        <span className="text-sm font-medium">Cart</span>
+        <span className="text-sm font-medium">{copy.cart}</span>
         <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] px-2 text-xs">
           {cartCount}
         </span>
@@ -439,15 +630,15 @@ export default function ShopPage() {
           "transition-transform duration-200",
           cartOpen ? "translate-x-0" : "translate-x-[110%]",
         ].join(" ")}
-        aria-label="Shopping cart"
+        aria-label={copy.shoppingCart}
       >
         <div className="glass-panel glass-shine h-full border-l border-white/10 flex flex-col">
           {/* drawer header */}
           <div className="p-5 border-b border-white/10 flex items-start justify-between gap-4">
             <div>
-              <div className="text-xs text-neutral-400">Shopping Cart</div>
+              <div className="text-xs text-neutral-400">{copy.shoppingCart}</div>
               <div className="mt-2 text-lg font-semibold text-white">
-                Items{" "}
+                {copy.items}{" "}
                 <span className="ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-2 text-xs text-neutral-200">
                   {cartCount}
                 </span>
@@ -458,7 +649,7 @@ export default function ShopPage() {
               onClick={() => setCartOpen(false)}
               className="rounded-xl px-3 py-2 text-white border border-white/15 bg-white/[0.04]
                          hover:bg-white/[0.08] hover:border-white/25 transition"
-              aria-label="Close cart"
+              aria-label={copy.closeCart}
             >
               ✕
             </button>
@@ -468,8 +659,8 @@ export default function ShopPage() {
           <div className="p-5 flex-1 overflow-auto">
             {cartLines.length === 0 ? (
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <div className="text-sm font-medium text-white">Your cart is empty</div>
-                <div className="mt-2 text-sm text-neutral-400">Add a product to see it here.</div>
+                <div className="text-sm font-medium text-white">{copy.emptyTitle}</div>
+                <div className="mt-2 text-sm text-neutral-400">{copy.emptyDescription}</div>
               </div>
             ) : (
               <div className="space-y-3">
@@ -494,7 +685,7 @@ export default function ShopPage() {
                         <div className="min-w-0">
                           <div className="text-sm font-medium text-white truncate">{l.product.name}</div>
                           <div className="mt-1 text-xs text-neutral-400">
-                            {l.product.priceUsdYearly > 0 ? `${usd(l.product.priceUsdYearly)} / year` : "TBA"}
+                            {l.product.priceUsdYearly > 0 ? `${usd(l.product.priceUsdYearly)} / ${copy.year}` : copy.tba}
                           </div>
                         </div>
 
@@ -508,18 +699,18 @@ export default function ShopPage() {
                           type="button"
                           onClick={() => dec(l.product.id)}
                           className="h-9 w-10 rounded-xl border border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08] transition"
-                          aria-label="Decrease quantity"
+                          aria-label={copy.decreaseQuantity}
                         >
                           −
                         </button>
-                        <span className="min-w-8 text-center text-sm text-white" aria-label={`Quantity ${l.qty}`}>
+                        <span className="min-w-8 text-center text-sm text-white" aria-label={`${copy.quantity} ${l.qty}`}>
                           {l.qty}
                         </span>
                         <button
                           type="button"
                           onClick={() => inc(l.product.id)}
                           className="h-9 w-10 rounded-xl border border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08] transition"
-                          aria-label="Increase quantity"
+                          aria-label={copy.increaseQuantity}
                         >
                           +
                         </button>
@@ -528,9 +719,9 @@ export default function ShopPage() {
                           type="button"
                           onClick={() => remove(l.product.id)}
                           className="ml-auto rounded-xl px-3 py-2 border border-white/10 bg-white/[0.03] text-xs text-neutral-200 hover:bg-white/[0.07] transition"
-                          aria-label="Remove item"
+                          aria-label={copy.remove}
                         >
-                          Remove
+                          {copy.remove}
                         </button>
                       </div>
                     </div>
@@ -543,7 +734,7 @@ export default function ShopPage() {
           {/* drawer footer */}
           <div className="p-5 border-t border-white/10 space-y-3">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-neutral-300">Subtotal</div>
+              <div className="text-sm text-neutral-300">{copy.subtotal}</div>
               <div className="text-lg font-semibold text-white">{usd(subtotal)}</div>
             </div>
 
@@ -555,16 +746,16 @@ export default function ShopPage() {
               href={featured.href}
               target="_blank"
               rel="noreferrer"
-              aria-label="Continue to platform"
+              aria-label={copy.continuePlatform}
               onClick={(e) => {
                 if (cartLines.length === 0) e.preventDefault()
               }}
             >
-              <Button className="glass-btn glass-shine w-full">Continue</Button>
+              <Button className="glass-btn glass-shine w-full">{copy.continue}</Button>
             </a>
 
             <div className="text-xs text-neutral-400">
-              This cart is a UI experience (no payment processing on this page).
+              {copy.cartNotice}
             </div>
           </div>
         </div>
