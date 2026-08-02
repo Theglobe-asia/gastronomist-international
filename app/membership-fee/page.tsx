@@ -6,8 +6,80 @@ import Script from "next/script"
 import Link from "next/link"
 import Card from "@/components/ui/Card"
 import Button from "@/components/ui/Button"
+import { useLanguage } from "@/components/LanguageProvider"
+
+const membershipFeeCopy = {
+  en: {
+    eyebrow: "Membership Fee • Final Step",
+    titlePrefix: "Welcome to",
+    titleAccent: "Gastronomist International",
+    description:
+      "Your application was submitted successfully. To become an official member, please complete the membership fee process below.",
+    backHome: "Back to Home",
+    aboutMembership: "About Membership",
+
+    includesTitle: "Membership Includes",
+    includesBadge: "Official Benefits",
+    includesItems: [
+      "Shipping of the official medal",
+      "Official logo access (membership recognition)",
+      "Certificate of membership",
+      "Social media publication recognizing your membership",
+    ],
+
+    paymentTitle: "Complete Your Membership Fee",
+    paymentDescription: "Secure checkout powered by Stripe.",
+    securePayment: "Secure Payment",
+    afterPayment:
+      "After payment, keep an eye on your email for confirmation and next steps. If you need support, contact us via the Register widget.",
+
+    importantTitle: "Important",
+    importantDescription:
+      "Membership becomes official after the membership fee is completed. This helps us prepare and ship your medal, certificate, and publish your recognition across our channels.",
+    worldwide: "Worldwide",
+    globalNetwork: "Global Network",
+    official: "Official",
+    recognition: "Recognition",
+  },
+
+  ru: {
+    eyebrow: "Членский взнос • финальный шаг",
+    titlePrefix: "Добро пожаловать в",
+    titleAccent: "Gastronomist International",
+    description:
+      "Ваша заявка успешно отправлена. Чтобы стать официальным членом, пожалуйста, завершите процесс оплаты членского взноса ниже.",
+    backHome: "Назад на главную",
+    aboutMembership: "О членстве",
+
+    includesTitle: "Что входит в членство",
+    includesBadge: "Официальные преимущества",
+    includesItems: [
+      "Доставка официальной медали",
+      "Доступ к официальному логотипу для признания членства",
+      "Сертификат членства",
+      "Публикация в социальных сетях с признанием вашего членства",
+    ],
+
+    paymentTitle: "Завершите оплату членского взноса",
+    paymentDescription: "Безопасная оплата через Stripe.",
+    securePayment: "Безопасная оплата",
+    afterPayment:
+      "После оплаты следите за своей электронной почтой для подтверждения и дальнейших шагов. Если вам нужна поддержка, свяжитесь с нами через виджет регистрации.",
+
+    importantTitle: "Важно",
+    importantDescription:
+      "Членство становится официальным после завершения оплаты членского взноса. Это помогает нам подготовить и отправить вашу медаль, сертификат и опубликовать ваше признание на наших каналах.",
+    worldwide: "Весь мир",
+    globalNetwork: "Глобальная сеть",
+    official: "Официально",
+    recognition: "Признание",
+  },
+}
 
 export default function MembershipFeePage() {
+  const { language } = useLanguage()
+  const copy = membershipFeeCopy[language]
+
   return (
     <main className="container py-12 sm:py-16 space-y-10">
       {/* Local bloom for glass depth */}
@@ -32,27 +104,30 @@ export default function MembershipFeePage() {
           <div className="lg:col-span-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-neutral-200">
               <span className="h-2 w-2 rounded-full bg-white/70" />
-              Membership Fee • Final Step
+              {copy.eyebrow}
             </div>
 
             <h1 className="mt-5 text-4xl sm:text-5xl font-bold text-white leading-tight">
-              Welcome to{" "}
+              {copy.titlePrefix}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
-                Gastronomist International
+                {copy.titleAccent}
               </span>
             </h1>
 
             <p className="mt-4 text-neutral-300 leading-relaxed max-w-3xl">
-              Your application was submitted successfully. To become an official member, please complete the
-              membership fee process below.
+              {copy.description}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href="/">
-                <Button className="glass-btn glass-btn-muted glass-shine">Back to Home</Button>
+                <Button className="glass-btn glass-btn-muted glass-shine">
+                  {copy.backHome}
+                </Button>
               </Link>
               <Link href="/about">
-                <Button className="glass-btn glass-shine">About Membership</Button>
+                <Button className="glass-btn glass-shine">
+                  {copy.aboutMembership}
+                </Button>
               </Link>
             </div>
           </div>
@@ -61,23 +136,23 @@ export default function MembershipFeePage() {
           <div className="lg:col-span-4">
             <Card className="p-6 sm:p-7">
               <div className="flex items-center justify-between gap-3">
-                <div className="text-sm font-medium text-white">Membership Includes</div>
-                <div className="text-xs text-neutral-400">Official Benefits</div>
+                <div className="text-sm font-medium text-white">
+                  {copy.includesTitle}
+                </div>
+                <div className="text-xs text-neutral-400">
+                  {copy.includesBadge}
+                </div>
               </div>
 
               <ul className="mt-5 space-y-3 text-sm text-neutral-300 leading-relaxed">
-                <li className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  Shipping of the official medal
-                </li>
-                <li className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  Official logo access (membership recognition)
-                </li>
-                <li className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  Certificate of membership
-                </li>
-                <li className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  Social media publication recognizing your membership
-                </li>
+                {copy.includesItems.map((item) => (
+                  <li
+                    key={item}
+                    className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3"
+                  >
+                    {item}
+                  </li>
+                ))}
               </ul>
             </Card>
           </div>
@@ -91,15 +166,15 @@ export default function MembershipFeePage() {
             <div className="flex items-end justify-between gap-4">
               <div>
                 <h2 className="text-xl sm:text-2xl font-semibold text-white">
-                  Complete Your Membership Fee
+                  {copy.paymentTitle}
                 </h2>
                 <p className="mt-1 text-sm text-neutral-400">
-                  Secure checkout powered by Stripe.
+                  {copy.paymentDescription}
                 </p>
               </div>
               <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-400">
                 <span className="h-2 w-2 rounded-full bg-white/60" />
-                Secure Payment
+                {copy.securePayment}
               </div>
             </div>
 
@@ -111,8 +186,7 @@ export default function MembershipFeePage() {
             </div>
 
             <p className="mt-4 text-xs text-neutral-400 leading-relaxed">
-              After payment, keep an eye on your email for confirmation and next steps. If you need support,
-              contact us via the Register widget.
+              {copy.afterPayment}
             </p>
           </Card>
         </div>
@@ -120,20 +194,29 @@ export default function MembershipFeePage() {
         {/* Right: reassurance */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="p-6 sm:p-7">
-            <h3 className="text-lg font-semibold text-white">Important</h3>
+            <h3 className="text-lg font-semibold text-white">
+              {copy.importantTitle}
+            </h3>
             <p className="mt-2 text-sm text-neutral-300 leading-relaxed">
-              Membership becomes official after the membership fee is completed. This helps us prepare and ship
-              your medal, certificate, and publish your recognition across our channels.
+              {copy.importantDescription}
             </p>
 
             <div className="mt-5 grid grid-cols-2 gap-3">
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                <div className="text-sm font-semibold text-white">Worldwide</div>
-                <div className="mt-1 text-[11px] text-neutral-400">Global Network</div>
+                <div className="text-sm font-semibold text-white">
+                  {copy.worldwide}
+                </div>
+                <div className="mt-1 text-[11px] text-neutral-400">
+                  {copy.globalNetwork}
+                </div>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                <div className="text-sm font-semibold text-white">Official</div>
-                <div className="mt-1 text-[11px] text-neutral-400">Recognition</div>
+                <div className="text-sm font-semibold text-white">
+                  {copy.official}
+                </div>
+                <div className="mt-1 text-[11px] text-neutral-400">
+                  {copy.recognition}
+                </div>
               </div>
             </div>
           </Card>
