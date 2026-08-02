@@ -49,12 +49,12 @@ export default function Header() {
           }}
         />
 
-        <div className="container relative flex h-16 items-center justify-between px-4">
+        <div className="container relative flex h-16 items-center justify-between gap-2 px-3 sm:px-4">
           <Link
             href="/"
-            className="flex items-center gap-3 font-bold tracking-wide text-white transition hover:text-yellow-300"
+            className="flex min-w-0 flex-1 items-center gap-3 font-bold tracking-wide text-white transition hover:text-yellow-300 md:flex-none"
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
+            <span className="block max-w-[118px] truncate text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200 sm:max-w-[260px] md:max-w-none">
               {t("brand.name")}
             </span>
           </Link>
@@ -88,14 +88,14 @@ export default function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden sm:inline-flex items-center rounded-xl border border-yellow-400/20 bg-white/[0.04] p-1">
+          <div className="flex shrink-0 items-center gap-2">
+            <div className="inline-flex shrink-0 items-center rounded-xl border border-yellow-400/20 bg-white/[0.04] p-1">
               <button
                 type="button"
                 onClick={() => setLanguage("en")}
                 aria-label={t("common.switchToEnglish")}
                 className={`
-                  rounded-lg px-3 py-1.5 text-xs font-bold tracking-wide transition
+                  rounded-lg px-2 py-1.5 text-[11px] font-bold tracking-wide transition sm:px-3 sm:text-xs
                   ${
                     language === "en"
                       ? "bg-yellow-400 text-black"
@@ -111,7 +111,7 @@ export default function Header() {
                 onClick={() => setLanguage("ru")}
                 aria-label={t("common.switchToRussian")}
                 className={`
-                  rounded-lg px-3 py-1.5 text-xs font-bold tracking-wide transition
+                  rounded-lg px-2 py-1.5 text-[11px] font-bold tracking-wide transition sm:px-3 sm:text-xs
                   ${
                     language === "ru"
                       ? "bg-yellow-400 text-black"
@@ -127,13 +127,14 @@ export default function Header() {
               onClick={() => setOpen(true)}
               className="
                 md:hidden
-                inline-flex items-center gap-2
+                inline-flex shrink-0 items-center gap-2
                 rounded-xl border border-yellow-400/20
-                bg-white/[0.04] px-4 py-2
+                bg-white/[0.04] px-3 py-2
                 text-sm text-white
                 transition
                 hover:border-yellow-400/45
                 hover:bg-yellow-400/10
+                sm:px-4
               "
             >
               <HiOutlineUsers
