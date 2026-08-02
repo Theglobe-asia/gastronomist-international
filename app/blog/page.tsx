@@ -3,9 +3,75 @@
 
 import Link from "next/link"
 import { getSortedPosts } from "@/components/blog/posts"
+import { useLanguage } from "@/components/LanguageProvider"
+
+const blogIndexCopy = {
+  en: {
+    heroEyebrow: "Editorial Magazine • Global Culinary Stories",
+    heroTitle: "Gastronomist",
+    heroAccent: "Journal",
+    heroDescription:
+      "Membership welcomes, chef stories, international culinary recognition, and modern gastronomy features presented in a refined global editorial format.",
+    backHome: "Back to Home",
+    exploreChefs: "Explore Chefs",
+    publishing: "Publishing",
+    publishedPosts: "Published Posts",
+    worldwide: "Worldwide",
+    editorialReach: "Editorial Reach",
+    featuredStory: "Featured Story",
+    readStory: "Read Story",
+    aboutUs: "About Us",
+    latestPosts: "Latest Posts",
+    latestTitle: "Stories from the global culinary community.",
+    latestDescription: "All stories, sorted newest first.",
+    read: "Read →",
+    whatYouWillFind: "What You’ll Find",
+    sidebarTitle: "Editorial recognition with global reach.",
+    sidebarDescription:
+      "Follow stories about chefs, international features, modern gastronomy, member recognition, and official editorial updates.",
+    editorialStandard: "Editorial Standard",
+    editorialStandardText: "Magazine-style publishing",
+    globalStories: "Global Stories",
+    globalStoriesText: "Chefs and members worldwide",
+    recognition: "Recognition",
+    recognitionText: "Professional culinary visibility",
+  },
+  ru: {
+    heroEyebrow: "Редакционный журнал • мировые кулинарные истории",
+    heroTitle: "Gastronomist",
+    heroAccent: "Журнал",
+    heroDescription:
+      "Приветствия новых членов, истории шеф-поваров, международное кулинарное признание и материалы о современной гастрономии в изысканном глобальном редакционном формате.",
+    backHome: "Назад на главную",
+    exploreChefs: "Наши шеф-повара",
+    publishing: "Публикации",
+    publishedPosts: "Опубликованные материалы",
+    worldwide: "Весь мир",
+    editorialReach: "Редакционный охват",
+    featuredStory: "Избранная история",
+    readStory: "Читать историю",
+    aboutUs: "О нас",
+    latestPosts: "Последние публикации",
+    latestTitle: "Истории мирового кулинарного сообщества.",
+    latestDescription: "Все материалы отсортированы от новых к старым.",
+    read: "Читать →",
+    whatYouWillFind: "Что вы найдёте",
+    sidebarTitle: "Редакционное признание с мировым охватом.",
+    sidebarDescription:
+      "Следите за историями о шеф-поварах, международными материалами, современной гастрономией, признанием членов сообщества и официальными редакционными обновлениями.",
+    editorialStandard: "Редакционный стандарт",
+    editorialStandardText: "Публикации в журнальном стиле",
+    globalStories: "Мировые истории",
+    globalStoriesText: "Шеф-повара и участники по всему миру",
+    recognition: "Признание",
+    recognitionText: "Профессиональная кулинарная видимость",
+  },
+}
 
 export default function BlogIndexPage() {
-  const posts = getSortedPosts()
+  const { language } = useLanguage()
+  const copy = blogIndexCopy[language]
+  const posts = getSortedPosts(language)
   const featured = posts[0]
   const others = posts.slice(1)
 
@@ -13,32 +79,31 @@ export default function BlogIndexPage() {
     <main className="blog-page">
       <section className="blog-hero">
         <div className="blog-hero-copy">
-          <span className="blog-eyebrow">Editorial Magazine • Global Culinary Stories</span>
+          <span className="blog-eyebrow">{copy.heroEyebrow}</span>
           <h1>
-            Gastronomist <span>Journal</span>
+            {copy.heroTitle} <span>{copy.heroAccent}</span>
           </h1>
           <div className="blog-divider" />
           <p>
-            Membership welcomes, chef stories, international culinary recognition,
-            and modern gastronomy features presented in a refined global editorial format.
+            {copy.heroDescription}
           </p>
 
           <div className="blog-hero-links">
-            <Link href="/">Back to Home</Link>
-            <Link href="/chefs">Explore Chefs</Link>
+            <Link href="/">{copy.backHome}</Link>
+            <Link href="/chefs">{copy.exploreChefs}</Link>
           </div>
         </div>
 
         <div className="blog-publishing-card">
-          <span className="blog-eyebrow">Publishing</span>
+          <span className="blog-eyebrow">{copy.publishing}</span>
           <div className="blog-publishing-grid">
             <div>
               <strong>{posts.length}</strong>
-              <span>Published Posts</span>
+              <span>{copy.publishedPosts}</span>
             </div>
             <div>
-              <strong>Worldwide</strong>
-              <span>Editorial Reach</span>
+              <strong>{copy.worldwide}</strong>
+              <span>{copy.editorialReach}</span>
             </div>
           </div>
         </div>
@@ -50,7 +115,7 @@ export default function BlogIndexPage() {
             <img src={featured.banner} alt={featured.title} loading="lazy" />
             <div className="blog-featured-badge">
               <span />
-              Featured Story
+              {copy.featuredStory}
             </div>
           </div>
 
@@ -62,8 +127,8 @@ export default function BlogIndexPage() {
             <p>{featured.description}</p>
 
             <div className="blog-featured-actions">
-              <Link href={`/blog/${featured.slug}`}>Read Story</Link>
-              <Link href="/about">About Us</Link>
+              <Link href={`/blog/${featured.slug}`}>{copy.readStory}</Link>
+              <Link href="/about">{copy.aboutUs}</Link>
             </div>
 
             <div className="blog-tags">
@@ -78,9 +143,9 @@ export default function BlogIndexPage() {
       <section className="blog-layout">
         <div className="blog-posts-panel">
           <div className="blog-section-head">
-            <span className="blog-eyebrow">Latest Posts</span>
-            <h2>Stories from the global culinary community.</h2>
-            <p>All stories, sorted newest first.</p>
+            <span className="blog-eyebrow">{copy.latestPosts}</span>
+            <h2>{copy.latestTitle}</h2>
+            <p>{copy.latestDescription}</p>
           </div>
 
           <div className="blog-grid">
@@ -94,7 +159,7 @@ export default function BlogIndexPage() {
                   <span>{post.date}</span>
                   <h3>{post.title}</h3>
                   <p>{post.description}</p>
-                  <small>Read →</small>
+                  <small>{copy.read}</small>
                 </div>
               </Link>
             ))}
@@ -103,26 +168,25 @@ export default function BlogIndexPage() {
 
         <aside className="blog-sidebar">
           <article>
-            <span className="blog-eyebrow">What You’ll Find</span>
-            <h3>Editorial recognition with global reach.</h3>
+            <span className="blog-eyebrow">{copy.whatYouWillFind}</span>
+            <h3>{copy.sidebarTitle}</h3>
             <p>
-              Follow stories about chefs, international features, modern gastronomy,
-              member recognition, and official editorial updates.
+              {copy.sidebarDescription}
             </p>
           </article>
 
           <div className="blog-sidebar-list">
             <div>
-              <strong>Editorial Standard</strong>
-              <span>Magazine-style publishing</span>
+              <strong>{copy.editorialStandard}</strong>
+              <span>{copy.editorialStandardText}</span>
             </div>
             <div>
-              <strong>Global Stories</strong>
-              <span>Chefs and members worldwide</span>
+              <strong>{copy.globalStories}</strong>
+              <span>{copy.globalStoriesText}</span>
             </div>
             <div>
-              <strong>Recognition</strong>
-              <span>Professional culinary visibility</span>
+              <strong>{copy.recognition}</strong>
+              <span>{copy.recognitionText}</span>
             </div>
           </div>
         </aside>
