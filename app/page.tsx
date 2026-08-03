@@ -114,6 +114,119 @@ const MAP_COPY: Record<Language, Record<string, string>> = {
   },
 }
 
+
+const VERIFIER_COPY: Record<Language, any> = {
+  en: {
+    eyebrow: "Certificate Authenticity Verifier",
+    title: "Verify Official Certificate",
+    highlight: "Serial Number",
+    description:
+      "Enter the SN printed on the certificate seal to verify authenticity through the official Gastronomist International registry.",
+    placeholder: "Enter SN: GRU-001A",
+    button: "Verify Certificate",
+    verifyingButton: "Verifying…",
+    helper: "Verification uses a secure server check. Serial records are not exposed in the landing page code.",
+    sample: "Example format: GRU-001A",
+
+    modalEyebrow: "Official Verification",
+    modalTitle: "Scanning Certificate Registry",
+    modalDescription:
+      "Please wait while we validate the serial number, holder record, issue data, and current certificate status.",
+    close: "Close verification result",
+    verifyingStatus: "Verification in progress",
+    processing: "Processing official registry check",
+    completed: "Verification completed",
+    resultTitleVerified: "Verified & Authentic",
+    resultTitleExpired: "Certificate Expired",
+    resultTitleRevoked: "Certificate Revoked",
+    resultTitleInvalid: "Certificate Not Found",
+    resultTitleRateLimited: "Too Many Attempts",
+    resultTitleError: "Verification Unavailable",
+    resultMessageVerified:
+      "This certificate serial number matches an official Gastronomist International record.",
+    resultMessageExpired:
+      "This certificate exists in the official registry, but its current status is expired.",
+    resultMessageRevoked:
+      "This certificate exists in the official registry, but its current status is revoked.",
+    resultMessageInvalid:
+      "No official certificate record matched the serial number provided.",
+    resultMessageRateLimited:
+      "Too many verification attempts were detected. Please try again later.",
+    resultMessageError:
+      "The verification service is temporarily unavailable. Please try again shortly.",
+    holderName: "Certificate Holder",
+    certificateType: "Certificate Type",
+    serialNumber: "Serial Number",
+    issueDate: "Issue Date",
+    currentStatus: "Current Status",
+    tryAgain: "Verify Another Serial",
+    invalidInput: "Please enter a valid serial number.",
+
+    stages: [
+      "Reading serial number",
+      "Checking official registry",
+      "Validating holder record",
+      "Reviewing certificate status",
+      "Preparing verification result",
+    ],
+  },
+  ru: {
+    eyebrow: "Проверка подлинности сертификата",
+    title: "Проверить официальный",
+    highlight: "серийный номер",
+    description:
+      "Введите SN, указанный на печати сертификата, чтобы проверить подлинность через официальный реестр Gastronomist International.",
+    placeholder: "Введите SN: GRU-001A",
+    button: "Проверить сертификат",
+    verifyingButton: "Проверка…",
+    helper:
+      "Проверка выполняется через защищённый сервер. Серийные записи не раскрываются в коде главной страницы.",
+    sample: "Пример формата: GRU-001A",
+
+    modalEyebrow: "Официальная проверка",
+    modalTitle: "Сканирование реестра сертификатов",
+    modalDescription:
+      "Пожалуйста, подождите, пока мы проверяем серийный номер, запись владельца, дату выдачи и текущий статус сертификата.",
+    close: "Закрыть результат проверки",
+    verifyingStatus: "Проверка выполняется",
+    processing: "Обработка официальной проверки реестра",
+    completed: "Проверка завершена",
+    resultTitleVerified: "Подтверждено и подлинно",
+    resultTitleExpired: "Сертификат истёк",
+    resultTitleRevoked: "Сертификат отозван",
+    resultTitleInvalid: "Сертификат не найден",
+    resultTitleRateLimited: "Слишком много попыток",
+    resultTitleError: "Проверка недоступна",
+    resultMessageVerified:
+      "Этот серийный номер сертификата совпадает с официальной записью Gastronomist International.",
+    resultMessageExpired:
+      "Этот сертификат существует в официальном реестре, но его текущий статус истёк.",
+    resultMessageRevoked:
+      "Этот сертификат существует в официальном реестре, но его текущий статус отозван.",
+    resultMessageInvalid:
+      "Официальная запись сертификата не найдена по указанному серийному номеру.",
+    resultMessageRateLimited:
+      "Обнаружено слишком много попыток проверки. Пожалуйста, попробуйте позже.",
+    resultMessageError:
+      "Сервис проверки временно недоступен. Пожалуйста, попробуйте немного позже.",
+    holderName: "Владелец сертификата",
+    certificateType: "Тип сертификата",
+    serialNumber: "Серийный номер",
+    issueDate: "Дата выдачи",
+    currentStatus: "Текущий статус",
+    tryAgain: "Проверить другой номер",
+    invalidInput: "Пожалуйста, введите действительный серийный номер.",
+
+    stages: [
+      "Чтение серийного номера",
+      "Проверка официального реестра",
+      "Проверка записи владельца",
+      "Проверка статуса сертификата",
+      "Подготовка результата проверки",
+    ],
+  },
+}
+
 const FEATURES_BY_LANGUAGE: Record<Language, [string, string][]> = {
   en: [
     ["Global Culinary Network", "Connecting chefs, culinary leaders, educators, and hospitality professionals worldwide."],
@@ -710,6 +823,268 @@ function LatestFeaturePopup({
   )
 }
 
+
+function CertificateVerifier() {
+  const { language } = useLanguage()
+  const copy = VERIFIER_COPY[language] || VERIFIER_COPY.en
+  const [serialNumber, setSerialNumber] = useState("")
+  const [modalOpen, setModalOpen] = useState(false)
+  const [verifying, setVerifying] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [stageIndex, setStageIndex] = useState(0)
+  const [result, setResult] = useState<any>(null)
+  const [verificationStartedAt, setVerificationStartedAt] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!modalOpen || !verifying || !verificationStartedAt) return
+
+    const timer = window.setInterval(() => {
+      const elapsed = Date.now() - verificationStartedAt
+      const nextProgress = Math.min(Math.round((elapsed / 10000) * 100), 99)
+      const nextStage = Math.min(
+        Math.floor((elapsed / 10000) * copy.stages.length),
+        copy.stages.length - 1
+      )
+
+      setProgress(nextProgress)
+      setStageIndex(nextStage)
+    }, 120)
+
+    return () => window.clearInterval(timer)
+  }, [copy.stages.length, modalOpen, verifying, verificationStartedAt])
+
+  const resetVerifier = () => {
+    setResult(null)
+    setProgress(0)
+    setStageIndex(0)
+    setVerificationStartedAt(null)
+  }
+
+  const closeVerifier = () => {
+    if (verifying) return
+
+    setModalOpen(false)
+    resetVerifier()
+  }
+
+  const getResultTitle = (resultType: string) => {
+    if (resultType === "verified") return copy.resultTitleVerified
+    if (resultType === "expired") return copy.resultTitleExpired
+    if (resultType === "revoked") return copy.resultTitleRevoked
+    if (resultType === "rate_limited") return copy.resultTitleRateLimited
+    if (resultType === "server_error") return copy.resultTitleError
+
+    return copy.resultTitleInvalid
+  }
+
+  const getResultMessage = (resultType: string) => {
+    if (resultType === "verified") return copy.resultMessageVerified
+    if (resultType === "expired") return copy.resultMessageExpired
+    if (resultType === "revoked") return copy.resultMessageRevoked
+    if (resultType === "rate_limited") return copy.resultMessageRateLimited
+    if (resultType === "server_error") return copy.resultMessageError
+
+    return copy.resultMessageInvalid
+  }
+
+  const verifyCertificate = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const normalizedSerial = serialNumber.trim().toUpperCase().replace(/\s+/g, "")
+
+    if (!/^[A-Z0-9-]{3,40}$/.test(normalizedSerial)) {
+      setModalOpen(true)
+      setVerifying(false)
+      setProgress(100)
+      setResult({
+        result: "invalid",
+        message: copy.invalidInput,
+      })
+      return
+    }
+
+    setSerialNumber(normalizedSerial)
+    setModalOpen(true)
+    setVerifying(true)
+    setResult(null)
+    setProgress(0)
+    setStageIndex(0)
+    setVerificationStartedAt(Date.now())
+
+    const minimumWait = new Promise((resolve) => window.setTimeout(resolve, 10000))
+
+    try {
+      const request = fetch("/api/verify-certificate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          serialNumber: normalizedSerial,
+        }),
+      }).then(async (response) => {
+        const data = await response.json().catch(() => ({}))
+
+        return {
+          response,
+          data,
+        }
+      })
+
+      const [{ response, data }] = await Promise.all([request, minimumWait])
+
+      setProgress(100)
+      setStageIndex(copy.stages.length - 1)
+
+      if (!response.ok && data?.result !== "rate_limited") {
+        setResult({
+          result: data?.result || "server_error",
+          message: data?.message || copy.resultMessageError,
+        })
+      } else {
+        setResult(data)
+      }
+    } catch {
+      await minimumWait
+
+      setProgress(100)
+      setStageIndex(copy.stages.length - 1)
+      setResult({
+        result: "server_error",
+        message: copy.resultMessageError,
+      })
+    } finally {
+      setVerifying(false)
+      setVerificationStartedAt(null)
+    }
+  }
+
+  const resultType = result?.result || "invalid"
+  const certificate = result?.certificate
+
+  return (
+    <section className="gi-verifier-section" id="certificate-verifier">
+      <div className="gi-verifier-panel">
+        <div className="gi-verifier-copy">
+          <span className="gi-eyebrow">{copy.eyebrow}</span>
+          <h2>
+            {copy.title} <span>{copy.highlight}</span>
+          </h2>
+          <p>{copy.description}</p>
+        </div>
+
+        <form className="gi-verifier-form" onSubmit={verifyCertificate}>
+          <label htmlFor="certificate-sn" className="sr-only">
+            {copy.serialNumber}
+          </label>
+          <input
+            id="certificate-sn"
+            type="text"
+            value={serialNumber}
+            onChange={(event) => setSerialNumber(event.target.value)}
+            placeholder={copy.placeholder}
+            autoComplete="off"
+            spellCheck={false}
+          />
+
+          <button type="submit" disabled={verifying}>
+            {verifying ? copy.verifyingButton : copy.button}
+          </button>
+
+          <small>{copy.sample}</small>
+          <p>{copy.helper}</p>
+        </form>
+      </div>
+
+      {modalOpen ? (
+        <div className="gi-verifier-modal-wrap" role="dialog" aria-modal="true">
+          <div className="gi-verifier-modal-backdrop" onClick={closeVerifier} />
+
+          <div className="gi-verifier-modal">
+            <button
+              type="button"
+              className="gi-verifier-close"
+              onClick={closeVerifier}
+              aria-label={copy.close}
+              disabled={verifying}
+            >
+              ×
+            </button>
+
+            <div className={`gi-scanner-emblem ${resultType}`}>
+              <div className="gi-scanner-ring" />
+              <div className="gi-scanner-line" />
+              <span>{verifying ? "SN" : resultType === "verified" ? "✓" : "!"}</span>
+            </div>
+
+            <span className="gi-eyebrow">{copy.modalEyebrow}</span>
+            <h3>{verifying ? copy.modalTitle : getResultTitle(resultType)}</h3>
+            <p>
+              {verifying
+                ? copy.modalDescription
+                : result?.message || getResultMessage(resultType)}
+            </p>
+
+            <div className="gi-verifier-progress">
+              <div
+                className="gi-verifier-progress-fill"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <div className="gi-verifier-stage">
+              <strong>{verifying ? copy.verifyingStatus : copy.completed}</strong>
+              <span>
+                {verifying
+                  ? copy.stages[stageIndex] || copy.processing
+                  : `${progress}%`}
+              </span>
+            </div>
+
+            {certificate ? (
+              <div className="gi-verifier-result-grid">
+                <div>
+                  <small>{copy.holderName}</small>
+                  <strong>{certificate.holderName}</strong>
+                </div>
+                <div>
+                  <small>{copy.certificateType}</small>
+                  <strong>{certificate.certificateType}</strong>
+                </div>
+                <div>
+                  <small>{copy.serialNumber}</small>
+                  <strong>{certificate.serialNumber}</strong>
+                </div>
+                <div>
+                  <small>{copy.issueDate}</small>
+                  <strong>{certificate.issueDate}</strong>
+                </div>
+                <div>
+                  <small>{copy.currentStatus}</small>
+                  <strong>{certificate.status}</strong>
+                </div>
+              </div>
+            ) : null}
+
+            {!verifying ? (
+              <button
+                type="button"
+                className="gi-verifier-again"
+                onClick={() => {
+                  setModalOpen(false)
+                  resetVerifier()
+                }}
+              >
+                {copy.tryAgain}
+              </button>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+    </section>
+  )
+}
+
 export default function Page() {
   const { language } = useLanguage()
   const copy = HOME_COPY[language] || HOME_COPY.en
@@ -768,6 +1143,8 @@ export default function Page() {
           </article>
         ))}
       </section>
+
+      <CertificateVerifier />
 
       <section id="global-network" className="gi-network-panel">
         <div className="gi-network-info">
@@ -2108,6 +2485,381 @@ export default function Page() {
           }
         }
 
+
+        .gi-verifier-section {
+          width: min(1440px, calc(100% - 40px));
+          margin: 0 auto 52px;
+        }
+
+        .gi-verifier-panel {
+          position: relative;
+          overflow: hidden;
+          display: grid;
+          grid-template-columns: 1fr 0.82fr;
+          gap: 26px;
+          align-items: center;
+          border: 1px solid rgba(217, 163, 49, 0.3);
+          border-radius: 26px;
+          padding: 30px;
+          background:
+            radial-gradient(760px 280px at 14% 0%, rgba(217, 163, 49, 0.16), transparent 64%),
+            radial-gradient(620px 260px at 100% 12%, rgba(255, 238, 177, 0.09), transparent 64%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 30px 100px rgba(0, 0, 0, 0.48);
+          backdrop-filter: blur(18px);
+        }
+
+        .gi-verifier-panel::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            120deg,
+            transparent 8%,
+            rgba(255, 238, 177, 0.08) 44%,
+            transparent 74%
+          );
+          transform: translateX(-95%);
+          animation: giVerifierPanelShine 6.8s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .gi-verifier-copy,
+        .gi-verifier-form {
+          position: relative;
+          z-index: 2;
+        }
+
+        .gi-verifier-copy h2 {
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(34px, 4vw, 56px);
+          font-weight: 500;
+          line-height: 1.05;
+          letter-spacing: -0.045em;
+        }
+
+        .gi-verifier-copy h2 span {
+          color: #d9a331;
+        }
+
+        .gi-verifier-copy p {
+          max-width: 720px;
+          margin-top: 16px;
+          color: rgba(247, 240, 223, 0.76);
+          line-height: 1.72;
+        }
+
+        .gi-verifier-form {
+          display: grid;
+          gap: 12px;
+          border: 1px solid rgba(217, 163, 49, 0.24);
+          border-radius: 22px;
+          padding: 20px;
+          background: rgba(0, 0, 0, 0.28);
+        }
+
+        .gi-verifier-form input {
+          width: 100%;
+          min-height: 54px;
+          border: 1px solid rgba(217, 163, 49, 0.28);
+          border-radius: 16px;
+          padding: 0 16px;
+          background: rgba(0, 0, 0, 0.42);
+          color: #fff;
+          font-size: 15px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          outline: none;
+          transition:
+            border-color 0.24s ease,
+            background 0.24s ease,
+            box-shadow 0.24s ease;
+        }
+
+        .gi-verifier-form input::placeholder {
+          color: rgba(247, 240, 223, 0.42);
+        }
+
+        .gi-verifier-form input:focus {
+          border-color: rgba(244, 217, 138, 0.86);
+          background: rgba(0, 0, 0, 0.56);
+          box-shadow: 0 0 0 4px rgba(217, 163, 49, 0.1);
+        }
+
+        .gi-verifier-form button,
+        .gi-verifier-again {
+          min-height: 48px;
+          border: 1px solid rgba(217, 163, 49, 0.56);
+          border-radius: 16px;
+          background: linear-gradient(135deg, #d9a331, #f4d98a);
+          color: #090909;
+          cursor: pointer;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          transition:
+            transform 0.24s ease,
+            box-shadow 0.24s ease,
+            opacity 0.24s ease;
+        }
+
+        .gi-verifier-form button:hover,
+        .gi-verifier-again:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 18px 38px rgba(217, 163, 49, 0.2);
+        }
+
+        .gi-verifier-form button:disabled,
+        .gi-verifier-close:disabled {
+          cursor: not-allowed;
+          opacity: 0.62;
+        }
+
+        .gi-verifier-form small {
+          color: rgba(244, 217, 138, 0.82);
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .gi-verifier-form p {
+          color: rgba(247, 240, 223, 0.6);
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .gi-verifier-modal-wrap,
+        .gi-verifier-modal-backdrop {
+          position: fixed;
+          inset: 0;
+        }
+
+        .gi-verifier-modal-wrap {
+          z-index: 110;
+          display: grid;
+          place-items: center;
+          padding: 18px;
+        }
+
+        .gi-verifier-modal-backdrop {
+          background: rgba(0, 0, 0, 0.78);
+          backdrop-filter: blur(12px);
+        }
+
+        .gi-verifier-modal {
+          position: relative;
+          width: min(720px, 100%);
+          max-height: 92vh;
+          overflow: auto;
+          border: 1px solid rgba(217, 163, 49, 0.32);
+          border-radius: 28px;
+          padding: 30px;
+          background:
+            radial-gradient(620px 260px at 50% 0%, rgba(217, 163, 49, 0.18), transparent 62%),
+            linear-gradient(180deg, rgba(18, 15, 10, 0.98), rgba(5, 5, 5, 0.96));
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 34px 120px rgba(0, 0, 0, 0.72),
+            0 0 60px rgba(217, 163, 49, 0.14);
+          text-align: center;
+        }
+
+        .gi-verifier-close {
+          position: absolute;
+          right: 16px;
+          top: 16px;
+          width: 36px;
+          height: 36px;
+          border: 1px solid rgba(217, 163, 49, 0.26);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.045);
+          color: rgba(247, 240, 223, 0.86);
+          cursor: pointer;
+          font-size: 22px;
+          line-height: 1;
+        }
+
+        .gi-scanner-emblem {
+          position: relative;
+          width: 132px;
+          height: 132px;
+          margin: 6px auto 22px;
+          display: grid;
+          place-items: center;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 999px;
+          background:
+            radial-gradient(circle, rgba(217, 163, 49, 0.18), transparent 62%),
+            rgba(255, 255, 255, 0.035);
+          overflow: hidden;
+        }
+
+        .gi-scanner-emblem.verified {
+          border-color: rgba(93, 255, 168, 0.52);
+          box-shadow: 0 0 42px rgba(93, 255, 168, 0.14);
+        }
+
+        .gi-scanner-emblem.expired,
+        .gi-scanner-emblem.revoked,
+        .gi-scanner-emblem.invalid,
+        .gi-scanner-emblem.not_found,
+        .gi-scanner-emblem.rate_limited,
+        .gi-scanner-emblem.server_error {
+          border-color: rgba(255, 102, 102, 0.52);
+          box-shadow: 0 0 42px rgba(255, 102, 102, 0.14);
+        }
+
+        .gi-scanner-ring {
+          position: absolute;
+          inset: 14px;
+          border: 1px dashed rgba(244, 217, 138, 0.44);
+          border-radius: 999px;
+          animation: giVerifierSpin 5.8s linear infinite;
+        }
+
+        .gi-scanner-line {
+          position: absolute;
+          left: 18px;
+          right: 18px;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, #f4d98a, transparent);
+          box-shadow: 0 0 18px rgba(244, 217, 138, 0.56);
+          animation: giVerifierScan 1.5s ease-in-out infinite;
+        }
+
+        .gi-scanner-emblem span {
+          position: relative;
+          z-index: 2;
+          color: #f4d98a;
+          font-size: 26px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+        }
+
+        .gi-verifier-modal h3 {
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(30px, 4vw, 48px);
+          font-weight: 500;
+          line-height: 1.05;
+          letter-spacing: -0.045em;
+        }
+
+        .gi-verifier-modal p {
+          max-width: 560px;
+          margin: 14px auto 0;
+          color: rgba(247, 240, 223, 0.74);
+          line-height: 1.72;
+        }
+
+        .gi-verifier-progress {
+          position: relative;
+          height: 12px;
+          margin-top: 24px;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.25);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.045);
+        }
+
+        .gi-verifier-progress-fill {
+          height: 100%;
+          border-radius: inherit;
+          background: linear-gradient(90deg, #d9a331, #f4d98a, #fff0ad);
+          box-shadow: 0 0 18px rgba(244, 217, 138, 0.32);
+          transition: width 0.22s linear;
+        }
+
+        .gi-verifier-stage {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+          margin-top: 12px;
+          color: rgba(247, 240, 223, 0.74);
+          font-size: 12px;
+        }
+
+        .gi-verifier-stage strong {
+          color: #f4d98a;
+        }
+
+        .gi-verifier-result-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+          margin-top: 24px;
+          text-align: left;
+        }
+
+        .gi-verifier-result-grid div {
+          border: 1px solid rgba(217, 163, 49, 0.2);
+          border-radius: 16px;
+          padding: 14px;
+          background: rgba(255, 255, 255, 0.035);
+        }
+
+        .gi-verifier-result-grid small,
+        .gi-verifier-result-grid strong {
+          display: block;
+        }
+
+        .gi-verifier-result-grid small {
+          margin-bottom: 6px;
+          color: rgba(247, 240, 223, 0.54);
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+        }
+
+        .gi-verifier-result-grid strong {
+          color: #fff;
+          line-height: 1.35;
+        }
+
+        .gi-verifier-again {
+          margin-top: 24px;
+          padding: 0 18px;
+        }
+
+        @keyframes giVerifierPanelShine {
+          0%, 45% {
+            opacity: 0;
+            transform: translateX(-95%);
+          }
+
+          55% {
+            opacity: 1;
+          }
+
+          100% {
+            opacity: 0;
+            transform: translateX(92%);
+          }
+        }
+
+        @keyframes giVerifierSpin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes giVerifierScan {
+          0%, 100% {
+            top: 22px;
+            opacity: 0.3;
+          }
+
+          50% {
+            top: calc(100% - 24px);
+            opacity: 1;
+          }
+        }
+
         @keyframes giFeaturePopupIn {
           from {
             opacity: 0;
@@ -2306,6 +3058,33 @@ export default function Page() {
           }
         }
 
+
+        @media (max-width: 960px) {
+          .gi-verifier-panel {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 720px) {
+          .gi-verifier-section {
+            width: min(100% - 24px, 1440px);
+          }
+
+          .gi-verifier-panel,
+          .gi-verifier-modal {
+            padding: 22px;
+            border-radius: 22px;
+          }
+
+          .gi-verifier-result-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .gi-verifier-stage {
+            flex-direction: column;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .gi-live-dot,
           .gi-marker-ring,
@@ -2321,14 +3100,20 @@ export default function Page() {
           .gi-feature-popup-glow,
           .gi-feature-popup-mark span,
           .gi-member-pulse-ring,
-          .gi-member-pulse-core {
+          .gi-member-pulse-core,
+          .gi-verifier-panel::before,
+          .gi-scanner-ring,
+          .gi-scanner-line {
             animation: none !important;
           }
 
           .gi-carousel-card,
           .gi-benefit-spin-card,
           .gi-feature-popup-close,
-          .gi-feature-popup-content a {
+          .gi-feature-popup-content a,
+          .gi-verifier-form button,
+          .gi-verifier-again,
+          .gi-verifier-progress-fill {
             transition: none !important;
           }
         }
