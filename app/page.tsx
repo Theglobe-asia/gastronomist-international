@@ -122,11 +122,8 @@ const VERIFIER_COPY: Record<Language, any> = {
     highlight: "Serial Number",
     description:
       "Enter the SN printed on the certificate seal to verify authenticity through the official Gastronomist International registry.",
-    placeholder: "Enter SN: GRU-001A",
     button: "Verify Certificate",
     verifyingButton: "Verifying…",
-    helper: "Verification uses a secure server check. Serial records are not exposed in the landing page code.",
-    sample: "Example format: GRU-001A",
 
     modalEyebrow: "Official Verification",
     modalTitle: "Scanning Certificate Registry",
@@ -176,12 +173,8 @@ const VERIFIER_COPY: Record<Language, any> = {
     highlight: "серийный номер",
     description:
       "Введите SN, указанный на печати сертификата, чтобы проверить подлинность через официальный реестр Gastronomist International.",
-    placeholder: "Введите SN: GRU-001A",
     button: "Проверить сертификат",
     verifyingButton: "Проверка…",
-    helper:
-      "Проверка выполняется через защищённый сервер. Серийные записи не раскрываются в коде главной страницы.",
-    sample: "Пример формата: GRU-001A",
 
     modalEyebrow: "Официальная проверка",
     modalTitle: "Сканирование реестра сертификатов",
@@ -982,7 +975,6 @@ function CertificateVerifier() {
             type="text"
             value={serialNumber}
             onChange={(event) => setSerialNumber(event.target.value)}
-            placeholder={copy.placeholder}
             autoComplete="off"
             spellCheck={false}
           />
@@ -991,8 +983,6 @@ function CertificateVerifier() {
             {verifying ? copy.verifyingButton : copy.button}
           </button>
 
-          <small>{copy.sample}</small>
-          <p>{copy.helper}</p>
         </form>
       </div>
 
