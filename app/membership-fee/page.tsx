@@ -178,19 +178,25 @@ export default function MembershipFeePage() {
               </div>
             </div>
 
-            <div className="mt-6 space-y-5">
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-                <stripe-buy-button
-                  buy-button-id="buy_btn_1UADxxQKagTX2NV7ZJHxf7zD"
-                  publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
-                />
-              </div>
+            <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                <div className="min-w-0 overflow-hidden rounded-xl border border-white/10 bg-black/10 px-3 py-3">
+                  <div className="flex justify-center scale-[0.92] origin-center">
+                    <stripe-buy-button
+                      buy-button-id="buy_btn_1UADxxQKagTX2NV7ZJHxf7zD"
+                      publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
+                    />
+                  </div>
+                </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-                <stripe-buy-button
-                  buy-button-id="buy_btn_1UAEKzQKagTX2NV7SywWrbFo"
-                  publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
-                />
+                <div className="min-w-0 overflow-hidden rounded-xl border border-white/10 bg-black/10 px-3 py-3">
+                  <div className="flex justify-center scale-[0.92] origin-center">
+                    <stripe-buy-button
+                      buy-button-id="buy_btn_1UAEKzQKagTX2NV7SywWrbFo"
+                      publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
