@@ -178,11 +178,20 @@ export default function MembershipFeePage() {
               </div>
             </div>
 
-            <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-              <stripe-buy-button
-                buy-button-id="buy_btn_1UADxxQKagTX2NV7ZJHxf7zD"
-                publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
-              />
+            <div className="mt-6 space-y-5">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+                <stripe-buy-button
+                  buy-button-id="buy_btn_1UADxxQKagTX2NV7ZJHxf7zD"
+                  publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
+                />
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+                <stripe-buy-button
+                  buy-button-id="buy_btn_1UAEKzQKagTX2NV7SywWrbFo"
+                  publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
+                />
+              </div>
             </div>
 
             <p className="mt-4 text-xs text-neutral-400 leading-relaxed">
