@@ -180,8 +180,8 @@ export default function MembershipFeePage() {
 
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
               <stripe-buy-button
-                buy-button-id="buy_btn_1SvG73IoMRePCb5s7G0iYQcl"
-                publishable-key="pk_live_51SvFqUIoMRePCb5sb26wIzjIHv6NR6BmULJyaToInVBEtSyHTcmN8RN8T6FvHXzFa5pXFgvDI1DNixhRXQNzAevl009ru58qhm"
+                buy-button-id="buy_btn_1UADxxQKagTX2NV7ZJHxf7zD"
+                publishable-key="pk_live_51SBv5tQKagTX2NV7bCOPu4mlRM90pwq0HiWcvQ4PQBgqxE0sD8zSlYkPs0qsnWChMW2xo8mf7zzhPkNURiRW8QP500LBAS3DIX"
               />
             </div>
 
