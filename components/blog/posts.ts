@@ -27,6 +27,57 @@ export type BlogPost = {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "welcoming-chef-mark-lester-morales-international-member",
+    title:
+      "Welcoming Chef Mark Lester Morales — International Member from North Macedonia",
+    description:
+      "Gastronomist International proudly welcomes Chef Mark Lester Morales as an International Member from North Macedonia, known for his experience honed in a five-star hotel kitchen.",
+    date: "2026-09-07",
+    banner: "/images/mark.png",
+    author: "Gastronomist International",
+    tags: [
+      "Chef Recognition",
+      "International Member",
+      "North Macedonia",
+      "Five-Star Hotel Kitchen",
+      "Gastronomist International",
+    ],
+    region: "North Macedonia",
+    content: [
+      "Gastronomist International proudly welcomes Chef Mark Lester Morales as an International Member representing North Macedonia.",
+      "Chef Mark Lester Morales brings valuable culinary experience shaped and honed within a five-star hotel kitchen, where discipline, consistency, precision, and professional standards are part of everyday culinary life.",
+      "His journey reflects the dedication of chefs who continue to grow through hard work, passion, and commitment to the craft. In professional kitchens, excellence is built not only through talent, but through daily discipline, teamwork, leadership, and respect for the standards of hospitality.",
+      "As part of Gastronomist International, Chef Mark Lester Morales joins a global culinary recognition platform created to support chefs, culinary professionals, hospitality leaders, educators, consultants, and food innovators who deserve international visibility.",
+      "This recognition celebrates his professional journey and highlights the importance of showcasing chefs whose experience, passion, and contribution deserve to be seen beyond the kitchen.",
+      "Welcome to Gastronomist International, Chef Mark Lester Morales. Your experience, passion, and professional dedication are a valuable addition to our growing international culinary community.",
+    ],
+    translations: {
+      ru: {
+        title:
+          "Добро пожаловать, Chef Mark Lester Morales — международный член из Северной Македонии",
+        description:
+          "Gastronomist International с гордостью приветствует Chef Mark Lester Morales как международного члена из Северной Македонии, известного своим опытом, полученным и развитым на кухне пятизвёздочного отеля.",
+        author: "Gastronomist International",
+        tags: [
+          "Признание шеф-повара",
+          "Международный член",
+          "Северная Македония",
+          "Кухня пятизвёздочного отеля",
+          "Gastronomist International",
+        ],
+        region: "Северная Македония",
+        content: [
+          "Gastronomist International с гордостью приветствует Chef Mark Lester Morales как международного члена, представляющего Северную Македонию.",
+          "Chef Mark Lester Morales обладает ценным кулинарным опытом, сформированным и развитым на кухне пятизвёздочного отеля, где дисциплина, стабильность, точность и профессиональные стандарты являются частью ежедневной работы.",
+          "Его путь отражает преданность шеф-поваров, которые продолжают развиваться благодаря труду, страсти и верности своему ремеслу. В профессиональной кухне мастерство строится не только на таланте, но и на ежедневной дисциплине, командной работе, лидерстве и уважении к стандартам гостеприимства.",
+          "Став частью Gastronomist International, Chef Mark Lester Morales присоединяется к глобальной платформе кулинарного признания, созданной для поддержки шеф-поваров, кулинарных профессионалов, лидеров индустрии гостеприимства, преподавателей, консультантов и новаторов в сфере гастрономии, которые заслуживают международной видимости.",
+          "Это признание отмечает его профессиональный путь и подчёркивает важность продвижения шеф-поваров, чей опыт, страсть и вклад заслуживают быть увиденными за пределами кухни.",
+          "Добро пожаловать в Gastronomist International, Chef Mark Lester Morales. Ваш опыт, страсть и профессиональная преданность являются ценным вкладом в наше растущее международное кулинарное сообщество.",
+        ],
+      },
+    },
+  },
+  {
     slug: "honorary-partnership-yulia-antonova-mystic-mask-russia",
     title:
       "Gastronomist International Announces Honorary Partnership with Yulia Antonova, “Mystic Mask”",
