@@ -32,9 +32,9 @@ const contactWidgetCopy = {
     sendFailed: 'Send failed',
 
     toastSendingTitle: 'Sending Application',
-    toastSendingMessage: 'Your membership application is being submitted.',
-    toastSuccessTitle: 'Application Sent',
-    toastSuccessMessage: 'Successfully submitted. Redirecting to membership fee.',
+    toastSendingMessage: 'Please wait while your membership application is being submitted.',
+    toastSuccessTitle: 'Application Sent Successfully',
+    toastSuccessMessage: 'Your application was submitted. You will now be redirected to complete the membership fee.',
     toastErrorTitle: 'Submission Failed',
   },
   ru: {
@@ -60,9 +60,9 @@ const contactWidgetCopy = {
     sendFailed: 'Не удалось отправить',
 
     toastSendingTitle: 'Отправка заявки',
-    toastSendingMessage: 'Ваша заявка на членство отправляется.',
-    toastSuccessTitle: 'Заявка отправлена',
-    toastSuccessMessage: 'Успешно отправлено. Перенаправление к оплате членского взноса.',
+    toastSendingMessage: 'Пожалуйста, подождите, пока ваша заявка на членство отправляется.',
+    toastSuccessTitle: 'Заявка успешно отправлена',
+    toastSuccessMessage: 'Ваша заявка отправлена. Сейчас вы будете перенаправлены к оплате членского взноса.',
     toastErrorTitle: 'Ошибка отправки',
   },
 }
@@ -139,7 +139,7 @@ export default function ContactWidget() {
         setToastStatus(null)
         setOpen(false)
         router.push('/membership-fee')
-      }, 1300)
+      }, 5000)
     } catch (e: any) {
       const errorMessage = e?.message || copy.sendFailed
 
@@ -177,58 +177,56 @@ export default function ContactWidget() {
       </div>
 
       {toastStatus && (
-        <div
-          className={`gi-submit-toast gi-submit-toast-${toastStatus}`}
-          role="status"
-          aria-live="polite"
-        >
-          <div className="gi-toast-icon-wrap" aria-hidden="true">
-            {toastStatus === 'sending' && (
-              <div className="gi-toast-motion-lines">
-                <span />
-                <span />
-                <span />
+        <div className="gi-submit-toast-screen" role="status" aria-live="polite">
+          <div className={`gi-submit-toast gi-submit-toast-${toastStatus}`}>
+            <div className="gi-toast-icon-wrap" aria-hidden="true">
+              {toastStatus === 'sending' && (
+                <div className="gi-toast-motion-lines">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              )}
+
+              <div
+                className={`gi-toast-envelope ${
+                  toastStatus === 'sending'
+                    ? 'is-sending'
+                    : toastStatus === 'success'
+                      ? 'is-success'
+                      : 'is-error'
+                }`}
+              >
+                <span className="gi-toast-envelope-flap" />
+                <span className="gi-toast-envelope-body" />
+
+                {toastStatus === 'success' && (
+                  <svg
+                    className="gi-toast-check"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 12.5l4.2 4.2L19 7"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+
+                {toastStatus === 'error' && (
+                  <span className="gi-toast-error-mark">!</span>
+                )}
               </div>
-            )}
-
-            <div
-              className={`gi-toast-envelope ${
-                toastStatus === 'sending'
-                  ? 'is-sending'
-                  : toastStatus === 'success'
-                    ? 'is-success'
-                    : 'is-error'
-              }`}
-            >
-              <span className="gi-toast-envelope-flap" />
-              <span className="gi-toast-envelope-body" />
-
-              {toastStatus === 'success' && (
-                <svg
-                  className="gi-toast-check"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M5 12.5l4.2 4.2L19 7"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
-
-              {toastStatus === 'error' && (
-                <span className="gi-toast-error-mark">!</span>
-              )}
             </div>
-          </div>
 
-          <div className="gi-submit-toast-copy">
-            <strong>{toastTitle}</strong>
-            <span>{toastMessage}</span>
+            <div className="gi-submit-toast-copy">
+              <strong>{toastTitle}</strong>
+              <span>{toastMessage}</span>
+            </div>
           </div>
         </div>
       )}
@@ -374,82 +372,95 @@ export default function ContactWidget() {
       )}
 
       <style jsx global>{`
-        .gi-submit-toast {
+        .gi-submit-toast-screen {
           position: fixed;
-          top: 24px;
-          right: 24px;
-          z-index: 80;
+          inset: 0;
+          z-index: 90;
           display: flex;
           align-items: center;
-          gap: 14px;
-          width: min(390px, calc(100% - 32px));
+          justify-content: center;
+          padding: 24px;
+          background: rgba(0, 0, 0, 0.78);
+          backdrop-filter: blur(12px);
+          animation: giToastScreenEnter 0.26s ease-out both;
+        }
+
+        .gi-submit-toast {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 18px;
+          width: min(430px, 100%);
+          min-height: 280px;
           border: 1px solid rgba(212, 163, 54, 0.34);
-          border-radius: 20px;
-          padding: 14px 16px;
+          border-radius: 28px;
+          padding: 34px 28px;
+          text-align: center;
           background:
-            radial-gradient(420px 140px at 18% 0%, rgba(212, 163, 54, 0.2), transparent 62%),
+            radial-gradient(520px 190px at 50% 0%, rgba(212, 163, 54, 0.24), transparent 62%),
             linear-gradient(180deg, rgba(20, 20, 20, 0.98), rgba(6, 6, 6, 0.96));
           box-shadow:
-            0 22px 60px rgba(0, 0, 0, 0.42),
+            0 28px 90px rgba(0, 0, 0, 0.58),
             inset 0 1px 0 rgba(255, 255, 255, 0.08);
           backdrop-filter: blur(18px);
           animation: giToastEnter 0.34s ease-out both;
         }
 
         .gi-submit-toast-success {
-          border-color: rgba(74, 222, 128, 0.42);
+          border-color: rgba(74, 222, 128, 0.48);
         }
 
         .gi-submit-toast-error {
-          border-color: rgba(248, 113, 113, 0.42);
+          border-color: rgba(248, 113, 113, 0.48);
         }
 
         .gi-toast-icon-wrap {
           position: relative;
           display: grid;
           place-items: center;
-          width: 58px;
-          height: 50px;
+          width: 128px;
+          height: 100px;
           flex: 0 0 auto;
         }
 
         .gi-toast-motion-lines {
           position: absolute;
-          left: -3px;
-          top: 15px;
+          left: 2px;
+          top: 34px;
           display: grid;
-          gap: 5px;
+          gap: 8px;
         }
 
         .gi-toast-motion-lines span {
           display: block;
-          width: 18px;
-          height: 2px;
+          width: 34px;
+          height: 3px;
           border-radius: 999px;
-          background: rgba(244, 217, 138, 0.76);
+          background: rgba(244, 217, 138, 0.82);
           animation: giMotionLine 0.72s ease-in-out infinite;
         }
 
         .gi-toast-motion-lines span:nth-child(2) {
-          width: 12px;
+          width: 24px;
           animation-delay: 0.1s;
         }
 
         .gi-toast-motion-lines span:nth-child(3) {
-          width: 15px;
+          width: 29px;
           animation-delay: 0.2s;
         }
 
         .gi-toast-envelope {
           position: relative;
-          width: 42px;
-          height: 30px;
+          width: 86px;
+          height: 62px;
           color: #111;
-          border: 2px solid rgba(244, 217, 138, 0.96);
-          border-radius: 8px;
+          border: 3px solid rgba(244, 217, 138, 0.96);
+          border-radius: 14px;
           background: linear-gradient(135deg, #f7d66d, #fff0ad);
           overflow: hidden;
-          box-shadow: 0 10px 22px rgba(212, 163, 54, 0.22);
+          box-shadow: 0 16px 36px rgba(212, 163, 54, 0.28);
         }
 
         .gi-toast-envelope.is-sending {
@@ -470,12 +481,12 @@ export default function ContactWidget() {
 
         .gi-toast-envelope-flap {
           position: absolute;
-          left: 4px;
-          right: 4px;
-          top: -13px;
-          height: 26px;
-          border-right: 2px solid rgba(17, 17, 17, 0.38);
-          border-bottom: 2px solid rgba(17, 17, 17, 0.38);
+          left: 8px;
+          right: 8px;
+          top: -28px;
+          height: 56px;
+          border-right: 3px solid rgba(17, 17, 17, 0.34);
+          border-bottom: 3px solid rgba(17, 17, 17, 0.34);
           transform: rotate(45deg);
           transform-origin: center;
         }
@@ -484,16 +495,16 @@ export default function ContactWidget() {
           position: absolute;
           inset: 0;
           background:
-            linear-gradient(135deg, transparent 48%, rgba(17, 17, 17, 0.28) 49%, transparent 51%),
-            linear-gradient(225deg, transparent 48%, rgba(17, 17, 17, 0.22) 49%, transparent 51%);
-          opacity: 0.7;
+            linear-gradient(135deg, transparent 48%, rgba(17, 17, 17, 0.24) 49%, transparent 51%),
+            linear-gradient(225deg, transparent 48%, rgba(17, 17, 17, 0.2) 49%, transparent 51%);
+          opacity: 0.75;
         }
 
         .gi-toast-check {
           position: absolute;
           inset: 0;
-          width: 24px;
-          height: 24px;
+          width: 42px;
+          height: 42px;
           margin: auto;
           color: #14532d;
           filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
@@ -511,12 +522,13 @@ export default function ContactWidget() {
           display: grid;
           place-items: center;
           color: #7f1d1d;
-          font-size: 22px;
+          font-size: 40px;
           font-weight: 900;
           line-height: 1;
         }
 
         .gi-submit-toast-copy {
+          max-width: 340px;
           min-width: 0;
         }
 
@@ -527,22 +539,32 @@ export default function ContactWidget() {
 
         .gi-submit-toast-copy strong {
           color: #fff;
-          font-size: 14px;
-          font-weight: 800;
+          font-size: 19px;
+          font-weight: 900;
           letter-spacing: 0.01em;
         }
 
         .gi-submit-toast-copy span {
-          margin-top: 3px;
-          color: rgba(247, 240, 223, 0.74);
-          font-size: 12px;
-          line-height: 1.45;
+          margin-top: 8px;
+          color: rgba(247, 240, 223, 0.78);
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        @keyframes giToastScreenEnter {
+          from {
+            opacity: 0;
+          }
+
+          to {
+            opacity: 1;
+          }
         }
 
         @keyframes giToastEnter {
           from {
             opacity: 0;
-            transform: translate3d(0, -10px, 0) scale(0.98);
+            transform: translate3d(0, 12px, 0) scale(0.98);
           }
 
           to {
@@ -558,7 +580,7 @@ export default function ContactWidget() {
           }
 
           45% {
-            transform: translate3d(7px, -3px, 0) rotate(3deg);
+            transform: translate3d(12px, -5px, 0) rotate(4deg);
           }
         }
 
@@ -583,15 +605,15 @@ export default function ContactWidget() {
           }
 
           25% {
-            transform: translateX(-3px);
+            transform: translateX(-4px);
           }
 
           55% {
-            transform: translateX(3px);
+            transform: translateX(4px);
           }
 
           80% {
-            transform: translateX(-2px);
+            transform: translateX(-3px);
           }
         }
 
@@ -607,7 +629,7 @@ export default function ContactWidget() {
 
           100% {
             opacity: 0;
-            transform: translateX(-10px);
+            transform: translateX(-18px);
           }
         }
 
@@ -618,15 +640,26 @@ export default function ContactWidget() {
         }
 
         @media (max-width: 640px) {
+          .gi-submit-toast-screen {
+            padding: 16px;
+          }
+
           .gi-submit-toast {
-            top: 14px;
-            right: 16px;
-            left: 16px;
-            width: auto;
+            min-height: 260px;
+            padding: 30px 22px;
+          }
+
+          .gi-submit-toast-copy strong {
+            font-size: 17px;
+          }
+
+          .gi-submit-toast-copy span {
+            font-size: 13px;
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
+          .gi-submit-toast-screen,
           .gi-submit-toast,
           .gi-toast-envelope,
           .gi-toast-motion-lines span,
