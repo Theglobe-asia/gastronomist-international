@@ -25,11 +25,18 @@ export async function POST(req: NextRequest) {
       clean(process.env.EMAIL_FROM) ||
       "Gastronomist International <onboarding@resend.dev>"
 
+    const countryCode = clean(body.countryCode)
+    const phoneNumber = clean(body.phoneNumber)
+    const telephone = [countryCode, phoneNumber].filter(Boolean).join(" ")
+
     const html = `
       <h2>New Membership Application</h2>
 
       <p><b>Name:</b> ${clean(body.name)}</p>
       <p><b>Email:</b> ${clean(body.email)}</p>
+      <p><b>Country Code:</b> ${countryCode}</p>
+      <p><b>Telephone Number:</b> ${phoneNumber}</p>
+      <p><b>Telephone:</b> ${telephone}</p>
       <p><b>Address:</b> ${clean(body.address)}</p>
       <p><b>Current Position:</b> ${clean(body.currentPosition)}</p>
       <p><b>Current Company:</b> ${clean(body.currentCompany)}</p>
