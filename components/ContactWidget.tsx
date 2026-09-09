@@ -17,6 +17,8 @@ const contactWidgetCopy = {
       'Submit your professional details first. After submission, you will be redirected to complete the membership fee.',
     fullName: 'Full name',
     email: 'Email',
+    countryCode: 'Country code (e.g. +389)',
+    phoneNumber: 'Telephone number',
     address: 'Address',
     currentPosition: 'Current position',
     currentCompany: 'Current company',
@@ -43,6 +45,8 @@ const contactWidgetCopy = {
       'Сначала отправьте свои профессиональные данные. После отправки вы будете перенаправлены для завершения оплаты членского взноса.',
     fullName: 'Полное имя',
     email: 'Электронная почта',
+    countryCode: 'Код страны (например, +389)',
+    phoneNumber: 'Номер телефона',
     address: 'Адрес',
     currentPosition: 'Текущая должность',
     currentCompany: 'Текущая компания',
@@ -288,6 +292,24 @@ export default function ContactWidget() {
                     name="email"
                     type="email"
                     placeholder={copy.email}
+                    required
+                    className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
+                  />
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-[0.72fr_1.28fr]">
+                  <input
+                    name="countryCode"
+                    type="tel"
+                    placeholder={copy.countryCode}
+                    required
+                    className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
+                  />
+
+                  <input
+                    name="phoneNumber"
+                    type="tel"
+                    placeholder={copy.phoneNumber}
                     required
                     className="w-full rounded-xl border border-yellow-400/15 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-neutral-500 focus:border-yellow-400/50"
                   />
