@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Alexey Alexandrovich Zhigulin",
+    role: "International Member",
+    blurb:
+      "Executive Chef at Ikorets Country Park Hotel, with 27 years in the culinary profession, more than 15 years in executive culinary leadership, and a career shaped by discipline, naval culinary service, professional training, and long-term commitment to the craft.",
+    img: "/images/Alexey.png",
+    region: "Russia",
+    specialty: "Executive Chef Leadership",
+    translations: {
+      ru: {
+        name: "Chef Alexey Alexandrovich Zhigulin",
+        role: "Международный член",
+        blurb:
+          "Executive Chef в Ikorets Country Park Hotel, с 27-летним опытом в кулинарной профессии, более чем 15-летним опытом руководства на уровне Executive Chef, а также карьерой, сформированной дисциплиной, кулинарной службой на флоте, профессиональным обучением и долгосрочной преданностью ремеслу.",
+        region: "Россия",
+        specialty: "Лидерство Executive Chef",
+      },
+    },
+  },
+  {
     name: "Chef Mark Lester Morales",
     role: "International Member",
     blurb:
