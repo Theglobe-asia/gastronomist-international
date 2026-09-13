@@ -14,6 +14,13 @@ type BlogArticlePageProps = {
   }
 }
 
+type EditorialLanguage = "en" | "ru"
+
+type EditorialSection = {
+  title: string
+  paragraphs: string[]
+}
+
 const articleCopy = {
   en: {
     journalFeature: "Journal Feature",
@@ -27,6 +34,9 @@ const articleCopy = {
     category: "Category",
     moreStories: "More Stories",
     journal: "Journal",
+    editorialTitle: "Editorial Feature",
+    editorialSubtitle:
+      "A professionally structured member profile published by Gastronomist International.",
   },
   ru: {
     journalFeature: "Журнальная публикация",
@@ -40,6 +50,50 @@ const articleCopy = {
     category: "Категория",
     moreStories: "Другие истории",
     journal: "Журнал",
+    editorialTitle: "Редакционная публикация",
+    editorialSubtitle:
+      "Профессионально оформленный профиль участника, опубликованный Gastronomist International.",
+  },
+}
+
+const editorialSectionCopy = {
+  en: {
+    introduction: "Editorial Introduction",
+    professionalProfile: "Professional Profile",
+    careerExperience: "Career Experience",
+    hospitalityExperience: "Hospitality Experience",
+    culinaryLeadership: "Culinary Leadership",
+    achievements: "Recognition & Achievements",
+    projectDevelopment: "Project Development",
+    culinarySkills: "Culinary Skills",
+    philosophy: "Culinary Philosophy",
+    closingReflection: "Editorial Reflection",
+    fallback: [
+      "Professional Journey",
+      "Kitchen Standards",
+      "Craft & Discipline",
+      "Professional Contribution",
+      "Continuing Legacy",
+    ],
+  },
+  ru: {
+    introduction: "Редакционное вступление",
+    professionalProfile: "Профессиональный профиль",
+    careerExperience: "Карьерный опыт",
+    hospitalityExperience: "Опыт в hospitality",
+    culinaryLeadership: "Кулинарное лидерство",
+    achievements: "Признание и достижения",
+    projectDevelopment: "Развитие проектов",
+    culinarySkills: "Кулинарные навыки",
+    philosophy: "Кулинарная философия",
+    closingReflection: "Редакционное заключение",
+    fallback: [
+      "Профессиональный путь",
+      "Кухонные стандарты",
+      "Мастерство и дисциплина",
+      "Профессиональный вклад",
+      "Продолжение наследия",
+    ],
   },
 }
 
@@ -64,6 +118,173 @@ function getAbsoluteUrl(path: string) {
   }
 
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`
+}
+
+function getEditorialSectionTitle(
+  paragraphs: string[],
+  sectionIndex: number,
+  language: EditorialLanguage
+) {
+  const copy = editorialSectionCopy[language]
+  const text = paragraphs.join(" ").toLowerCase()
+
+  if (
+    text.includes("culinary philosophy") ||
+    text.includes("philosophy is") ||
+    text.includes("believes that every dish") ||
+    text.includes("философ")
+  ) {
+    return copy.philosophy
+  }
+
+  if (
+    text.includes("hot kitchen") ||
+    text.includes("cold kitchen") ||
+    text.includes("haccp") ||
+    text.includes("mise en place") ||
+    text.includes("portion control") ||
+    text.includes("plating") ||
+    text.includes("навык") ||
+    text.includes("пищевой безопасности")
+  ) {
+    return copy.culinarySkills
+  }
+
+  if (
+    text.includes("record") ||
+    text.includes("rassolnik") ||
+    text.includes("posekunch") ||
+    text.includes("russian national") ||
+    text.includes("рекорд") ||
+    text.includes("рассольник") ||
+    text.includes("посекунчик")
+  ) {
+    return copy.achievements
+  }
+
+  if (
+    text.includes("ozon") ||
+    text.includes("fully operational business") ||
+    text.includes("from paper") ||
+    text.includes("tolyatti") ||
+    text.includes("тольятти") ||
+    text.includes("действующего бизнеса")
+  ) {
+    return copy.projectDevelopment
+  }
+
+  if (
+    text.includes("executive chef") ||
+    text.includes("leadership") ||
+    text.includes("lead people") ||
+    text.includes("lead a professional") ||
+    text.includes("руковод") ||
+    text.includes("лидер")
+  ) {
+    return copy.culinaryLeadership
+  }
+
+  if (
+    text.includes("five-star") ||
+    text.includes("hotel") ||
+    text.includes("hospitality") ||
+    text.includes("отел") ||
+    text.includes("гостинич")
+  ) {
+    return copy.hospitalityExperience
+  }
+
+  if (
+    text.includes("professional profile") ||
+    text.includes("experienced culinary professional") ||
+    text.includes("professional culinary") ||
+    text.includes("профессиональ")
+  ) {
+    return copy.professionalProfile
+  }
+
+  if (
+    text.includes("career") ||
+    text.includes("years of experience") ||
+    text.includes("experience") ||
+    text.includes("карьер") ||
+    text.includes("опыт")
+  ) {
+    return copy.careerExperience
+  }
+
+  return copy.fallback[(sectionIndex - 1) % copy.fallback.length]
+}
+
+function buildEditorialSections(
+  content: string[],
+  language: EditorialLanguage
+): EditorialSection[] {
+  const paragraphs = content
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+
+  const copy = editorialSectionCopy[language]
+
+  if (paragraphs.length === 0) {
+    return []
+  }
+
+  if (paragraphs.length <= 3) {
+    return [
+      {
+        title: copy.introduction,
+        paragraphs,
+      },
+    ]
+  }
+
+  const introCount = paragraphs.length >= 8 ? 3 : 1
+  const sections: EditorialSection[] = [
+    {
+      title: copy.introduction,
+      paragraphs: paragraphs.slice(0, introCount),
+    },
+  ]
+
+  const remainingParagraphs = paragraphs.slice(introCount)
+  const chunkSize =
+    paragraphs.length >= 24 ? 5 : paragraphs.length >= 12 ? 4 : 3
+
+  for (let index = 0; index < remainingParagraphs.length; index += chunkSize) {
+    const chunk = remainingParagraphs.slice(index, index + chunkSize)
+    const sectionIndex = sections.length
+
+    sections.push({
+      title:
+        index + chunkSize >= remainingParagraphs.length
+          ? copy.closingReflection
+          : getEditorialSectionTitle(chunk, sectionIndex, language),
+      paragraphs: chunk,
+    })
+  }
+
+  return sections
+}
+
+function isPullQuoteParagraph(paragraph: string) {
+  const normalized = paragraph.toLowerCase()
+
+  return (
+    normalized.includes("culinary philosophy is:") ||
+    normalized.includes("quality, consistency, cleanliness") ||
+    normalized.includes("“") ||
+    normalized.includes("”") ||
+    normalized.includes("«") ||
+    normalized.includes("»")
+  )
+}
+
+function cleanPullQuote(paragraph: string) {
+  return paragraph
+    .replace(/^his culinary philosophy is:\s*/i, "")
+    .replace(/^его кулинарная философия:\s*/i, "")
+    .trim()
 }
 
 export function generateStaticParams() {
@@ -148,6 +369,12 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
       ? localizedPost.content
       : [localizedPost.description]
 
+  const englishEditorialSections = buildEditorialSections(articleContent, "en")
+  const russianEditorialSections = buildEditorialSections(
+    localizedArticleContent,
+    "ru"
+  )
+
   return (
     <main className="blog-article-page">
       <section className="blog-article-hero">
@@ -165,7 +392,7 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
 
         <div className="blog-article-copy">
           <span className="blog-article-eyebrow">
-            {post.date} • 
+            {post.date} •{" "}
             <LocalizedInline en={post.author} ru={localizedPost.author} />
           </span>
 
@@ -175,7 +402,7 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
 
           <div className="blog-article-divider" />
 
-          <p>
+          <p className="blog-article-subtitle">
             <LocalizedInline
               en={post.description}
               ru={localizedPost.description}
@@ -222,20 +449,93 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
             />
           </span>
 
+          <header className="blog-editorial-header">
+            <h2>
+              <LocalizedInline
+                en={articleCopy.en.editorialTitle}
+                ru={articleCopy.ru.editorialTitle}
+              />
+            </h2>
+            <p>
+              <LocalizedInline
+                en={articleCopy.en.editorialSubtitle}
+                ru={articleCopy.ru.editorialSubtitle}
+              />
+            </p>
+          </header>
+
           <div className="blog-article-body">
             <div className="blog-language-body blog-lang-en">
-              {articleContent.map((paragraph, index) => (
-                <p key={`${post.slug}-paragraph-en-${index}`}>
-                  {paragraph}
-                </p>
+              {englishEditorialSections.map((section, sectionIndex) => (
+                <section
+                  key={`${post.slug}-section-en-${sectionIndex}`}
+                  className="blog-editorial-section"
+                >
+                  <div className="blog-editorial-section-heading">
+                    <span>{String(sectionIndex + 1).padStart(2, "0")}</span>
+                    <h3>{section.title}</h3>
+                  </div>
+
+                  <div className="blog-editorial-section-body">
+                    {section.paragraphs.map((paragraph, paragraphIndex) =>
+                      isPullQuoteParagraph(paragraph) ? (
+                        <blockquote
+                          key={`${post.slug}-paragraph-en-${sectionIndex}-${paragraphIndex}`}
+                        >
+                          {cleanPullQuote(paragraph)}
+                        </blockquote>
+                      ) : (
+                        <p
+                          key={`${post.slug}-paragraph-en-${sectionIndex}-${paragraphIndex}`}
+                          className={
+                            sectionIndex === 0 && paragraphIndex === 0
+                              ? "blog-article-lede"
+                              : undefined
+                          }
+                        >
+                          {paragraph}
+                        </p>
+                      )
+                    )}
+                  </div>
+                </section>
               ))}
             </div>
 
             <div className="blog-language-body blog-lang-ru">
-              {localizedArticleContent.map((paragraph, index) => (
-                <p key={`${post.slug}-paragraph-ru-${index}`}>
-                  {paragraph}
-                </p>
+              {russianEditorialSections.map((section, sectionIndex) => (
+                <section
+                  key={`${post.slug}-section-ru-${sectionIndex}`}
+                  className="blog-editorial-section"
+                >
+                  <div className="blog-editorial-section-heading">
+                    <span>{String(sectionIndex + 1).padStart(2, "0")}</span>
+                    <h3>{section.title}</h3>
+                  </div>
+
+                  <div className="blog-editorial-section-body">
+                    {section.paragraphs.map((paragraph, paragraphIndex) =>
+                      isPullQuoteParagraph(paragraph) ? (
+                        <blockquote
+                          key={`${post.slug}-paragraph-ru-${sectionIndex}-${paragraphIndex}`}
+                        >
+                          {cleanPullQuote(paragraph)}
+                        </blockquote>
+                      ) : (
+                        <p
+                          key={`${post.slug}-paragraph-ru-${sectionIndex}-${paragraphIndex}`}
+                          className={
+                            sectionIndex === 0 && paragraphIndex === 0
+                              ? "blog-article-lede"
+                              : undefined
+                          }
+                        >
+                          {paragraph}
+                        </p>
+                      )
+                    )}
+                  </div>
+                </section>
               ))}
             </div>
           </div>
@@ -366,12 +666,12 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
 
             .blog-language-body.blog-lang-en {
               display: grid;
-              gap: 18px;
+              gap: 26px;
             }
 
             .blog-language-body.blog-lang-ru {
               display: none;
-              gap: 18px;
+              gap: 26px;
             }
 
             html[lang="ru"] .blog-language-body.blog-lang-en {
@@ -466,7 +766,8 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
             }
 
             .blog-article-copy h1,
-            .blog-article-main h2,
+            .blog-editorial-header h2,
+            .blog-editorial-section-heading h3,
             .blog-article-side-card h3 {
               font-family: Georgia, "Times New Roman", serif;
               color: #fff;
@@ -513,7 +814,8 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
             .blog-article-body p,
             .blog-article-region span,
             .blog-article-facts span,
-            .blog-article-related span {
+            .blog-article-related span,
+            .blog-editorial-header p {
               color: rgba(247, 240, 223, 0.76);
               line-height: 1.72;
             }
@@ -521,6 +823,13 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
             .blog-article-copy p {
               max-width: 680px;
               font-size: 16px;
+            }
+
+            .blog-article-subtitle {
+              border-left: 3px solid rgba(217, 163, 49, 0.72);
+              padding-left: 18px;
+              font-size: 18px;
+              line-height: 1.72;
             }
 
             .blog-article-region {
@@ -597,21 +906,132 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
               padding: 34px;
             }
 
+            .blog-editorial-header {
+              margin-bottom: 34px;
+              border: 1px solid rgba(217, 163, 49, 0.22);
+              border-radius: 20px;
+              padding: 24px;
+              background:
+                linear-gradient(135deg, rgba(217, 163, 49, 0.11), rgba(255, 255, 255, 0.025)),
+                rgba(255, 255, 255, 0.025);
+            }
+
+            .blog-editorial-header h2 {
+              margin: 0 0 10px;
+              font-size: clamp(30px, 3vw, 48px);
+              line-height: 1.08;
+            }
+
+            .blog-editorial-header p {
+              margin: 0;
+              max-width: 760px;
+              font-size: 16px;
+            }
+
             .blog-article-body {
               display: grid;
-              gap: 18px;
+              gap: 26px;
               max-width: 920px;
             }
 
+            .blog-editorial-section {
+              border-top: 1px solid rgba(217, 163, 49, 0.2);
+              padding-top: 26px;
+            }
+
+            .blog-editorial-section:first-child {
+              border-top: 0;
+              padding-top: 0;
+            }
+
+            .blog-editorial-section-heading {
+              display: grid;
+              grid-template-columns: auto 1fr;
+              gap: 14px;
+              align-items: center;
+              margin-bottom: 18px;
+            }
+
+            .blog-editorial-section-heading span {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 42px;
+              height: 42px;
+              border: 1px solid rgba(217, 163, 49, 0.38);
+              border-radius: 999px;
+              color: #f4d98a;
+              background: rgba(217, 163, 49, 0.08);
+              font-size: 12px;
+              font-weight: 900;
+              letter-spacing: 0.08em;
+            }
+
+            .blog-editorial-section-heading h3 {
+              margin: 0;
+              font-size: clamp(25px, 2.4vw, 38px);
+              line-height: 1.14;
+            }
+
+            .blog-editorial-section-body {
+              display: grid;
+              gap: 18px;
+            }
+
             .blog-article-body p {
+              margin: 0;
               font-size: 17px;
+            }
+
+            .blog-article-lede {
+              font-size: 19px !important;
+              line-height: 1.85 !important;
+              color: rgba(255, 248, 229, 0.88) !important;
+            }
+
+            .blog-article-lede::first-letter {
+              float: left;
+              margin: 9px 10px 0 0;
+              color: #d9a331;
+              font-family: Georgia, "Times New Roman", serif;
+              font-size: 64px;
+              line-height: 0.78;
+            }
+
+            .blog-editorial-section-body blockquote {
+              margin: 8px 0;
+              border-left: 4px solid #d9a331;
+              border-radius: 18px;
+              padding: 22px 24px;
+              background:
+                radial-gradient(340px 160px at 15% 0%, rgba(217, 163, 49, 0.18), transparent 68%),
+                rgba(255, 255, 255, 0.04);
+              color: #fff4cf;
+              font-family: Georgia, "Times New Roman", serif;
+              font-size: clamp(22px, 2.2vw, 32px);
+              line-height: 1.35;
+              letter-spacing: -0.025em;
+            }
+
+            .blog-editorial-section-body blockquote::before {
+              content: "“";
+              color: rgba(217, 163, 49, 0.76);
+              margin-right: 4px;
+            }
+
+            .blog-editorial-section-body blockquote::after {
+              content: "”";
+              color: rgba(217, 163, 49, 0.76);
+              margin-left: 4px;
             }
 
             .blog-article-tags {
               display: flex;
               flex-wrap: wrap;
               gap: 10px;
-              margin-top: 30px;
+              margin-top: 34px;
+              padding-top: 28px;
+              border-top: 1px solid rgba(217, 163, 49, 0.2);
             }
 
             .blog-article-tags span {
@@ -626,6 +1046,8 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
             .blog-article-sidebar {
               display: grid;
               gap: 22px;
+              position: sticky;
+              top: 24px;
             }
 
             .blog-article-side-card {
@@ -685,6 +1107,10 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
               .blog-article-layout {
                 grid-template-columns: 1fr;
               }
+
+              .blog-article-sidebar {
+                position: static;
+              }
             }
 
             @media (max-width: 720px) {
@@ -703,8 +1129,36 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
                 padding: 22px;
               }
 
+              .blog-editorial-header {
+                padding: 20px;
+              }
+
+              .blog-editorial-section-heading {
+                grid-template-columns: 1fr;
+                gap: 10px;
+              }
+
+              .blog-editorial-section-heading span {
+                width: 38px;
+                height: 38px;
+              }
+
               .blog-article-body p {
                 font-size: 15px;
+              }
+
+              .blog-article-lede {
+                font-size: 16px !important;
+              }
+
+              .blog-article-lede::first-letter {
+                font-size: 48px;
+                margin-top: 8px;
+              }
+
+              .blog-editorial-section-body blockquote {
+                padding: 18px;
+                font-size: 21px;
               }
             }
           `,
