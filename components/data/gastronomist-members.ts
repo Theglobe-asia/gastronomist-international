@@ -71,19 +71,19 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
     },
   },
   {
-    name: "Mark Lester Morales",
-    role: "Chef de Partie",
+    name: "Chef Mark Lester Morales",
+    role: "International Member",
     blurb:
-      "International Member representing North Macedonia, with 14 years of experience in the five-star hotel industry. Skilled in professional kitchen operations, food preparation, cooking, plating, food safety, HACCP principles, mise en place, portion control, teamwork, cleanliness, and consistent high-quality food standards.",
+      "International Member representing North Macedonia and Chef de Partie with 14 years of experience in the five-star hotel industry. Skilled in professional kitchen operations, food preparation, cooking, plating, food safety, HACCP principles, mise en place, portion control, teamwork, cleanliness, and consistent high-quality food standards.",
     img: "/images/mark.png",
     region: "North Macedonia",
     specialty: "Five-Star Hotel Kitchen",
     translations: {
       ru: {
-        name: "Mark Lester Morales",
-        role: "Chef de Partie",
+        name: "Chef Mark Lester Morales",
+        role: "Международный член",
         blurb:
-          "Международный член, представляющий Северную Македонию, с 14-летним опытом работы в индустрии пятизвёздочных отелей. Обладает навыками профессиональной кухонной работы, подготовки продуктов, приготовления, подачи блюд, пищевой безопасности, принципов HACCP, mise en place, контроля порций, командной работы, чистоты и стабильных стандартов высокого качества.",
+          "Международный член, представляющий Северную Македонию, Chef de Partie с 14-летним опытом работы в индустрии пятизвёздочных отелей. Обладает навыками профессиональной кухонной работы, подготовки продуктов, приготовления, подачи блюд, пищевой безопасности, принципов HACCP, mise en place, контроля порций, командной работы, чистоты и стабильных стандартов высокого качества.",
         region: "Северная Македония",
         specialty: "Кухня пятизвёздочного отеля",
       },
