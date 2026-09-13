@@ -71,20 +71,20 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
     },
   },
   {
-    name: "Chef Mark Lester Morales",
-    role: "International Member",
+    name: "Mark Lester Morales",
+    role: "Chef de Partie",
     blurb:
-      "Representing North Macedonia as an International Member of Gastronomist International, known for his experience honed in a five-star hotel kitchen with discipline, precision, and professional culinary standards.",
+      "International Member representing North Macedonia, with 14 years of experience in the five-star hotel industry. Skilled in professional kitchen operations, food preparation, cooking, plating, food safety, HACCP principles, mise en place, portion control, teamwork, cleanliness, and consistent high-quality food standards.",
     img: "/images/mark.png",
-    region: "Europe",
+    region: "North Macedonia",
     specialty: "Five-Star Hotel Kitchen",
     translations: {
       ru: {
-        name: "Chef Mark Lester Morales",
-        role: "Международный член",
+        name: "Mark Lester Morales",
+        role: "Chef de Partie",
         blurb:
-          "Представляет Северную Македонию как международный член Gastronomist International, известный своим опытом, сформированным на кухне пятизвёздочного отеля, где важны дисциплина, точность и профессиональные кулинарные стандарты.",
-        region: "Европа",
+          "Международный член, представляющий Северную Македонию, с 14-летним опытом работы в индустрии пятизвёздочных отелей. Обладает навыками профессиональной кухонной работы, подготовки продуктов, приготовления, подачи блюд, пищевой безопасности, принципов HACCP, mise en place, контроля порций, командной работы, чистоты и стабильных стандартов высокого качества.",
+        region: "Северная Македония",
         specialty: "Кухня пятизвёздочного отеля",
       },
     },
