@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Ivan Antonov",
+    role: "International Member",
+    blurb:
+      "Executive Chef within the AMAKS Hotels & Resorts network, with 18 years of hospitality experience, five years of Executive Chef leadership, and participation in two Russian national culinary records.",
+    img: "/images/ivan.png",
+    region: "Russia",
+    specialty: "Hospitality Leadership",
+    translations: {
+      ru: {
+        name: "Chef Ivan Antonov",
+        role: "Международный член",
+        blurb:
+          "Executive Chef в сети AMAKS Hotels & Resorts, с 18-летним опытом в hospitality, пятью годами лидерства на уровне Executive Chef и участием в двух национальных кулинарных рекордах России.",
+        region: "Россия",
+        specialty: "Лидерство в hospitality",
+      },
+    },
+  },
+  {
     name: "Chef Alexey Alexandrovich Zhigulin",
     role: "International Member",
     blurb:
