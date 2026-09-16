@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Pavel Sergeyevich Belyanin",
+    role: "International Member",
+    blurb:
+      "International Member representing Russia, recognized for competition achievements including Silver Medalist at the Battle of Restaurateurs in Ulyanovsk, participant in the Battle of Chefs, Bronze Medalist in a Barbecue Battle, and meaningful community involvement through culinary master classes for children with disabilities.",
+    img: "/images/pavel.png",
+    region: "Russia",
+    specialty: "Culinary Competition",
+    translations: {
+      ru: {
+        name: "Chef Pavel Sergeyevich Belyanin",
+        role: "Международный член",
+        blurb:
+          "Международный член, представляющий Россию, отмеченный кулинарными достижениями, включая серебряную медаль в Battle of Restaurateurs в Ульяновске, участие в Battle of Chefs, бронзовую медаль в Barbecue Battle, а также значимое участие в общественных кулинарных мастер-классах для детей с инвалидностью.",
+        region: "Россия",
+        specialty: "Кулинарные соревнования",
+      },
+    },
+  },
+  {
     name: "Chef Ivan Antonov",
     role: "International Member",
     blurb:
