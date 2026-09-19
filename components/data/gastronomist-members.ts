@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Gaetano Zambito",
+    role: "International Member",
+    blurb:
+      "Italian chef, restaurateur, brand chef, culinary educator, and Ambassador of Taste with extensive international experience across Italy, Germany, Spain, Iran, and Russia. His career is rooted in authentic Italian and Mediterranean cuisine, entrepreneurship, hospitality leadership, culinary education, and professional gastronomy.",
+    img: "/images/gaetano.png",
+    region: "Italy / Russia",
+    specialty: "Italian-Mediterranean Cuisine",
+    translations: {
+      ru: {
+        name: "Chef Gaetano Zambito",
+        role: "Международный член",
+        blurb:
+          "Итальянский шеф-повар, ресторатор, бренд-шеф, кулинарный преподаватель и Ambassador of Taste с обширным международным опытом в Италии, Германии, Испании, Иране и России. Его карьера основана на аутентичной итальянской и средиземноморской кухне, предпринимательстве, hospitality-лидерстве, кулинарном образовании и профессиональной гастрономии.",
+        region: "Италия / Россия",
+        specialty: "Итальянско-средиземноморская кухня",
+      },
+    },
+  },
+  {
     name: "Chef Pavel Sergeyevich Belyanin",
     role: "International Member",
     blurb:
