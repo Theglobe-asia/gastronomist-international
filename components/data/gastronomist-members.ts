@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Ilya Alexandrovich Koptelov",
+    role: "International Member",
+    blurb:
+      "Russian culinary professional and Food Service Technology Engineer with more than 20 years of experience in culinary operations, food production, menu development, and modern food-service technology. His career is built on family culinary heritage, professional restaurant experience, technological discipline, and the development of structured food-service systems.",
+    img: "/images/alexandrovich.png",
+    region: "Russia",
+    specialty: "Food Service Technology",
+    translations: {
+      ru: {
+        name: "Chef Ilya Alexandrovich Koptelov",
+        role: "Международный член",
+        blurb:
+          "Российский кулинарный профессионал и инженер-технолог общественного питания с более чем 20-летним опытом в кулинарных операциях, пищевом производстве, разработке меню и современных food-service технологиях. Его карьера построена на семейном кулинарном наследии, профессиональном ресторанном опыте, технологической дисциплине и развитии структурированных систем общественного питания.",
+        region: "Россия",
+        specialty: "Технология общественного питания",
+      },
+    },
+  },
+  {
     name: "Chef Gaetano Zambito",
     role: "International Member",
     blurb:
