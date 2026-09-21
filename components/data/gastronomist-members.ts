@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Andrey Evgenyevich Lodygin",
+    role: "International Member",
+    blurb:
+      "Executive Chef of the gluten-free café and bakery Emerald City in Nizhny Novgorod, Russia, with 23 years of culinary experience. His professional journey spans Japanese, Russian, Italian, French, Chinese, Russian Northern, and gluten-free gastronomy, reflecting a career built through craft, discovery, reinvention, and continuous professional development.",
+    img: "/images/andrey.png",
+    region: "Russia",
+    specialty: "Gluten-Free Gastronomy",
+    translations: {
+      ru: {
+        name: "Chef Andrey Evgenyevich Lodygin",
+        role: "Международный член",
+        blurb:
+          "Executive Chef безглютенового кафе и пекарни «Изумрудный город» в Нижнем Новгороде, Россия, с 23-летним кулинарным опытом. Его профессиональный путь охватывает японскую, русскую, итальянскую, французскую, китайскую, северорусскую и безглютеновую гастрономию, отражая карьеру, построенную на мастерстве, открытиях, профессиональном переосмыслении и постоянном развитии.",
+        region: "Россия",
+        specialty: "Безглютеновая гастрономия",
+      },
+    },
+  },
+  {
     name: "Chef Ilya Alexandrovich Koptelov",
     role: "International Member",
     blurb:
