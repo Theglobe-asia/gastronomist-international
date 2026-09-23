@@ -38,216 +38,198 @@ export type EditorialMagazinePost = {
 
 export const EDITORIAL_MAGAZINE_POSTS: EditorialMagazinePost[] = [
   {
-    slug: "do-not-stay-hidden-inside-the-kitchen",
-    title: "Do Not Stay Hidden Inside the Kitchen",
+    slug: "yulia-antonova-mystic-mask-art-culture-creative-expression",
+    title: "Yulia Antonova — Mystic Mask",
     subtitle:
-      "The new era of culinary recognition belongs to chefs who are ready to be seen.",
+      "Contemporary Abstract Artist · Author · Poet · Cultural Diplomacy Ambassador",
     description:
-      "An editorial feature from Gastronomist International on visibility, recognition, and why modern culinary professionals must step beyond the kitchen to build a stronger global professional identity.",
+      "An editorial portrait of Yulia Antonova, known creatively as Mystic Mask — a contemporary abstract artist, author, poet, and cultural figure whose journey connects visual art, literature, music, cultural diplomacy, and creative expression.",
     date: "2026-09-23",
-    category: "Editorial Vision",
+    category: "Art & Cultural Diplomacy",
     issue: "Issue 01",
-    readTime: "5 min read",
-    banner: "/images/recognition.png",
+    readTime: "8 min read",
+    banner: "/images/mask.png",
     author: "Gastronomist International Editorial",
-    region: "Global",
+    region: "Russia · Crimea",
     tags: [
-      "Editorial Magazine",
-      "Chef Recognition",
-      "Culinary Identity",
-      "Professional Visibility",
+      "Yulia Antonova",
+      "Mystic Mask",
+      "Contemporary Art",
+      "Abstract Art",
+      "Cultural Diplomacy",
+      "Poetry",
+      "Creative Expression",
       "Gastronomist International",
     ],
-    featuredQuote:
-      "A chef’s work begins in the kitchen, but their professional identity should not end there.",
+    featuredQuote: "She creates with love.",
     content: [
-      "For many years, chefs have built their careers behind the kitchen doors: preparing, leading, teaching, organizing, creating, and carrying the weight of daily operations with discipline and precision.",
-      "Yet in the modern culinary world, professional excellence deserves visibility.",
-      "A chef’s work begins in the kitchen, but their professional identity should not end there.",
-      "Gastronomist International was created with a clear belief: culinary professionals should not remain hidden inside the kitchen.",
-      "The world deserves to know the people behind the craft, the stories behind the discipline, and the journeys behind every professional achievement.",
-      "Recognition is not simply about publicity. It is about giving value to the years of training, sacrifice, consistency, and leadership that shape a culinary career.",
-      "In today’s hospitality landscape, chefs are no longer only food creators. They are leaders, educators, innovators, mentors, cultural representatives, business builders, and guardians of culinary identity.",
-      "The Editorial Magazine exists to highlight these stories in a modern, premium, and professional way.",
-      "Each feature is designed to give chefs, culinary leaders, hospitality professionals, and gastronomy figures a platform where their journey can be presented with dignity and global visibility.",
-      "This is not only a magazine. It is a living archive of culinary excellence.",
-      "It is a space where professional identity, personal journey, cultural heritage, and modern gastronomy meet.",
-      "The future of gastronomy belongs to professionals who are willing to be recognized, connected, and remembered.",
+      "Yulia Antonova, known by her creative pseudonym Mystic Mask, is a contemporary abstract artist, author, poet, and cultural figure whose life and work bring together visual art, literature, cultural diplomacy, and creative expression.",
+
+      "She serves as Vice President of the Union of Abstract Artists of Russia and heads its branch in the Republic of Crimea. She is also a member of the Union of Russian Artists of the Republic of Crimea.",
+
+      "Beyond visual art, Yulia is an author and poet and a member of the Russian Union of Writers.",
+
+      "Her international cultural involvement includes her recognition as an Honorary Member and Ambassador of Cultural Diplomacy of Gastronomist International, as well as an Honorary Member of the International Alliance of Professional Chefs.",
+
+      "Early Life and Education",
+
+      "Yulia Antonova was born in 1976 in Crimea.",
+
+      "From 1984 to 1993, she studied at School No. 2 in Alushta. In 1993, she graduated with honors from professional secretarial and typing courses.",
+
+      "From 1996 to 2003, she studied at a university in Simferopol, graduating with a professional qualification in Law. From 1994 to 2011, she worked professionally in her field.",
+
+      "Today, she continues to pursue additional education, reflecting her long-standing commitment to personal and professional development.",
+
+      "A Life Surrounded by Art",
+
+      "Creativity has been an integral part of Yulia's life since childhood.",
+
+      "From 1986 to 1993, she attended and graduated from art school, developing the artistic foundation that would later become central to her identity as a contemporary abstract artist.",
+
+      "Her creative interests, however, have never been limited to painting.",
+
+      "Between 1988 and 1992, she completed the course “Theory of Journalistic Mastery” at the press center of the Alushta Center for Children and Youth Creativity. During this period, she wrote articles for the newspaper Alushtinsky Vestnik.",
+
+      "In 1993, she worked in local television, where she hosted her own program.",
+
+      "Her exploration of the arts continued decades later. From 2020 to 2023, she studied piano at music school, further expanding her relationship with artistic expression through music.",
+
+      "Mystic Mask and the World of Abstraction",
+
+      "As Mystic Mask, Yulia Antonova has dedicated a significant part of her life to abstract art.",
+
+      "Her works are characterized by expressive color, movement, emotion, and predominantly uplifting tonalities. Through combinations of color and abstraction, she seeks to create works that communicate positive emotions and invite viewers into an imaginative visual world.",
+
+      "For Yulia, painting is more than a decorative or technical practice. It is deeply connected with emotion, personal energy, and her understanding of the relationship between art and human well-being.",
+
+      "She has studied aspects of intermodal expressive arts therapy and art therapy, influences that have contributed to her personal artistic philosophy.",
+
+      "Yulia describes her paintings as symbolic talismans created with positive intention. Within her artistic philosophy, they are intended to evoke feelings associated with well-being, love, prosperity, good fortune, happiness, and positive energy.",
+
+      "Each work is conceived as an individual creation with its own character and emotional identity.",
+
+      "At the heart of her practice is a simple principle: She creates with love.",
+
+      "Art, Culture and International Recognition",
+
+      "Yulia Antonova has participated in international exhibitions and has received recognition in international artistic competitions and exhibitions.",
+
+      "Her paintings are held in private collections in Russia, Italy, France, and Germany, extending the presence of her work beyond her home country.",
+
+      "Alongside her artistic practice, her involvement in cultural organizations reflects a broader commitment to strengthening relationships between people through creativity and cultural exchange.",
+
+      "As an Honorary Member and Ambassador of Cultural Diplomacy of Gastronomist International, she represents a connection between the worlds of art, culture, international collaboration, and gastronomy.",
+
+      "Beyond the Canvas",
+
+      "Yulia maintains an active lifestyle, practices Eastern martial arts, and speaks several foreign languages.",
+
+      "She currently lives in Alushta, continuing her artistic, literary, cultural, and educational activities.",
+
+      "Her journey has moved through many forms of expression — painting, journalism, television, literature, poetry, music, and cultural diplomacy — yet creativity remains the common thread connecting them all.",
+
+      "For Yulia Antonova, art is not simply something to observe.",
+
+      "It is a way to communicate emotion, create connections, explore the human experience, and bring positive expression into people's lives.",
+
+      "Through Mystic Mask, she continues to invite audiences into a world where color, imagination, emotion, and abstraction meet — and where every canvas carries its own story.",
     ],
     translations: {
       ru: {
-        title: "Не оставайтесь скрытыми внутри кухни",
+        title: "Юлия Антонова — Mystic Mask",
         subtitle:
-          "Новая эпоха кулинарного признания принадлежит шеф-поварам, которые готовы быть увиденными.",
+          "Современный художник-абстракционист · Автор · Поэт · Посол культурной дипломатии",
         description:
-          "Редакционный материал Gastronomist International о видимости, признании и о том, почему современные кулинарные профессионалы должны выходить за пределы кухни, формируя более сильную международную профессиональную идентичность.",
-        category: "Редакционное видение",
+          "Редакционный портрет Юлии Антоновой, известной под творческим псевдонимом Mystic Mask — современного художника-абстракциониста, автора, поэта и деятеля культуры, чей путь объединяет изобразительное искусство, литературу, музыку, культурную дипломатию и творческое самовыражение.",
+        category: "Искусство и культурная дипломатия",
         issue: "Выпуск 01",
-        readTime: "5 минут чтения",
+        readTime: "8 минут чтения",
         author: "Редакция Gastronomist International",
-        region: "Глобальный уровень",
+        region: "Россия · Крым",
         tags: [
-          "Редакционный журнал",
-          "Признание шеф-поваров",
-          "Кулинарная идентичность",
-          "Профессиональная видимость",
+          "Юлия Антонова",
+          "Mystic Mask",
+          "Современное искусство",
+          "Абстрактное искусство",
+          "Культурная дипломатия",
+          "Поэзия",
+          "Творческое самовыражение",
           "Gastronomist International",
         ],
-        featuredQuote:
-          "Работа шеф-повара начинается на кухне, но его профессиональная идентичность не должна заканчиваться там.",
+        featuredQuote: "Она создаёт с любовью.",
         content: [
-          "На протяжении многих лет шеф-повара строили свою карьеру за дверями кухни: готовили, руководили, обучали, организовывали, создавали и ежедневно несли ответственность за операционные процессы с дисциплиной и точностью.",
-          "Однако в современном кулинарном мире профессиональное мастерство заслуживает видимости.",
-          "Работа шеф-повара начинается на кухне, но его профессиональная идентичность не должна заканчиваться там.",
-          "Gastronomist International был создан с чётким убеждением: кулинарные профессионалы не должны оставаться скрытыми внутри кухни.",
-          "Мир должен знать людей, стоящих за ремеслом, истории, стоящие за дисциплиной, и путь, стоящий за каждым профессиональным достижением.",
-          "Признание — это не просто публичность. Это уважение к годам обучения, жертвенности, стабильности и лидерства, которые формируют кулинарную карьеру.",
-          "В современной сфере гостеприимства шеф-повара уже не являются только создателями блюд. Они лидеры, преподаватели, новаторы, наставники, культурные представители, создатели бизнеса и хранители кулинарной идентичности.",
-          "Editorial Magazine создан для того, чтобы освещать эти истории современно, премиально и профессионально.",
-          "Каждая публикация предназначена для того, чтобы дать шеф-поварам, кулинарным лидерам, специалистам гостеприимства и деятелям гастрономии платформу, где их путь может быть представлен достойно и с международной видимостью.",
-          "Это не просто журнал. Это живой архив кулинарного совершенства.",
-          "Это пространство, где профессиональная идентичность, личный путь, культурное наследие и современная гастрономия встречаются вместе.",
-          "Будущее гастрономии принадлежит профессионалам, готовым быть признанными, связанными и запомненными.",
-        ],
-      },
-    },
-  },
-  {
-    slug: "the-modern-chef-as-a-global-cultural-voice",
-    title: "The Modern Chef as a Global Cultural Voice",
-    subtitle:
-      "Why today’s culinary professionals represent more than recipes, kitchens, and menus.",
-    description:
-      "An editorial look at the evolving role of chefs as cultural voices, professional leaders, and ambassadors of gastronomy across borders.",
-    date: "2026-09-18",
-    category: "Culinary Culture",
-    issue: "Issue 01",
-    readTime: "4 min read",
-    banner: "/images/partnership.png",
-    author: "Gastronomist International Editorial",
-    region: "Global",
-    tags: [
-      "Culinary Culture",
-      "Global Gastronomy",
-      "Chef Leadership",
-      "Cultural Representation",
-      "Editorial Magazine",
-    ],
-    featuredQuote:
-      "A chef carries more than technique. A chef carries memory, identity, discipline, and culture.",
-    content: [
-      "The modern chef is no longer defined only by the ability to prepare excellent food.",
-      "Across the world, chefs have become cultural voices, professional leaders, mentors, educators, and representatives of the communities that shaped them.",
-      "Every dish can carry memory. Every technique can carry history. Every menu can express identity.",
-      "This is why gastronomy continues to be one of the strongest bridges between people, regions, and cultures.",
-      "A chef working in a professional kitchen may be preparing food for guests, but in a deeper sense, they are also communicating values, traditions, personal discipline, and creative perspective.",
-      "Modern gastronomy is global, but it remains deeply human.",
-      "It is built through the hands, minds, and stories of professionals who carry their heritage into the present while learning from the wider world.",
-      "Gastronomist International recognizes this broader role of the chef.",
-      "The chef is not only a worker behind the pass. The chef is a voice of craft, culture, memory, and professional excellence.",
-    ],
-    translations: {
-      ru: {
-        title: "Современный шеф-повар как глобальный культурный голос",
-        subtitle:
-          "Почему сегодняшние кулинарные профессионалы представляют нечто большее, чем рецепты, кухни и меню.",
-        description:
-          "Редакционный взгляд на меняющуюся роль шеф-поваров как культурных голосов, профессиональных лидеров и послов гастрономии за пределами границ.",
-        category: "Кулинарная культура",
-        issue: "Выпуск 01",
-        readTime: "4 минуты чтения",
-        author: "Редакция Gastronomist International",
-        region: "Глобальный уровень",
-        tags: [
-          "Кулинарная культура",
-          "Мировая гастрономия",
-          "Лидерство шеф-поваров",
-          "Культурное представительство",
-          "Редакционный журнал",
-        ],
-        featuredQuote:
-          "Шеф-повар несёт в себе больше, чем технику. Он несёт память, идентичность, дисциплину и культуру.",
-        content: [
-          "Современный шеф-повар больше не определяется только способностью готовить отличную еду.",
-          "По всему миру шеф-повара стали культурными голосами, профессиональными лидерами, наставниками, преподавателями и представителями сообществ, которые их сформировали.",
-          "Каждое блюдо может нести память. Каждая техника может нести историю. Каждое меню может выражать идентичность.",
-          "Именно поэтому гастрономия остаётся одним из самых сильных мостов между людьми, регионами и культурами.",
-          "Шеф-повар, работающий на профессиональной кухне, может готовить еду для гостей, но в более глубоком смысле он также передаёт ценности, традиции, личную дисциплину и творческий взгляд.",
-          "Современная гастрономия глобальна, но при этом остаётся глубоко человеческой.",
-          "Она строится через руки, ум и истории профессионалов, которые несут своё наследие в настоящее, одновременно обучаясь у более широкого мира.",
-          "Gastronomist International признаёт эту более широкую роль шеф-повара.",
-          "Шеф-повар — это не только человек за кухонной линией. Шеф-повар — это голос ремесла, культуры, памяти и профессионального совершенства.",
-        ],
-      },
-    },
-  },
-  {
-    slug: "recognition-as-a-professional-standard",
-    title: "Recognition as a Professional Standard",
-    subtitle:
-      "Why official culinary recognition matters in a global hospitality industry.",
-    description:
-      "A Gastronomist International editorial on professional recognition, trust, visibility, and the value of documenting culinary excellence.",
-    date: "2026-09-10",
-    category: "Professional Recognition",
-    issue: "Issue 01",
-    readTime: "4 min read",
-    banner: "/images/medal.png",
-    author: "Gastronomist International Editorial",
-    region: "Global",
-    tags: [
-      "Professional Recognition",
-      "Culinary Excellence",
-      "Membership",
-      "Hospitality",
-      "Editorial Magazine",
-    ],
-    featuredQuote:
-      "Recognition helps transform professional experience into documented legacy.",
-    content: [
-      "Professional recognition matters because culinary work is often intense, demanding, and unseen by the wider public.",
-      "Many chefs spend years building skills, managing teams, preparing services, training staff, creating menus, and maintaining standards without receiving proper documentation of their professional contribution.",
-      "Recognition helps transform professional experience into documented legacy.",
-      "It allows culinary professionals to present their journey with clarity, credibility, and dignity.",
-      "In a global hospitality industry, recognition also supports trust.",
-      "When a chef’s achievements, membership, and professional identity are documented, their work becomes easier to understand, present, and share across borders.",
-      "This is especially important for chefs who work internationally, represent cultural traditions, or build careers across different kitchens, hotels, restaurants, institutions, and countries.",
-      "Gastronomist International believes that professional recognition should not be treated as decoration alone.",
-      "It should be treated as part of a chef’s professional identity.",
-      "A certificate, medal, published profile, or editorial feature can become part of a larger record of contribution, discipline, and excellence.",
-    ],
-    translations: {
-      ru: {
-        title: "Признание как профессиональный стандарт",
-        subtitle:
-          "Почему официальное кулинарное признание важно в глобальной индустрии гостеприимства.",
-        description:
-          "Редакционный материал Gastronomist International о профессиональном признании, доверии, видимости и ценности документирования кулинарного мастерства.",
-        category: "Профессиональное признание",
-        issue: "Выпуск 01",
-        readTime: "4 минуты чтения",
-        author: "Редакция Gastronomist International",
-        region: "Глобальный уровень",
-        tags: [
-          "Профессиональное признание",
-          "Кулинарное совершенство",
-          "Членство",
-          "Гостеприимство",
-          "Редакционный журнал",
-        ],
-        featuredQuote:
-          "Признание помогает превратить профессиональный опыт в задокументированное наследие.",
-        content: [
-          "Профессиональное признание важно, потому что кулинарная работа часто бывает интенсивной, требовательной и невидимой для широкой публики.",
-          "Многие шеф-повара годами развивают навыки, управляют командами, проводят сервисы, обучают сотрудников, создают меню и поддерживают стандарты, не получая должного документального подтверждения своего профессионального вклада.",
-          "Признание помогает превратить профессиональный опыт в задокументированное наследие.",
-          "Оно позволяет кулинарным профессионалам представлять свой путь ясно, достоверно и достойно.",
-          "В глобальной индустрии гостеприимства признание также поддерживает доверие.",
-          "Когда достижения, членство и профессиональная идентичность шеф-повара задокументированы, его работу легче понять, представить и показать за пределами границ.",
-          "Это особенно важно для шеф-поваров, которые работают на международном уровне, представляют культурные традиции или строят карьеру в разных кухнях, отелях, ресторанах, институциях и странах.",
-          "Gastronomist International считает, что профессиональное признание не должно восприниматься только как украшение.",
-          "Оно должно быть частью профессиональной идентичности шеф-повара.",
-          "Сертификат, медаль, опубликованный профиль или редакционная статья могут стать частью более широкой записи вклада, дисциплины и мастерства.",
+          "Юлия Антонова, известная под творческим псевдонимом Mystic Mask, — современный художник-абстракционист, автор, поэт и деятель культуры, чья жизнь и творчество объединяют изобразительное искусство, литературу, культурную дипломатию и творческое самовыражение.",
+
+          "Она занимает должность вице-президента Союза абстракционистов России и руководит его филиалом в Республике Крым. Также она является членом Союза русских художников Республики Крым.",
+
+          "Помимо изобразительного искусства, Юлия является автором и поэтом, а также членом Российского союза писателей.",
+
+          "Её международная культурная деятельность включает признание в качестве Почётного члена и Посла культурной дипломатии Gastronomist International, а также Почётного члена Международного альянса профессиональных кулинаров.",
+
+          "Ранние годы и образование",
+
+          "Юлия Антонова родилась в 1976 году в Крыму.",
+
+          "С 1984 по 1993 год она обучалась в школе № 2 города Алушты. В 1993 году с отличием окончила профессиональные курсы секретарей-машинисток.",
+
+          "С 1996 по 2003 год Юлия обучалась в университете в Симферополе и получила профессиональную квалификацию по специальности «Юриспруденция». С 1994 по 2011 год она работала по специальности.",
+
+          "Сегодня она продолжает получать дополнительное образование, демонстрируя неизменное стремление к личностному и профессиональному развитию.",
+
+          "Жизнь, окружённая искусством",
+
+          "Творчество является неотъемлемой частью жизни Юлии с самого детства.",
+
+          "С 1986 по 1993 год она обучалась в художественной школе и успешно её окончила, сформировав творческую основу, которая впоследствии стала важной частью её идентичности как современного художника-абстракциониста.",
+
+          "Однако её творческие интересы никогда не ограничивались только живописью.",
+
+          "С 1988 по 1992 год она прошла курс «Теория журналистского мастерства» при пресс-центре Алуштинского центра детского и юношеского творчества. В этот период она писала статьи для газеты «Алуштинский вестник».",
+
+          "В 1993 году Юлия работала на местном телевидении, где вела собственную программу.",
+
+          "Спустя десятилетия её исследование различных форм искусства продолжилось. С 2020 по 2023 год она обучалась игре на фортепиано в музыкальной школе, расширяя своё творческое самовыражение через музыку.",
+
+          "Mystic Mask и мир абстракции",
+
+          "Под творческим псевдонимом Mystic Mask Юлия Антонова посвятила значительную часть своей жизни абстрактному искусству.",
+
+          "Её работы отличаются выразительным цветом, движением, эмоциональностью и преимущественно светлой, позитивной тональностью. Через сочетание цвета и абстракции она стремится создавать произведения, передающие положительные эмоции и приглашающие зрителя в мир воображения.",
+
+          "Для Юлии живопись — это не просто декоративная или техническая практика. Она глубоко связана с эмоциями, личной энергией и её пониманием взаимосвязи между искусством и благополучием человека.",
+
+          "Она изучала аспекты интермодальной терапии выразительными искусствами и арт-терапии, что оказало влияние на формирование её собственной художественной философии.",
+
+          "Юлия описывает свои картины как символические талисманы, создаваемые с позитивным намерением. В рамках её художественной философии они призваны вызывать чувства, связанные с благополучием, любовью, достатком, удачей, счастьем и положительной энергией.",
+
+          "Каждая работа задумывается как самостоятельное произведение со своим характером и эмоциональной индивидуальностью.",
+
+          "В основе её творческого подхода лежит простой принцип: она создаёт с любовью.",
+
+          "Искусство, культура и международное признание",
+
+          "Юлия Антонова принимала участие в международных выставках и получала признание на международных художественных конкурсах и выставочных проектах.",
+
+          "Её картины находятся в частных коллекциях в России, Италии, Франции и Германии, расширяя присутствие её творчества за пределами родной страны.",
+
+          "Наряду с художественной практикой её участие в культурных организациях отражает более широкое стремление укреплять связи между людьми посредством творчества и культурного обмена.",
+
+          "В качестве Почётного члена и Посла культурной дипломатии Gastronomist International она представляет связь между мирами искусства, культуры, международного сотрудничества и гастрономии.",
+
+          "За пределами холста",
+
+          "Юлия ведёт активный образ жизни, занимается восточными единоборствами и владеет несколькими иностранными языками.",
+
+          "В настоящее время она живёт в Алуште и продолжает художественную, литературную, культурную и образовательную деятельность.",
+
+          "Её жизненный путь прошёл через множество форм самовыражения — живопись, журналистику, телевидение, литературу, поэзию, музыку и культурную дипломатию, однако творчество остаётся общей нитью, объединяющей все эти направления.",
+
+          "Для Юлии Антоновой искусство — это не просто то, на что смотрят.",
+
+          "Это способ передавать эмоции, создавать связи между людьми, исследовать человеческий опыт и приносить позитивное самовыражение в жизнь окружающих.",
+
+          "Через Mystic Mask она продолжает приглашать зрителей в мир, где встречаются цвет, воображение, эмоции и абстракция — и где каждый холст несёт свою собственную историю.",
         ],
       },
     },
