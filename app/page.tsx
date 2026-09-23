@@ -14,6 +14,7 @@ import {
 } from "react-simple-maps"
 import LatestStory from "@/components/blog/latest-story"
 import { getLatestPost } from "@/components/blog/posts"
+import { getLatestEditorialMagazinePost } from "@/components/editorial-magazine/posts"
 import { useLanguage, type Language } from "@/components/LanguageProvider"
 
 const ASSET_V = "2026-01-28-1"
@@ -33,6 +34,14 @@ const HOME_COPY: Record<Language, Record<string, string>> = {
       "Gastronomist International embraces the diversity of talent and expertise within the culinary community, with a focus on modern gastronomy, professional recognition, and global connection.",
     discoverMore: "Discover More",
     viewRecognition: "View Recognition",
+    editorialMagazineEyebrow: "Editorial Magazine",
+    editorialMagazineTitle: "The Latest Culinary Editorial",
+    editorialMagazineDescription:
+      "A modern magazine-style feature space for chef stories, culinary culture, global gastronomy, and the professional voices shaping hospitality today.",
+    editorialMagazineLatest: "Latest Issue Feature",
+    editorialMagazineRead: "Read Editorial",
+    editorialMagazineExplore: "Explore Magazine",
+    editorialMagazineDate: "Published",
     worldwideMembers: "Worldwide Members",
     networkTitle: "A Global Network of Culinary Excellence",
     networkDescription:
@@ -61,6 +70,14 @@ const HOME_COPY: Record<Language, Record<string, string>> = {
       "Gastronomist International объединяет разнообразные таланты и профессиональный опыт кулинарного сообщества, уделяя особое внимание современной гастрономии, профессиональному признанию и международным связям.",
     discoverMore: "Узнать больше",
     viewRecognition: "Смотреть признание",
+    editorialMagazineEyebrow: "Редакционный журнал",
+    editorialMagazineTitle: "Новая кулинарная редакционная публикация",
+    editorialMagazineDescription:
+      "Современное журнальное пространство для историй шеф-поваров, кулинарной культуры, мировой гастрономии и профессиональных голосов, формирующих индустрию гостеприимства сегодня.",
+    editorialMagazineLatest: "Новая публикация выпуска",
+    editorialMagazineRead: "Читать материал",
+    editorialMagazineExplore: "Открыть журнал",
+    editorialMagazineDate: "Опубликовано",
     worldwideMembers: "Участники по всему миру",
     networkTitle: "Глобальная сеть кулинарного совершенства",
     networkDescription:
@@ -817,6 +834,70 @@ function LatestFeaturePopup({
 }
 
 
+function LatestEditorialMagazineFeature({ post }: { post: any }) {
+  const { language } = useLanguage()
+  const copy = HOME_COPY[language] || HOME_COPY.en
+
+  if (!post) return null
+
+  const editorialHref = post.slug
+    ? `/editorial-magazine/${post.slug}`
+    : "/editorial-magazine"
+  const editorialTitle = post.title || copy.editorialMagazineTitle
+  const editorialDescription =
+    post.description || copy.editorialMagazineDescription
+  const editorialImage = post.banner || "/images/andrey.png"
+  const editorialCategory = post.category || copy.editorialMagazineEyebrow
+  const editorialIssue = post.issue || copy.editorialMagazineLatest
+  const editorialReadTime = post.readTime || "5 min read"
+
+  return (
+    <section className="gi-editorial-magazine-feature" id="editorial-magazine">
+      <div className="gi-editorial-orbit" aria-hidden="true" />
+      <div className="gi-editorial-gridline" aria-hidden="true" />
+
+      <div className="gi-editorial-magazine-copy">
+        <span className="gi-eyebrow">{copy.editorialMagazineEyebrow}</span>
+        <h2>{copy.editorialMagazineTitle}</h2>
+        <p>{copy.editorialMagazineDescription}</p>
+
+        <div className="gi-editorial-magazine-actions">
+          <a href={editorialHref}>{copy.editorialMagazineRead}</a>
+          <a href="/editorial-magazine">{copy.editorialMagazineExplore}</a>
+        </div>
+      </div>
+
+      <article className="gi-editorial-magazine-card">
+        <div className="gi-editorial-card-shine" aria-hidden="true" />
+
+        <div className="gi-editorial-magazine-image">
+          <img src={editorialImage} alt={editorialTitle} />
+          <div className="gi-editorial-image-overlay" />
+          <span>{editorialCategory}</span>
+        </div>
+
+        <div className="gi-editorial-magazine-body">
+          <div className="gi-editorial-kicker-row">
+            <small>{editorialIssue}</small>
+            <small>{editorialReadTime}</small>
+          </div>
+
+          <h3>{editorialTitle}</h3>
+          <p>{editorialDescription}</p>
+
+          <div className="gi-editorial-meta-row">
+            <span>
+              {copy.editorialMagazineDate}: {post.date || "—"}
+            </span>
+            <a href={editorialHref}>{copy.editorialMagazineRead}</a>
+          </div>
+        </div>
+      </article>
+    </section>
+  )
+}
+
+
 function CertificateVerifier() {
   const { language } = useLanguage()
   const copy = VERIFIER_COPY[language] || VERIFIER_COPY.en
@@ -1081,6 +1162,7 @@ export default function Page() {
   const features = FEATURES_BY_LANGUAGE[language] || FEATURES_BY_LANGUAGE.en
   const networkStats = NETWORK_STATS_BY_LANGUAGE[language] || NETWORK_STATS_BY_LANGUAGE.en
   const latestPost = getLatestPost()
+  const latestEditorialMagazinePost = getLatestEditorialMagazinePost(language)
   const [showFeatureNotice, setShowFeatureNotice] = useState(false)
 
   useEffect(() => {
@@ -1136,6 +1218,8 @@ export default function Page() {
 
       <CertificateVerifier />
 
+      <LatestEditorialMagazineFeature post={latestEditorialMagazinePost} />
+
       <section id="global-network" className="gi-network-panel">
         <div className="gi-network-info">
           <span className="gi-eyebrow">{copy.worldwideMembers}</span>
@@ -1178,6 +1262,7 @@ export default function Page() {
 
         .gi-feature-row,
         .gi-network-panel,
+        .gi-editorial-magazine-feature,
         .gi-section,
         .gi-testimonials {
           width: min(1440px, calc(100% - 40px));
@@ -1462,6 +1547,292 @@ export default function Page() {
           background: rgba(217, 163, 49, 0.12);
           transform: translateY(-2px);
         }
+
+
+        .gi-editorial-magazine-feature {
+          position: relative;
+          display: grid;
+          grid-template-columns: minmax(0, 0.72fr) minmax(420px, 1fr);
+          gap: 28px;
+          align-items: stretch;
+          overflow: hidden;
+          margin-bottom: 52px;
+          border: 1px solid rgba(217, 163, 49, 0.3);
+          border-radius: 30px;
+          padding: 30px;
+          background:
+            radial-gradient(820px 380px at 12% 8%, rgba(217, 163, 49, 0.18), transparent 62%),
+            radial-gradient(780px 420px at 92% 24%, rgba(255, 238, 177, 0.09), transparent 66%),
+            linear-gradient(135deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018));
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 34px 120px rgba(0, 0, 0, 0.52),
+            0 0 70px rgba(217, 163, 49, 0.1);
+          backdrop-filter: blur(20px);
+        }
+
+        .gi-editorial-orbit {
+          position: absolute;
+          right: -130px;
+          top: -170px;
+          width: 420px;
+          height: 420px;
+          border-radius: 999px;
+          border: 1px solid rgba(217, 163, 49, 0.18);
+          background:
+            conic-gradient(from 0deg, transparent, rgba(217, 163, 49, 0.12), transparent 34%, rgba(244, 217, 138, 0.08), transparent),
+            radial-gradient(circle, rgba(217, 163, 49, 0.1), transparent 62%);
+          animation: giEditorialOrbit 16s linear infinite;
+          pointer-events: none;
+        }
+
+        .gi-editorial-gridline {
+          position: absolute;
+          inset: 0;
+          opacity: 0.22;
+          background-image:
+            linear-gradient(rgba(244, 217, 138, 0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(244, 217, 138, 0.08) 1px, transparent 1px);
+          background-size: 44px 44px;
+          mask-image: radial-gradient(circle at 70% 40%, black, transparent 74%);
+          pointer-events: none;
+        }
+
+        .gi-editorial-magazine-copy,
+        .gi-editorial-magazine-card {
+          position: relative;
+          z-index: 2;
+        }
+
+        .gi-editorial-magazine-copy {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          min-height: 470px;
+        }
+
+        .gi-editorial-magazine-copy h2 {
+          max-width: 620px;
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(40px, 4.8vw, 74px);
+          font-weight: 500;
+          line-height: 0.98;
+          letter-spacing: -0.052em;
+        }
+
+        .gi-editorial-magazine-copy p {
+          max-width: 620px;
+          margin-top: 22px;
+          color: rgba(247, 240, 223, 0.74);
+          line-height: 1.75;
+        }
+
+        .gi-editorial-magazine-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: 28px;
+        }
+
+        .gi-editorial-magazine-actions a,
+        .gi-editorial-meta-row a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 44px;
+          border-radius: 999px;
+          text-decoration: none;
+          font-size: 12px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          transition:
+            transform 0.24s ease,
+            border-color 0.24s ease,
+            background 0.24s ease,
+            box-shadow 0.24s ease;
+        }
+
+        .gi-editorial-magazine-actions a:first-child {
+          padding: 0 18px;
+          border: 1px solid rgba(217, 163, 49, 0.6);
+          background: linear-gradient(135deg, #d9a331, #f4d98a);
+          color: #090909;
+          box-shadow: 0 16px 38px rgba(217, 163, 49, 0.18);
+        }
+
+        .gi-editorial-magazine-actions a:last-child,
+        .gi-editorial-meta-row a {
+          padding: 0 18px;
+          border: 1px solid rgba(217, 163, 49, 0.36);
+          background: rgba(255, 255, 255, 0.035);
+          color: #f4d98a;
+        }
+
+        .gi-editorial-magazine-actions a:hover,
+        .gi-editorial-meta-row a:hover {
+          transform: translateY(-2px);
+          border-color: rgba(244, 217, 138, 0.86);
+          background: rgba(217, 163, 49, 0.14);
+        }
+
+        .gi-editorial-magazine-actions a:first-child:hover {
+          background: linear-gradient(135deg, #f4d98a, #fff0ad);
+          box-shadow: 0 20px 44px rgba(217, 163, 49, 0.24);
+        }
+
+        .gi-editorial-magazine-card {
+          display: grid;
+          grid-template-columns: minmax(210px, 0.72fr) minmax(0, 1fr);
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 26px;
+          background:
+            radial-gradient(520px 260px at 20% 0%, rgba(217, 163, 49, 0.15), transparent 60%),
+            linear-gradient(145deg, rgba(10, 8, 5, 0.92), rgba(0, 0, 0, 0.72));
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 30px 90px rgba(0, 0, 0, 0.46);
+          transform: perspective(1100px) rotateY(-4deg) rotateX(1deg);
+          transform-origin: center;
+          transition:
+            transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.32s ease,
+            box-shadow 0.32s ease;
+        }
+
+        .gi-editorial-magazine-card:hover {
+          transform: perspective(1100px) rotateY(0deg) rotateX(0deg) translateY(-6px);
+          border-color: rgba(244, 217, 138, 0.74);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 40px 118px rgba(0, 0, 0, 0.58),
+            0 0 74px rgba(217, 163, 49, 0.14);
+        }
+
+        .gi-editorial-card-shine {
+          position: absolute;
+          inset: 0;
+          z-index: 4;
+          background: linear-gradient(
+            120deg,
+            transparent 10%,
+            rgba(255, 238, 177, 0.14) 46%,
+            transparent 72%
+          );
+          opacity: 0;
+          transform: translateX(-90%);
+          pointer-events: none;
+        }
+
+        .gi-editorial-magazine-card:hover .gi-editorial-card-shine {
+          animation: giCarouselShine 4.2s ease-in-out infinite;
+        }
+
+        .gi-editorial-magazine-image {
+          position: relative;
+          min-height: 100%;
+          overflow: hidden;
+          background: rgba(255, 255, 255, 0.035);
+        }
+
+        .gi-editorial-magazine-image img {
+          width: 100%;
+          height: 100%;
+          min-height: 470px;
+          display: block;
+          object-fit: cover;
+          filter: saturate(1.05) contrast(1.04);
+          transform: scale(1.02);
+          transition: transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gi-editorial-magazine-card:hover .gi-editorial-magazine-image img {
+          transform: scale(1.08);
+        }
+
+        .gi-editorial-image-overlay {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.54)),
+            radial-gradient(circle at 50% 20%, transparent, rgba(0, 0, 0, 0.48));
+        }
+
+        .gi-editorial-magazine-image span {
+          position: absolute;
+          left: 16px;
+          top: 16px;
+          border: 1px solid rgba(244, 217, 138, 0.5);
+          border-radius: 999px;
+          padding: 8px 12px;
+          background: rgba(0, 0, 0, 0.58);
+          color: #f4d98a;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.09em;
+          text-transform: uppercase;
+          backdrop-filter: blur(12px);
+        }
+
+        .gi-editorial-magazine-body {
+          position: relative;
+          z-index: 3;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 28px;
+        }
+
+        .gi-editorial-kicker-row,
+        .gi-editorial-meta-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 14px;
+        }
+
+        .gi-editorial-kicker-row small,
+        .gi-editorial-meta-row span {
+          color: rgba(244, 217, 138, 0.82);
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .gi-editorial-magazine-body h3 {
+          margin-top: 20px;
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(30px, 3.4vw, 52px);
+          font-weight: 500;
+          line-height: 1.03;
+          letter-spacing: -0.048em;
+        }
+
+        .gi-editorial-magazine-body p {
+          margin-top: 16px;
+          color: rgba(247, 240, 223, 0.74);
+          line-height: 1.72;
+        }
+
+        .gi-editorial-meta-row {
+          margin-top: 24px;
+          padding-top: 18px;
+          border-top: 1px solid rgba(217, 163, 49, 0.18);
+        }
+
+        @keyframes giEditorialOrbit {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
 
         .gi-feature-row {
           display: grid;
@@ -2920,12 +3291,22 @@ export default function Page() {
           .gi-stat-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
+
+          .gi-editorial-magazine-feature,
+          .gi-editorial-magazine-card {
+            grid-template-columns: 1fr;
+          }
+
+          .gi-editorial-magazine-copy {
+            min-height: auto;
+          }
         }
 
         @media (max-width: 720px) {
           .gi-hero,
           .gi-feature-row,
           .gi-network-panel,
+          .gi-editorial-magazine-feature,
           .gi-section,
           .gi-testimonials {
             width: min(100% - 24px, 1440px);
@@ -2992,6 +3373,30 @@ export default function Page() {
 
           .gi-testimonial-stage {
             min-height: 390px;
+          }
+
+          .gi-editorial-magazine-feature {
+            padding: 20px;
+            border-radius: 24px;
+          }
+
+          .gi-editorial-magazine-card {
+            border-radius: 22px;
+            transform: none;
+          }
+
+          .gi-editorial-magazine-image img {
+            min-height: 300px;
+          }
+
+          .gi-editorial-magazine-body {
+            padding: 22px;
+          }
+
+          .gi-editorial-kicker-row,
+          .gi-editorial-meta-row {
+            align-items: flex-start;
+            flex-direction: column;
           }
 
           .gi-carousel-card {
@@ -3089,6 +3494,8 @@ export default function Page() {
           .gi-feature-popup,
           .gi-feature-popup-glow,
           .gi-feature-popup-mark span,
+          .gi-editorial-orbit,
+          .gi-editorial-magazine-card:hover .gi-editorial-card-shine,
           .gi-member-pulse-ring,
           .gi-member-pulse-core,
           .gi-verifier-panel::before,
@@ -3101,6 +3508,10 @@ export default function Page() {
           .gi-benefit-spin-card,
           .gi-feature-popup-close,
           .gi-feature-popup-content a,
+          .gi-editorial-magazine-card,
+          .gi-editorial-magazine-image img,
+          .gi-editorial-magazine-actions a,
+          .gi-editorial-meta-row a,
           .gi-verifier-form button,
           .gi-verifier-again,
           .gi-verifier-progress-fill {

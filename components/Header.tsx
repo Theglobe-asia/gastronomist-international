@@ -10,11 +10,17 @@ import {
   HiOutlineNewspaper,
   HiOutlineInformationCircle,
   HiOutlineShoppingBag,
+  HiOutlineBookOpen,
 } from "react-icons/hi2"
 
 const NAV_CONFIG = [
   { href: "/", labelKey: "nav.home", icon: HiOutlineHome },
   { href: "/chefs", labelKey: "nav.chefs", icon: HiOutlineUsers },
+  {
+    href: "/editorial-magazine",
+    labelKey: "nav.editorialMagazine",
+    icon: HiOutlineBookOpen,
+  },
   { href: "/press", labelKey: "nav.press", icon: HiOutlineNewspaper },
   { href: "/about", labelKey: "nav.about", icon: HiOutlineInformationCircle },
   { href: "/shop", labelKey: "nav.shop", icon: HiOutlineShoppingBag },
@@ -54,12 +60,12 @@ export default function Header() {
             href="/"
             className="flex min-w-0 flex-1 items-center gap-3 font-bold tracking-wide text-white transition hover:text-yellow-300 md:flex-none"
           >
-            <span className="block max-w-[118px] truncate text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200 sm:max-w-[260px] md:max-w-none">
+            <span className="block max-w-[118px] truncate bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent sm:max-w-[260px] md:max-w-none">
               {t("brand.name")}
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-3">
+          <nav className="hidden items-center gap-3 md:flex">
             {NAV.map((i) => {
               const Icon = i.icon
 
@@ -126,7 +132,6 @@ export default function Header() {
             <button
               onClick={() => setOpen(true)}
               className="
-                md:hidden
                 inline-flex shrink-0 items-center gap-2
                 rounded-xl border border-yellow-400/20
                 bg-white/[0.04] px-3 py-2
@@ -135,6 +140,7 @@ export default function Header() {
                 hover:border-yellow-400/45
                 hover:bg-yellow-400/10
                 sm:px-4
+                md:hidden
               "
             >
               <HiOutlineUsers

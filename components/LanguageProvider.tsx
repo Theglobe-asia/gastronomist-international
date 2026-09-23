@@ -29,6 +29,7 @@ const dictionary: Record<Language, Dictionary> = {
 
     "nav.home": "Home",
     "nav.chefs": "Our Chefs",
+    "nav.editorialMagazine": "Editorial Magazine",
     "nav.press": "Press Release",
     "nav.about": "About Us",
     "nav.shop": "Shop",
@@ -55,6 +56,7 @@ const dictionary: Record<Language, Dictionary> = {
 
     "nav.home": "Главная",
     "nav.chefs": "Наши шеф-повара",
+    "nav.editorialMagazine": "Редакционный журнал",
     "nav.press": "Пресс-релизы",
     "nav.about": "О нас",
     "nav.shop": "Магазин",
