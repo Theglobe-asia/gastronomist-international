@@ -1086,17 +1086,16 @@ export default function EditorialArticlePage({
         .ema-feature-spread-frame img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
           object-position: center;
           display: block;
-          transform: scale(1.015);
+          transform: scale(1);
           transition:
-            transform 1s cubic-bezier(0.16, 1, 0.3, 1),
             filter 0.8s ease;
         }
 
         .ema-feature-spread:hover .ema-feature-spread-frame img {
-          transform: scale(1.055);
+          transform: scale(1);
           filter: saturate(1.05) contrast(1.02);
         }
 
