@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useMemo } from "react"
+import { HiArrowLeft, HiArrowUpRight } from "react-icons/hi2"
 import { useLanguage } from "@/components/LanguageProvider"
 import {
   getEditorialMagazinePostBySlug,
@@ -76,7 +77,16 @@ export default function EditorialArticlePage({
           <h1>{copy.notFoundTitle}</h1>
           <p>{copy.notFoundDescription}</p>
 
-          <Link href="/editorial-magazine">{copy.returnToMagazine}</Link>
+          <Link
+            href="/editorial-magazine"
+            className="ema-action ema-action-primary ema-not-found-action"
+          >
+            <span className="ema-action-glow" aria-hidden />
+            <span className="ema-action-copy">{copy.returnToMagazine}</span>
+            <span className="ema-action-icon" aria-hidden>
+              <HiArrowUpRight />
+            </span>
+          </Link>
         </section>
 
         <style jsx>{`
@@ -119,23 +129,125 @@ export default function EditorialArticlePage({
             line-height: 1.75;
           }
 
-          .ema-not-found a {
+          .ema-action {
+            position: relative;
+            isolation: isolate;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            gap: 18px;
             width: fit-content;
-            min-height: 46px;
-            margin: 30px auto 0;
-            border: 1px solid rgba(244, 217, 138, 0.82);
-            border-radius: 999px;
-            background: linear-gradient(135deg, #d9a331, #f4d98a);
+            min-width: 220px;
+            min-height: 54px;
+            overflow: hidden;
+            border: 1px solid rgba(244, 217, 138, 0.76);
+            border-radius: 16px;
+            padding: 0 9px 0 18px;
+            background:
+              linear-gradient(135deg, rgba(244, 217, 138, 0.98), rgba(217, 163, 49, 0.96));
             color: #090909;
-            padding: 0 18px;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
+            box-shadow:
+              inset 0 1px 0 rgba(255, 255, 255, 0.54),
+              0 14px 34px rgba(217, 163, 49, 0.16);
+            transform: translateZ(0);
+            transition:
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.32s ease,
+              box-shadow 0.32s ease;
+          }
+
+          .ema-action::after {
+            content: "";
+            position: absolute;
+            top: -80%;
+            left: -34%;
+            z-index: -1;
+            width: 38%;
+            height: 260%;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.38),
+              transparent
+            );
+            transform: rotate(18deg) translateX(-220%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+          }
+
+          .ema-action:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 238, 177, 0.98);
+            box-shadow:
+              inset 0 1px 0 rgba(255, 255, 255, 0.64),
+              0 22px 52px rgba(217, 163, 49, 0.25),
+              0 0 34px rgba(217, 163, 49, 0.16);
+          }
+
+          .ema-action:hover::after {
+            transform: rotate(18deg) translateX(520%);
+          }
+
+          .ema-action-copy {
+            position: relative;
+            z-index: 2;
+            white-space: nowrap;
+          }
+
+          .ema-action-icon {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.14);
+            font-size: 18px;
+            transition:
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.32s ease;
+          }
+
+          .ema-action:hover .ema-action-icon {
+            transform: translate(2px, -2px) rotate(4deg);
+            background: rgba(0, 0, 0, 0.2);
+          }
+
+          .ema-action-glow {
+            position: absolute;
+            left: 12%;
+            bottom: -34px;
+            z-index: -2;
+            width: 110px;
+            height: 72px;
+            border-radius: 999px;
+            background: rgba(255, 238, 177, 0.34);
+            filter: blur(28px);
+            opacity: 0.7;
+            transition:
+              transform 0.36s ease,
+              opacity 0.36s ease;
+          }
+
+          .ema-action:hover .ema-action-glow {
+            transform: translateX(42px) scale(1.18);
+            opacity: 1;
+          }
+
+          .ema-action:focus-visible {
+            outline: 2px solid #fff0ad;
+            outline-offset: 4px;
+          }
+
+          .ema-not-found-action {
+            margin: 30px auto 0;
           }
         `}</style>
       </main>
@@ -150,8 +262,18 @@ export default function EditorialArticlePage({
           <div className="ema-hero-orbit" aria-hidden />
 
           <div className="ema-hero-copy">
-            <Link href="/editorial-magazine" className="ema-back-link">
-              ← {copy.backToMagazine}
+            <Link
+              href="/editorial-magazine"
+              className="ema-action ema-action-secondary ema-back-link"
+            >
+              <span
+                className="ema-action-icon ema-action-icon-back"
+                aria-hidden
+              >
+                <HiArrowLeft />
+              </span>
+              <span className="ema-action-copy">{copy.backToMagazine}</span>
+              <span className="ema-action-glow" aria-hidden />
             </Link>
 
             <div className="ema-meta-row">
@@ -234,7 +356,10 @@ export default function EditorialArticlePage({
                   aria-label={`${copy.readNext}: ${relatedPost.title}`}
                 >
                   <img src={relatedPost.banner} alt={relatedPost.title} />
-                  <span>{relatedPost.issue}</span>
+                  <span className="ema-related-issue">{relatedPost.issue}</span>
+                  <span className="ema-related-image-arrow" aria-hidden>
+                    <HiArrowUpRight />
+                  </span>
                 </Link>
 
                 <div className="ema-related-copy">
@@ -242,8 +367,15 @@ export default function EditorialArticlePage({
                   <h3>{relatedPost.title}</h3>
                   <p>{relatedPost.description}</p>
 
-                  <Link href={`/editorial-magazine/${relatedPost.slug}`}>
-                    {copy.readNext}
+                  <Link
+                    href={`/editorial-magazine/${relatedPost.slug}`}
+                    className="ema-action ema-action-primary ema-related-action"
+                  >
+                    <span className="ema-action-glow" aria-hidden />
+                    <span className="ema-action-copy">{copy.readNext}</span>
+                    <span className="ema-action-icon" aria-hidden>
+                      <HiArrowUpRight />
+                    </span>
                   </Link>
                 </div>
               </article>
@@ -308,25 +440,195 @@ export default function EditorialArticlePage({
           animation: emaSlideUp 0.88s ease both;
         }
 
-        .ema-back-link {
+        .ema-action {
+          position: relative;
+          isolation: isolate;
           display: inline-flex;
           align-items: center;
+          justify-content: space-between;
+          gap: 18px;
           width: fit-content;
-          margin-bottom: 26px;
-          color: #f4d98a;
+          min-width: 208px;
+          min-height: 54px;
+          overflow: hidden;
+          border: 1px solid rgba(217, 163, 49, 0.42);
+          border-radius: 16px;
+          padding: 0 9px 0 18px;
           text-decoration: none;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 900;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
+          transform: translateZ(0);
           transition:
-            transform 0.24s ease,
-            color 0.24s ease;
+            transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.32s ease,
+            background 0.32s ease,
+            color 0.32s ease,
+            box-shadow 0.32s ease;
         }
 
-        .ema-back-link:hover {
+        .ema-action::before {
+          content: "";
+          position: absolute;
+          inset: 1px;
+          z-index: -2;
+          border-radius: 14px;
+          opacity: 0.74;
+          transition: opacity 0.32s ease;
+        }
+
+        .ema-action::after {
+          content: "";
+          position: absolute;
+          top: -80%;
+          left: -34%;
+          z-index: -1;
+          width: 38%;
+          height: 260%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.38),
+            transparent
+          );
+          transform: rotate(18deg) translateX(-220%);
+          transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          pointer-events: none;
+        }
+
+        .ema-action:hover::after {
+          transform: rotate(18deg) translateX(520%);
+        }
+
+        .ema-action-primary {
+          border-color: rgba(244, 217, 138, 0.76);
+          background:
+            linear-gradient(135deg, rgba(244, 217, 138, 0.98), rgba(217, 163, 49, 0.96));
+          color: #090909;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.54),
+            0 14px 34px rgba(217, 163, 49, 0.16);
+        }
+
+        .ema-action-primary::before {
+          background:
+            radial-gradient(circle at 16% 16%, rgba(255, 255, 255, 0.34), transparent 34%),
+            linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent);
+        }
+
+        .ema-action-secondary {
+          border-color: rgba(217, 163, 49, 0.38);
+          background:
+            radial-gradient(circle at 18% 0%, rgba(217, 163, 49, 0.14), transparent 54%),
+            rgba(255, 255, 255, 0.035);
+          color: #f4d98a;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.07),
+            0 14px 34px rgba(0, 0, 0, 0.16);
+          backdrop-filter: blur(14px);
+        }
+
+        .ema-action-secondary::before {
+          background:
+            linear-gradient(135deg, rgba(217, 163, 49, 0.08), transparent 54%);
+        }
+
+        .ema-action-copy {
+          position: relative;
+          z-index: 2;
+          white-space: nowrap;
+        }
+
+        .ema-action-icon {
+          position: relative;
+          z-index: 2;
+          display: grid;
+          place-items: center;
+          width: 38px;
+          height: 38px;
+          flex: 0 0 38px;
+          border-radius: 12px;
+          background: rgba(0, 0, 0, 0.14);
+          font-size: 18px;
+          transition:
+            transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+            background 0.32s ease,
+            box-shadow 0.32s ease;
+        }
+
+        .ema-action-secondary .ema-action-icon {
+          background: rgba(217, 163, 49, 0.1);
+          box-shadow: inset 0 0 0 1px rgba(217, 163, 49, 0.18);
+        }
+
+        .ema-action-icon-back {
+          order: -1;
+        }
+
+        .ema-action-glow {
+          position: absolute;
+          left: 12%;
+          bottom: -34px;
+          z-index: -2;
+          width: 110px;
+          height: 72px;
+          border-radius: 999px;
+          background: rgba(255, 238, 177, 0.34);
+          filter: blur(28px);
+          opacity: 0.62;
+          transition:
+            transform 0.36s ease,
+            opacity 0.36s ease;
+        }
+
+        .ema-action:hover {
+          transform: translateY(-4px);
+        }
+
+        .ema-action-primary:hover {
+          border-color: rgba(255, 238, 177, 0.98);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.64),
+            0 22px 52px rgba(217, 163, 49, 0.25),
+            0 0 34px rgba(217, 163, 49, 0.16);
+        }
+
+        .ema-action-secondary:hover {
+          border-color: rgba(244, 217, 138, 0.82);
+          background:
+            radial-gradient(circle at 18% 0%, rgba(217, 163, 49, 0.22), transparent 58%),
+            rgba(217, 163, 49, 0.075);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 20px 44px rgba(0, 0, 0, 0.24),
+            0 0 32px rgba(217, 163, 49, 0.1);
+        }
+
+        .ema-action:hover .ema-action-icon {
+          transform: translate(2px, -2px) rotate(4deg);
+        }
+
+        .ema-action:hover .ema-action-icon-back {
           transform: translateX(-4px);
-          color: #fff0ad;
+        }
+
+        .ema-action:hover .ema-action-glow {
+          transform: translateX(42px) scale(1.18);
+          opacity: 1;
+        }
+
+        .ema-action:focus-visible,
+        .ema-related-image:focus-visible {
+          outline: 2px solid #fff0ad;
+          outline-offset: 4px;
+        }
+
+        .ema-back-link {
+          min-width: 248px;
+          margin-bottom: 26px;
+          padding-left: 9px;
+          padding-right: 18px;
         }
 
         .ema-meta-row {
@@ -663,7 +965,7 @@ export default function EditorialArticlePage({
           transform: scale(1.08);
         }
 
-        .ema-related-image span {
+        .ema-related-issue {
           position: absolute;
           left: 16px;
           bottom: 16px;
@@ -678,6 +980,54 @@ export default function EditorialArticlePage({
           letter-spacing: 0.08em;
           text-transform: uppercase;
           backdrop-filter: blur(12px);
+          transition:
+            transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.3s ease,
+            background 0.3s ease;
+        }
+
+        .ema-related-image-arrow {
+          position: absolute;
+          right: 16px;
+          top: 16px;
+          z-index: 3;
+          display: grid;
+          place-items: center;
+          width: 46px;
+          height: 46px;
+          border: 1px solid rgba(244, 217, 138, 0.44);
+          border-radius: 14px;
+          background:
+            radial-gradient(circle at 30% 20%, rgba(244, 217, 138, 0.18), transparent 56%),
+            rgba(0, 0, 0, 0.5);
+          color: #f4d98a;
+          font-size: 20px;
+          backdrop-filter: blur(14px);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 12px 28px rgba(0, 0, 0, 0.24);
+          transform: translate(8px, -8px) rotate(-8deg);
+          opacity: 0;
+          transition:
+            opacity 0.34s ease,
+            transform 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.34s ease,
+            background 0.34s ease;
+        }
+
+        .ema-related-card:hover .ema-related-issue {
+          transform: translateY(-3px);
+          border-color: rgba(255, 238, 177, 0.82);
+          background: rgba(0, 0, 0, 0.68);
+        }
+
+        .ema-related-card:hover .ema-related-image-arrow {
+          opacity: 1;
+          transform: translate(0, 0) rotate(0deg);
+          border-color: rgba(255, 238, 177, 0.86);
+          background:
+            radial-gradient(circle at 30% 20%, rgba(244, 217, 138, 0.26), transparent 56%),
+            rgba(0, 0, 0, 0.62);
         }
 
         .ema-related-copy {
@@ -708,32 +1058,9 @@ export default function EditorialArticlePage({
           line-height: 1.68;
         }
 
-        .ema-related-copy a {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 44px;
-          margin-top: 20px;
-          border: 1px solid rgba(217, 163, 49, 0.46);
-          border-radius: 999px;
-          background: rgba(217, 163, 49, 0.1);
-          color: #f4d98a;
-          padding: 0 16px;
-          text-decoration: none;
-          font-size: 12px;
-          font-weight: 900;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          transition:
-            transform 0.24s ease,
-            border-color 0.24s ease,
-            background 0.24s ease;
-        }
-
-        .ema-related-copy a:hover {
-          transform: translateY(-3px);
-          border-color: rgba(244, 217, 138, 0.9);
-          background: rgba(217, 163, 49, 0.16);
+        .ema-related-action {
+          min-width: 196px;
+          margin-top: 22px;
         }
 
         @keyframes emaOrbit {
@@ -848,8 +1175,15 @@ export default function EditorialArticlePage({
             height: 240px;
           }
 
-          .ema-related-copy a {
+          .ema-back-link,
+          .ema-related-action {
             width: 100%;
+            min-width: 0;
+          }
+
+          .ema-related-image-arrow {
+            opacity: 1;
+            transform: none;
           }
         }
 
@@ -862,11 +1196,15 @@ export default function EditorialArticlePage({
             animation: none !important;
           }
 
-          .ema-back-link,
+          .ema-action,
+          .ema-action::after,
+          .ema-action-icon,
+          .ema-action-glow,
           .ema-cover img,
           .ema-related-card,
           .ema-related-image img,
-          .ema-related-copy a {
+          .ema-related-issue,
+          .ema-related-image-arrow {
             transition: none !important;
           }
         }
