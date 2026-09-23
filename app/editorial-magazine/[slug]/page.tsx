@@ -1037,8 +1037,8 @@ export default function EditorialArticlePage({
 
         .ema-feature-spread {
           position: relative;
-          width: calc(100% + clamp(0px, 4vw, 72px));
-          margin: 34px 0 38px clamp(-36px, -2vw, 0px);
+          width: min(100%, 620px);
+          margin: 34px auto 38px;
           animation: emaFeatureReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
@@ -1055,8 +1055,8 @@ export default function EditorialArticlePage({
 
         .ema-feature-spread-frame {
           position: relative;
-          aspect-ratio: 16 / 10;
-          min-height: 380px;
+          aspect-ratio: 4 / 5;
+          min-height: 0;
           overflow: hidden;
           border: 1px solid rgba(244, 217, 138, 0.34);
           border-radius: 28px;
