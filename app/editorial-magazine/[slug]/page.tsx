@@ -21,6 +21,7 @@ const ARTICLE_COPY: Record<EditorialMagazineLanguage, Record<string, string>> = 
     backToMagazine: "Back to Editorial Magazine",
     editorialMagazine: "Editorial Magazine",
     featuredThought: "Featured Thought",
+    chapterLabel: "Editorial Chapter",
     writtenBy: "Written by",
     relatedTitle: "More from the Magazine",
     relatedDescription:
@@ -36,6 +37,7 @@ const ARTICLE_COPY: Record<EditorialMagazineLanguage, Record<string, string>> = 
     backToMagazine: "Назад в редакционный журнал",
     editorialMagazine: "Редакционный журнал",
     featuredThought: "Главная мысль",
+    chapterLabel: "Редакционная глава",
     writtenBy: "Автор",
     relatedTitle: "Больше из журнала",
     relatedDescription:
@@ -49,12 +51,31 @@ const ARTICLE_COPY: Record<EditorialMagazineLanguage, Record<string, string>> = 
   },
 }
 
+const EDITORIAL_SECTION_TITLES: Record<EditorialMagazineLanguage, string[]> = {
+  en: [
+    "Early Life and Education",
+    "A Life Surrounded by Art",
+    "Mystic Mask and the World of Abstraction",
+    "Art, Culture and International Recognition",
+    "Beyond the Canvas",
+  ],
+  ru: [
+    "Ранние годы и образование",
+    "Жизнь, окружённая искусством",
+    "Mystic Mask и мир абстракции",
+    "Искусство, культура и международное признание",
+    "За пределами холста",
+  ],
+}
+
 export default function EditorialArticlePage({
   params,
 }: EditorialArticlePageProps) {
   const { language } = useLanguage()
   const editorialLanguage = language as EditorialMagazineLanguage
   const copy = ARTICLE_COPY[editorialLanguage] || ARTICLE_COPY.en
+  const sectionTitles =
+    EDITORIAL_SECTION_TITLES[editorialLanguage] || EDITORIAL_SECTION_TITLES.en
 
   const post = useMemo(
     () => getEditorialMagazinePostBySlug(params.slug, editorialLanguage),
@@ -320,16 +341,67 @@ export default function EditorialArticlePage({
           </aside>
 
           <div className="ema-content">
-            <p className="ema-description">{post.description}</p>
+            <header className="ema-editorial-intro">
+              <span className="ema-editorial-intro-kicker">
+                {copy.editorialMagazine}
+              </span>
+              <p className="ema-description">{post.description}</p>
+              <div className="ema-editorial-rule" aria-hidden>
+                <span>GI</span>
+              </div>
+            </header>
 
-            {post.content.map((paragraph, index) => (
-              <p
-                key={`${post.slug}-paragraph-${index}`}
-                className={index === 0 ? "ema-lede" : ""}
-              >
-                {paragraph}
-              </p>
-            ))}
+            {post.content.map((paragraph, index) => {
+              const sectionIndex = sectionTitles.indexOf(paragraph)
+              const featuredQuote = post.featuredQuote?.trim() || ""
+              const isFeaturedThought =
+                featuredQuote.length > 0 &&
+                paragraph.toLocaleLowerCase().includes(
+                  featuredQuote.toLocaleLowerCase()
+                )
+
+              if (sectionIndex >= 0) {
+                return (
+                  <div
+                    key={`${post.slug}-section-${index}`}
+                    className="ema-editorial-section-heading"
+                  >
+                    <div className="ema-editorial-section-number" aria-hidden>
+                      {String(sectionIndex + 1).padStart(2, "0")}
+                    </div>
+
+                    <div className="ema-editorial-section-title">
+                      <span>{copy.chapterLabel}</span>
+                      <h2>{paragraph}</h2>
+                    </div>
+                  </div>
+                )
+              }
+
+              if (isFeaturedThought) {
+                return (
+                  <blockquote
+                    key={`${post.slug}-quote-${index}`}
+                    className="ema-editorial-pullquote"
+                  >
+                    <span>{copy.featuredThought}</span>
+                    <p>“{featuredQuote}”</p>
+                    <div className="ema-editorial-pullquote-mark" aria-hidden>
+                      “
+                    </div>
+                  </blockquote>
+                )
+              }
+
+              return (
+                <p
+                  key={`${post.slug}-paragraph-${index}`}
+                  className={index === 0 ? "ema-lede" : ""}
+                >
+                  {paragraph}
+                </p>
+              )
+            })}
           </div>
         </section>
       </article>
@@ -857,11 +929,182 @@ export default function EditorialArticlePage({
         }
 
         .ema-content .ema-description {
+          max-width: 860px;
           color: #f7f0df;
           font-family: Georgia, "Times New Roman", serif;
           font-size: clamp(24px, 3vw, 36px);
           line-height: 1.35;
           letter-spacing: -0.035em;
+        }
+
+        .ema-editorial-intro {
+          position: relative;
+          margin-bottom: 38px;
+        }
+
+        .ema-editorial-intro-kicker {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 18px;
+          color: #d9a331;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+        }
+
+        .ema-editorial-intro-kicker::before {
+          content: "";
+          width: 32px;
+          height: 1px;
+          background: linear-gradient(90deg, #d9a331, rgba(217, 163, 49, 0.16));
+        }
+
+        .ema-editorial-rule {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-top: 30px;
+          color: rgba(244, 217, 138, 0.72);
+          font-size: 9px;
+          font-weight: 900;
+          letter-spacing: 0.18em;
+        }
+
+        .ema-editorial-rule::before,
+        .ema-editorial-rule::after {
+          content: "";
+          height: 1px;
+          flex: 1;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(217, 163, 49, 0.46),
+            transparent
+          );
+        }
+
+        .ema-editorial-rule span {
+          display: grid;
+          place-items: center;
+          width: 34px;
+          height: 34px;
+          border: 1px solid rgba(217, 163, 49, 0.34);
+          border-radius: 999px;
+          background: rgba(217, 163, 49, 0.06);
+          box-shadow: 0 0 28px rgba(217, 163, 49, 0.08);
+        }
+
+
+        .ema-editorial-section-heading {
+          position: relative;
+          display: grid;
+          grid-template-columns: 86px minmax(0, 1fr);
+          gap: 22px;
+          align-items: end;
+          margin: 64px 0 28px;
+          padding: 28px 0 18px;
+          border-top: 1px solid rgba(217, 163, 49, 0.18);
+          animation: emaEditorialHeadingIn 0.72s ease both;
+        }
+
+        .ema-editorial-section-heading::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: min(280px, 48%);
+          height: 1px;
+          background: linear-gradient(90deg, #d9a331, transparent);
+          transform-origin: left;
+          animation: emaEditorialLineIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .ema-editorial-section-number {
+          color: rgba(217, 163, 49, 0.14);
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(54px, 5.6vw, 82px);
+          font-weight: 400;
+          line-height: 0.8;
+          letter-spacing: -0.08em;
+          text-shadow: 0 0 34px rgba(217, 163, 49, 0.08);
+          user-select: none;
+        }
+
+        .ema-editorial-section-title span {
+          display: block;
+          margin-bottom: 8px;
+          color: #d9a331;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+        }
+
+        .ema-editorial-section-title h2 {
+          max-width: 820px;
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(34px, 4.4vw, 58px);
+          font-weight: 500;
+          line-height: 1.02;
+          letter-spacing: -0.05em;
+          text-wrap: balance;
+        }
+
+        .ema-editorial-pullquote {
+          position: relative;
+          isolation: isolate;
+          overflow: hidden;
+          margin: 50px 0;
+          border-top: 1px solid rgba(217, 163, 49, 0.38);
+          border-bottom: 1px solid rgba(217, 163, 49, 0.38);
+          padding: 36px 34px;
+          background:
+            radial-gradient(520px 180px at 0% 50%, rgba(217, 163, 49, 0.13), transparent 66%),
+            linear-gradient(90deg, rgba(217, 163, 49, 0.045), transparent);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.04),
+            0 22px 70px rgba(0, 0, 0, 0.18);
+        }
+
+        .ema-editorial-pullquote > span {
+          position: relative;
+          z-index: 2;
+          display: block;
+          margin-bottom: 12px;
+          color: #d9a331;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+        }
+
+        .ema-content .ema-editorial-pullquote p {
+          position: relative;
+          z-index: 2;
+          max-width: 760px;
+          margin: 0;
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(30px, 4vw, 52px);
+          font-style: italic;
+          line-height: 1.12;
+          letter-spacing: -0.045em;
+        }
+
+        .ema-editorial-pullquote-mark {
+          position: absolute;
+          right: 20px;
+          top: -34px;
+          z-index: 1;
+          color: rgba(217, 163, 49, 0.09);
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: 190px;
+          line-height: 1;
+          pointer-events: none;
         }
 
         .ema-lede::first-letter {
@@ -1063,6 +1306,30 @@ export default function EditorialArticlePage({
           margin-top: 22px;
         }
 
+        @keyframes emaEditorialHeadingIn {
+          from {
+            opacity: 0;
+            transform: translateY(18px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes emaEditorialLineIn {
+          from {
+            transform: scaleX(0);
+            opacity: 0;
+          }
+
+          to {
+            transform: scaleX(1);
+            opacity: 1;
+          }
+        }
+
         @keyframes emaOrbit {
           from {
             transform: translateY(-50%) rotate(0deg);
@@ -1167,6 +1434,31 @@ export default function EditorialArticlePage({
             border-radius: 24px;
           }
 
+          .ema-editorial-section-heading {
+            grid-template-columns: 58px minmax(0, 1fr);
+            gap: 14px;
+            margin-top: 48px;
+            padding-top: 22px;
+          }
+
+          .ema-editorial-section-number {
+            font-size: 52px;
+          }
+
+          .ema-editorial-section-title h2 {
+            font-size: clamp(30px, 9vw, 44px);
+          }
+
+          .ema-editorial-pullquote {
+            margin: 40px 0;
+            padding: 28px 20px;
+          }
+
+          .ema-editorial-pullquote-mark {
+            right: 8px;
+            font-size: 132px;
+          }
+
           .ema-related-grid {
             grid-template-columns: 1fr;
           }
@@ -1192,7 +1484,9 @@ export default function EditorialArticlePage({
           .ema-hero-copy,
           .ema-cover,
           .ema-cover-shine,
-          .ema-related-card {
+          .ema-related-card,
+          .ema-editorial-section-heading,
+          .ema-editorial-section-heading::after {
             animation: none !important;
           }
 
