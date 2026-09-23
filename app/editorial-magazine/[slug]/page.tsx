@@ -21,7 +21,6 @@ const ARTICLE_COPY: Record<EditorialMagazineLanguage, Record<string, string>> = 
     backToMagazine: "Back to Editorial Magazine",
     editorialMagazine: "Editorial Magazine",
     featuredThought: "Featured Thought",
-    chapterLabel: "Editorial Chapter",
     writtenBy: "Written by",
     relatedTitle: "More from the Magazine",
     relatedDescription:
@@ -32,12 +31,15 @@ const ARTICLE_COPY: Record<EditorialMagazineLanguage, Record<string, string>> = 
     notFoundDescription:
       "The article may have been moved, renamed, or removed from the Editorial Magazine archive.",
     returnToMagazine: "Return to Magazine",
+    chapterLabel: "Editorial Chapter",
+    artCultureVisual: "Cultural Diplomacy",
+    artCultureImageCaption:
+      "Yulia Antonova — Mystic Mask · Art, Culture and International Recognition",
   },
   ru: {
     backToMagazine: "Назад в редакционный журнал",
     editorialMagazine: "Редакционный журнал",
     featuredThought: "Главная мысль",
-    chapterLabel: "Редакционная глава",
     writtenBy: "Автор",
     relatedTitle: "Больше из журнала",
     relatedDescription:
@@ -48,10 +50,17 @@ const ARTICLE_COPY: Record<EditorialMagazineLanguage, Record<string, string>> = 
     notFoundDescription:
       "Материал мог быть перемещён, переименован или удалён из архива Editorial Magazine.",
     returnToMagazine: "Вернуться в журнал",
+    chapterLabel: "Раздел журнала",
+    artCultureVisual: "Культурная дипломатия",
+    artCultureImageCaption:
+      "Юлия Антонова — Mystic Mask · Искусство, культура и международное признание",
   },
 }
 
-const EDITORIAL_SECTION_TITLES: Record<EditorialMagazineLanguage, string[]> = {
+const EDITORIAL_SECTION_TITLES: Record<
+  EditorialMagazineLanguage,
+  string[]
+> = {
   en: [
     "Early Life and Education",
     "A Life Surrounded by Art",
@@ -66,6 +75,14 @@ const EDITORIAL_SECTION_TITLES: Record<EditorialMagazineLanguage, string[]> = {
     "Искусство, культура и международное признание",
     "За пределами холста",
   ],
+}
+
+const ART_CULTURE_SECTION_TITLE: Record<
+  EditorialMagazineLanguage,
+  string
+> = {
+  en: "Art, Culture and International Recognition",
+  ru: "Искусство, культура и международное признание",
 }
 
 export default function EditorialArticlePage({
@@ -341,55 +358,61 @@ export default function EditorialArticlePage({
           </aside>
 
           <div className="ema-content">
-            <header className="ema-editorial-intro">
-              <span className="ema-editorial-intro-kicker">
-                {copy.editorialMagazine}
-              </span>
-              <p className="ema-description">{post.description}</p>
-              <div className="ema-editorial-rule" aria-hidden>
-                <span>GI</span>
-              </div>
-            </header>
+            <p className="ema-description">{post.description}</p>
 
             {post.content.map((paragraph, index) => {
               const sectionIndex = sectionTitles.indexOf(paragraph)
-              const featuredQuote = post.featuredQuote?.trim() || ""
-              const isFeaturedThought =
-                featuredQuote.length > 0 &&
-                paragraph.toLocaleLowerCase().includes(
-                  featuredQuote.toLocaleLowerCase()
-                )
+              const isSectionHeading = sectionIndex !== -1
+              const isArtCultureSection =
+                post.slug ===
+                  "yulia-antonova-mystic-mask-art-culture-creative-expression" &&
+                paragraph === ART_CULTURE_SECTION_TITLE[editorialLanguage]
 
-              if (sectionIndex >= 0) {
+              if (isSectionHeading) {
                 return (
-                  <div
+                  <section
                     key={`${post.slug}-section-${index}`}
-                    className="ema-editorial-section-heading"
+                    className="ema-editorial-section"
                   >
-                    <div className="ema-editorial-section-number" aria-hidden>
-                      {String(sectionIndex + 1).padStart(2, "0")}
+                    <div className="ema-editorial-heading">
+                      <span className="ema-editorial-number" aria-hidden>
+                        {String(sectionIndex + 1).padStart(2, "0")}
+                      </span>
+
+                      <div className="ema-editorial-heading-copy">
+                        <small>{copy.chapterLabel}</small>
+                        <h2>{paragraph}</h2>
+                      </div>
                     </div>
 
-                    <div className="ema-editorial-section-title">
-                      <span>{copy.chapterLabel}</span>
-                      <h2>{paragraph}</h2>
-                    </div>
-                  </div>
-                )
-              }
+                    {isArtCultureSection ? (
+                      <figure className="ema-feature-spread">
+                        <div className="ema-feature-spread-glow" aria-hidden />
+                        <div className="ema-feature-spread-frame">
+                          <img
+                            src="/images/ambassador.png"
+                            alt={copy.artCultureImageCaption}
+                          />
 
-              if (isFeaturedThought) {
-                return (
-                  <blockquote
-                    key={`${post.slug}-quote-${index}`}
-                    className="ema-editorial-pullquote"
-                  >
-                    <span>{copy.featuredThought}</span>
-                    <p>“{featuredQuote}”</p>
-                    <div className="ema-editorial-pullquote-mark" aria-hidden>
-                      “
-                    </div>
-                  </blockquote>
+                          <div className="ema-feature-spread-overlay" aria-hidden />
+
+                          <div className="ema-feature-spread-badge">
+                            <span>{copy.artCultureVisual}</span>
+                            <strong>Gastronomist International</strong>
+                          </div>
+
+                          <span className="ema-feature-spread-mark" aria-hidden>
+                            GI
+                          </span>
+                        </div>
+
+                        <figcaption>
+                          <span>FEATURE / {String(sectionIndex + 1).padStart(2, "0")}</span>
+                          <p>{copy.artCultureImageCaption}</p>
+                        </figcaption>
+                      </figure>
+                    ) : null}
+                  </section>
                 )
               }
 
@@ -929,182 +952,11 @@ export default function EditorialArticlePage({
         }
 
         .ema-content .ema-description {
-          max-width: 860px;
           color: #f7f0df;
           font-family: Georgia, "Times New Roman", serif;
           font-size: clamp(24px, 3vw, 36px);
           line-height: 1.35;
           letter-spacing: -0.035em;
-        }
-
-        .ema-editorial-intro {
-          position: relative;
-          margin-bottom: 38px;
-        }
-
-        .ema-editorial-intro-kicker {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 18px;
-          color: #d9a331;
-          font-size: 10px;
-          font-weight: 900;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-        }
-
-        .ema-editorial-intro-kicker::before {
-          content: "";
-          width: 32px;
-          height: 1px;
-          background: linear-gradient(90deg, #d9a331, rgba(217, 163, 49, 0.16));
-        }
-
-        .ema-editorial-rule {
-          position: relative;
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          margin-top: 30px;
-          color: rgba(244, 217, 138, 0.72);
-          font-size: 9px;
-          font-weight: 900;
-          letter-spacing: 0.18em;
-        }
-
-        .ema-editorial-rule::before,
-        .ema-editorial-rule::after {
-          content: "";
-          height: 1px;
-          flex: 1;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(217, 163, 49, 0.46),
-            transparent
-          );
-        }
-
-        .ema-editorial-rule span {
-          display: grid;
-          place-items: center;
-          width: 34px;
-          height: 34px;
-          border: 1px solid rgba(217, 163, 49, 0.34);
-          border-radius: 999px;
-          background: rgba(217, 163, 49, 0.06);
-          box-shadow: 0 0 28px rgba(217, 163, 49, 0.08);
-        }
-
-
-        .ema-editorial-section-heading {
-          position: relative;
-          display: grid;
-          grid-template-columns: 86px minmax(0, 1fr);
-          gap: 22px;
-          align-items: end;
-          margin: 64px 0 28px;
-          padding: 28px 0 18px;
-          border-top: 1px solid rgba(217, 163, 49, 0.18);
-          animation: emaEditorialHeadingIn 0.72s ease both;
-        }
-
-        .ema-editorial-section-heading::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          width: min(280px, 48%);
-          height: 1px;
-          background: linear-gradient(90deg, #d9a331, transparent);
-          transform-origin: left;
-          animation: emaEditorialLineIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
-
-        .ema-editorial-section-number {
-          color: rgba(217, 163, 49, 0.14);
-          font-family: Georgia, "Times New Roman", serif;
-          font-size: clamp(54px, 5.6vw, 82px);
-          font-weight: 400;
-          line-height: 0.8;
-          letter-spacing: -0.08em;
-          text-shadow: 0 0 34px rgba(217, 163, 49, 0.08);
-          user-select: none;
-        }
-
-        .ema-editorial-section-title span {
-          display: block;
-          margin-bottom: 8px;
-          color: #d9a331;
-          font-size: 10px;
-          font-weight: 900;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-        }
-
-        .ema-editorial-section-title h2 {
-          max-width: 820px;
-          color: #fff;
-          font-family: Georgia, "Times New Roman", serif;
-          font-size: clamp(34px, 4.4vw, 58px);
-          font-weight: 500;
-          line-height: 1.02;
-          letter-spacing: -0.05em;
-          text-wrap: balance;
-        }
-
-        .ema-editorial-pullquote {
-          position: relative;
-          isolation: isolate;
-          overflow: hidden;
-          margin: 50px 0;
-          border-top: 1px solid rgba(217, 163, 49, 0.38);
-          border-bottom: 1px solid rgba(217, 163, 49, 0.38);
-          padding: 36px 34px;
-          background:
-            radial-gradient(520px 180px at 0% 50%, rgba(217, 163, 49, 0.13), transparent 66%),
-            linear-gradient(90deg, rgba(217, 163, 49, 0.045), transparent);
-          box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.04),
-            0 22px 70px rgba(0, 0, 0, 0.18);
-        }
-
-        .ema-editorial-pullquote > span {
-          position: relative;
-          z-index: 2;
-          display: block;
-          margin-bottom: 12px;
-          color: #d9a331;
-          font-size: 10px;
-          font-weight: 900;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-        }
-
-        .ema-content .ema-editorial-pullquote p {
-          position: relative;
-          z-index: 2;
-          max-width: 760px;
-          margin: 0;
-          color: #fff;
-          font-family: Georgia, "Times New Roman", serif;
-          font-size: clamp(30px, 4vw, 52px);
-          font-style: italic;
-          line-height: 1.12;
-          letter-spacing: -0.045em;
-        }
-
-        .ema-editorial-pullquote-mark {
-          position: absolute;
-          right: 20px;
-          top: -34px;
-          z-index: 1;
-          color: rgba(217, 163, 49, 0.09);
-          font-family: Georgia, "Times New Roman", serif;
-          font-size: 190px;
-          line-height: 1;
-          pointer-events: none;
         }
 
         .ema-lede::first-letter {
@@ -1114,6 +966,223 @@ export default function EditorialArticlePage({
           font-family: Georgia, "Times New Roman", serif;
           font-size: 72px;
           line-height: 0.82;
+        }
+
+        .ema-editorial-section {
+          position: relative;
+          margin: 64px 0 30px;
+          padding-top: 26px;
+          border-top: 1px solid rgba(217, 163, 49, 0.26);
+        }
+
+        .ema-editorial-section::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: -1px;
+          width: min(180px, 34%);
+          height: 1px;
+          background: linear-gradient(90deg, #f4d98a, #d9a331, transparent);
+          box-shadow: 0 0 24px rgba(217, 163, 49, 0.3);
+        }
+
+        .ema-editorial-heading {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 22px;
+          align-items: start;
+        }
+
+        .ema-editorial-number {
+          display: grid;
+          place-items: center;
+          width: 56px;
+          height: 56px;
+          border: 1px solid rgba(244, 217, 138, 0.38);
+          border-radius: 18px;
+          background:
+            radial-gradient(circle at 30% 20%, rgba(244, 217, 138, 0.2), transparent 54%),
+            rgba(217, 163, 49, 0.07);
+          color: #f4d98a;
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.14em;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 14px 34px rgba(0, 0, 0, 0.22);
+        }
+
+        .ema-editorial-heading-copy small {
+          display: block;
+          margin-bottom: 9px;
+          color: #d9a331;
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+
+        .ema-editorial-heading-copy h2 {
+          max-width: 760px;
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(34px, 4.5vw, 58px);
+          font-weight: 500;
+          line-height: 1.02;
+          letter-spacing: -0.05em;
+          text-wrap: balance;
+        }
+
+        .ema-feature-spread {
+          position: relative;
+          width: calc(100% + clamp(0px, 4vw, 72px));
+          margin: 34px 0 38px clamp(-36px, -2vw, 0px);
+          animation: emaFeatureReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .ema-feature-spread-glow {
+          position: absolute;
+          inset: 8% -4% 2%;
+          z-index: -1;
+          border-radius: 36px;
+          background: rgba(217, 163, 49, 0.14);
+          filter: blur(44px);
+          opacity: 0.78;
+          pointer-events: none;
+        }
+
+        .ema-feature-spread-frame {
+          position: relative;
+          aspect-ratio: 16 / 10;
+          min-height: 380px;
+          overflow: hidden;
+          border: 1px solid rgba(244, 217, 138, 0.34);
+          border-radius: 28px;
+          background: #080808;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 34px 100px rgba(0, 0, 0, 0.52),
+            0 0 52px rgba(217, 163, 49, 0.09);
+        }
+
+        .ema-feature-spread-frame::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 3;
+          background: linear-gradient(
+            112deg,
+            transparent 20%,
+            rgba(255, 238, 177, 0.12) 44%,
+            transparent 68%
+          );
+          transform: translateX(-120%);
+          animation: emaFeatureShine 6.5s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .ema-feature-spread-frame img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+          transform: scale(1.015);
+          transition:
+            transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+            filter 0.8s ease;
+        }
+
+        .ema-feature-spread:hover .ema-feature-spread-frame img {
+          transform: scale(1.055);
+          filter: saturate(1.05) contrast(1.02);
+        }
+
+        .ema-feature-spread-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background:
+            linear-gradient(180deg, transparent 42%, rgba(0, 0, 0, 0.72)),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.22), transparent 36%);
+          pointer-events: none;
+        }
+
+        .ema-feature-spread-badge {
+          position: absolute;
+          left: 22px;
+          bottom: 22px;
+          z-index: 2;
+          display: grid;
+          gap: 6px;
+          max-width: calc(100% - 100px);
+          border-left: 2px solid #d9a331;
+          padding: 4px 0 4px 14px;
+        }
+
+        .ema-feature-spread-badge span {
+          color: #f4d98a;
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+
+        .ema-feature-spread-badge strong {
+          color: #fff;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(20px, 2.4vw, 30px);
+          font-weight: 500;
+          line-height: 1.05;
+        }
+
+        .ema-feature-spread-mark {
+          position: absolute;
+          right: 20px;
+          top: 18px;
+          z-index: 2;
+          display: grid;
+          place-items: center;
+          width: 50px;
+          height: 50px;
+          border: 1px solid rgba(244, 217, 138, 0.44);
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.46);
+          color: #f4d98a;
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          backdrop-filter: blur(14px);
+        }
+
+        .ema-feature-spread figcaption {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 18px;
+          align-items: baseline;
+          padding: 13px 4px 0;
+        }
+
+        .ema-feature-spread figcaption span {
+          color: #d9a331;
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 9px;
+          font-weight: 900;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .ema-feature-spread figcaption p {
+          margin: 0;
+          color: rgba(247, 240, 223, 0.54);
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 11px;
+          line-height: 1.5;
         }
 
         .ema-related {
@@ -1306,27 +1375,27 @@ export default function EditorialArticlePage({
           margin-top: 22px;
         }
 
-        @keyframes emaEditorialHeadingIn {
+        @keyframes emaFeatureReveal {
           from {
             opacity: 0;
-            transform: translateY(18px);
+            transform: translateY(24px) scale(0.985);
           }
 
           to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
           }
         }
 
-        @keyframes emaEditorialLineIn {
-          from {
-            transform: scaleX(0);
-            opacity: 0;
+        @keyframes emaFeatureShine {
+          0%,
+          52% {
+            transform: translateX(-120%);
           }
 
-          to {
-            transform: scaleX(1);
-            opacity: 1;
+          72%,
+          100% {
+            transform: translateX(120%);
           }
         }
 
@@ -1434,29 +1503,48 @@ export default function EditorialArticlePage({
             border-radius: 24px;
           }
 
-          .ema-editorial-section-heading {
-            grid-template-columns: 58px minmax(0, 1fr);
-            gap: 14px;
+          .ema-editorial-section {
             margin-top: 48px;
-            padding-top: 22px;
           }
 
-          .ema-editorial-section-number {
-            font-size: 52px;
+          .ema-editorial-heading {
+            grid-template-columns: 1fr;
+            gap: 14px;
           }
 
-          .ema-editorial-section-title h2 {
-            font-size: clamp(30px, 9vw, 44px);
+          .ema-editorial-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
           }
 
-          .ema-editorial-pullquote {
-            margin: 40px 0;
-            padding: 28px 20px;
+          .ema-feature-spread {
+            width: 100%;
+            margin: 28px 0 32px;
           }
 
-          .ema-editorial-pullquote-mark {
-            right: 8px;
-            font-size: 132px;
+          .ema-feature-spread-frame {
+            aspect-ratio: 4 / 5;
+            min-height: 0;
+            border-radius: 22px;
+          }
+
+          .ema-feature-spread-badge {
+            left: 16px;
+            bottom: 16px;
+            max-width: calc(100% - 86px);
+          }
+
+          .ema-feature-spread-mark {
+            right: 14px;
+            top: 14px;
+            width: 44px;
+            height: 44px;
+          }
+
+          .ema-feature-spread figcaption {
+            grid-template-columns: 1fr;
+            gap: 5px;
           }
 
           .ema-related-grid {
@@ -1484,9 +1572,9 @@ export default function EditorialArticlePage({
           .ema-hero-copy,
           .ema-cover,
           .ema-cover-shine,
-          .ema-related-card,
-          .ema-editorial-section-heading,
-          .ema-editorial-section-heading::after {
+          .ema-feature-spread,
+          .ema-feature-spread-frame::before,
+          .ema-related-card {
             animation: none !important;
           }
 
@@ -1495,6 +1583,7 @@ export default function EditorialArticlePage({
           .ema-action-icon,
           .ema-action-glow,
           .ema-cover img,
+          .ema-feature-spread-frame img,
           .ema-related-card,
           .ema-related-image img,
           .ema-related-issue,
