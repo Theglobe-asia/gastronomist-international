@@ -41,7 +41,7 @@ export const EDITORIAL_MAGAZINE_POSTS: EditorialMagazinePost[] = [
     slug: "yulia-antonova-mystic-mask-art-culture-creative-expression",
     title: "Yulia Antonova — Mystic Mask",
     subtitle:
-      "Contemporary Abstract Artist · Author · Poet · Cultural Diplomacy Ambassador",
+      "Contemporary Abstract Artist · Author · Poet · Cultural Diplomacy Ambassador of Gastronomist International",
     description:
       "An editorial portrait of Yulia Antonova, known creatively as Mystic Mask — a contemporary abstract artist, author, poet, and cultural figure whose journey connects visual art, literature, music, cultural diplomacy, and creative expression.",
     date: "2026-09-23",
@@ -65,7 +65,7 @@ export const EDITORIAL_MAGAZINE_POSTS: EditorialMagazinePost[] = [
     content: [
       "Yulia Antonova, known by her creative pseudonym Mystic Mask, is a contemporary abstract artist, author, poet, and cultural figure whose life and work bring together visual art, literature, cultural diplomacy, and creative expression.",
 
-      "She serves as Vice President of the Union of Abstract Artists of Russia and heads its branch in the Republic of Crimea. She is also a member of the Union of Russian Artists of the Republic of Crimea.",
+      "She serves as Vice President of the Union of Abstract Artists of Russia and heads its branch in the Republic of Crimea. She is also an Honorary Member of the I.K. Aivazovsky Academy of Arts.",
 
       "Beyond visual art, Yulia is an author and poet and a member of the Russian Union of Writers.",
 
@@ -139,7 +139,7 @@ export const EDITORIAL_MAGAZINE_POSTS: EditorialMagazinePost[] = [
       ru: {
         title: "Юлия Антонова — Mystic Mask",
         subtitle:
-          "Современный художник-абстракционист · Автор · Поэт · Посол культурной дипломатии",
+          "Современный художник-абстракционист · Автор · Поэт · Посол культурной дипломатии Gastronomist International",
         description:
           "Редакционный портрет Юлии Антоновой, известной под творческим псевдонимом Mystic Mask — современного художника-абстракциониста, автора, поэта и деятеля культуры, чей путь объединяет изобразительное искусство, литературу, музыку, культурную дипломатию и творческое самовыражение.",
         category: "Искусство и культурная дипломатия",
@@ -161,7 +161,7 @@ export const EDITORIAL_MAGAZINE_POSTS: EditorialMagazinePost[] = [
         content: [
           "Юлия Антонова, известная под творческим псевдонимом Mystic Mask, — современный художник-абстракционист, автор, поэт и деятель культуры, чья жизнь и творчество объединяют изобразительное искусство, литературу, культурную дипломатию и творческое самовыражение.",
 
-          "Она занимает должность вице-президента Союза абстракционистов России и руководит его филиалом в Республике Крым. Также она является членом Союза русских художников Республики Крым.",
+          "Она занимает должность вице-президента Союза абстракционистов России и руководит его филиалом в Республике Крым. Также она является Почётным членом Академии искусств имени И. К. Айвазовского.",
 
           "Помимо изобразительного искусства, Юлия является автором и поэтом, а также членом Российского союза писателей.",
 
