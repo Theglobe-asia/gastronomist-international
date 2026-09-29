@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Lilia Vladimirovna Gilfanova",
+    role: "International Member",
+    blurb:
+      "Chef and catering professional with more than 15 years of experience in gastronomy and over five years working professionally as a Chef. Her work includes catering, private functions, off-site events, traditional plov prepared over an open fire, culinary storytelling, and children’s culinary masterclasses.",
+    img: "/images/lilia.png",
+    region: "Russia",
+    specialty: "Catering & Culinary Education",
+    translations: {
+      ru: {
+        name: "Шеф-повар Лилия Владимировна Гильфанова",
+        role: "Международный член",
+        blurb:
+          "Шеф-повар и специалист по кейтерингу с более чем 15-летним опытом работы в гастрономии и более чем пятилетним профессиональным опытом в должности шеф-повара. Её деятельность включает кейтеринг, частные и выездные мероприятия, приготовление традиционного плова на открытом огне, кулинарное повествование и проведение детских кулинарных мастер-классов.",
+        region: "Россия",
+        specialty: "Кейтеринг и кулинарное образование",
+      },
+    },
+  },
+  {
     name: "Chef Andrey Evgenyevich Lodygin",
     role: "International Member",
     blurb:
