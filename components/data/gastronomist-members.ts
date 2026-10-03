@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Tatyana Yuryevna Yukhimishena",
+    role: "International Member",
+    blurb:
+      "Restaurateur, entrepreneur, business leader, and co-founder of the family restaurant project “Bulba & Borsch.” Her professional approach combines restaurant operations, team leadership, guest experience, national cuisine, cultural preservation, financial discipline, and continuous business development.",
+    img: "/images/tatyana.png",
+    region: "Russia",
+    specialty: "Restaurant Leadership & Hospitality",
+    translations: {
+      ru: {
+        name: "Татьяна Юрьевна Юхимишена",
+        role: "Международный член",
+        blurb:
+          "Ресторатор, предприниматель, руководитель и одна из основателей семейного ресторанного проекта «Бульба и Борщ». Её профессиональный подход объединяет ресторанные операции, управление командой, гостевой опыт, национальную кухню, сохранение культурных традиций, финансовую дисциплину и постоянное развитие бизнеса.",
+        region: "Россия",
+        specialty: "Ресторанное лидерство и гостеприимство",
+      },
+    },
+  },
+  {
     name: "Chef Lilia Vladimirovna Gilfanova",
     role: "International Member",
     blurb:
