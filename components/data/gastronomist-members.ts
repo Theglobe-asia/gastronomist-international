@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Morozov Nikolai Nikolaevich",
+    role: "International Member",
+    blurb:
+      "Executive Chef of Restoratsiya “Shalyapin” with 15 years of culinary experience, specializing in the revival and reinterpretation of high Russian cuisine from the Silver Age. His work combines historical research, authentic early 20th-century recipes, modern technique, refined presentation, and the preservation of Russian culinary heritage.",
+    img: "/images/morozov.png",
+    region: "Russia",
+    specialty: "Russian Culinary Heritage",
+    translations: {
+      ru: {
+        name: "Шеф-повар Морозов Николай Николаевич",
+        role: "Международный член",
+        blurb:
+          "Executive Chef Ресторацiи «ШаляпинЪ» с 15-летним профессиональным кулинарным опытом, специализирующийся на возрождении и переосмыслении высокой русской кухни Серебряного века. Его работа объединяет исторические исследования, аутентичные рецептуры начала XX столетия, современные техники, современную подачу и сохранение российского кулинарного наследия.",
+        region: "Россия",
+        specialty: "Русское кулинарное наследие",
+      },
+    },
+  },
+  {
     name: "Tatyana Yuryevna Yukhimishena",
     role: "International Member",
     blurb:
