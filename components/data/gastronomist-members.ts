@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Igor Yuryevich Sudarkin",
+    role: "International Member",
+    blurb:
+      "Executive Chef with 16 years of professional culinary experience, including six years in executive kitchen leadership. His background spans Russian, Italian, and Turkish cuisine, family restaurant operations, resort and sanatorium hospitality, catering, gastronomy forums, and children’s culinary masterclasses.",
+    img: "/images/igor.png",
+    region: "Russia",
+    specialty: "Russian, Italian & Turkish Cuisine",
+    translations: {
+      ru: {
+        name: "Шеф-повар Игорь Юрьевич Сударкин",
+        role: "Международный член",
+        blurb:
+          "Executive Chef с 16-летним профессиональным опытом в кулинарной индустрии, включая шесть лет руководства кухней. Его профессиональный путь охватывает русскую, итальянскую и турецкую кухню, работу в семейном ресторане, курортной и санаторной сфере, кейтеринг, гастрономические форумы и детские кулинарные мастер-классы.",
+        region: "Россия",
+        specialty: "Русская, итальянская и турецкая кухня",
+      },
+    },
+  },
+  {
     name: "Chef Morozov Nikolai Nikolaevich",
     role: "International Member",
     blurb:
