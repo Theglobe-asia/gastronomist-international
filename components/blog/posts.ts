@@ -71,7 +71,6 @@ export const BLOG_POSTS: BlogPost[] = [
       "His journey reflects a commitment to continuous learning and a willingness to gain experience across different areas of gastronomy.",
       "After years of working in different regions and hospitality environments, his return to his native region represents another chapter in a career built around professional development, culinary craftsmanship, hospitality, and the sharing of knowledge.",
       "Gastronomist International recognizes Chef Igor Yuryevich Sudarkin for his 16 years of professional culinary experience, six years of Executive Chef leadership, and his contribution across Russian, Italian, and Turkish cuisine, catering, hospitality, and culinary education.",
-      "Contact: sudarckini@yandex.ru · +7 991 395 1207",
     ],
     translations: {
       ru: {
@@ -116,7 +115,6 @@ export const BLOG_POSTS: BlogPost[] = [
           "Его путь отражает стремление к постоянному обучению и готовность получать опыт в разных направлениях гастрономии.",
           "После многих лет работы в разных регионах и форматах гостеприимства возвращение в родной регион стало ещё одной главой карьеры, построенной на профессиональном развитии, кулинарном мастерстве, гостеприимстве и передаче знаний.",
           "Gastronomist International отмечает шеф-повара Игоря Юрьевича Сударкина за 16 лет профессионального опыта, шесть лет лидерства на уровне Executive Chef и вклад в русскую, итальянскую и турецкую кухню, кейтеринг, гостеприимство и кулинарное образование.",
-          "Контакты: sudarckini@yandex.ru · +7 991 395 1207",
         ],
       },
     },
