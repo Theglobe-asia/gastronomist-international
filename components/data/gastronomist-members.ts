@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Arkady Nikolaevich Zorin",
+    role: "International Member",
+    blurb:
+      "Executive Chef of “Vstrecha Druzey” Restaurant in Moscow with 17 years of culinary experience and eight years in executive kitchen leadership. Inspired by his mother’s cooking, he explores fermentation and traditional food preservation and participates in culinary competitions.",
+    img: "/images/zorin.png",
+    region: "Russia",
+    specialty: "Fermentation & Food Preservation",
+    translations: {
+      ru: {
+        name: "Шеф-повар Зорин Аркадий Николаевич",
+        role: "Международный член",
+        blurb:
+          "Шеф-повар московского ресторана «Встреча друзей» с 17-летним опытом в кулинарии и восемью годами руководства профессиональной кухней. Вдохновлённый кулинарными традициями своей матери, он изучает ферментацию и традиционные способы сохранения продуктов, а также участвует в кулинарных соревнованиях.",
+        region: "Россия",
+        specialty: "Ферментация и сохранение продуктов",
+      },
+    },
+  },
+  {
     name: "Chef Igor Yuryevich Sudarkin",
     role: "International Member",
     blurb:
