@@ -1246,9 +1246,13 @@ export function getLocalizedPost(post: BlogPost, language: BlogLanguage = "en"):
 }
 
 export function getSortedPosts(language: BlogLanguage = "en") {
-  return [...BLOG_POSTS]
-    .sort((a, b) => (a.date < b.date ? 1 : -1))
-    .map((post) => getLocalizedPost(post, language))
+  return BLOG_POSTS.map((post, publishIndex) => ({ post, publishIndex }))
+    .sort((a, b) => {
+      const dateOrder = b.post.date.localeCompare(a.post.date)
+      // New entries are added first; preserve that order for posts on the same day.
+      return dateOrder !== 0 ? dateOrder : a.publishIndex - b.publishIndex
+    })
+    .map(({ post }) => getLocalizedPost(post, language))
 }
 
 export function getLatestPost(language: BlogLanguage = "en") {
