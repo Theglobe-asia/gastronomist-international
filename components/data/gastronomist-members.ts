@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Mikhail Yuryevich Klyuenkov",
+    role: "International Member",
+    blurb:
+      "Executive Chef of the historic NIKITIN Hotel & Restaurant in Nizhny Novgorod, with a professional culinary career beginning in 2011. His work focuses on Russian culinary heritage, historical recipe reconstruction, and contemporary interpretations of 19th-century Volga merchant cuisine.",
+    img: "/images/mikhail.png",
+    region: "Russia",
+    specialty: "Russian Culinary Heritage & Volga Merchant Cuisine",
+    translations: {
+      ru: {
+        name: "Шеф-повар Михаил Юрьевич Клюенков",
+        role: "Международный член",
+        blurb:
+          "Executive Chef исторического отеля-ресторана NIKITIN в Нижнем Новгороде, профессиональная кулинарная карьера которого началась в 2011 году. Его работа посвящена русскому кулинарному наследию, реконструкции исторических рецептов и современному переосмыслению купеческой кухни Поволжья XIX века.",
+        region: "Россия",
+        specialty: "Русское кулинарное наследие и купеческая кухня Поволжья",
+      },
+    },
+  },
+  {
     name: "Chef Arkady Nikolaevich Zorin",
     role: "International Member",
     blurb:
