@@ -56,7 +56,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Over time, his career developed into a pursuit of culinary heritage, combining traditional knowledge with contemporary professional techniques.",
       "Throughout his career, Chef Mikhail has participated in recognized culinary championships in Russia, demonstrating his commitment to professional development and competitive gastronomy.",
       "He was a finalist at Chef à la Russe 2024 in Moscow and again a finalist at Chef à la Russe 2025 in Moscow.",
-      "He also participated in "Frying and Steaming" 2024 in Suzdal.",
+      "He also participated in Frying and Steaming 2024 in Suzdal.",
       "These experiences provided opportunities to demonstrate his abilities, exchange knowledge with culinary professionals, and further develop his understanding of Russian gastronomy.",
       "Since 2025, Chef Mikhail has served as the Executive Chef of NIKITIN Hotel & Restaurant in Nizhny Novgorod, a historic Russian city situated at the confluence of the Volga and Oka rivers.",
       "The city’s rich merchant heritage and cultural traditions provide an important source of inspiration for his culinary work.",
