@@ -33,6 +33,25 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Vadim Vladimirovich Diyazhev",
+    role: "International Member",
+    blurb:
+      "Executive Chef of Aurelia Restaurant in Zhukovsky, Moscow Region, with 24 years of professional culinary experience and 11 years in executive kitchen leadership. His career includes Russian cuisine, culinary heritage research, diplomatic-kitchen training, professional associations, and recognized culinary competitions.",
+    img: "/images/vadim.png",
+    region: "Russia",
+    specialty: "Russian Cuisine & Culinary Heritage",
+    translations: {
+      ru: {
+        name: "Шеф-повар Дияжев Вадим Владимирович",
+        role: "Международный член",
+        blurb:
+          "Executive Chef ресторана Aurelia в Жуковском Московской области с 24-летним профессиональным кулинарным опытом, включая 11 лет руководства кухней. Его профессиональный путь включает русскую кухню, изучение кулинарного наследия, подготовку в сфере дипломатического гостеприимства, участие в профессиональных ассоциациях и признанных кулинарных соревнованиях.",
+        region: "Россия",
+        specialty: "Русская кухня и кулинарное наследие",
+      },
+    },
+  },
+  {
     name: "Chef Mikhail Yuryevich Klyuenkov",
     role: "International Member",
     blurb:
