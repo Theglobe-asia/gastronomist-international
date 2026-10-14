@@ -33,6 +33,23 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    "name": "Chef Kirill Stanislavovich Mironov",
+    "role": "International Member",
+    "blurb": "Brand Chef and Executive Chef with 41 years of professional culinary experience, including approximately 30 years in senior leadership. His expertise spans Russian, French, and Mediterranean cuisine, restaurant concept development, government and VIP hospitality, operational restructuring, culinary competitions, and professional judging.",
+    "img": "/images/kirill.png",
+    "region": "Russia",
+    "specialty": "Russian, French & Mediterranean Cuisine",
+    "translations": {
+      "ru": {
+        "name": "Шеф-повар Кирилл Станиславович Миронов",
+        "role": "Международный член",
+        "blurb": "Бренд-шеф и Executive Chef с 41-летним профессиональным кулинарным опытом, включая примерно 30 лет на руководящих должностях. Его экспертиза охватывает русскую, французскую и средиземноморскую кухню, разработку ресторанных концепций, государственное и VIP-гостеприимство, операционную реструктуризацию, кулинарные соревнования и профессиональное судейство.",
+        "region": "Россия",
+        "specialty": "Русская, французская и средиземноморская кухня"
+      }
+    }
+  },
+  {
     name: "Chef Vadim Vladimirovich Diyazhev",
     role: "International Member",
     blurb:
