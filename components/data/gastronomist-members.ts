@@ -33,6 +33,44 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Dmitry Valeryevich Kirillov",
+    role: "International Member",
+    blurb:
+      "Executive Chef working within a small network of canteens including Stolovaya 21 in Cheboksary, Russia. His professional journey developed from culinary school and kitchen apprenticeship to hot kitchen work, dish development, team leadership, and responsibility for day-to-day kitchen organization and consistency.",
+    img: "/images/dmitry.png",
+    region: "Russia",
+    specialty: "Executive Chef Leadership & Kitchen Operations",
+    translations: {
+      ru: {
+        name: "Шеф-повар Дмитрий Валерьевич Кириллов",
+        role: "Международный член",
+        blurb:
+          "Executive Chef, работающий в небольшой сети столовых, включая Stolovaya 21 в Чебоксарах, Россия. Его профессиональный путь развивался от кулинарного училища и ученичества на кухне до работы в горячем цехе, разработки блюд, руководства командой и ответственности за ежедневную организацию и стабильность кухонной работы.",
+        region: "Россия",
+        specialty: "Лидерство Executive Chef и кухонные операции",
+      },
+    },
+  },
+  {
+    name: "Chef Giuseppe Guercio",
+    role: "International Member",
+    blurb:
+      "Italian culinary professional and Master Pizzaiolo, also known as Pino Guercio, with 12 years of professional culinary experience. He currently works at Mozzarella Bar Restaurant in St. Petersburg, combining Italian pizza craftsmanship, natural fermentation, dough development, traditional wood-fired oven knowledge, music, performance, and creative expression.",
+    img: "/images/guercio.png",
+    region: "Italy / Russia",
+    specialty: "Italian Pizza & Natural Fermentation",
+    translations: {
+      ru: {
+        name: "Шеф-повар Джузеппе Гуэрчо",
+        role: "Международный член",
+        blurb:
+          "Итальянский кулинарный профессионал и мастер-пиццайоло, также известный как Пино Гуэрчо, с 12-летним профессиональным опытом. В настоящее время он работает в ресторане Mozzarella Bar в Санкт-Петербурге, объединяя итальянское мастерство пиццы, естественную ферментацию, развитие теста, знание традиционных дровяных печей, музыку, сценическое искусство и творческое самовыражение.",
+        region: "Италия / Россия",
+        specialty: "Итальянская пицца и естественная ферментация",
+      },
+    },
+  },
+  {
     "name": "Chef Kirill Stanislavovich Mironov",
     "role": "International Member",
     "blurb": "Brand Chef and Executive Chef with 41 years of professional culinary experience, including approximately 30 years in senior leadership. His expertise spans Russian, French, and Mediterranean cuisine, restaurant concept development, government and VIP hospitality, operational restructuring, culinary competitions, and professional judging.",
