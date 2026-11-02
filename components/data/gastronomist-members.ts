@@ -33,24 +33,64 @@ export type AboutLeaderMember = {
 
 export const chefDirectoryMembers: ChefDirectoryMember[] = [
   {
+    name: "Chef Begimkulov Ruslan",
+    role: "International Member",
+    blurb:
+      "Executive Chef with 12 years of professional culinary experience, including five years in kitchen leadership. Born in Kyrgyzstan and currently working in Russia, his background includes extensive experience in Moscow and specialization in European, Italian, and Asian cuisine. He currently serves as Executive Chef of Utyos Restaurant in the Ryazan region.",
+    img: "/images/ruslan.png",
+    region: "Kyrgyzstan / Russia",
+    specialty: "European, Italian & Asian Cuisine",
+    translations: {
+      ru: {
+        name: "Шеф-повар Бегимкулов Руслан",
+        role: "Международный член",
+        blurb:
+          "Executive Chef с 12-летним профессиональным кулинарным опытом, включая пять лет руководства кухней. Родился в Кыргызстане и в настоящее время работает в России. Значительная часть его профессионального опыта сформировалась в Москве, а специализация включает европейскую, итальянскую и азиатскую кухню. Сейчас он занимает должность Executive Chef ресторана «Утёс» в Рязанской области.",
+        region: "Кыргызстан / Россия",
+        specialty: "Европейская, итальянская и азиатская кухня",
+      },
+    },
+  },
+  {
+    name: "Chef Dmitry Vladimirovich Shirokov",
+    role: "International Member",
+    blurb:
+      "Executive Chef from Balashikha, Zheleznodorozhny, Russia, with 14 years of professional culinary experience and five years in executive kitchen leadership. He is the author of Enigma Cuisine, a concept centered on author-driven gastronomic dinners built around creativity, individuality, and memorable guest experiences.",
+    img: "/images/shirokov.png",
+    region: "Russia",
+    specialty: "Enigma Cuisine & Gastronomic Dinners",
+    translations: {
+      ru: {
+        name: "Шеф-повар Дмитрий Владимирович Широков",
+        role: "Международный член",
+        blurb:
+          "Executive Chef из Балашихи, Железнодорожного, Россия, с 14-летним профессиональным кулинарным опытом и 5-летним опытом руководства кухней. Он является автором концепции Enigma Cuisine — направления, основанного на авторских гастрономических ужинах, построенных на творчестве, индивидуальности и запоминающихся впечатлениях для гостей.",
+        region: "Россия",
+        specialty: "Enigma Cuisine и гастрономические ужины",
+      },
+    },
+  },
+
+  {
     name: "Chef Dmitry Valeryevich Kirillov",
     role: "International Member",
     blurb:
       "Executive Chef working within a small network of canteens including Stolovaya 21 in Cheboksary, Russia. His professional journey developed from culinary school and kitchen apprenticeship to hot kitchen work, dish development, team leadership, and responsibility for day-to-day kitchen organization and consistency.",
     img: "/images/dmitry.png",
     region: "Russia",
-    specialty: "Executive Chef Leadership & Kitchen Operations",
+    specialty: "Kitchen Leadership & Culinary Operations",
     translations: {
       ru: {
         name: "Шеф-повар Дмитрий Валерьевич Кириллов",
         role: "Международный член",
         blurb:
-          "Executive Chef, работающий в небольшой сети столовых, включая Stolovaya 21 в Чебоксарах, Россия. Его профессиональный путь развивался от кулинарного училища и ученичества на кухне до работы в горячем цехе, разработки блюд, руководства командой и ответственности за ежедневную организацию и стабильность кухонной работы.",
+          "Executive Chef, работающий в небольшой сети столовых, включая Stolovaya 21 в Чебоксарах, Россия. Его профессиональный путь развивался от кулинарного училища и работы кухонным учеником до работы в горячем цехе, разработки блюд, руководства командой и ответственности за ежедневную организацию кухни и стабильность работы.",
         region: "Россия",
-        specialty: "Лидерство Executive Chef и кухонные операции",
+        specialty: "Лидерство на кухне и кулинарные операции",
       },
     },
   },
+
   {
     name: "Chef Giuseppe Guercio",
     role: "International Member",
@@ -70,23 +110,27 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
-    "name": "Chef Kirill Stanislavovich Mironov",
-    "role": "International Member",
-    "blurb": "Brand Chef and Executive Chef with 41 years of professional culinary experience, including approximately 30 years in senior leadership. His expertise spans Russian, French, and Mediterranean cuisine, restaurant concept development, government and VIP hospitality, operational restructuring, culinary competitions, and professional judging.",
-    "img": "/images/kirill.png",
-    "region": "Russia",
-    "specialty": "Russian, French & Mediterranean Cuisine",
-    "translations": {
-      "ru": {
-        "name": "Шеф-повар Кирилл Станиславович Миронов",
-        "role": "Международный член",
-        "blurb": "Бренд-шеф и Executive Chef с 41-летним профессиональным кулинарным опытом, включая примерно 30 лет на руководящих должностях. Его экспертиза охватывает русскую, французскую и средиземноморскую кухню, разработку ресторанных концепций, государственное и VIP-гостеприимство, операционную реструктуризацию, кулинарные соревнования и профессиональное судейство.",
-        "region": "Россия",
-        "specialty": "Русская, французская и средиземноморская кухня"
-      }
-    }
+    name: "Chef Kirill Stanislavovich Mironov",
+    role: "International Member",
+    blurb:
+      "Brand Chef and Executive Chef with 41 years of professional culinary experience, including approximately 30 years in senior leadership. His expertise spans Russian, French, and Mediterranean cuisine, restaurant concept development, government and VIP hospitality, operational restructuring, culinary competitions, and professional judging.",
+    img: "/images/kirill.png",
+    region: "Russia",
+    specialty: "Russian, French & Mediterranean Cuisine",
+    translations: {
+      ru: {
+        name: "Шеф-повар Кирилл Станиславович Миронов",
+        role: "Международный член",
+        blurb:
+          "Бренд-шеф и Executive Chef с 41-летним профессиональным кулинарным опытом, включая примерно 30 лет на руководящих должностях. Его экспертиза охватывает русскую, французскую и средиземноморскую кухню, разработку ресторанных концепций, государственное и VIP-гостеприимство, операционную реструктуризацию, кулинарные соревнования и профессиональное судейство.",
+        region: "Россия",
+        specialty: "Русская, французская и средиземноморская кухня",
+      },
+    },
   },
+
   {
     name: "Chef Vadim Vladimirovich Diyazhev",
     role: "International Member",
@@ -106,6 +150,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Mikhail Yuryevich Klyuenkov",
     role: "International Member",
@@ -125,6 +170,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Arkady Nikolaevich Zorin",
     role: "International Member",
@@ -144,6 +190,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Igor Yuryevich Sudarkin",
     role: "International Member",
@@ -163,6 +210,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Morozov Nikolai Nikolaevich",
     role: "International Member",
@@ -182,6 +230,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Tatyana Yuryevna Yukhimishena",
     role: "International Member",
@@ -201,6 +250,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Lilia Vladimirovna Gilfanova",
     role: "International Member",
@@ -220,6 +270,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Andrey Evgenyevich Lodygin",
     role: "International Member",
@@ -239,6 +290,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Ilya Alexandrovich Koptelov",
     role: "International Member",
@@ -258,6 +310,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Gaetano Zambito",
     role: "International Member",
@@ -277,6 +330,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Pavel Sergeyevich Belyanin",
     role: "International Member",
@@ -296,6 +350,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Ivan Antonov",
     role: "International Member",
@@ -315,6 +370,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Alexey Alexandrovich Zhigulin",
     role: "International Member",
@@ -334,6 +390,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Mark Lester Morales",
     role: "International Member",
@@ -353,6 +410,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Noor",
     role: "International Member",
@@ -372,6 +430,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Mar",
     role: "International Member",
@@ -390,6 +449,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Arman",
     role: "International Member",
@@ -408,6 +468,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Sandar",
     role: "International Member",
@@ -426,6 +487,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Deric",
     role: "International Member",
@@ -444,6 +506,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Francis",
     role: "International Member",
@@ -462,6 +525,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Rommel",
     role: "International Member",
@@ -480,6 +544,7 @@ export const chefDirectoryMembers: ChefDirectoryMember[] = [
       },
     },
   },
+
   {
     name: "Chef Kono",
     role: "International Member",
